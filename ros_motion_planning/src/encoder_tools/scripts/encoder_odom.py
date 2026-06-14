@@ -46,6 +46,9 @@ class EncoderOdometry:
         self.x = 0.0
         self.y = 0.0
         self.theta = 0.0
+        self.latest_v = 0.0
+        self.latest_omega = 0.0
+        self.have_pose = False
         self.msg_count = 0
 
         # 发布器
@@ -59,6 +62,9 @@ class EncoderOdometry:
 
         # 订阅
         rospy.Subscriber("/wheel_ticks", Int64MultiArray, self.tick_cb, queue_size=100)
+
+        # 10Hz 定时器——即使编码器数据只到 0.5Hz，也让 TF 以 10Hz 刷新
+        rospy.Timer(rospy.Duration(0.1), self.timer_cb)
 
         rospy.loginfo("encoder_odom 已启动，等待 /wheel_ticks ...")
         rospy.loginfo("提示: 确保 read_uart.py 也在运行，否则收不到编码器数据")
@@ -126,6 +132,11 @@ class EncoderOdometry:
         v = (v_left + v_right) / 2.0
         omega = (v_right - v_left) / self.wheel_base
 
+        # 保存最新速度供 timer 发布
+        self.latest_v = v
+        self.latest_omega = omega
+        self.have_pose = True
+
         # 每隔 2 秒打印一次关键数据
         rospy.loginfo_throttle(2.0,
             f"编码器: ltick={ltick} rtick={rtick} "
@@ -150,6 +161,14 @@ class EncoderOdometry:
         self._pub_odom(now, v, omega)
 
         # 发布 TF
+        self._pub_tf(now)
+
+    def timer_cb(self, event):
+        """10Hz 定时回调：重新发布最新的 /odom + TF，使 RViz 显示平滑"""
+        if not self.have_pose:
+            return
+        now = rospy.Time.now()
+        self._pub_odom(now, self.latest_v, self.latest_omega)
         self._pub_tf(now)
 
     def _pub_odom(self, stamp, v, omega):
