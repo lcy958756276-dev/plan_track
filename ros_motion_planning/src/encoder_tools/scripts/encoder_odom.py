@@ -30,8 +30,12 @@ class EncoderOdometry:
         self.dist_per_tick = (pluse / 360.0) * 2.0 * math.pi * wheel_radius
         self.wheel_base = wheel_base
 
-        rospy.loginfo(f"encoder_odom: dist_per_tick={self.dist_per_tick:.8f} m, "
-                      f"wheel_base={wheel_base:.4f} m")
+        rospy.loginfo("=== encoder_odom 参数 ===")
+        rospy.loginfo(f"wheel_radius    = {wheel_radius}")
+        rospy.loginfo(f"wheel_base      = {wheel_base}")
+        rospy.loginfo(f"pluse           = {pluse:.6f}")
+        rospy.loginfo(f"dist_per_tick   = {self.dist_per_tick:.8f} m")
+        rospy.loginfo("========================")
 
         # 状态
         self.last_ltick = None
@@ -42,6 +46,7 @@ class EncoderOdometry:
         self.x = 0.0
         self.y = 0.0
         self.theta = 0.0
+        self.msg_count = 0
 
         # 发布器
         self.odom_pub = rospy.Publisher("/odom", Odometry, queue_size=50)
@@ -56,19 +61,25 @@ class EncoderOdometry:
         rospy.Subscriber("/wheel_ticks", Int64MultiArray, self.tick_cb, queue_size=100)
 
         rospy.loginfo("encoder_odom 已启动，等待 /wheel_ticks ...")
+        rospy.loginfo("提示: 确保 read_uart.py 也在运行，否则收不到编码器数据")
 
     def tick_cb(self, msg):
+        self.msg_count += 1
+
         if len(msg.data) < 2:
+            rospy.logwarn("收到 /wheel_ticks 但数据长度 < 2")
             return
 
         ltick = msg.data[0]
         rtick = msg.data[1]
-        now = rospy.Time.now()
 
+        # 第一次收到数据
         if self.last_ltick is None:
             self.last_ltick = ltick
             self.last_rtick = rtick
-            self.last_time = now
+            self.last_time = rospy.Time.now()
+            rospy.loginfo(f"收到第一条编码器数据: ltick={ltick}, rtick={rtick}")
+            rospy.loginfo("里程计开始计算...")
             return
 
         left_inc = ltick - self.last_ltick
@@ -76,32 +87,33 @@ class EncoderOdometry:
 
         # 防野值
         if abs(left_inc) > 1000000 or abs(right_inc) > 1000000:
-            rospy.logwarn_throttle(5, "编码器跳变过大，忽略")
+            rospy.logwarn_throttle(5, f"编码器跳变过大: left_inc={left_inc}, right_inc={right_inc}，忽略")
             self.last_ltick = ltick
             self.last_rtick = rtick
-            self.last_time = now
+            self.last_time = rospy.Time.now()
             return
 
         self.last_ltick = ltick
         self.last_rtick = rtick
 
+        now = rospy.Time.now()
         dt = (now - self.last_time).to_sec()
         self.last_time = now
+
         if dt <= 0 or dt > 1.0:
+            rospy.logwarn_throttle(3, f"时间间隔异常: dt={dt:.4f}s，跳过")
             return
 
-        # 左右轮距离增量
+        # ── 核心计算 ──
         d_left  = left_inc * self.dist_per_tick
         d_right = right_inc * self.dist_per_tick
 
         self.left_dist  += d_left
         self.right_dist += d_right
 
-        # 速度
         v_left  = d_left / dt
         v_right = d_right / dt
 
-        # 差分驱动
         d_center = (d_left + d_right) / 2.0
         d_theta  = (d_right - d_left) / self.wheel_base
 
@@ -112,6 +124,17 @@ class EncoderOdometry:
 
         v = (v_left + v_right) / 2.0
         omega = (v_right - v_left) / self.wheel_base
+
+        # 每隔 2 秒打印一次关键数据
+        rospy.loginfo_throttle(2.0,
+            f"编码器: ltick={ltick} rtick={rtick} "
+            f"Δl={left_inc} Δr={right_inc} "
+            f"d_left={d_left:.4f}m d_right={d_right:.4f}m"
+        )
+        rospy.loginfo_throttle(2.0,
+            f"里程计: x={self.x:.3f} y={self.y:.3f} θ={self.theta:.3f} "
+            f"v={v:.3f}m/s ω={omega:.3f}rad/s"
+        )
 
         # 发布距离
         self.left_pub.publish(Float64(data=self.left_dist))
@@ -147,6 +170,7 @@ class EncoderOdometry:
         odom.twist.twist.angular.z = omega
 
         self.odom_pub.publish(odom)
+        rospy.loginfo_throttle(2.0, f"已发布 /odom: pose=({self.x:.2f}, {self.y:.2f}, {self.theta:.2f})")
 
     def _pub_tf(self, stamp):
         t = TransformStamped()
