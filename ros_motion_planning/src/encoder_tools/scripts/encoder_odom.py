@@ -30,11 +30,15 @@ class EncoderOdometry:
         self.dist_per_tick = (pluse / 360.0) * 2.0 * math.pi * wheel_radius
         self.wheel_base = wheel_base
 
+        # 右轮编码器方向是否与左轮相反（差分驱动常见）
+        self.right_reverse = rospy.get_param("~right_reverse", True)
+
         rospy.loginfo("=== encoder_odom 参数 ===")
         rospy.loginfo(f"wheel_radius    = {wheel_radius}")
         rospy.loginfo(f"wheel_base      = {wheel_base}")
         rospy.loginfo(f"pluse           = {pluse:.6f}")
         rospy.loginfo(f"dist_per_tick   = {self.dist_per_tick:.8f} m")
+        rospy.loginfo(f"right_reverse   = {self.right_reverse} (右轮取反)")
         rospy.loginfo("========================")
 
         # 状态
@@ -105,8 +109,11 @@ class EncoderOdometry:
             return
 
         # ── 核心计算 ──
+        # 右轮取反: 如果 right_reverse=True，把 right_inc 取反
+        right_inc_adj = -right_inc if self.right_reverse else right_inc
+
         d_left  = left_inc * self.dist_per_tick
-        d_right = right_inc * self.dist_per_tick
+        d_right = right_inc_adj * self.dist_per_tick
 
         self.left_dist  += d_left
         self.right_dist += d_right
@@ -128,7 +135,7 @@ class EncoderOdometry:
         # 每隔 2 秒打印一次关键数据
         rospy.loginfo_throttle(2.0,
             f"编码器: ltick={ltick} rtick={rtick} "
-            f"Δl={left_inc} Δr={right_inc} "
+            f"Δl={left_inc} Δr={right_inc}(调整后={right_inc_adj}) "
             f"d_left={d_left:.4f}m d_right={d_right:.4f}m"
         )
         rospy.loginfo_throttle(2.0,
