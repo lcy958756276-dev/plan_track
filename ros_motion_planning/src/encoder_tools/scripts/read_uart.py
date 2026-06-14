@@ -11,7 +11,7 @@ from std_msgs.msg import Int64MultiArray
 class EncoderReader:
     def __init__(self):
         port = rospy.get_param("~port", "/dev/ttyTHS0")
-        baud = rospy.get_param("~baud", 115200)
+        baud = rospy.get_param("~baud", 57600)
 
         self.ser = serial.Serial(
             port=port,
