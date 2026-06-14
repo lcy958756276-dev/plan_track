@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/lib/map_server/rtest"
-  "/home/lcy/robot_graduation/devel/lib/map_server/rtest.pdb"
+  "/home/lcy/robot_graduation（复件）/devel/lib/map_server/rtest"
+  "/home/lcy/robot_graduation（复件）/devel/lib/map_server/rtest.pdb"
   "CMakeFiles/rtest.dir/test/rtest.cpp.o"
   "CMakeFiles/rtest.dir/test/test_constants.cpp.o"
 )

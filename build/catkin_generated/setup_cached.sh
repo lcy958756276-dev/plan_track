@@ -7,11 +7,7 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/lcy/robot_graduation/devel:$CMAKE_PREFIX_PATH"
-export LD_LIBRARY_PATH="/home/lcy/robot_graduation/devel/lib:$LD_LIBRARY_PATH"
-export PATH='/opt/ros/noetic/bin:/home/lcy/.local/bin:/home/lcy/.codex/tmp/arg0/codex-arg0F5FTzn:/home/lcy/node-v24.16.0-linux-arm64/bin:/home/lcy/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/lcy/.vscode/extensions/openai.chatgpt-26.602.40724-linux-arm64/bin/linux-aarch64'
-export PKG_CONFIG_PATH="/home/lcy/robot_graduation/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
-export PWD='/home/lcy/robot_graduation/build'
-export PYTHONPATH="/home/lcy/robot_graduation/devel/lib/python3/dist-packages:$PYTHONPATH"
-export ROSLISP_PACKAGE_DIRECTORIES="/home/lcy/robot_graduation/devel/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
-export ROS_PACKAGE_PATH="/home/lcy/robot_graduation/src:$ROS_PACKAGE_PATH"
+export CMAKE_PREFIX_PATH="/home/lcy/robot_graduation（复件）/devel:$CMAKE_PREFIX_PATH"
+export PWD='/home/lcy/robot_graduation（复件）/build'
+export ROSLISP_PACKAGE_DIRECTORIES="/home/lcy/robot_graduation（复件）/devel/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
+export ROS_PACKAGE_PATH="/home/lcy/robot_graduation（复件）/src:$ROS_PACKAGE_PATH"

@@ -1,8 +1,8 @@
-# Install script for directory: /home/lcy/robot_graduation/src/hector_slam/hector_map_tools
+# Install script for directory: /home/lcy/robot_graduation（复件）/src/hector_slam/hector_map_tools
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/lcy/robot_graduation/install")
+  set(CMAKE_INSTALL_PREFIX "/home/lcy/robot_graduation（复件）/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,21 +38,21 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/lcy/robot_graduation/build/hector_slam/hector_map_tools/catkin_generated/installspace/hector_map_tools.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/lcy/robot_graduation（复件）/build/hector_slam/hector_map_tools/catkin_generated/installspace/hector_map_tools.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/hector_map_tools/cmake" TYPE FILE FILES
-    "/home/lcy/robot_graduation/build/hector_slam/hector_map_tools/catkin_generated/installspace/hector_map_toolsConfig.cmake"
-    "/home/lcy/robot_graduation/build/hector_slam/hector_map_tools/catkin_generated/installspace/hector_map_toolsConfig-version.cmake"
+    "/home/lcy/robot_graduation（复件）/build/hector_slam/hector_map_tools/catkin_generated/installspace/hector_map_toolsConfig.cmake"
+    "/home/lcy/robot_graduation（复件）/build/hector_slam/hector_map_tools/catkin_generated/installspace/hector_map_toolsConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/hector_map_tools" TYPE FILE FILES "/home/lcy/robot_graduation/src/hector_slam/hector_map_tools/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/hector_map_tools" TYPE FILE FILES "/home/lcy/robot_graduation（复件）/src/hector_slam/hector_map_tools/package.xml")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/hector_map_tools" TYPE DIRECTORY FILES "/home/lcy/robot_graduation/src/hector_slam/hector_map_tools/include/hector_map_tools/" FILES_MATCHING REGEX "/[^/]*\\.h$" REGEX "/\\.svn$" EXCLUDE)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/hector_map_tools" TYPE DIRECTORY FILES "/home/lcy/robot_graduation（复件）/src/hector_slam/hector_map_tools/include/hector_map_tools/" FILES_MATCHING REGEX "/[^/]*\\.h$" REGEX "/\\.svn$" EXCLUDE)
 endif()
 

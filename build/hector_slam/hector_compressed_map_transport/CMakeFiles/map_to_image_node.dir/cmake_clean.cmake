@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/lib/hector_compressed_map_transport/map_to_image_node"
-  "/home/lcy/robot_graduation/devel/lib/hector_compressed_map_transport/map_to_image_node.pdb"
+  "/home/lcy/robot_graduation（复件）/devel/lib/hector_compressed_map_transport/map_to_image_node"
+  "/home/lcy/robot_graduation（复件）/devel/lib/hector_compressed_map_transport/map_to_image_node.pdb"
   "CMakeFiles/map_to_image_node.dir/src/map_to_image_node.cpp.o"
 )
 

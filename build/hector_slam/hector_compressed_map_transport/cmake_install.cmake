@@ -1,8 +1,8 @@
-# Install script for directory: /home/lcy/robot_graduation/src/hector_slam/hector_compressed_map_transport
+# Install script for directory: /home/lcy/robot_graduation（复件）/src/hector_slam/hector_compressed_map_transport
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/lcy/robot_graduation/install")
+  set(CMAKE_INSTALL_PREFIX "/home/lcy/robot_graduation（复件）/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,18 +38,18 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/lcy/robot_graduation/build/hector_slam/hector_compressed_map_transport/catkin_generated/installspace/hector_compressed_map_transport.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/lcy/robot_graduation（复件）/build/hector_slam/hector_compressed_map_transport/catkin_generated/installspace/hector_compressed_map_transport.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/hector_compressed_map_transport/cmake" TYPE FILE FILES
-    "/home/lcy/robot_graduation/build/hector_slam/hector_compressed_map_transport/catkin_generated/installspace/hector_compressed_map_transportConfig.cmake"
-    "/home/lcy/robot_graduation/build/hector_slam/hector_compressed_map_transport/catkin_generated/installspace/hector_compressed_map_transportConfig-version.cmake"
+    "/home/lcy/robot_graduation（复件）/build/hector_slam/hector_compressed_map_transport/catkin_generated/installspace/hector_compressed_map_transportConfig.cmake"
+    "/home/lcy/robot_graduation（复件）/build/hector_slam/hector_compressed_map_transport/catkin_generated/installspace/hector_compressed_map_transportConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/hector_compressed_map_transport" TYPE FILE FILES "/home/lcy/robot_graduation/src/hector_slam/hector_compressed_map_transport/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/hector_compressed_map_transport" TYPE FILE FILES "/home/lcy/robot_graduation（复件）/src/hector_slam/hector_compressed_map_transport/package.xml")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -59,7 +59,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/hector_compressed_map_transport/map_to_image_node"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/hector_compressed_map_transport" TYPE EXECUTABLE FILES "/home/lcy/robot_graduation/devel/lib/hector_compressed_map_transport/map_to_image_node")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/hector_compressed_map_transport" TYPE EXECUTABLE FILES "/home/lcy/robot_graduation（复件）/devel/lib/hector_compressed_map_transport/map_to_image_node")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/hector_compressed_map_transport/map_to_image_node" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/hector_compressed_map_transport/map_to_image_node")
     file(RPATH_CHANGE

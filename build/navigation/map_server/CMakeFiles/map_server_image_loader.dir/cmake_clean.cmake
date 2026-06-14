@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/lib/libmap_server_image_loader.pdb"
-  "/home/lcy/robot_graduation/devel/lib/libmap_server_image_loader.so"
+  "/home/lcy/robot_graduation（复件）/devel/lib/libmap_server_image_loader.pdb"
+  "/home/lcy/robot_graduation（复件）/devel/lib/libmap_server_image_loader.so"
   "CMakeFiles/map_server_image_loader.dir/src/image_loader.cpp.o"
 )
 

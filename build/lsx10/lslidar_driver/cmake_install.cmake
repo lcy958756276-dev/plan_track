@@ -1,8 +1,8 @@
-# Install script for directory: /home/lcy/robot_graduation/src/lsx10/lslidar_driver
+# Install script for directory: /home/lcy/robot_graduation（复件）/src/lsx10/lslidar_driver
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/lcy/robot_graduation/install")
+  set(CMAKE_INSTALL_PREFIX "/home/lcy/robot_graduation（复件）/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,18 +38,18 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/lcy/robot_graduation/build/lsx10/lslidar_driver/catkin_generated/installspace/lslidar_driver.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/lcy/robot_graduation（复件）/build/lsx10/lslidar_driver/catkin_generated/installspace/lslidar_driver.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/lslidar_driver/cmake" TYPE FILE FILES
-    "/home/lcy/robot_graduation/build/lsx10/lslidar_driver/catkin_generated/installspace/lslidar_driverConfig.cmake"
-    "/home/lcy/robot_graduation/build/lsx10/lslidar_driver/catkin_generated/installspace/lslidar_driverConfig-version.cmake"
+    "/home/lcy/robot_graduation（复件）/build/lsx10/lslidar_driver/catkin_generated/installspace/lslidar_driverConfig.cmake"
+    "/home/lcy/robot_graduation（复件）/build/lsx10/lslidar_driver/catkin_generated/installspace/lslidar_driverConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/lslidar_driver" TYPE FILE FILES "/home/lcy/robot_graduation/src/lsx10/lslidar_driver/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/lslidar_driver" TYPE FILE FILES "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_driver/package.xml")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -59,7 +59,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/liblslidar_input.so"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "/home/lcy/robot_graduation/devel/lib/liblslidar_input.so")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "/home/lcy/robot_graduation（复件）/devel/lib/liblslidar_input.so")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/liblslidar_input.so" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/liblslidar_input.so")
     file(RPATH_CHANGE
@@ -82,12 +82,12 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/lslidar_driver/lslidar_driver_node"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/lslidar_driver" TYPE EXECUTABLE FILES "/home/lcy/robot_graduation/devel/lib/lslidar_driver/lslidar_driver_node")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/lslidar_driver" TYPE EXECUTABLE FILES "/home/lcy/robot_graduation（复件）/devel/lib/lslidar_driver/lslidar_driver_node")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/lslidar_driver/lslidar_driver_node" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/lslidar_driver/lslidar_driver_node")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/lslidar_driver/lslidar_driver_node"
-         OLD_RPATH "/opt/ros/noetic/lib:/home/lcy/robot_graduation/devel/lib:"
+         OLD_RPATH "/opt/ros/noetic/lib:/home/lcy/robot_graduation（复件）/devel/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/lslidar_driver/lslidar_driver_node")
@@ -102,7 +102,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/liblslidar_serial.so"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "/home/lcy/robot_graduation/devel/lib/liblslidar_serial.so")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "/home/lcy/robot_graduation（复件）/devel/lib/liblslidar_serial.so")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/liblslidar_serial.so" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/liblslidar_serial.so")
     file(RPATH_CHANGE
@@ -119,6 +119,6 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/lslidar_driver" TYPE DIRECTORY FILES "/home/lcy/robot_graduation/src/lsx10/lslidar_driver/launch")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/lslidar_driver" TYPE DIRECTORY FILES "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_driver/launch")
 endif()
 

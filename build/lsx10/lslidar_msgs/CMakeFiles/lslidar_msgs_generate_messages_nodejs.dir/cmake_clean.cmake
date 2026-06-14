@@ -1,9 +1,9 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/share/gennodejs/ros/lslidar_msgs/msg/LslidarDifop.js"
-  "/home/lcy/robot_graduation/devel/share/gennodejs/ros/lslidar_msgs/msg/LslidarPacket.js"
-  "/home/lcy/robot_graduation/devel/share/gennodejs/ros/lslidar_msgs/msg/LslidarPoint.js"
-  "/home/lcy/robot_graduation/devel/share/gennodejs/ros/lslidar_msgs/msg/LslidarScan.js"
-  "/home/lcy/robot_graduation/devel/share/gennodejs/ros/lslidar_msgs/msg/LslidarSweep.js"
+  "/home/lcy/robot_graduation（复件）/devel/share/gennodejs/ros/lslidar_msgs/msg/LslidarDifop.js"
+  "/home/lcy/robot_graduation（复件）/devel/share/gennodejs/ros/lslidar_msgs/msg/LslidarPacket.js"
+  "/home/lcy/robot_graduation（复件）/devel/share/gennodejs/ros/lslidar_msgs/msg/LslidarPoint.js"
+  "/home/lcy/robot_graduation（复件）/devel/share/gennodejs/ros/lslidar_msgs/msg/LslidarScan.js"
+  "/home/lcy/robot_graduation（复件）/devel/share/gennodejs/ros/lslidar_msgs/msg/LslidarSweep.js"
   "CMakeFiles/lslidar_msgs_generate_messages_nodejs"
 )
 

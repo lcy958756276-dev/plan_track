@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lcy/robot_graduation/src
+CMAKE_SOURCE_DIR = /home/lcy/robot_graduation（复件）/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lcy/robot_graduation/build
+CMAKE_BINARY_DIR = /home/lcy/robot_graduation（复件）/build
 
 # Utility rule file for run_tests_map_server.
 
@@ -63,10 +63,10 @@ navigation/map_server/CMakeFiles/run_tests_map_server.dir/build: run_tests_map_s
 .PHONY : navigation/map_server/CMakeFiles/run_tests_map_server.dir/build
 
 navigation/map_server/CMakeFiles/run_tests_map_server.dir/clean:
-	cd /home/lcy/robot_graduation/build/navigation/map_server && $(CMAKE_COMMAND) -P CMakeFiles/run_tests_map_server.dir/cmake_clean.cmake
+	cd /home/lcy/robot_graduation（复件）/build/navigation/map_server && $(CMAKE_COMMAND) -P CMakeFiles/run_tests_map_server.dir/cmake_clean.cmake
 .PHONY : navigation/map_server/CMakeFiles/run_tests_map_server.dir/clean
 
 navigation/map_server/CMakeFiles/run_tests_map_server.dir/depend:
-	cd /home/lcy/robot_graduation/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/lcy/robot_graduation/src /home/lcy/robot_graduation/src/navigation/map_server /home/lcy/robot_graduation/build /home/lcy/robot_graduation/build/navigation/map_server /home/lcy/robot_graduation/build/navigation/map_server/CMakeFiles/run_tests_map_server.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/lcy/robot_graduation（复件）/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/lcy/robot_graduation（复件）/src /home/lcy/robot_graduation（复件）/src/navigation/map_server /home/lcy/robot_graduation（复件）/build /home/lcy/robot_graduation（复件）/build/navigation/map_server /home/lcy/robot_graduation（复件）/build/navigation/map_server/CMakeFiles/run_tests_map_server.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : navigation/map_server/CMakeFiles/run_tests_map_server.dir/depend
 

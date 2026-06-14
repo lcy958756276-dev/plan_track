@@ -1,10 +1,10 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/lib/python3/dist-packages/lslidar_msgs/msg/_LslidarDifop.py"
-  "/home/lcy/robot_graduation/devel/lib/python3/dist-packages/lslidar_msgs/msg/_LslidarPacket.py"
-  "/home/lcy/robot_graduation/devel/lib/python3/dist-packages/lslidar_msgs/msg/_LslidarPoint.py"
-  "/home/lcy/robot_graduation/devel/lib/python3/dist-packages/lslidar_msgs/msg/_LslidarScan.py"
-  "/home/lcy/robot_graduation/devel/lib/python3/dist-packages/lslidar_msgs/msg/_LslidarSweep.py"
-  "/home/lcy/robot_graduation/devel/lib/python3/dist-packages/lslidar_msgs/msg/__init__.py"
+  "/home/lcy/robot_graduation（复件）/devel/lib/python3/dist-packages/lslidar_msgs/msg/_LslidarDifop.py"
+  "/home/lcy/robot_graduation（复件）/devel/lib/python3/dist-packages/lslidar_msgs/msg/_LslidarPacket.py"
+  "/home/lcy/robot_graduation（复件）/devel/lib/python3/dist-packages/lslidar_msgs/msg/_LslidarPoint.py"
+  "/home/lcy/robot_graduation（复件）/devel/lib/python3/dist-packages/lslidar_msgs/msg/_LslidarScan.py"
+  "/home/lcy/robot_graduation（复件）/devel/lib/python3/dist-packages/lslidar_msgs/msg/_LslidarSweep.py"
+  "/home/lcy/robot_graduation（复件）/devel/lib/python3/dist-packages/lslidar_msgs/msg/__init__.py"
   "CMakeFiles/lslidar_msgs_generate_messages_py"
 )
 

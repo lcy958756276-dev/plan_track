@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/share/common-lisp/ros/hector_mapping/msg/HectorDebugInfo.lisp"
-  "/home/lcy/robot_graduation/devel/share/common-lisp/ros/hector_mapping/msg/HectorIterData.lisp"
-  "/home/lcy/robot_graduation/devel/share/common-lisp/ros/hector_mapping/srv/ResetMapping.lisp"
+  "/home/lcy/robot_graduation（复件）/devel/share/common-lisp/ros/hector_mapping/msg/HectorDebugInfo.lisp"
+  "/home/lcy/robot_graduation（复件）/devel/share/common-lisp/ros/hector_mapping/msg/HectorIterData.lisp"
+  "/home/lcy/robot_graduation（复件）/devel/share/common-lisp/ros/hector_mapping/srv/ResetMapping.lisp"
   "CMakeFiles/hector_mapping_generate_messages_lisp"
 )
 

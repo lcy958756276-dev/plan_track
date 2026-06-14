@@ -1,10 +1,10 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/share/roseus/ros/lslidar_msgs/manifest.l"
-  "/home/lcy/robot_graduation/devel/share/roseus/ros/lslidar_msgs/msg/LslidarDifop.l"
-  "/home/lcy/robot_graduation/devel/share/roseus/ros/lslidar_msgs/msg/LslidarPacket.l"
-  "/home/lcy/robot_graduation/devel/share/roseus/ros/lslidar_msgs/msg/LslidarPoint.l"
-  "/home/lcy/robot_graduation/devel/share/roseus/ros/lslidar_msgs/msg/LslidarScan.l"
-  "/home/lcy/robot_graduation/devel/share/roseus/ros/lslidar_msgs/msg/LslidarSweep.l"
+  "/home/lcy/robot_graduation（复件）/devel/share/roseus/ros/lslidar_msgs/manifest.l"
+  "/home/lcy/robot_graduation（复件）/devel/share/roseus/ros/lslidar_msgs/msg/LslidarDifop.l"
+  "/home/lcy/robot_graduation（复件）/devel/share/roseus/ros/lslidar_msgs/msg/LslidarPacket.l"
+  "/home/lcy/robot_graduation（复件）/devel/share/roseus/ros/lslidar_msgs/msg/LslidarPoint.l"
+  "/home/lcy/robot_graduation（复件）/devel/share/roseus/ros/lslidar_msgs/msg/LslidarScan.l"
+  "/home/lcy/robot_graduation（复件）/devel/share/roseus/ros/lslidar_msgs/msg/LslidarSweep.l"
   "CMakeFiles/lslidar_msgs_generate_messages_eus"
 )
 

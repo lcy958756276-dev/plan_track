@@ -1,10 +1,10 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/share/roseus/ros/hector_nav_msgs/manifest.l"
-  "/home/lcy/robot_graduation/devel/share/roseus/ros/hector_nav_msgs/srv/GetDistanceToObstacle.l"
-  "/home/lcy/robot_graduation/devel/share/roseus/ros/hector_nav_msgs/srv/GetNormal.l"
-  "/home/lcy/robot_graduation/devel/share/roseus/ros/hector_nav_msgs/srv/GetRecoveryInfo.l"
-  "/home/lcy/robot_graduation/devel/share/roseus/ros/hector_nav_msgs/srv/GetRobotTrajectory.l"
-  "/home/lcy/robot_graduation/devel/share/roseus/ros/hector_nav_msgs/srv/GetSearchPosition.l"
+  "/home/lcy/robot_graduation（复件）/devel/share/roseus/ros/hector_nav_msgs/manifest.l"
+  "/home/lcy/robot_graduation（复件）/devel/share/roseus/ros/hector_nav_msgs/srv/GetDistanceToObstacle.l"
+  "/home/lcy/robot_graduation（复件）/devel/share/roseus/ros/hector_nav_msgs/srv/GetNormal.l"
+  "/home/lcy/robot_graduation（复件）/devel/share/roseus/ros/hector_nav_msgs/srv/GetRecoveryInfo.l"
+  "/home/lcy/robot_graduation（复件）/devel/share/roseus/ros/hector_nav_msgs/srv/GetRobotTrajectory.l"
+  "/home/lcy/robot_graduation（复件）/devel/share/roseus/ros/hector_nav_msgs/srv/GetSearchPosition.l"
   "CMakeFiles/hector_nav_msgs_generate_messages_eus"
 )
 

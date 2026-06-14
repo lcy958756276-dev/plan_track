@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/lib/hector_mapping/hector_mapping"
-  "/home/lcy/robot_graduation/devel/lib/hector_mapping/hector_mapping.pdb"
+  "/home/lcy/robot_graduation（复件）/devel/lib/hector_mapping/hector_mapping"
+  "/home/lcy/robot_graduation（复件）/devel/lib/hector_mapping/hector_mapping.pdb"
   "CMakeFiles/hector_mapping.dir/src/HectorMappingRos.cpp.o"
   "CMakeFiles/hector_mapping.dir/src/PoseInfoContainer.cpp.o"
   "CMakeFiles/hector_mapping.dir/src/main.cpp.o"

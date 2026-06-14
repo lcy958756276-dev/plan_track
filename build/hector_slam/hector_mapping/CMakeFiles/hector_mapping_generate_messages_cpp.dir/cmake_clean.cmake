@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/include/hector_mapping/HectorDebugInfo.h"
-  "/home/lcy/robot_graduation/devel/include/hector_mapping/HectorIterData.h"
-  "/home/lcy/robot_graduation/devel/include/hector_mapping/ResetMapping.h"
+  "/home/lcy/robot_graduation（复件）/devel/include/hector_mapping/HectorDebugInfo.h"
+  "/home/lcy/robot_graduation（复件）/devel/include/hector_mapping/HectorIterData.h"
+  "/home/lcy/robot_graduation（复件）/devel/include/hector_mapping/ResetMapping.h"
   "CMakeFiles/hector_mapping_generate_messages_cpp"
 )
 

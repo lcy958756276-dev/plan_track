@@ -67,14 +67,14 @@ set(hector_imu_attitude_to_tf_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(hector_imu_attitude_to_tf_SOURCE_PREFIX /home/lcy/robot_graduation/src/hector_slam/hector_imu_attitude_to_tf)
-  set(hector_imu_attitude_to_tf_DEVEL_PREFIX /home/lcy/robot_graduation/devel)
+  set(hector_imu_attitude_to_tf_SOURCE_PREFIX /home/lcy/robot_graduation（复件）/src/hector_slam/hector_imu_attitude_to_tf)
+  set(hector_imu_attitude_to_tf_DEVEL_PREFIX /home/lcy/robot_graduation（复件）/devel)
   set(hector_imu_attitude_to_tf_INSTALL_PREFIX "")
   set(hector_imu_attitude_to_tf_PREFIX ${hector_imu_attitude_to_tf_DEVEL_PREFIX})
 else()
   set(hector_imu_attitude_to_tf_SOURCE_PREFIX "")
   set(hector_imu_attitude_to_tf_DEVEL_PREFIX "")
-  set(hector_imu_attitude_to_tf_INSTALL_PREFIX /home/lcy/robot_graduation/install)
+  set(hector_imu_attitude_to_tf_INSTALL_PREFIX /home/lcy/robot_graduation（复件）/install)
   set(hector_imu_attitude_to_tf_PREFIX ${hector_imu_attitude_to_tf_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/lcy/robot_graduation/install/lib;/home/lcy/pipeline-inspection-robot2024-10-12/src/wit_ros_ws/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/lcy/robot_graduation（复件）/install/lib;/home/lcy/robot_graduation（复件）/ros_motion_planning/devel/lib;/home/lcy/pipeline-inspection-robot2024-10-12/src/wit_ros_ws/devel/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

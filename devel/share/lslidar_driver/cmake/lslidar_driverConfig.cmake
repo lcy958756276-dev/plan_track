@@ -67,14 +67,14 @@ set(lslidar_driver_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("TRUE" STREQUAL "TRUE")
-  set(lslidar_driver_SOURCE_PREFIX /home/lcy/robot_graduation/src/lsx10/lslidar_driver)
-  set(lslidar_driver_DEVEL_PREFIX /home/lcy/robot_graduation/devel)
+  set(lslidar_driver_SOURCE_PREFIX /home/lcy/robot_graduation（复件）/src/lsx10/lslidar_driver)
+  set(lslidar_driver_DEVEL_PREFIX /home/lcy/robot_graduation（复件）/devel)
   set(lslidar_driver_INSTALL_PREFIX "")
   set(lslidar_driver_PREFIX ${lslidar_driver_DEVEL_PREFIX})
 else()
   set(lslidar_driver_SOURCE_PREFIX "")
   set(lslidar_driver_DEVEL_PREFIX "")
-  set(lslidar_driver_INSTALL_PREFIX /home/lcy/robot_graduation/install)
+  set(lslidar_driver_INSTALL_PREFIX /home/lcy/robot_graduation（复件）/install)
   set(lslidar_driver_PREFIX ${lslidar_driver_INSTALL_PREFIX})
 endif()
 
@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(lslidar_driver_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "/home/lcy/robot_graduation/src/lsx10/lslidar_driver/include " STREQUAL " ")
+if(NOT "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_driver/include " STREQUAL " ")
   set(lslidar_driver_INCLUDE_DIRS "")
-  set(_include_dirs "/home/lcy/robot_graduation/src/lsx10/lslidar_driver/include")
+  set(_include_dirs "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_driver/include")
   if(NOT " " STREQUAL " ")
     set(_report "Check the issue tracker '' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT " " STREQUAL " ")
@@ -110,7 +110,7 @@ if(NOT "/home/lcy/robot_graduation/src/lsx10/lslidar_driver/include " STREQUAL "
         message(FATAL_ERROR "Project 'lslidar_driver' specifies '${idir}' as an include dir, which is not found.  It does not exist in '${include}'.  ${_report}")
       endif()
     else()
-      message(FATAL_ERROR "Project 'lslidar_driver' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/lcy/robot_graduation/src/lsx10/lslidar_driver/${idir}'.  ${_report}")
+      message(FATAL_ERROR "Project 'lslidar_driver' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_driver/${idir}'.  ${_report}")
     endif()
     _list_append_unique(lslidar_driver_INCLUDE_DIRS ${include})
   endforeach()
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/lcy/robot_graduation/devel/lib;/home/lcy/pipeline-inspection-robot2024-10-12/src/wit_ros_ws/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/lcy/robot_graduation（复件）/devel/lib;/home/lcy/robot_graduation（复件）/ros_motion_planning/devel/lib;/home/lcy/pipeline-inspection-robot2024-10-12/src/wit_ros_ws/devel/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

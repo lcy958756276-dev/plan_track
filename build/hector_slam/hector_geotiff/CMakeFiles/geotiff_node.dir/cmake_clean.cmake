@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/lib/hector_geotiff/geotiff_node"
-  "/home/lcy/robot_graduation/devel/lib/hector_geotiff/geotiff_node.pdb"
+  "/home/lcy/robot_graduation（复件）/devel/lib/hector_geotiff/geotiff_node"
+  "/home/lcy/robot_graduation（复件）/devel/lib/hector_geotiff/geotiff_node.pdb"
   "CMakeFiles/geotiff_node.dir/src/geotiff_node.cpp.o"
 )
 

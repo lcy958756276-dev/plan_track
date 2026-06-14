@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/lib/hector_trajectory_server/hector_trajectory_server"
-  "/home/lcy/robot_graduation/devel/lib/hector_trajectory_server/hector_trajectory_server.pdb"
+  "/home/lcy/robot_graduation（复件）/devel/lib/hector_trajectory_server/hector_trajectory_server"
+  "/home/lcy/robot_graduation（复件）/devel/lib/hector_trajectory_server/hector_trajectory_server.pdb"
   "CMakeFiles/hector_trajectory_server.dir/src/hector_trajectory_server.cpp.o"
 )
 

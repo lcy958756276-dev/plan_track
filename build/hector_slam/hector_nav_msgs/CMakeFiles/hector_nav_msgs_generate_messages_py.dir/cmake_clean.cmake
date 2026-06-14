@@ -1,10 +1,10 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/lib/python3/dist-packages/hector_nav_msgs/srv/_GetDistanceToObstacle.py"
-  "/home/lcy/robot_graduation/devel/lib/python3/dist-packages/hector_nav_msgs/srv/_GetNormal.py"
-  "/home/lcy/robot_graduation/devel/lib/python3/dist-packages/hector_nav_msgs/srv/_GetRecoveryInfo.py"
-  "/home/lcy/robot_graduation/devel/lib/python3/dist-packages/hector_nav_msgs/srv/_GetRobotTrajectory.py"
-  "/home/lcy/robot_graduation/devel/lib/python3/dist-packages/hector_nav_msgs/srv/_GetSearchPosition.py"
-  "/home/lcy/robot_graduation/devel/lib/python3/dist-packages/hector_nav_msgs/srv/__init__.py"
+  "/home/lcy/robot_graduation（复件）/devel/lib/python3/dist-packages/hector_nav_msgs/srv/_GetDistanceToObstacle.py"
+  "/home/lcy/robot_graduation（复件）/devel/lib/python3/dist-packages/hector_nav_msgs/srv/_GetNormal.py"
+  "/home/lcy/robot_graduation（复件）/devel/lib/python3/dist-packages/hector_nav_msgs/srv/_GetRecoveryInfo.py"
+  "/home/lcy/robot_graduation（复件）/devel/lib/python3/dist-packages/hector_nav_msgs/srv/_GetRobotTrajectory.py"
+  "/home/lcy/robot_graduation（复件）/devel/lib/python3/dist-packages/hector_nav_msgs/srv/_GetSearchPosition.py"
+  "/home/lcy/robot_graduation（复件）/devel/lib/python3/dist-packages/hector_nav_msgs/srv/__init__.py"
   "CMakeFiles/hector_nav_msgs_generate_messages_py"
 )
 

@@ -1,8 +1,8 @@
-# Install script for directory: /home/lcy/robot_graduation/src/map_saver
+# Install script for directory: /home/lcy/robot_graduation（复件）/src/map_saver
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/lcy/robot_graduation/install")
+  set(CMAKE_INSTALL_PREFIX "/home/lcy/robot_graduation（复件）/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,21 +38,21 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/lcy/robot_graduation/build/map_saver/catkin_generated/installspace/map_saver.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/lcy/robot_graduation（复件）/build/map_saver/catkin_generated/installspace/map_saver.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/map_saver/cmake" TYPE FILE FILES
-    "/home/lcy/robot_graduation/build/map_saver/catkin_generated/installspace/map_saverConfig.cmake"
-    "/home/lcy/robot_graduation/build/map_saver/catkin_generated/installspace/map_saverConfig-version.cmake"
+    "/home/lcy/robot_graduation（复件）/build/map_saver/catkin_generated/installspace/map_saverConfig.cmake"
+    "/home/lcy/robot_graduation（复件）/build/map_saver/catkin_generated/installspace/map_saverConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/map_saver" TYPE FILE FILES "/home/lcy/robot_graduation/src/map_saver/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/map_saver" TYPE FILE FILES "/home/lcy/robot_graduation（复件）/src/map_saver/package.xml")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/map_saver" TYPE PROGRAM FILES "/home/lcy/robot_graduation/build/map_saver/catkin_generated/installspace/hector_map_saver.py")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/map_saver" TYPE PROGRAM FILES "/home/lcy/robot_graduation（复件）/build/map_saver/catkin_generated/installspace/hector_map_saver.py")
 endif()
 

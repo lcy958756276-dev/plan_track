@@ -1,8 +1,8 @@
-# Install script for directory: /home/lcy/robot_graduation/src/hector_slam/hector_slam
+# Install script for directory: /home/lcy/robot_graduation（复件）/src/hector_slam/hector_slam
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/lcy/robot_graduation/install")
+  set(CMAKE_INSTALL_PREFIX "/home/lcy/robot_graduation（复件）/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,6 +38,6 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/hector_slam" TYPE FILE FILES "/home/lcy/robot_graduation/src/hector_slam/hector_slam/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/hector_slam" TYPE FILE FILES "/home/lcy/robot_graduation（复件）/src/hector_slam/hector_slam/package.xml")
 endif()
 

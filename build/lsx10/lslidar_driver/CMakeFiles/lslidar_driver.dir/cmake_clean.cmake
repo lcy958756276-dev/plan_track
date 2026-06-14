@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/lib/liblslidar_driver.pdb"
-  "/home/lcy/robot_graduation/devel/lib/liblslidar_driver.so"
+  "/home/lcy/robot_graduation（复件）/devel/lib/liblslidar_driver.pdb"
+  "/home/lcy/robot_graduation（复件）/devel/lib/liblslidar_driver.so"
   "CMakeFiles/lslidar_driver.dir/src/lslidar_driver.cc.o"
 )
 

@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/lib/libhector_geotiff_plugins.pdb"
-  "/home/lcy/robot_graduation/devel/lib/libhector_geotiff_plugins.so"
+  "/home/lcy/robot_graduation（复件）/devel/lib/libhector_geotiff_plugins.pdb"
+  "/home/lcy/robot_graduation（复件）/devel/lib/libhector_geotiff_plugins.so"
   "CMakeFiles/hector_geotiff_plugins.dir/src/trajectory_geotiff_plugin.cpp.o"
 )
 

@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/lib/hector_geotiff/geotiff_saver"
-  "/home/lcy/robot_graduation/devel/lib/hector_geotiff/geotiff_saver.pdb"
+  "/home/lcy/robot_graduation（复件）/devel/lib/hector_geotiff/geotiff_saver"
+  "/home/lcy/robot_graduation（复件）/devel/lib/hector_geotiff/geotiff_saver.pdb"
   "CMakeFiles/geotiff_saver.dir/src/geotiff_saver.cpp.o"
 )
 

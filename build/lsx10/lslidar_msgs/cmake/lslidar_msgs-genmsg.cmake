@@ -2,7 +2,7 @@
 
 message(STATUS "lslidar_msgs: 5 messages, 0 services")
 
-set(MSG_I_FLAGS "-Ilslidar_msgs:/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg;-Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg")
+set(MSG_I_FLAGS "-Ilslidar_msgs:/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg;-Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg")
 
 # Find all generators
 find_package(gencpp REQUIRED)
@@ -17,29 +17,29 @@ add_custom_target(lslidar_msgs_generate_messages ALL)
 
 
 
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg" NAME_WE)
 add_custom_target(_lslidar_msgs_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "lslidar_msgs" "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg" ""
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "lslidar_msgs" "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg" ""
 )
 
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg" NAME_WE)
 add_custom_target(_lslidar_msgs_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "lslidar_msgs" "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg" ""
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "lslidar_msgs" "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg" ""
 )
 
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarScan.msg" NAME_WE)
 add_custom_target(_lslidar_msgs_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "lslidar_msgs" "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg" "lslidar_msgs/LslidarPoint"
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "lslidar_msgs" "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarScan.msg" "lslidar_msgs/LslidarPoint"
 )
 
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg" NAME_WE)
 add_custom_target(_lslidar_msgs_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "lslidar_msgs" "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg" "lslidar_msgs/LslidarScan:lslidar_msgs/LslidarPoint:std_msgs/Header"
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "lslidar_msgs" "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg" "lslidar_msgs/LslidarPoint:std_msgs/Header:lslidar_msgs/LslidarScan"
 )
 
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg" NAME_WE)
 add_custom_target(_lslidar_msgs_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "lslidar_msgs" "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg" ""
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "lslidar_msgs" "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg" ""
 )
 
 #
@@ -49,31 +49,31 @@ add_custom_target(_lslidar_msgs_generate_messages_check_deps_${_filename}
 ### Section generating for lang: gencpp
 ### Generating Messages
 _generate_msg_cpp(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_cpp(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_cpp(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarScan.msg"
   "${MSG_I_FLAGS}"
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_cpp(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg"
   "${MSG_I_FLAGS}"
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg;/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg;/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarScan.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_cpp(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/lslidar_msgs
@@ -93,15 +93,15 @@ add_custom_target(lslidar_msgs_generate_messages_cpp
 add_dependencies(lslidar_msgs_generate_messages lslidar_msgs_generate_messages_cpp)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_cpp _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_cpp _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarScan.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_cpp _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_cpp _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_cpp _lslidar_msgs_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -114,31 +114,31 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS lslidar_msgs_generate_messages_cpp)
 ### Section generating for lang: geneus
 ### Generating Messages
 _generate_msg_eus(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_eus(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_eus(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarScan.msg"
   "${MSG_I_FLAGS}"
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_eus(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg"
   "${MSG_I_FLAGS}"
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg;/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg;/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarScan.msg"
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_eus(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/lslidar_msgs
@@ -158,15 +158,15 @@ add_custom_target(lslidar_msgs_generate_messages_eus
 add_dependencies(lslidar_msgs_generate_messages lslidar_msgs_generate_messages_eus)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_eus _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_eus _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarScan.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_eus _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_eus _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_eus _lslidar_msgs_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -179,31 +179,31 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS lslidar_msgs_generate_messages_eus)
 ### Section generating for lang: genlisp
 ### Generating Messages
 _generate_msg_lisp(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_lisp(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_lisp(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarScan.msg"
   "${MSG_I_FLAGS}"
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_lisp(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg"
   "${MSG_I_FLAGS}"
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg;/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg;/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarScan.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_lisp(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/lslidar_msgs
@@ -223,15 +223,15 @@ add_custom_target(lslidar_msgs_generate_messages_lisp
 add_dependencies(lslidar_msgs_generate_messages lslidar_msgs_generate_messages_lisp)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_lisp _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_lisp _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarScan.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_lisp _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_lisp _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_lisp _lslidar_msgs_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -244,31 +244,31 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS lslidar_msgs_generate_messages_lisp
 ### Section generating for lang: gennodejs
 ### Generating Messages
 _generate_msg_nodejs(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_nodejs(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_nodejs(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarScan.msg"
   "${MSG_I_FLAGS}"
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_nodejs(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg"
   "${MSG_I_FLAGS}"
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg;/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg;/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarScan.msg"
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_nodejs(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/lslidar_msgs
@@ -288,15 +288,15 @@ add_custom_target(lslidar_msgs_generate_messages_nodejs
 add_dependencies(lslidar_msgs_generate_messages lslidar_msgs_generate_messages_nodejs)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_nodejs _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_nodejs _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarScan.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_nodejs _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_nodejs _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_nodejs _lslidar_msgs_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -309,31 +309,31 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS lslidar_msgs_generate_messages_node
 ### Section generating for lang: genpy
 ### Generating Messages
 _generate_msg_py(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_py(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_py(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarScan.msg"
   "${MSG_I_FLAGS}"
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_py(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg"
   "${MSG_I_FLAGS}"
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg;/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg;/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarScan.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/lslidar_msgs
 )
 _generate_msg_py(lslidar_msgs
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/lslidar_msgs
@@ -353,15 +353,15 @@ add_custom_target(lslidar_msgs_generate_messages_py
 add_dependencies(lslidar_msgs_generate_messages lslidar_msgs_generate_messages_py)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_py _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_py _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarScan.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_py _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_py _lslidar_msgs_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg" NAME_WE)
+get_filename_component(_filename "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg" NAME_WE)
 add_dependencies(lslidar_msgs_generate_messages_py _lslidar_msgs_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility

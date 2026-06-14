@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/lib/hector_imu_attitude_to_tf/imu_attitude_to_tf_node"
-  "/home/lcy/robot_graduation/devel/lib/hector_imu_attitude_to_tf/imu_attitude_to_tf_node.pdb"
+  "/home/lcy/robot_graduation（复件）/devel/lib/hector_imu_attitude_to_tf/imu_attitude_to_tf_node"
+  "/home/lcy/robot_graduation（复件）/devel/lib/hector_imu_attitude_to_tf/imu_attitude_to_tf_node.pdb"
   "CMakeFiles/imu_attitude_to_tf_node.dir/src/imu_attitude_to_tf_node.cpp.o"
 )
 

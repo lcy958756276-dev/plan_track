@@ -1,9 +1,9 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/include/lslidar_msgs/LslidarDifop.h"
-  "/home/lcy/robot_graduation/devel/include/lslidar_msgs/LslidarPacket.h"
-  "/home/lcy/robot_graduation/devel/include/lslidar_msgs/LslidarPoint.h"
-  "/home/lcy/robot_graduation/devel/include/lslidar_msgs/LslidarScan.h"
-  "/home/lcy/robot_graduation/devel/include/lslidar_msgs/LslidarSweep.h"
+  "/home/lcy/robot_graduation（复件）/devel/include/lslidar_msgs/LslidarDifop.h"
+  "/home/lcy/robot_graduation（复件）/devel/include/lslidar_msgs/LslidarPacket.h"
+  "/home/lcy/robot_graduation（复件）/devel/include/lslidar_msgs/LslidarPoint.h"
+  "/home/lcy/robot_graduation（复件）/devel/include/lslidar_msgs/LslidarScan.h"
+  "/home/lcy/robot_graduation（复件）/devel/include/lslidar_msgs/LslidarSweep.h"
   "CMakeFiles/lslidar_msgs_generate_messages_cpp"
 )
 

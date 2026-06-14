@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lcy/robot_graduation/src
+CMAKE_SOURCE_DIR = /home/lcy/robot_graduation（复件）/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lcy/robot_graduation/build
+CMAKE_BINARY_DIR = /home/lcy/robot_graduation（复件）/build
 
 # Utility rule file for nodelet_topic_tools_gencfg.
 
@@ -63,10 +63,10 @@ lsx10/lslidar_driver/CMakeFiles/nodelet_topic_tools_gencfg.dir/build: nodelet_to
 .PHONY : lsx10/lslidar_driver/CMakeFiles/nodelet_topic_tools_gencfg.dir/build
 
 lsx10/lslidar_driver/CMakeFiles/nodelet_topic_tools_gencfg.dir/clean:
-	cd /home/lcy/robot_graduation/build/lsx10/lslidar_driver && $(CMAKE_COMMAND) -P CMakeFiles/nodelet_topic_tools_gencfg.dir/cmake_clean.cmake
+	cd /home/lcy/robot_graduation（复件）/build/lsx10/lslidar_driver && $(CMAKE_COMMAND) -P CMakeFiles/nodelet_topic_tools_gencfg.dir/cmake_clean.cmake
 .PHONY : lsx10/lslidar_driver/CMakeFiles/nodelet_topic_tools_gencfg.dir/clean
 
 lsx10/lslidar_driver/CMakeFiles/nodelet_topic_tools_gencfg.dir/depend:
-	cd /home/lcy/robot_graduation/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/lcy/robot_graduation/src /home/lcy/robot_graduation/src/lsx10/lslidar_driver /home/lcy/robot_graduation/build /home/lcy/robot_graduation/build/lsx10/lslidar_driver /home/lcy/robot_graduation/build/lsx10/lslidar_driver/CMakeFiles/nodelet_topic_tools_gencfg.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/lcy/robot_graduation（复件）/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/lcy/robot_graduation（复件）/src /home/lcy/robot_graduation（复件）/src/lsx10/lslidar_driver /home/lcy/robot_graduation（复件）/build /home/lcy/robot_graduation（复件）/build/lsx10/lslidar_driver /home/lcy/robot_graduation（复件）/build/lsx10/lslidar_driver/CMakeFiles/nodelet_topic_tools_gencfg.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : lsx10/lslidar_driver/CMakeFiles/nodelet_topic_tools_gencfg.dir/depend
 

@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/share/gennodejs/ros/hector_mapping/msg/HectorDebugInfo.js"
-  "/home/lcy/robot_graduation/devel/share/gennodejs/ros/hector_mapping/msg/HectorIterData.js"
-  "/home/lcy/robot_graduation/devel/share/gennodejs/ros/hector_mapping/srv/ResetMapping.js"
+  "/home/lcy/robot_graduation（复件）/devel/share/gennodejs/ros/hector_mapping/msg/HectorDebugInfo.js"
+  "/home/lcy/robot_graduation（复件）/devel/share/gennodejs/ros/hector_mapping/msg/HectorIterData.js"
+  "/home/lcy/robot_graduation（复件）/devel/share/gennodejs/ros/hector_mapping/srv/ResetMapping.js"
   "CMakeFiles/hector_mapping_generate_messages_nodejs"
 )
 

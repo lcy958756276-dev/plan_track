@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_driver/src/lslidar_driver_node.cc" "/home/lcy/robot_graduation/build/lsx10/lslidar_driver/CMakeFiles/lslidar_driver_node.dir/src/lslidar_driver_node.cc.o"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_driver/src/lslidar_driver_node.cc" "/home/lcy/robot_graduation（复件）/build/lsx10/lslidar_driver/CMakeFiles/lslidar_driver_node.dir/src/lslidar_driver_node.cc.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -17,8 +17,8 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "/home/lcy/robot_graduation/src/lsx10/lslidar_driver/include"
-  "/home/lcy/robot_graduation/devel/include"
+  "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_driver/include"
+  "/home/lcy/robot_graduation（复件）/devel/include"
   "/opt/ros/noetic/include"
   "/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp"
   "/usr/include/eigen3"
@@ -29,9 +29,9 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/lcy/robot_graduation/build/lsx10/lslidar_driver/CMakeFiles/lslidar_driver.dir/DependInfo.cmake"
-  "/home/lcy/robot_graduation/build/lsx10/lslidar_driver/CMakeFiles/lslidar_input.dir/DependInfo.cmake"
-  "/home/lcy/robot_graduation/build/lsx10/lslidar_driver/CMakeFiles/lslidar_serial.dir/DependInfo.cmake"
+  "/home/lcy/robot_graduation（复件）/build/lsx10/lslidar_driver/CMakeFiles/lslidar_driver.dir/DependInfo.cmake"
+  "/home/lcy/robot_graduation（复件）/build/lsx10/lslidar_driver/CMakeFiles/lslidar_input.dir/DependInfo.cmake"
+  "/home/lcy/robot_graduation（复件）/build/lsx10/lslidar_driver/CMakeFiles/lslidar_serial.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

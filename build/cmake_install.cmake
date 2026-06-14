@@ -1,8 +1,8 @@
-# Install script for directory: /home/lcy/robot_graduation/src
+# Install script for directory: /home/lcy/robot_graduation（复件）/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/lcy/robot_graduation/install")
+  set(CMAKE_INSTALL_PREFIX "/home/lcy/robot_graduation（复件）/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -49,122 +49,122 @@ endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/lcy/robot_graduation/install/_setup_util.py")
+   "/home/lcy/robot_graduation（复件）/install/_setup_util.py")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/lcy/robot_graduation/install" TYPE PROGRAM FILES "/home/lcy/robot_graduation/build/catkin_generated/installspace/_setup_util.py")
+file(INSTALL DESTINATION "/home/lcy/robot_graduation（复件）/install" TYPE PROGRAM FILES "/home/lcy/robot_graduation（复件）/build/catkin_generated/installspace/_setup_util.py")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/lcy/robot_graduation/install/env.sh")
+   "/home/lcy/robot_graduation（复件）/install/env.sh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/lcy/robot_graduation/install" TYPE PROGRAM FILES "/home/lcy/robot_graduation/build/catkin_generated/installspace/env.sh")
+file(INSTALL DESTINATION "/home/lcy/robot_graduation（复件）/install" TYPE PROGRAM FILES "/home/lcy/robot_graduation（复件）/build/catkin_generated/installspace/env.sh")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/lcy/robot_graduation/install/setup.bash;/home/lcy/robot_graduation/install/local_setup.bash")
+   "/home/lcy/robot_graduation（复件）/install/setup.bash;/home/lcy/robot_graduation（复件）/install/local_setup.bash")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/lcy/robot_graduation/install" TYPE FILE FILES
-    "/home/lcy/robot_graduation/build/catkin_generated/installspace/setup.bash"
-    "/home/lcy/robot_graduation/build/catkin_generated/installspace/local_setup.bash"
+file(INSTALL DESTINATION "/home/lcy/robot_graduation（复件）/install" TYPE FILE FILES
+    "/home/lcy/robot_graduation（复件）/build/catkin_generated/installspace/setup.bash"
+    "/home/lcy/robot_graduation（复件）/build/catkin_generated/installspace/local_setup.bash"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/lcy/robot_graduation/install/setup.sh;/home/lcy/robot_graduation/install/local_setup.sh")
+   "/home/lcy/robot_graduation（复件）/install/setup.sh;/home/lcy/robot_graduation（复件）/install/local_setup.sh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/lcy/robot_graduation/install" TYPE FILE FILES
-    "/home/lcy/robot_graduation/build/catkin_generated/installspace/setup.sh"
-    "/home/lcy/robot_graduation/build/catkin_generated/installspace/local_setup.sh"
+file(INSTALL DESTINATION "/home/lcy/robot_graduation（复件）/install" TYPE FILE FILES
+    "/home/lcy/robot_graduation（复件）/build/catkin_generated/installspace/setup.sh"
+    "/home/lcy/robot_graduation（复件）/build/catkin_generated/installspace/local_setup.sh"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/lcy/robot_graduation/install/setup.zsh;/home/lcy/robot_graduation/install/local_setup.zsh")
+   "/home/lcy/robot_graduation（复件）/install/setup.zsh;/home/lcy/robot_graduation（复件）/install/local_setup.zsh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/lcy/robot_graduation/install" TYPE FILE FILES
-    "/home/lcy/robot_graduation/build/catkin_generated/installspace/setup.zsh"
-    "/home/lcy/robot_graduation/build/catkin_generated/installspace/local_setup.zsh"
+file(INSTALL DESTINATION "/home/lcy/robot_graduation（复件）/install" TYPE FILE FILES
+    "/home/lcy/robot_graduation（复件）/build/catkin_generated/installspace/setup.zsh"
+    "/home/lcy/robot_graduation（复件）/build/catkin_generated/installspace/local_setup.zsh"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/lcy/robot_graduation/install/setup.fish;/home/lcy/robot_graduation/install/local_setup.fish")
+   "/home/lcy/robot_graduation（复件）/install/setup.fish;/home/lcy/robot_graduation（复件）/install/local_setup.fish")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/lcy/robot_graduation/install" TYPE FILE FILES
-    "/home/lcy/robot_graduation/build/catkin_generated/installspace/setup.fish"
-    "/home/lcy/robot_graduation/build/catkin_generated/installspace/local_setup.fish"
+file(INSTALL DESTINATION "/home/lcy/robot_graduation（复件）/install" TYPE FILE FILES
+    "/home/lcy/robot_graduation（复件）/build/catkin_generated/installspace/setup.fish"
+    "/home/lcy/robot_graduation（复件）/build/catkin_generated/installspace/local_setup.fish"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/lcy/robot_graduation/install/.rosinstall")
+   "/home/lcy/robot_graduation（复件）/install/.rosinstall")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/lcy/robot_graduation/install" TYPE FILE FILES "/home/lcy/robot_graduation/build/catkin_generated/installspace/.rosinstall")
+file(INSTALL DESTINATION "/home/lcy/robot_graduation（复件）/install" TYPE FILE FILES "/home/lcy/robot_graduation（复件）/build/catkin_generated/installspace/.rosinstall")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/lcy/robot_graduation/build/gtest/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/hector_slam/hector_geotiff_launch/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/hector_slam/hector_slam/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/hector_slam/hector_slam_launch/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/lsx10/lslidar/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/map_saver/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/lsx10/lslidar_msgs/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/hector_slam/hector_map_tools/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/hector_slam/hector_nav_msgs/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/hector_slam/hector_geotiff/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/hector_slam/hector_geotiff_plugins/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/hector_slam/hector_marker_drawing/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/navigation/map_server/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/hector_slam/hector_compressed_map_transport/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/hector_slam/hector_imu_attitude_to_tf/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/hector_slam/hector_imu_tools/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/hector_slam/hector_map_server/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/hector_slam/hector_trajectory_server/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/lsx10/lslidar_driver/cmake_install.cmake")
-  include("/home/lcy/robot_graduation/build/hector_slam/hector_mapping/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/gtest/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/hector_slam/hector_geotiff_launch/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/hector_slam/hector_slam/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/hector_slam/hector_slam_launch/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/lsx10/lslidar/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/map_saver/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/lsx10/lslidar_msgs/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/hector_slam/hector_map_tools/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/hector_slam/hector_nav_msgs/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/hector_slam/hector_geotiff/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/hector_slam/hector_geotiff_plugins/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/hector_slam/hector_marker_drawing/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/navigation/map_server/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/hector_slam/hector_compressed_map_transport/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/hector_slam/hector_imu_attitude_to_tf/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/hector_slam/hector_imu_tools/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/hector_slam/hector_map_server/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/hector_slam/hector_trajectory_server/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/lsx10/lslidar_driver/cmake_install.cmake")
+  include("/home/lcy/robot_graduation（复件）/build/hector_slam/hector_mapping/cmake_install.cmake")
 
 endif()
 
@@ -176,5 +176,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/lcy/robot_graduation/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/lcy/robot_graduation（复件）/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -6,5 +6,5 @@ CXX_FLAGS =
 
 CXX_DEFINES = -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_THREAD_DYN_LINK -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\"hector_mapping\"
 
-CXX_INCLUDES = -I/home/lcy/robot_graduation/devel/include -I/home/lcy/robot_graduation/src/hector_slam/hector_mapping/include/hector_slam_lib -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/usr/include/eigen3 
+CXX_INCLUDES = -I/home/lcy/robot_graduation（复件）/devel/include -I/home/lcy/robot_graduation（复件）/src/hector_slam/hector_mapping/include/hector_slam_lib -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/usr/include/eigen3 
 

@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/lib/libgeotiff_writer.pdb"
-  "/home/lcy/robot_graduation/devel/lib/libgeotiff_writer.so"
+  "/home/lcy/robot_graduation（复件）/devel/lib/libgeotiff_writer.pdb"
+  "/home/lcy/robot_graduation（复件）/devel/lib/libgeotiff_writer.so"
   "CMakeFiles/geotiff_writer.dir/src/geotiff_writer/geotiff_writer.cpp.o"
 )
 

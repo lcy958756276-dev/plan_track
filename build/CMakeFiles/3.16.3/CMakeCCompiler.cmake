@@ -72,5 +72,5 @@ endif()
 
 set(CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES "/usr/lib/gcc/aarch64-linux-gnu/9/include;/usr/local/include;/usr/include/aarch64-linux-gnu;/usr/include")
 set(CMAKE_C_IMPLICIT_LINK_LIBRARIES "gcc;gcc_s;c;gcc;gcc_s")
-set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES "/usr/lib/gcc/aarch64-linux-gnu/9;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib")
+set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES "/home/lcy/.conan/data/gflags/2.2.2/_/_/package/0bbdf01a2de39319f345d77184fc6dd2dd074592/lib;/home/lcy/.conan/data/glog/0.6.0/_/_/package/0c86a9905d0d18d33ee45f13b9dcafe6555fd5ca/lib;/home/lcy/.conan/data/ceres-solver/1.14.0/_/_/package/0f9698a1b33a9f1c0a2424ab168611b7b74df414/lib;/home/lcy/.conan/data/osqp/0.6.3/_/_/package/69f8db40e683434496cb58e4d4030f8979815e1a/lib;/home/lcy/.conan/data/libunwind/1.8.0/_/_/package/0c85726fc4c915811c7ddfb90f7ff8ab6b4096bc/lib;/usr/lib/gcc/aarch64-linux-gnu/9;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib")
 set(CMAKE_C_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")

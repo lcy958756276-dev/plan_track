@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/lib/map_server/map_server"
-  "/home/lcy/robot_graduation/devel/lib/map_server/map_server.pdb"
+  "/home/lcy/robot_graduation（复件）/devel/lib/map_server/map_server"
+  "/home/lcy/robot_graduation（复件）/devel/lib/map_server/map_server.pdb"
   "CMakeFiles/map_server.dir/src/main.cpp.o"
 )
 

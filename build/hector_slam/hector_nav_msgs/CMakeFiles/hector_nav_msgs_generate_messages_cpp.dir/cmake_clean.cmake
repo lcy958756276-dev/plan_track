@@ -1,9 +1,9 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/include/hector_nav_msgs/GetDistanceToObstacle.h"
-  "/home/lcy/robot_graduation/devel/include/hector_nav_msgs/GetNormal.h"
-  "/home/lcy/robot_graduation/devel/include/hector_nav_msgs/GetRecoveryInfo.h"
-  "/home/lcy/robot_graduation/devel/include/hector_nav_msgs/GetRobotTrajectory.h"
-  "/home/lcy/robot_graduation/devel/include/hector_nav_msgs/GetSearchPosition.h"
+  "/home/lcy/robot_graduation（复件）/devel/include/hector_nav_msgs/GetDistanceToObstacle.h"
+  "/home/lcy/robot_graduation（复件）/devel/include/hector_nav_msgs/GetNormal.h"
+  "/home/lcy/robot_graduation（复件）/devel/include/hector_nav_msgs/GetRecoveryInfo.h"
+  "/home/lcy/robot_graduation（复件）/devel/include/hector_nav_msgs/GetRobotTrajectory.h"
+  "/home/lcy/robot_graduation（复件）/devel/include/hector_nav_msgs/GetSearchPosition.h"
   "CMakeFiles/hector_nav_msgs_generate_messages_cpp"
 )
 

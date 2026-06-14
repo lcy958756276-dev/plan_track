@@ -1,9 +1,9 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/lib/python3/dist-packages/hector_mapping/msg/_HectorDebugInfo.py"
-  "/home/lcy/robot_graduation/devel/lib/python3/dist-packages/hector_mapping/msg/_HectorIterData.py"
-  "/home/lcy/robot_graduation/devel/lib/python3/dist-packages/hector_mapping/msg/__init__.py"
-  "/home/lcy/robot_graduation/devel/lib/python3/dist-packages/hector_mapping/srv/_ResetMapping.py"
-  "/home/lcy/robot_graduation/devel/lib/python3/dist-packages/hector_mapping/srv/__init__.py"
+  "/home/lcy/robot_graduation（复件）/devel/lib/python3/dist-packages/hector_mapping/msg/_HectorDebugInfo.py"
+  "/home/lcy/robot_graduation（复件）/devel/lib/python3/dist-packages/hector_mapping/msg/_HectorIterData.py"
+  "/home/lcy/robot_graduation（复件）/devel/lib/python3/dist-packages/hector_mapping/msg/__init__.py"
+  "/home/lcy/robot_graduation（复件）/devel/lib/python3/dist-packages/hector_mapping/srv/_ResetMapping.py"
+  "/home/lcy/robot_graduation（复件）/devel/lib/python3/dist-packages/hector_mapping/srv/__init__.py"
   "CMakeFiles/hector_mapping_generate_messages_py"
 )
 

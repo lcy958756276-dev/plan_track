@@ -1,9 +1,9 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/share/gennodejs/ros/hector_nav_msgs/srv/GetDistanceToObstacle.js"
-  "/home/lcy/robot_graduation/devel/share/gennodejs/ros/hector_nav_msgs/srv/GetNormal.js"
-  "/home/lcy/robot_graduation/devel/share/gennodejs/ros/hector_nav_msgs/srv/GetRecoveryInfo.js"
-  "/home/lcy/robot_graduation/devel/share/gennodejs/ros/hector_nav_msgs/srv/GetRobotTrajectory.js"
-  "/home/lcy/robot_graduation/devel/share/gennodejs/ros/hector_nav_msgs/srv/GetSearchPosition.js"
+  "/home/lcy/robot_graduation（复件）/devel/share/gennodejs/ros/hector_nav_msgs/srv/GetDistanceToObstacle.js"
+  "/home/lcy/robot_graduation（复件）/devel/share/gennodejs/ros/hector_nav_msgs/srv/GetNormal.js"
+  "/home/lcy/robot_graduation（复件）/devel/share/gennodejs/ros/hector_nav_msgs/srv/GetRecoveryInfo.js"
+  "/home/lcy/robot_graduation（复件）/devel/share/gennodejs/ros/hector_nav_msgs/srv/GetRobotTrajectory.js"
+  "/home/lcy/robot_graduation（复件）/devel/share/gennodejs/ros/hector_nav_msgs/srv/GetSearchPosition.js"
   "CMakeFiles/hector_nav_msgs_generate_messages_nodejs"
 )
 

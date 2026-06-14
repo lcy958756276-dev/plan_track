@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/lib/liblslidar_serial.pdb"
-  "/home/lcy/robot_graduation/devel/lib/liblslidar_serial.so"
+  "/home/lcy/robot_graduation（复件）/devel/lib/liblslidar_serial.pdb"
+  "/home/lcy/robot_graduation（复件）/devel/lib/liblslidar_serial.so"
   "CMakeFiles/lslidar_serial.dir/src/lsiosr.cpp.o"
 )
 

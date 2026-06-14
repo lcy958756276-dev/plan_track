@@ -1,9 +1,9 @@
 file(REMOVE_RECURSE
-  "/home/lcy/robot_graduation/devel/share/common-lisp/ros/lslidar_msgs/msg/LslidarDifop.lisp"
-  "/home/lcy/robot_graduation/devel/share/common-lisp/ros/lslidar_msgs/msg/LslidarPacket.lisp"
-  "/home/lcy/robot_graduation/devel/share/common-lisp/ros/lslidar_msgs/msg/LslidarPoint.lisp"
-  "/home/lcy/robot_graduation/devel/share/common-lisp/ros/lslidar_msgs/msg/LslidarScan.lisp"
-  "/home/lcy/robot_graduation/devel/share/common-lisp/ros/lslidar_msgs/msg/LslidarSweep.lisp"
+  "/home/lcy/robot_graduation（复件）/devel/share/common-lisp/ros/lslidar_msgs/msg/LslidarDifop.lisp"
+  "/home/lcy/robot_graduation（复件）/devel/share/common-lisp/ros/lslidar_msgs/msg/LslidarPacket.lisp"
+  "/home/lcy/robot_graduation（复件）/devel/share/common-lisp/ros/lslidar_msgs/msg/LslidarPoint.lisp"
+  "/home/lcy/robot_graduation（复件）/devel/share/common-lisp/ros/lslidar_msgs/msg/LslidarScan.lisp"
+  "/home/lcy/robot_graduation（复件）/devel/share/common-lisp/ros/lslidar_msgs/msg/LslidarSweep.lisp"
   "CMakeFiles/lslidar_msgs_generate_messages_lisp"
 )
 
