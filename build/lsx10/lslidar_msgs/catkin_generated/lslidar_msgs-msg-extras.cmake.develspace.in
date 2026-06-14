@@ -1,2 +1,0 @@
-set(lslidar_msgs_MESSAGE_FILES "/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPacket.msg;/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg;/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarScan.msg;/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg;/home/lcy/robot_graduation（复件）/src/lsx10/lslidar_msgs/msg/LslidarDifop.msg")
-set(lslidar_msgs_SERVICE_FILES "")
