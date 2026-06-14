@@ -148,8 +148,6 @@ class EncoderReader:
             history.pop(0)
         return True
 
-        return True
-
 
 if __name__ == "__main__":
     rospy.init_node("encoder_reader")
