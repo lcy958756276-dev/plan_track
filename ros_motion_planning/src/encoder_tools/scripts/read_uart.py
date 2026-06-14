@@ -16,7 +16,7 @@ class EncoderReader:
         self.ser = serial.Serial(
             port=port,
             baudrate=baud,
-            timeout=0.1
+            timeout=0.5
         )
         # 清空残留缓冲，防止开机时 MCU 已发送的数据污染首帧
         self.ser.reset_input_buffer()
