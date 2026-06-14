@@ -18,6 +18,8 @@ class EncoderReader:
             baudrate=baud,
             timeout=0.1
         )
+        # 清空残留缓冲，防止开机时 MCU 已发送的数据污染首帧
+        self.ser.reset_input_buffer()
 
         self.pub = rospy.Publisher(
             "/wheel_ticks",
