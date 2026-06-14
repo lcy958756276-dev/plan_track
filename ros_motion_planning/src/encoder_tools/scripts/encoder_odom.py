@@ -85,8 +85,8 @@ class EncoderOdometry:
         left_inc = ltick - self.last_ltick
         right_inc = rtick - self.last_rtick
 
-        # 防野值
-        if abs(left_inc) > 1000000 or abs(right_inc) > 1000000:
+        # 防野值（正常每周期 ~4000 跳，阈值设为 30000 ≈ 100m/s 的极端情形）
+        if abs(left_inc) > 30000 or abs(right_inc) > 30000:
             rospy.logwarn_throttle(5, f"编码器跳变过大: left_inc={left_inc}, right_inc={right_inc}，忽略")
             self.last_ltick = ltick
             self.last_rtick = rtick
@@ -100,8 +100,9 @@ class EncoderOdometry:
         dt = (now - self.last_time).to_sec()
         self.last_time = now
 
-        if dt <= 0 or dt > 1.0:
-            rospy.logwarn_throttle(3, f"时间间隔异常: dt={dt:.4f}s，跳过")
+        # read_uart 约 2Hz → dt≈0.5~1.8s，不跳过，直接用 dt 计算位置增量
+        if dt <= 0:
+            rospy.logwarn_throttle(3, f"时间异常: dt={dt:.4f}s，跳过")
             return
 
         # ── 核心计算 ──
