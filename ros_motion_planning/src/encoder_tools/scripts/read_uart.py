@@ -49,7 +49,7 @@ class EncoderReader:
                     rtick = int(match.group(2))
 
                     msg = Int64MultiArray()
-                    msg.data = [ltick, rtick]
+                    msg.data = [ltick, -rtick]
 
                     self.pub.publish(msg)
 
