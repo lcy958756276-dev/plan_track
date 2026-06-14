@@ -53,8 +53,7 @@ class EncoderReader:
 
                     self.pub.publish(msg)
 
-                    rospy.loginfo_throttle(
-                        1.0,
+                    rospy.loginfo(
                         f"ltick={ltick}, rtick={rtick}"
                     )
 
