@@ -16,7 +16,7 @@ class EncoderReader:
         self.ser = serial.Serial(
             port=port,
             baudrate=baud,
-            timeout=1
+            timeout=0.1
         )
 
         self.pub = rospy.Publisher(
