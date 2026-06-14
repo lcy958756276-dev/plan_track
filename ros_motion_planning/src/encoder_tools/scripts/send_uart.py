@@ -21,7 +21,7 @@ class KeyboardToSerial:
 
         try:
             self.ser = serial.Serial(port=port, baudrate=baud, timeout=0.1)
-            rospy.loginfo(f"串口已打开: {port} @ {baud}")
+            rospy.loginfo(f"串口已打开: {port} @ {baud}")#1
         except serial.SerialException as e:
             rospy.logerr(f"无法打开串口 {port}: {e}")
             sys.exit(1)
