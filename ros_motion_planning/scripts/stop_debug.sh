@@ -22,6 +22,7 @@ for pid_file in "$LOG_DIR"/.pid_*; do
     fi
 done
 
-# 额外清理可能残留的 ROS 节点
+# 额外清理可能残留的 ROS 节点和参数
 killall -q roslaunch gzserver gzclient 2>/dev/null
+killall -9 rosmaster 2>/dev/null
 echo "清理完成"
