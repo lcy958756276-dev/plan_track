@@ -18,7 +18,6 @@ class EncoderReader:
             baudrate=baud,
             timeout=0.5
         )
-        # 清空残留缓冲，防止开机时 MCU 已发送的数据污染首帧
         self.ser.reset_input_buffer()
 
         self.pub = rospy.Publisher(
@@ -32,12 +31,12 @@ class EncoderReader:
         )
 
         rospy.loginfo("Open serial: %s", port)
+        rospy.loginfo("调试模式：原始数据直接打印")
 
     def run(self):
         buf = b''
         while not rospy.is_shutdown():
             try:
-                # 逐字节读取，拼到遇到 \n 才处理一行
                 c = self.ser.read(1)
                 if not c:
                     continue
@@ -45,24 +44,10 @@ class EncoderReader:
                     line = buf.decode('utf-8', errors='ignore').strip()
                     buf = b''
 
-                    if not line:
-                        continue
+                    # 调试：直接打印每行原始数据
+                    if line:
+                        rospy.loginfo("RAW: %s", line)
 
-                    match = self.pattern.search(line)
-
-                    if match:
-                        ltick = int(match.group(1))
-                        rtick = int(match.group(2))
-
-                        msg = Int64MultiArray()
-                        msg.data = [ltick, -rtick]
-
-                        self.pub.publish(msg)
-
-                        rospy.loginfo_throttle(
-                            1.0,
-                            f"ltick={ltick}, rtick={rtick}"
-                        )
                 else:
                     buf += c
 
