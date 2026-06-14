@@ -30,8 +30,9 @@ class EncoderReader:
             r'ltick:(-?\d+)\s+rtick:(-?\d+)'
         )
 
+        self.discard_count = 0
+
         rospy.loginfo("Open serial: %s", port)
-        rospy.loginfo("调试模式：原始数据直接打印")
 
     def run(self):
         buf = b''
@@ -44,10 +45,41 @@ class EncoderReader:
                     line = buf.decode('utf-8', errors='ignore').strip()
                     buf = b''
 
-                    # 调试：直接打印每行原始数据
-                    if line:
-                        rospy.loginfo("RAW: %s", line)
+                    if not line:
+                        continue
 
+                    match = self.pattern.search(line)
+
+                    if match:
+                        ltick_str = match.group(1)
+                        rtick_str = match.group(2)
+
+                        # 确保提取到的 tick 值只有数字和负号
+                        if re.match(r'^-?\d+$', ltick_str) and re.match(r'^-?\d+$', rtick_str):
+                            ltick = int(ltick_str)
+                            rtick = int(rtick_str)
+
+                            msg = Int64MultiArray()
+                            msg.data = [ltick, -rtick]
+
+                            self.pub.publish(msg)
+
+                            rospy.loginfo_throttle(
+                                1.0,
+                                f"ltick={ltick}, rtick={rtick}"
+                            )
+                        else:
+                            self.discard_count += 1
+                            rospy.logwarn_throttle(
+                                5.0,
+                                f"tick 值含非法字符，丢弃: ltick_str={ltick_str}, rtick_str={rtick_str}"
+                            )
+                    else:
+                        self.discard_count += 1
+                        rospy.logwarn_throttle(
+                            5.0,
+                            f"无法匹配格式，丢弃: {line}"
+                        )
                 else:
                     buf += c
 
