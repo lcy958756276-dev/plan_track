@@ -4,6 +4,7 @@
 import rospy
 import serial
 import re
+import termios
 
 from std_msgs.msg import Int64MultiArray
 
@@ -18,6 +19,26 @@ class EncoderReader:
             baudrate=baud,
             timeout=0.5
         )
+
+        # ── 强制 raw 模式：关闭所有终端处理 ──
+        fd = self.ser.fileno()
+        tty = termios.tcgetattr(fd)
+        # 输入模式：关闭所有字符处理
+        tty[0] = 0  # iflag = 0
+        # 输出模式：关闭所有输出处理
+        tty[1] = 0  # oflag = 0
+        # 控制模式：8位、无校验、无流控
+        tty[2] = tty[2] & ~termios.PARENB   # 无校验
+        tty[2] = tty[2] & ~termios.CSTOPB   # 1位停止位
+        tty[2] = tty[2] & ~termios.CSIZE    # 清除数据位
+        tty[2] = tty[2] | termios.CS8       # 8位数据
+        tty[2] = tty[2] & ~termios.CRTSCTS  # 关闭硬件流控
+        tty[2] = tty[2] | termios.CREAD      # 使能接收
+        tty[2] = tty[2] & ~termios.HUPCL     # 关闭时不断开DTR
+        # 本地模式：关闭所有特殊字符处理
+        tty[3] = 0  # lflag = 0
+        termios.tcsetattr(fd, termios.TCSANOW, tty)
+
         self.ser.reset_input_buffer()
 
         self.pub = rospy.Publisher(
@@ -32,7 +53,7 @@ class EncoderReader:
 
         self.discard_count = 0
 
-        rospy.loginfo("Open serial: %s", port)
+        rospy.loginfo("Open serial: %s (raw mode)", port)
 
     def run(self):
         buf = b''
