@@ -43,6 +43,15 @@ echo "  robot_state_publisher PID=$PID_RSP"
 
 sleep 1
 
+# 静态 map → odom TF（让 RViz 在 map 固定帧下能看到小车移动）
+# 没有这条 TF → 链不完整，小车不会显示在地图上
+rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 map odom \
+    >> "$LOG_DIR/run.log" 2>&1 &
+PID_TF=$!
+echo "  static_transform_publisher (map→odom) PID=$PID_TF"
+
+sleep 1
+
 # RViz
 RVIZ_FILE="$WORKSPACE_DIR/src/sim_env/rviz/sim_env.rviz"
 rosrun rviz rviz -d "$RVIZ_FILE" \
@@ -71,6 +80,7 @@ echo "  PID=$PID_ODOM → log/encoder_odom.log"
 # 保存 PID
 echo "$PID_MAP"   > "$LOG_DIR/.pid_map"
 echo "$PID_RSP"   > "$LOG_DIR/.pid_rsp"
+echo "$PID_TF"    > "$LOG_DIR/.pid_tf"
 echo "$PID_RVIZ"   > "$LOG_DIR/.pid_rviz"
 echo "$PID_READ"   > "$LOG_DIR/.pid_read"
 echo "$PID_ODOM"   > "$LOG_DIR/.pid_odom"
