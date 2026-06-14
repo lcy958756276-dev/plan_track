@@ -43,7 +43,7 @@ class KeyboardToSerial:
                     continue
 
                 # 透传发送
-                cmd = ch + '\n'
+                cmd = ch + '\r\n'
                 self.ser.write(cmd.encode('utf-8'))
                 rospy.loginfo(f"发送: {ch}")
 
