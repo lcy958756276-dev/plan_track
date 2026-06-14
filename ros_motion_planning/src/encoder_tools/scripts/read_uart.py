@@ -110,21 +110,32 @@ class EncoderReader:
                 rospy.logwarn(str(e))
 
     def _check_sanity(self, ltick, rtick):
-        """检查 tick 值是否合理，过滤缺位错误"""
-        # ltick 检查（始终正数，正向递增，反向递减）
+        """检查 tick 值是否合理，过滤缺位和跳变"""
+        # ltick 检查（始终正数）
         if self.last_ltick is not None and self.last_ltick > 10000:
-            # 缺位错误：新值 < 旧值的 20%（至少缩小 5 倍）
+            # 缺位：新值 < 旧值的 20%
             if ltick < self.last_ltick * 0.2:
-                rospy.logwarn(f"ltick 缺位过滤: {self.last_ltick} → {ltick}")
+                rospy.logwarn(f"ltick 缺位过滤(过小): {self.last_ltick} → {ltick}")
+                return False
+            # 串口噪声加位：新值 > 旧值的 5 倍
+            if ltick > self.last_ltick * 5:
+                rospy.logwarn(f"ltick 跳变过滤(过大): {self.last_ltick} → {ltick}")
                 return False
 
-        # rtick 检查（正向时负数且绝对值递增，反向时绝对值递减）
-        # 缺位错误：绝对值缩小到 20% 以下（如 -203098 → -20309）
-        # 注：不过滤符号翻转，因为倒车过零点是正常现象
+        # rtick 检查
         if self.last_rtick is not None and abs(self.last_rtick) > 10000:
-            if abs(rtick) < abs(self.last_rtick) * 0.2:
-                rospy.logwarn(f"rtick 缺位过滤: {self.last_rtick} → {rtick}")
+            last_abs = abs(self.last_rtick)
+            curr_abs = abs(rtick)
+            # 缺位：绝对值缩小到 20% 以下
+            if curr_abs < last_abs * 0.2:
+                rospy.logwarn(f"rtick 缺位过滤(过小): {self.last_rtick} → {rtick}")
                 return False
+            # 加位：绝对值超过 5 倍
+            if curr_abs > last_abs * 5:
+                rospy.logwarn(f"rtick 跳变过滤(过大): {self.last_rtick} → {rtick}")
+                return False
+
+        return True
 
         return True
 
