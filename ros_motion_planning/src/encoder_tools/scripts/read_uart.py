@@ -34,31 +34,37 @@ class EncoderReader:
         rospy.loginfo("Open serial: %s", port)
 
     def run(self):
+        buf = b''
         while not rospy.is_shutdown():
             try:
-                line = self.ser.readline().decode(
-                    'utf-8',
-                    errors='ignore'
-                ).strip()
-
-                if not line:
+                # 逐字节读取，拼到遇到 \n 才处理一行
+                c = self.ser.read(1)
+                if not c:
                     continue
+                if c == b'\n':
+                    line = buf.decode('utf-8', errors='ignore').strip()
+                    buf = b''
 
-                match = self.pattern.search(line)
+                    if not line:
+                        continue
 
-                if match:
-                    ltick = int(match.group(1))
-                    rtick = int(match.group(2))
+                    match = self.pattern.search(line)
 
-                    msg = Int64MultiArray()
-                    msg.data = [ltick, -rtick]
+                    if match:
+                        ltick = int(match.group(1))
+                        rtick = int(match.group(2))
 
-                    self.pub.publish(msg)
+                        msg = Int64MultiArray()
+                        msg.data = [ltick, -rtick]
 
-                    rospy.loginfo_throttle(
-                        1.0,
-                        f"ltick={ltick}, rtick={rtick}"
-                    )
+                        self.pub.publish(msg)
+
+                        rospy.loginfo_throttle(
+                            1.0,
+                            f"ltick={ltick}, rtick={rtick}"
+                        )
+                else:
+                    buf += c
 
             except Exception as e:
                 rospy.logwarn(str(e))
