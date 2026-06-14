@@ -47,9 +47,12 @@ class EncoderReader:
             r'ltick:(-?\d+)\s+rtick:(-?\d+)'
         )
 
-        # 上一帧的数值，用于缺位检测
+        # 上一帧的数值，用于斜率检测
         self.last_ltick = None
         self.last_rtick = None
+        # 历史 delta 记录，用于自适应阈值
+        self.delta_hist_ltick = []
+        self.delta_hist_rtick = []
 
         rospy.loginfo("Open serial: %s (raw mode)", port)
 
@@ -110,31 +113,39 @@ class EncoderReader:
                 rospy.logwarn(str(e))
 
     def _check_sanity(self, ltick, rtick):
-        """检查 tick 值是否合理，过滤缺位和跳变"""
-        # ltick 检查（始终正数）
-        if self.last_ltick is not None and self.last_ltick > 10000:
-            # 缺位：新值 < 旧值的 20%
-            if ltick < self.last_ltick * 0.2:
-                rospy.logwarn(f"ltick 缺位过滤(过小): {self.last_ltick} → {ltick}")
-                return False
-            # 串口噪声加位：新值 > 旧值的 5 倍
-            if ltick > self.last_ltick * 5:
-                rospy.logwarn(f"ltick 跳变过滤(过大): {self.last_ltick} → {ltick}")
+        """自适应斜率阈值：检查每帧变化量是否合理"""
+        if self.last_ltick is not None:
+            delta = ltick - self.last_ltick
+            if not self._delta_ok(delta, self.delta_hist_ltick, "ltick"):
                 return False
 
-        # rtick 检查
-        if self.last_rtick is not None and abs(self.last_rtick) > 10000:
-            last_abs = abs(self.last_rtick)
-            curr_abs = abs(rtick)
-            # 缺位：绝对值缩小到 20% 以下
-            if curr_abs < last_abs * 0.2:
-                rospy.logwarn(f"rtick 缺位过滤(过小): {self.last_rtick} → {rtick}")
-                return False
-            # 加位：绝对值超过 5 倍
-            if curr_abs > last_abs * 5:
-                rospy.logwarn(f"rtick 跳变过滤(过大): {self.last_rtick} → {rtick}")
+        if self.last_rtick is not None:
+            delta = rtick - self.last_rtick
+            if not self._delta_ok(delta, self.delta_hist_rtick, "rtick"):
                 return False
 
+        return True
+
+    def _delta_ok(self, delta, history, name):
+        """自适应检查 delta 是否合理"""
+        # 历史足够 → 用平均值的倍数作为阈值
+        if len(history) >= 3:
+            avg = sum(history) / len(history)
+            # 阈值 = 平均 delta 的 8 倍，保底 30000
+            max_allowed = max(abs(avg) * 8, 30000)
+            if abs(delta) > max_allowed:
+                rospy.logwarn(f"{name} 斜率异常: {delta} (平均 delta={avg:.0f}, 阈值={max_allowed:.0f})")
+                return False
+        else:
+            # 历史不足时用宽松固定阈值
+            if abs(delta) > 100000:
+                rospy.logwarn(f"{name} 首帧斜率异常: {delta}")
+                return False
+
+        # 检验通过，记录 delta 用于后续自适应
+        history.append(delta)
+        if len(history) > 10:
+            history.pop(0)
         return True
 
         return True
