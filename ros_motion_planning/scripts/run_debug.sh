@@ -15,9 +15,10 @@ LOG_DIR="$WORKSPACE_DIR/log"
 source "$WORKSPACE_DIR/devel/setup.bash"
 mkdir -p "$LOG_DIR"
 
-# 强制清理残留的 Gazebo 进程（避免新旧 gzserver 冲突导致模型丢失）
-killall -9 gzserver gzclient 2>/dev/null
-sleep 1
+# 强制清理残留的 Gazebo 进程 + ROS master
+# 避免新旧 gzserver 节点名冲突导致 ROS 服务无法加载
+killall -9 gzserver gzclient rosmaster 2>/dev/null
+sleep 2
 
 # 清理旧日志
 rm -f "$LOG_DIR"/*.log
