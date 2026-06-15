@@ -38,7 +38,7 @@ rm -f "$LOG_DIR"/*.log
 echo "=== 启动时间: $(date) ===" > "$LOG_DIR/run.log"
 
 # ── 1. 生成动态启动文件 ──
-echo "[1/8] 生成动态启动文件..."
+echo "[1/9] 生成动态启动文件..."
 echo "[$(date +%H:%M:%S)] [1] main_generate.py start" >> "$LOG_DIR/run.log"
 python "$WORKSPACE_DIR/src/plugins/dynamic_xml_config/main_generate.py" user_config.yaml \
     >> "$LOG_DIR/run.log" 2>&1
@@ -46,13 +46,13 @@ echo "[$(date +%H:%M:%S)] [1] main_generate.py done" >> "$LOG_DIR/run.log"
 
 # ── 标志位：告诉 Gazebo 不发布 odom TF（物理车模式）──
 # main.sh 没有此文件 → Gazebo 正常行为
-echo "[2/8] 设置 use_encoder_odom 标志位..."
+echo "[2/9] 设置 use_encoder_odom 标志位..."
 echo "[$(date +%H:%M:%S)] [2] use_encoder_odom flag set" >> "$LOG_DIR/run.log"
 touch /tmp/.use_encoder_odom
 echo "  /tmp/.use_encoder_odom → Gazebo diff_drive 将跳过 odom TF"
 
 # ── 3. 加载机器人模型 ──
-echo "[3/8] 加载 robot_description + 启动核心节点 ..."
+echo "[3/9] 加载 robot_description + 启动核心节点 ..."
 echo "[$(date +%H:%M:%S)] [3] loading robot_description" >> "$LOG_DIR/run.log"
 
 # 从 xacro 加载 robot description（传 use_encoder_odom:=true）
@@ -87,7 +87,7 @@ echo "  static_transform_publisher (map→odom) PID=$PID_TF"
 sleep 1
 
 # ── 4. 启动 Gazebo（仓库环境）──
-echo "[4/8] 启动 Gazebo ..."
+echo "[4/9] 启动 Gazebo ..."
 echo "[$(date +%H:%M:%S)] [4] starting gzserver" >> "$LOG_DIR/run.log"
 WORLD_FILE="$WORKSPACE_DIR/src/sim_env/worlds/warehouse.world"
 
@@ -161,7 +161,7 @@ rosparam set /use_sim_time false
 echo "  /use_sim_time → false（编码器/里程计使用真实时钟）"
 
 # ── 5. 启动编码器读取 ──
-echo "[5/8] 启动 read_uart.py (编码器读取)..."
+echo "[5/9] 启动 read_uart.py (编码器读取)..."
 rosrun encoder_tools read_uart.py \
     > "$LOG_DIR/read_uart.log" 2>&1 &
 PID_READ=$!
@@ -170,7 +170,7 @@ echo "  PID=$PID_READ → log/read_uart.log"
 sleep 2
 
 # ── 6. 启动里程计 ──
-echo "[6/8] 启动 encoder_odom.py (里程计)..."
+echo "[6/9] 启动 encoder_odom.py (里程计)..."
 rosrun encoder_tools encoder_odom.py \
     > "$LOG_DIR/encoder_odom.log" 2>&1 &
 PID_ODOM=$!
@@ -179,7 +179,7 @@ echo "  PID=$PID_ODOM → log/encoder_odom.log"
 sleep 1
 
 # ── 7. 启动 Gazebo 同步桥接 ──
-echo "[7/8] 启动 gazebo_sync.py (里程计→Gazebo 同步 + LaserScan 时间戳修复)..."
+echo "[7/9] 启动 gazebo_sync.py (里程计→Gazebo 同步 + LaserScan 时间戳修复)..."
 rosrun encoder_tools gazebo_sync.py \
     > "$LOG_DIR/gazebo_sync.log" 2>&1 &
 PID_SYNC=$!
@@ -188,7 +188,7 @@ echo "  PID=$PID_SYNC → log/gazebo_sync.log"
 sleep 2
 
 # ── 8. 启动 move_base（全局规划器）──
-echo "[8/8] 启动 move_base（A* 全局规划器，仅规划不跟踪）..."
+echo "[8/9] 启动 move_base（A* 全局规划器，仅规划不跟踪）..."
 echo "[$(date +%H:%M:%S)] [8] generating move_base launch file" >> "$LOG_DIR/run.log"
 
 SIM_ENV_DIR="$WORKSPACE_DIR/src/sim_env"
@@ -201,8 +201,8 @@ cat > "$MB_LAUNCH" << MBEOF
     <param name="base_global_planner" value="path_planner/PathPlanner"/>
     <param name="PathPlanner/planner_name" value="astar"/>
 
-    <!-- 局部规划器（static = 零速度，用于调试只规划不跟踪） -->
-    <param name="base_local_planner" value="static_controller/StaticController"/>
+    <!-- 局部规划器（MPC = 模型预测控制，跟踪路径） -->
+    <param name="base_local_planner" value="mpc_controller/MPCController"/>
 
     <!-- move_base 通用参数 -->
     <rosparam command="load" file="$SIM_ENV_DIR/config/move_base_params.yaml"/>
@@ -240,7 +240,7 @@ roslaunch "$MB_LAUNCH" \
 PID_MB=$!
 echo "  move_base PID=$PID_MB (roslaunch)"
 echo "  全局规划器: A* (path_planner/PathPlanner)"
-echo "  局部规划器: static (零速度，不跟踪路径)"
+echo "  局部规划器: MPC (模型预测控制，跟踪全局路径)"
 echo "  RViz 中点击 2D Nav Goal → 全局路径将显示在地图上"
 
 sleep 3
@@ -252,6 +252,16 @@ rostopic list 2>/dev/null | grep -i move 2>&1 >> "$LOG_DIR/run.log" || echo "  [
 echo "  [诊断] rosservice list | grep move_base:" >> "$LOG_DIR/run.log"
 rosservice list 2>/dev/null | grep -i move 2>&1 >> "$LOG_DIR/run.log" || echo "  [诊断] 无 move_base 服务" >> "$LOG_DIR/run.log"
 
+# ── 9. 启动 /cmd_vel → 串口桥接 ──
+echo "[9/9] 启动 send_mpc_speed.py (MPC 速度→串口桥接)..."
+rosrun encoder_tools send_mpc_speed.py \
+    > "$LOG_DIR/send_mpc_speed.log" 2>&1 &
+PID_MPC_SPEED=$!
+echo "  PID=$PID_MPC_SPEED → log/send_mpc_speed.log"
+echo "  订阅 /cmd_vel v/ω → 差速模型 → 串口发送左右轮速度"
+
+sleep 1
+
 # 保存 PID
 echo "$PID_MAP"      > "$LOG_DIR/.pid_map"
 echo "$PID_RSP"      > "$LOG_DIR/.pid_rsp"
@@ -262,14 +272,16 @@ echo "$PID_RVIZ"     > "$LOG_DIR/.pid_rviz"
 echo "$PID_READ"     > "$LOG_DIR/.pid_read"
 echo "$PID_ODOM"     > "$LOG_DIR/.pid_odom"
 echo "$PID_SYNC"     > "$LOG_DIR/.pid_sync"
-echo "$PID_MB"       > "$LOG_DIR/.pid_move_base"
+echo "$PID_MB"        > "$LOG_DIR/.pid_move_base"
+echo "$PID_MPC_SPEED" > "$LOG_DIR/.pid_send_mpc_speed"
 
 echo ""
 echo "========================================"
 echo "  全部已启动，日志文件在 log/ 目录下"
 echo ""
 echo "  ✅ Gazebo + RViz + 实物编码器同步运行"
-echo "  ✅ 2D Nav Goal → A* 全局路径规划（不跟踪）"
+echo "  ✅ 2D Nav Goal → A* 全局规划 → MPC 路径跟踪"
+echo "  ✅ send_mpc_speed 已将 v/ω 通过串口发送到物理车"
 echo "========================================"
 echo ""
 echo "  查看里程计日志:  tail -f $LOG_DIR/encoder_odom.log"
