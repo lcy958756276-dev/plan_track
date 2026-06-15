@@ -1,9 +1,21 @@
-=== 启动时间: 2026年 06月 15日 星期一 16:27:17 CST ===
-[33m[WARN] [1781512046.819124232]: Shutdown request received.[0m
-[33m[WARN] [1781512046.822230550]: Reason given for shutdown: [[/gazebo] Reason: new node registered with same name][0m
-[33m[WARN] [1781512046.902465865]: Shutdown request received.[0m
-[33m[WARN] [1781512046.902805983]: Reason given for shutdown: [[/gazebo] Reason: new node registered with same name][0m
-
-libcurl: (35) OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to fuel.gazebosim.org:443 
-
-libcurl: (35) OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to fuel.ignitionrobotics.org:443 
+=== 启动时间: 2026年 06月 15日 星期一 16:31:27 CST ===
+[31m[ERROR] [1781512290.027188719]: [registerPublisher] Failed to contact master at [localhost:11311].  Retrying...[0m
+[31m[ERROR] [1781512290.999071987]: [registerPublisher] Failed to contact master at [localhost:11311].  Retrying...[0m
+[31m[ERROR] [1781512292.006849272]: [registerPublisher] Failed to contact master at [localhost:11311].  Retrying...[0m
+[31m[ERROR] [1781512292.511107445]: Could not find parameter robot_description on parameter server[0m
+[0m[INFO] [1781512292.505806167]: Connected to master at [localhost:11311][0m
+[33m[WARN] [1781512297.560156449]: Shutdown request received.[0m
+[33m[WARN] [1781512297.562416591]: Reason given for shutdown: [[/gazebo] Reason: new node registered with same name][0m
+[33m[WARN] [1781512297.652495274]: Shutdown request received.[0m
+[33m[WARN] [1781512297.652832746]: Reason given for shutdown: [[/gazebo] Reason: new node registered with same name][0m
+[INFO] [1781512298.953020, 0.000000]: Loading model XML from ros parameter robot_description
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/gazebo_ros/spawn_model", line 239, in <module>
+    exit_code = sm.run()
+  File "/opt/ros/noetic/lib/gazebo_ros/spawn_model", line 132, in run
+    model_xml = rospy.get_param(self.args.param)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/client.py", line 467, in get_param
+    return _param_server[param_name] #MasterProxy does all the magic for us
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/msproxy.py", line 123, in __getitem__
+    raise KeyError(key)
+KeyError: 'robot_description'
