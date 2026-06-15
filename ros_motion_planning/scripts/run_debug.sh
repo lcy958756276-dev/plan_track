@@ -129,6 +129,15 @@ rosrun encoder_tools encoder_odom.py \
 PID_ODOM=$!
 echo "  PID=$PID_ODOM → log/encoder_odom.log"
 
+sleep 1
+
+# ── 7. 启动 Gazebo 同步桥接 ──
+echo "[7/7] 启动 gazebo_sync.py (里程计→Gazebo 同步 + LaserScan 时间戳修复)..."
+rosrun encoder_tools gazebo_sync.py \
+    > "$LOG_DIR/gazebo_sync.log" 2>&1 &
+PID_SYNC=$!
+echo "  PID=$PID_SYNC → log/gazebo_sync.log"
+
 # 保存 PID
 echo "$PID_MAP"      > "$LOG_DIR/.pid_map"
 echo "$PID_RSP"      > "$LOG_DIR/.pid_rsp"
@@ -138,6 +147,7 @@ echo "$PID_GZCLIENT" > "$LOG_DIR/.pid_gzclient"
 echo "$PID_RVIZ"     > "$LOG_DIR/.pid_rviz"
 echo "$PID_READ"     > "$LOG_DIR/.pid_read"
 echo "$PID_ODOM"     > "$LOG_DIR/.pid_odom"
+echo "$PID_SYNC"     > "$LOG_DIR/.pid_sync"
 
 echo ""
 echo "========================================"
