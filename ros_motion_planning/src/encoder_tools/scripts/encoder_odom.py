@@ -157,9 +157,12 @@ class EncoderOdometry:
 
     def timer_cb(self, event):
         """10Hz 定时回调：重新发布最新的 /odom + TF，使 RViz 显示平滑"""
-        if not self.have_pose:
-            return
         now = rospy.Time.now()
+        if not self.have_pose:
+            # 即使没有编码器数据，也发布零位姿 TF，让 TF 树完整
+            #（move_base 启动时需要 map→odom→base_footprint 可用）
+            self._pub_zero_tf(now)
+            return
         self._pub_odom(now, self.latest_v, self.latest_omega)
         self._pub_tf(now)
 
@@ -197,6 +200,23 @@ class EncoderOdometry:
         t.transform.rotation.y = q[1]
         t.transform.rotation.z = q[2]
         t.transform.rotation.w = q[3]
+        self.tf_br.sendTransform(t)
+
+    def _pub_zero_tf(self, stamp):
+        """发布零位姿 /odom + TF（无编码器数据时保持 TF 树完整）"""
+        # 发布零 odom
+        odom = Odometry()
+        odom.header.stamp = stamp
+        odom.header.frame_id = "odom"
+        odom.child_frame_id = "base_footprint"
+        odom.pose.pose.orientation.w = 1.0
+        self.odom_pub.publish(odom)
+        # 发布零 TF
+        t = TransformStamped()
+        t.header.stamp = stamp
+        t.header.frame_id = "odom"
+        t.child_frame_id = "base_footprint"
+        t.transform.rotation.w = 1.0
         self.tf_br.sendTransform(t)
 
 
