@@ -81,11 +81,12 @@ WORLD_FILE="$WORKSPACE_DIR/src/sim_env/worlds/warehouse.world"
 # 空字符串在某些版本无效，设为不可达地址让连接立即失败
 export GAZEBO_MODEL_DATABASE_URI="http://127.0.0.1:1/"
 
-# 先启动 Gazebo 服务器
-rosrun gazebo_ros gzserver "$WORLD_FILE" \
+# 用自定义节点名避免与残留 /gazebo 节点冲突（服务路径仍为 /gazebo/*）
+GZ_NAME="__name:=gz_debug"
+rosrun gazebo_ros gzserver "$WORLD_FILE" "$GZ_NAME" \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_GZSERVER=$!
-echo "  gazebo server PID=$PID_GZSERVER"
+echo "  gazebo server PID=$PID_GZSERVER (节点名: gz_debug)"
 
 sleep 3
 
