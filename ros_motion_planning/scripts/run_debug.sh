@@ -77,6 +77,9 @@ sleep 1
 echo "[4/6] 启动 Gazebo ..."
 WORLD_FILE="$WORKSPACE_DIR/src/sim_env/worlds/warehouse.world"
 
+# 禁用模型数据库下载（防 libcurl 超时卡死 Gazebo ROS 插件初始化）
+export GAZEBO_MODEL_DATABASE_URI=""
+
 # 先启动 Gazebo 服务器
 rosrun gazebo_ros gzserver "$WORLD_FILE" \
     >> "$LOG_DIR/run.log" 2>&1 &
