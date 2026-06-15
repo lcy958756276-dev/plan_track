@@ -106,6 +106,13 @@ echo "  rviz PID=$PID_RVIZ"
 
 sleep 2
 
+# ── 恢复 ROS 时间为真实时间 ──
+# Gazebo 的 gzserver 内部会设 /use_sim_time=true，导致
+# rospy.Time.now() 返回仿真时间（卡在 0），encoder_odom 无法计算 dt。
+# 这里显式改回 false，让 read_uart / encoder_odom 用真实时钟。
+rosparam set /use_sim_time false
+echo "  /use_sim_time → false（编码器/里程计使用真实时钟）"
+
 # ── 5. 启动编码器读取 ──
 echo "[5/6] 启动 read_uart.py (编码器读取)..."
 rosrun encoder_tools read_uart.py \
