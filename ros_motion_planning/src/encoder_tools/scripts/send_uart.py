@@ -4,6 +4,9 @@
 send_uart.py
 键盘输入 A/B/C → 串口透传给电机驱动板
 
+注意: 波特率必须与 read_uart.py 一致（默认 57600），
+      否则打开串口时会冲掉 read_uart 的配置，导致数据中断。
+
 用法:
     rosrun encoder_tools send_uart.py
     # 或直接 python send_uart.py
@@ -11,20 +14,35 @@ send_uart.py
 
 import sys
 import serial
+import termios
 import rospy
 
 
 class KeyboardToSerial:
     def __init__(self):
         port = rospy.get_param("~port", "/dev/ttyTHS0")
-        baud = rospy.get_param("~baud", 115200)
+        # 必须与 read_uart.py 一致，否则会冲掉对方的串口配置
+        baud = rospy.get_param("~baud", 57600)
 
         try:
             self.ser = serial.Serial(port=port, baudrate=baud, timeout=0.1)
-            rospy.loginfo(f"串口已打开: {port} @ {baud}")#1
-        except serial.SerialException as e:
-            rospy.logerr(f"无法打开串口 {port}: {e}")
-            sys.exit(1)
+
+            # 同样应用 raw termios 模式，避免破坏 read_uart 的配置
+            fd = self.ser.fileno()
+            tty = termios.tcgetattr(fd)
+            tty[0] = 0  # iflag = 0
+            tty[1] = 0  # oflag = 0
+            tty[2] = tty[2] & ~termios.PARENB
+            tty[2] = tty[2] & ~termios.CSTOPB
+            tty[2] = tty[2] & ~termios.CSIZE
+            tty[2] = tty[2] | termios.CS8
+            tty[2] = tty[2] & ~termios.CRTSCTS
+            tty[2] = tty[2] | termios.CREAD
+            tty[2] = tty[2] & ~termios.HUPCL
+            tty[3] = 0  # lflag = 0
+            termios.tcsetattr(fd, termios.TCSANOW, tty)
+
+            rospy.loginfo(f"串口已打开: {port} @ {baud} (raw mode)")
 
     def run(self):
         rospy.loginfo("等待键盘输入: A / B / C (q 退出)")
