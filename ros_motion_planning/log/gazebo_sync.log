@@ -1,24 +1,32 @@
-[WARN] [1781512993.217519]:   /gazebo/set_model_state 不可达，改用 /cmd_vel
-[INFO] [1781512993.234868]: gazebo_sync 已启动
-[INFO] [1781512993.237689]:   策略: /cmd_vel（速度驱动，无服务可用）
-[INFO] [1781512993.240632]:   订阅 /scan → 重发到 /scan_fixed
-[INFO] [1781512993.278899]: cmd_vel: v=0.000 ω=0.000
-[INFO] [1781512995.328559]: cmd_vel: v=0.000 ω=0.000
-[INFO] [1781512997.378515]: cmd_vel: v=0.000 ω=0.000
-[INFO] [1781512999.428838]: cmd_vel: v=0.017 ω=-0.009
-[INFO] [1781513001.478538]: cmd_vel: v=0.018 ω=-0.008
-[INFO] [1781513003.528681]: cmd_vel: v=0.018 ω=-0.007
-[INFO] [1781513005.578501]: cmd_vel: v=0.018 ω=-0.008
-[INFO] [1781513007.628420]: cmd_vel: v=0.018 ω=-0.008
-[INFO] [1781513009.628495]: cmd_vel: v=0.018 ω=-0.008
-[INFO] [1781513011.628532]: cmd_vel: v=0.045 ω=0.107
-[INFO] [1781513013.628544]: cmd_vel: v=0.018 ω=-0.008
-[INFO] [1781513015.678488]: cmd_vel: v=0.017 ω=-0.006
-[INFO] [1781513017.678677]: cmd_vel: v=0.018 ω=-0.008
-[INFO] [1781513019.728813]: cmd_vel: v=0.018 ω=-0.008
-[INFO] [1781513021.728655]: cmd_vel: v=0.018 ω=-0.007
-[INFO] [1781513023.778471]: cmd_vel: v=0.018 ω=-0.007
-[INFO] [1781513025.779188]: cmd_vel: v=0.017 ω=-0.006
-[INFO] [1781513027.828600]: cmd_vel: v=0.016 ω=-0.006
-[INFO] [1781513029.828594]: cmd_vel: v=0.018 ω=-0.009
-[INFO] [1781513031.828622]: cmd_vel: v=0.017 ω=-0.004
+[WARN] [1781513098.106986]:   /gazebo/set_model_state 不可达，改用 /cmd_vel
+Exception in thread Thread-6:
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/threading.py", line 932, in _bootstrap_inner
+    self.run()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/timer.py", line 237, in run
+    self._callback(TimerEvent(last_expected, last_real, current_expected, current_real, last_duration))
+  File "/home/lcy/robot_graduation/ros_motion_planning/src/encoder_tools/scripts/gazebo_sync.py", line 79, in main_timer
+    self._publish_cmd_vel()
+  File "/home/lcy/robot_graduation/ros_motion_planning/src/encoder_tools/scripts/gazebo_sync.py", line 100, in _publish_cmd_vel
+    self.cmd_pub.publish(twist)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 882, in publish
+    self.impl.publish(data)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 1041, in publish
+    raise ROSException("publish() to a closed topic")
+rospy.exceptions.ROSException: publish() to a closed topic
+[INFO] [1781513098.136930]: gazebo_sync 已启动
+[INFO] [1781513098.141886]:   策略: /cmd_vel（速度驱动，无服务可用）
+[INFO] [1781513098.144552]:   订阅 /scan → 重发到 /scan_fixed
+[INFO] [1781513098.222404]: cmd_vel: v=0.000 ω=0.000
+[INFO] [1781513100.272103]: cmd_vel: v=0.000 ω=0.000
+[INFO] [1781513102.271957]: cmd_vel: v=0.000 ω=0.000
+[INFO] [1781513104.321852]: cmd_vel: v=0.000 ω=0.000
+[INFO] [1781513106.321825]: cmd_vel: v=0.008 ω=-0.002
+[INFO] [1781513108.371811]: cmd_vel: v=0.017 ω=-0.006
+[INFO] [1781513110.421880]: cmd_vel: v=-0.088 ω=-0.428
+[INFO] [1781513112.421953]: cmd_vel: v=0.017 ω=-0.010
+[INFO] [1781513114.471960]: cmd_vel: v=0.017 ω=-0.009
+[INFO] [1781513116.521786]: cmd_vel: v=0.017 ω=-0.007
+[INFO] [1781513118.521872]: cmd_vel: v=0.017 ω=-0.006
+[INFO] [1781513120.571791]: cmd_vel: v=0.017 ω=-0.008
+[INFO] [1781513122.621731]: cmd_vel: v=0.017 ω=-0.006
