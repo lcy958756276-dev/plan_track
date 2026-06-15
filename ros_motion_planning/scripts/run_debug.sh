@@ -20,6 +20,12 @@ mkdir -p "$LOG_DIR"
 killall -9 gzserver gzclient rosmaster 2>/dev/null
 sleep 2
 
+# 启动新 ROS master
+roscore \
+    >> "$LOG_DIR/run.log" 2>&1 &
+sleep 2
+echo "  roscore 已启动"
+
 # 清理旧日志
 rm -f "$LOG_DIR"/*.log
 
