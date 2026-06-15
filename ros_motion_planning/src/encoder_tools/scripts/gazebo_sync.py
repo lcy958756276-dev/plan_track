@@ -13,6 +13,7 @@ gazebo_sync.py
 
 import rospy
 import sys
+import os
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import LaserScan
 from gazebo_msgs.srv import SetModelState
@@ -58,6 +59,17 @@ class GazeboSync:
             except rospy.ROSException:
                 # 还没就绪，等下一轮
                 rospy.loginfo_throttle(5.0, "  等待 /gazebo/set_model_state 服务就绪...")
+                # 每 10 秒打印一次所有 Gazebo 相关服务，诊断
+                diag_counter = int(rospy.Time.now().to_sec() / 10)
+                if not hasattr(self, '_last_diag') or self._last_diag != diag_counter:
+                    self._last_diag = diag_counter
+                    try:
+                        all_svc = rospy.get_service_names()
+                        gazebo_svc = [s for s in all_svc if 'gazebo' in s.lower()]
+                        rospy.loginfo(f"  [诊断] 当前 ROS 服务数={len(all_svc)}")
+                        rospy.loginfo(f"  [诊断] Gazebo 相关服务: {gazebo_svc}")
+                    except Exception as e:
+                        rospy.logwarn(f"  [诊断] 获取服务列表失败: {e}")
                 return
             except rospy.ServiceException as e:
                 rospy.logwarn_throttle(5.0, f"  服务调用异常: {e}")

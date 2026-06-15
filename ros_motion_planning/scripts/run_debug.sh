@@ -39,21 +39,26 @@ echo "=== 启动时间: $(date) ===" > "$LOG_DIR/run.log"
 
 # ── 1. 生成动态启动文件 ──
 echo "[1/6] 生成动态启动文件..."
+echo "[$(date +%H:%M:%S)] [1] main_generate.py start" >> "$LOG_DIR/run.log"
 python "$WORKSPACE_DIR/src/plugins/dynamic_xml_config/main_generate.py" user_config.yaml \
     >> "$LOG_DIR/run.log" 2>&1
+echo "[$(date +%H:%M:%S)] [1] main_generate.py done" >> "$LOG_DIR/run.log"
 
 # ── 标志位：告诉 Gazebo 不发布 odom TF（物理车模式）──
 # main.sh 没有此文件 → Gazebo 正常行为
 echo "[2/6] 设置 use_encoder_odom 标志位..."
+echo "[$(date +%H:%M:%S)] [2] use_encoder_odom flag set" >> "$LOG_DIR/run.log"
 touch /tmp/.use_encoder_odom
 echo "  /tmp/.use_encoder_odom → Gazebo diff_drive 将跳过 odom TF"
 
 # ── 3. 加载机器人模型 ──
 echo "[3/6] 加载 robot_description + 启动核心节点 ..."
+echo "[$(date +%H:%M:%S)] [3] loading robot_description" >> "$LOG_DIR/run.log"
 
 # 从 xacro 加载 robot description（传 use_encoder_odom:=true）
 ROBOT_XACRO="$WORKSPACE_DIR/src/sim_env/urdf/turtlebot3_waffle/turtlebot3_waffle.xacro"
 rosparam set robot_description "$(xacro --inorder "$ROBOT_XACRO" use_encoder_odom:=true)"
+echo "[$(date +%H:%M:%S)] [3] robot_description loaded" >> "$LOG_DIR/run.log"
 echo "  robot_description 已加载（物理车模式 → publishOdomTF=false）"
 
 # robot_state_publisher（发布 URDF 中固定关节的 TF：base_footprint → base_link → ...）
@@ -83,11 +88,13 @@ sleep 1
 
 # ── 4. 启动 Gazebo（仓库环境）──
 echo "[4/6] 启动 Gazebo ..."
+echo "[$(date +%H:%M:%S)] [4] starting gzserver" >> "$LOG_DIR/run.log"
 WORLD_FILE="$WORKSPACE_DIR/src/sim_env/worlds/warehouse.world"
 
-# 禁用模型数据库下载（防 libcurl 超时卡死 Gazebo ROS 插件初始化）
-# 空字符串在某些版本无效，设为不可达地址让连接立即失败
+# 禁用所有模型数据库下载（防 libcurl SSL 超时阻塞 ROS 插件初始化）
+# GAZEBO_MODEL_DATABASE_URI 管 Gazebo Fuel，IGN_FUEL_URI 管 Ignition Fuel
 export GAZEBO_MODEL_DATABASE_URI="http://127.0.0.1:1/"
+export IGN_FUEL_URI="http://127.0.0.1:1/"
 
 # 用自定义节点名避免与残留 /gazebo 节点冲突（服务路径仍为 /gazebo/*）
 GZ_NAME="__name:=gz_debug"
@@ -96,7 +103,19 @@ rosrun gazebo_ros gzserver "$WORLD_FILE" "$GZ_NAME" \
 PID_GZSERVER=$!
 echo "  gazebo server PID=$PID_GZSERVER (节点名: gz_debug)"
 
-sleep 3
+# 等待 Gazebo 的 ROS 服务就绪（超时 15 秒）
+echo "  等待 Gazebo ROS 服务就绪..."
+for i in $(seq 1 15); do
+    if rosservice list 2>/dev/null | grep -q "/gazebo/set_model_state"; then
+        echo "  ✅ Gazebo ROS 服务已就绪（第 ${i} 秒）"
+        break
+    fi
+    sleep 1
+done
+if ! rosservice list 2>/dev/null | grep -q "/gazebo/set_model_state"; then
+    echo "  ⚠ 警告：15 秒后 /gazebo/set_model_state 仍未就绪"
+    echo "  检查 run.log 中是否有 libcurl 超时阻塞"
+fi
 
 # Gazebo GUI
 rosrun gazebo_ros gzclient \
@@ -107,14 +126,20 @@ echo "  gazebo client PID=$PID_GZCLIENT"
 sleep 2
 
 # 在 Gazebo 中生成机器人模型（使用已加载的 robot_description）
-# 注意：此时 diff_drive 插件 publishOdomTF=false，不会与 encoder_odom 冲突
+echo "[$(date +%H:%M:%S)] [4] spawn_model start" >> "$LOG_DIR/run.log"
+echo "  正在生成机器人模型..."
 rosrun gazebo_ros spawn_model -urdf \
     -param robot_description \
     -model turtlebot3_waffle \
     -x 0.0 -y 0.0 -z 0.0 \
-    >> "$LOG_DIR/run.log" 2>&1 &
-PID_SPAWN=$!
-echo "  机器人已在 Gazebo 中生成 (use_encoder_odom=true → 不发布 odom TF)"
+    >> "$LOG_DIR/run.log" 2>&1
+SPAWN_EXIT=$?
+echo "[$(date +%H:%M:%S)] [4] spawn_model exit=$SPAWN_EXIT" >> "$LOG_DIR/run.log"
+if [ $SPAWN_EXIT -eq 0 ]; then
+    echo "  ✅ 机器人已在 Gazebo 中生成"
+else
+    echo "  ⚠ spawn_model 失败 (exit=$SPAWN_EXIT)"
+fi
 
 sleep 2
 
