@@ -24,5 +24,10 @@ done
 
 # 额外清理可能残留的 ROS 节点和参数
 killall -q roslaunch gzserver gzclient 2>/dev/null
+
+# 清理物理车模式标志位（run_debug.sh 设置的）
+rm -f /tmp/.use_encoder_odom
+echo "  已清理 /tmp/.use_encoder_odom 标志位"
+
 killall -9 rosmaster 2>/dev/null
 echo "清理完成"

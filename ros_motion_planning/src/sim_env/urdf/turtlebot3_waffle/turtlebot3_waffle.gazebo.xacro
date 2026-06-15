@@ -4,6 +4,13 @@
   <xacro:arg name="camera_visual" default="false" />
   <xacro:arg name="imu_visual" default="false" />
 
+  <!--
+    use_encoder_odom: 当为 true 时，diff_drive 插件不发布 odom TF，
+    由 encoder_odom.py 接管里程计（run_debug.sh 物理车模式）。
+    main.sh 不传入此参数 → 默认 false → 原始 Gazebo 行为。
+  -->
+  <xacro:arg name="use_encoder_odom" default="false" />
+
   <gazebo reference="base_link">
     <material>Gazebo/DarkGrey</material>
   </gazebo>
@@ -64,7 +71,8 @@
       <odometryTopic>odom</odometryTopic>
       <odometryFrame>odom</odometryFrame>
       <odometrySource>world</odometrySource>
-      <publishOdomTF>true</publishOdomTF>
+      <!-- use_encoder_odom=true → 不发布 odom TF，交给 encoder_odom.py -->
+      <publishOdomTF>$(eval not arg('use_encoder_odom'))</publishOdomTF>
       <robotBaseFrame>base_footprint</robotBaseFrame>
       <publishWheelTF>false</publishWheelTF>
       <publishTf>true</publishTf>
