@@ -80,7 +80,13 @@
       </xacro:unless>
       <robotBaseFrame>base_footprint</robotBaseFrame>
       <publishWheelTF>false</publishWheelTF>
-      <publishTf>true</publishTf>
+      <!-- use_encoder_odom=true → 连旧机制的 TF 也不发，完全交给 encoder_odom.py -->
+      <xacro:if value="$(arg use_encoder_odom)">
+        <publishTf>false</publishTf>
+      </xacro:if>
+      <xacro:unless value="$(arg use_encoder_odom)">
+        <publishTf>true</publishTf>
+      </xacro:unless>
       <publishWheelJointState>false</publishWheelJointState>
       <legacyMode>false</legacyMode>
       <updateRate>30</updateRate>
