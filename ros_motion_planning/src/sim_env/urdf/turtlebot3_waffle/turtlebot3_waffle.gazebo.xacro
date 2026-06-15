@@ -72,7 +72,12 @@
       <odometryFrame>odom</odometryFrame>
       <odometrySource>world</odometrySource>
       <!-- use_encoder_odom=true → 不发布 odom TF，交给 encoder_odom.py -->
-      <publishOdomTF>$(eval not arg('use_encoder_odom'))</publishOdomTF>
+      <xacro:if value="$(arg use_encoder_odom)">
+        <publishOdomTF>false</publishOdomTF>
+      </xacro:if>
+      <xacro:unless value="$(arg use_encoder_odom)">
+        <publishOdomTF>true</publishOdomTF>
+      </xacro:unless>
       <robotBaseFrame>base_footprint</robotBaseFrame>
       <publishWheelTF>false</publishWheelTF>
       <publishTf>true</publishTf>
