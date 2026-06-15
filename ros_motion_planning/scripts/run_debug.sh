@@ -15,16 +15,13 @@ LOG_DIR="$WORKSPACE_DIR/log"
 source "$WORKSPACE_DIR/devel/setup.bash"
 mkdir -p "$LOG_DIR"
 
-# 强制清理残留的 Gazebo 进程 + ROS master
-# 避免新旧 gzserver 节点名冲突导致 ROS 服务无法加载
-killall -9 gzserver gzclient rosmaster 2>/dev/null
-sleep 2
+# 强制清理残留的 Gazebo 进程（不杀 rosmaster，避免影响已有节点）
+killall -9 gzserver gzclient 2>/dev/null
+sleep 1
 
-# 启动新 ROS master
-roscore \
-    >> "$LOG_DIR/run.log" 2>&1 &
-sleep 2
-echo "  roscore 已启动"
+# 清理 ROS master 上的僵尸节点（避免新旧 gzserver 名字冲突）
+echo y | rosnode cleanup 2>/dev/null || true
+sleep 1
 
 # 清理旧日志
 rm -f "$LOG_DIR"/*.log
