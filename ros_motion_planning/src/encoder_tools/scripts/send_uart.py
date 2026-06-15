@@ -43,7 +43,9 @@ class KeyboardToSerial:
             termios.tcsetattr(fd, termios.TCSANOW, tty)
 
             rospy.loginfo(f"串口已打开: {port} @ {baud} (raw mode)")
-
+        except Exception as e:
+            rospy.logerr(f"打开串口失败: {e}")
+            raise
     def run(self):
         rospy.loginfo("等待键盘输入: A / B / C (q 退出)")
         while not rospy.is_shutdown():
