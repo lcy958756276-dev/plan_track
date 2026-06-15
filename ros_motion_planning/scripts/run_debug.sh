@@ -188,40 +188,54 @@ echo "  PID=$PID_SYNC → log/gazebo_sync.log"
 sleep 2
 
 # ── 8. 启动 move_base（全局规划器）──
-# RViz 的 2D Nav Goal → /move_base_simple/goal → move_base 调用全局规划器
-# 规划结果发布到 /move_base/PathPlanner/plan，RViz 已配置显示该路径
+# 用 roslaunch 方式启动，参数在节点标签内设定，避免命名空间/时序问题
 echo "[8/8] 启动 move_base（A* 全局规划器，仅规划不跟踪）..."
-echo "[$(date +%H:%M:%S)] [8] loading move_base params" >> "$LOG_DIR/run.log"
+echo "[$(date +%H:%M:%S)] [8] generating move_base launch file" >> "$LOG_DIR/run.log"
 
-# 设置规划器类型
-rosparam set /move_base/base_global_planner "path_planner/PathPlanner"
-rosparam set /move_base/PathPlanner/planner_name "astar"
-rosparam set /move_base/base_local_planner "static_controller/StaticController"
+MB_LAUNCH="/tmp/move_base_debug.launch"
+cat > "$MB_LAUNCH" << MBEOF
+<launch>
+  <node pkg="move_base" type="move_base" name="move_base" output="screen">
 
-# 加载 move_base 通用参数
-rosparam load "$WORKSPACE_DIR/src/sim_env/config/move_base_params.yaml" /move_base
+    <!-- 全局规划器 -->
+    <param name="base_global_planner" value="path_planner/PathPlanner"/>
+    <param name="PathPlanner/planner_name" value="astar"/>
 
-# 加载全局 costmap 参数（含 obstacle_layer 中 scan 来源）
-rosparam load "$WORKSPACE_DIR/src/sim_env/config/costmap/global_costmap_params.yaml" /move_base/global_costmap
-# 覆写 scan 主题为 /scan_fixed（gazebo_sync 修复时间戳后重发）
-rosparam set /move_base/global_costmap/obstacle_layer/scan/topic "/scan_fixed"
-# 加载全局 costmap 插件列表（static_map + obstacle_layer + voronoi_layer + inflation_layer）
-rosparam load "$WORKSPACE_DIR/src/sim_env/config/costmap/global_costmap_plugins.yaml" /move_base/global_costmap
+    <!-- 局部规划器（static = 零速度，用于调试只规划不跟踪） -->
+    <param name="base_local_planner" value="static_controller/StaticController"/>
 
-# 加载局部 costmap 参数（rolling_window）
-rosparam load "$WORKSPACE_DIR/src/sim_env/config/costmap/local_costmap_params.yaml" /move_base/local_costmap
-# local_costmap_plugins.yaml 为空 → costmap_2d 自动生成默认插件
+    <!-- move_base 通用参数 -->
+    <rosparam command="load" file="$(find sim_env)/config/move_base_params.yaml"/>
 
-echo "[$(date +%H:%M:%S)] [8] starting move_base" >> "$LOG_DIR/run.log"
-rosrun move_base move_base \
+    <!-- 全局 costmap -->
+    <rosparam command="load" file="$(find sim_env)/config/costmap/global_costmap_params.yaml" ns="global_costmap"/>
+    <rosparam command="load" file="$(find sim_env)/config/costmap/global_costmap_plugins.yaml"/>
+    <param name="global_costmap/obstacle_layer/scan/topic" value="/scan_fixed"/>
+
+    <!-- 局部 costmap -->
+    <rosparam command="load" file="$(find sim_env)/config/costmap/local_costmap_params.yaml" ns="local_costmap"/>
+    <rosparam ns="local_costmap" command="load">
+      plugins:
+        - {name: obstacle_layer, type: 'costmap_2d::ObstacleLayer'}
+        - {name: inflation_layer, type: 'costmap_2d::InflationLayer'}
+    </rosparam>
+
+    <!-- map 重映射 -->
+    <remap from="map" to="/map"/>
+  </node>
+</launch>
+MBEOF
+
+echo "[$(date +%H:%M:%S)] [8] starting move_base via roslaunch" >> "$LOG_DIR/run.log"
+roslaunch "$MB_LAUNCH" \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_MB=$!
-echo "  move_base PID=$PID_MB"
+echo "  move_base PID=$PID_MB (roslaunch)"
 echo "  全局规划器: A* (path_planner/PathPlanner)"
 echo "  局部规划器: static (零速度，不跟踪路径)"
 echo "  RViz 中点击 2D Nav Goal → 全局路径将显示在地图上"
 
-sleep 2
+sleep 3
 
 # 保存 PID
 echo "$PID_MAP"      > "$LOG_DIR/.pid_map"
