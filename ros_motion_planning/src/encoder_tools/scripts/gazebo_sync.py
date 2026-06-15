@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 gazebo_sync.py
-桥接节点：不断尝试通过 /gazebo/set_model_state 将 encoder_odom 的位置同步到 Gazebo。
+桥接节点：不断尝试通过 /gz_debug/set_model_state 将 encoder_odom 的位置同步到 Gazebo。
 如果服务不可用，持续重试直至成功（不依赖 /cmd_vel）。
 
 同时修复 LaserScan 时间戳。
@@ -38,7 +38,7 @@ class GazeboSync:
         rospy.Timer(rospy.Duration(0.1), self.main_timer)
 
         rospy.loginfo("gazebo_sync 已启动")
-        rospy.loginfo("  持续尝试连接 /gazebo/set_model_state ...")
+        rospy.loginfo("  持续尝试连接 /gz_debug/set_model_state ...")
 
     def odom_cb(self, msg):
         self.latest_odom = msg
@@ -50,24 +50,24 @@ class GazeboSync:
         # ── 如果还没连上服务，持续尝试 ──
         if not self.have_service:
             try:
-                rospy.wait_for_service("/gazebo/set_model_state", timeout=0.5)
+                rospy.wait_for_service("/gz_debug/set_model_state", timeout=0.5)
                 self.set_state = rospy.ServiceProxy(
-                    "/gazebo/set_model_state", SetModelState
+                    "/gz_debug/set_model_state", SetModelState
                 )
                 self.have_service = True
-                rospy.loginfo("  ✅ 已连接 /gazebo/set_model_state")
+                rospy.loginfo("  ✅ 已连接 /gz_debug/set_model_state")
             except rospy.ROSException:
                 # 还没就绪，等下一轮
-                rospy.loginfo_throttle(5.0, "  等待 /gazebo/set_model_state 服务就绪...")
+                rospy.loginfo_throttle(5.0, "  等待 /gz_debug/set_model_state 服务就绪...")
                 # 每 10 秒打印一次所有 Gazebo 相关服务，诊断
                 diag_counter = int(rospy.Time.now().to_sec() / 10)
                 if not hasattr(self, '_last_diag') or self._last_diag != diag_counter:
                     self._last_diag = diag_counter
                     try:
-                        all_svc = rospy.get_service_names()
-                        gazebo_svc = [s for s in all_svc if 'gazebo' in s.lower()]
-                        rospy.loginfo(f"  [诊断] 当前 ROS 服务数={len(all_svc)}")
-                        rospy.loginfo(f"  [诊断] Gazebo 相关服务: {gazebo_svc}")
+                        master = rospy.get_master()
+                        code, msg, all_svc = master.getServiceNames()
+                        gz_svc = [s for s in all_svc if 'gz_debug' in s.lower() or 'gazebo' in s.lower()]
+                        rospy.loginfo(f"  [诊断] Gazebo/gz_debug 服务: {gz_svc}")
                     except Exception as e:
                         rospy.logwarn(f"  [诊断] 获取服务列表失败: {e}")
                 return

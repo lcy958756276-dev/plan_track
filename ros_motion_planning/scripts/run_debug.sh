@@ -106,14 +106,14 @@ echo "  gazebo server PID=$PID_GZSERVER (节点名: gz_debug)"
 # 等待 Gazebo 的 ROS 服务就绪（超时 15 秒）
 echo "  等待 Gazebo ROS 服务就绪..."
 for i in $(seq 1 15); do
-    if rosservice list 2>/dev/null | grep -q "/gazebo/set_model_state"; then
+    if rosservice list 2>/dev/null | grep -q "/gz_debug/set_model_state"; then
         echo "  ✅ Gazebo ROS 服务已就绪（第 ${i} 秒）"
         break
     fi
     sleep 1
 done
-if ! rosservice list 2>/dev/null | grep -q "/gazebo/set_model_state"; then
-    echo "  ⚠ 警告：15 秒后 /gazebo/set_model_state 仍未就绪"
+if ! rosservice list 2>/dev/null | grep -q "/gz_debug/set_model_state"; then
+    echo "  ⚠ 警告：15 秒后 /gz_debug/set_model_state 仍未就绪"
     echo "  检查 run.log 中是否有 libcurl 超时阻塞"
 fi
 
@@ -131,6 +131,7 @@ echo "  正在生成机器人模型..."
 rosrun gazebo_ros spawn_model -urdf \
     -param robot_description \
     -model turtlebot3_waffle \
+    -gazebo_namespace /gz_debug \
     -x 0.0 -y 0.0 -z 0.0 \
     >> "$LOG_DIR/run.log" 2>&1
 SPAWN_EXIT=$?
