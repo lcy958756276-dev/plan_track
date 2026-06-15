@@ -1,3 +1,28 @@
-=== 启动时间: 2026年 06月 15日 星期一 17:26:43 CST ===
-
-libcurl: (35) OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to fuel.ignitionrobotics.org:443 
+=== 启动时间: 2026年 06月 15日 星期一 17:30:25 CST ===
+[17:30:25] [1] main_generate.py start
+[17:30:26] [1] main_generate.py done
+[17:30:26] [2] use_encoder_odom flag set
+[17:30:26] [3] loading robot_description
+[17:30:27] [3] robot_description loaded
+[17:30:30] [4] starting gzserver
+[17:30:57] [4] spawn_model start
+[0m[INFO] [1781515829.492468071]: Spinning until killed publishing map to odom[0m
+[0m[INFO] [1781515828.493200900]: Loading map from image "/home/lcy/robot_graduation/ros_motion_planning/src/sim_env/maps/warehouse/./warehouse.pgm"[0m
+[0m[INFO] [1781515828.497746610]: Read a 480 X 480 map @ 0.050 m/cell[0m
+[0m[INFO] [1781515831.652241923]: Finished loading Gazebo ROS API Plugin.[0m
+[0m[INFO] [1781515831.654645669]: waitForService: Service [/gz_debug/set_physics_properties] has not been advertised, waiting...[0m
+[0m[INFO] [1781515832.903944771]: waitForService: Service [/gz_debug/set_physics_properties] is now available.[0m
+[0m[INFO] [1781515832.941294013]: Physics dynamic reconfigure ready.[0m
+[INFO] [1781515858.242250]: Loading model XML from ros parameter robot_description
+[INFO] [1781515858.251794]: Waiting for service /gazebo/spawn_urdf_model
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/gazebo_ros/spawn_model", line 239, in <module>
+    exit_code = sm.run()
+  File "/opt/ros/noetic/lib/gazebo_ros/spawn_model", line 183, in run
+    success = gazebo_interface.spawn_urdf_model_client(self.args.model, model_xml, self.args.robot_namespace,
+  File "/opt/ros/noetic/lib/python3/dist-packages/gazebo_ros/gazebo_interface.py", line 28, in spawn_urdf_model_client
+    rospy.wait_for_service(gazebo_namespace+'/spawn_urdf_model')
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_service.py", line 166, in wait_for_service
+    raise ROSInterruptException("rospy shutdown")
+rospy.exceptions.ROSInterruptException: rospy shutdown
+[17:32:28] [4] spawn_model exit=1
