@@ -188,10 +188,10 @@ echo "  PID=$PID_SYNC → log/gazebo_sync.log"
 sleep 2
 
 # ── 8. 启动 move_base（全局规划器）──
-# 用 roslaunch 方式启动，参数在节点标签内设定，避免命名空间/时序问题
 echo "[8/8] 启动 move_base（A* 全局规划器，仅规划不跟踪）..."
 echo "[$(date +%H:%M:%S)] [8] generating move_base launch file" >> "$LOG_DIR/run.log"
 
+SIM_ENV_DIR="$WORKSPACE_DIR/src/sim_env"
 MB_LAUNCH="/tmp/move_base_debug.launch"
 cat > "$MB_LAUNCH" << MBEOF
 <launch>
@@ -205,15 +205,16 @@ cat > "$MB_LAUNCH" << MBEOF
     <param name="base_local_planner" value="static_controller/StaticController"/>
 
     <!-- move_base 通用参数 -->
-    <rosparam command="load" file="$(find sim_env)/config/move_base_params.yaml"/>
+    <rosparam command="load" file="$SIM_ENV_DIR/config/move_base_params.yaml"/>
 
-    <!-- 全局 costmap -->
-    <rosparam command="load" file="$(find sim_env)/config/costmap/global_costmap_params.yaml" ns="global_costmap"/>
-    <rosparam command="load" file="$(find sim_env)/config/costmap/global_costmap_plugins.yaml"/>
+    <!-- 全局 costmap（用 robot-specific 文件，不含 global_costmap: 外层键） -->
+    <rosparam command="load" file="$SIM_ENV_DIR/config/robots/turtlebot3_waffle/global_costmap_params_turtlebot3_waffle.yaml" ns="global_costmap"/>
+    <!-- 全局 costmap 插件（含 global_costmap: 外层键 → 加载后自动在 /move_base/global_costmap/ 下） -->
+    <rosparam command="load" file="$SIM_ENV_DIR/config/costmap/global_costmap_plugins.yaml"/>
     <param name="global_costmap/obstacle_layer/scan/topic" value="/scan_fixed"/>
 
-    <!-- 局部 costmap -->
-    <rosparam command="load" file="$(find sim_env)/config/costmap/local_costmap_params.yaml" ns="local_costmap"/>
+    <!-- 局部 costmap（用 robot-specific 文件） -->
+    <rosparam command="load" file="$SIM_ENV_DIR/config/robots/turtlebot3_waffle/local_costmap_params_turtlebot3_waffle.yaml" ns="local_costmap"/>
     <rosparam ns="local_costmap" command="load">
       plugins:
         - {name: obstacle_layer, type: 'costmap_2d::ObstacleLayer'}
@@ -227,6 +228,13 @@ cat > "$MB_LAUNCH" << MBEOF
 MBEOF
 
 echo "[$(date +%H:%M:%S)] [8] starting move_base via roslaunch" >> "$LOG_DIR/run.log"
+echo "  启动 move_base 前检查参数状态:" >> "$LOG_DIR/run.log"
+rosparam get /move_base/base_global_planner 2>&1 >> "$LOG_DIR/run.log" || echo "  [诊断] base_global_planner 参数未设置" >> "$LOG_DIR/run.log"
+rosparam get /move_base/base_local_planner 2>&1 >> "$LOG_DIR/run.log" || echo "  [诊断] base_local_planner 参数未设置" >> "$LOG_DIR/run.log"
+rosparam get /move_base/global_costmap/plugins 2>&1 >> "$LOG_DIR/run.log" || echo "  [诊断] global_costmap/plugins 参数未设置" >> "$LOG_DIR/run.log"
+echo "  [诊断] rospack plugins nav_core:" >> "$LOG_DIR/run.log"
+rospack plugins --attrib=plugin nav_core 2>&1 >> "$LOG_DIR/run.log"
+
 roslaunch "$MB_LAUNCH" \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_MB=$!
@@ -236,6 +244,13 @@ echo "  局部规划器: static (零速度，不跟踪路径)"
 echo "  RViz 中点击 2D Nav Goal → 全局路径将显示在地图上"
 
 sleep 3
+echo "[$(date +%H:%M:%S)] [8] move_base 启动后状态:" >> "$LOG_DIR/run.log"
+echo "  [诊断] 检查 move_base 是否存活:" >> "$LOG_DIR/run.log"
+kill -0 "$PID_MB" 2>&1 && echo "  [诊断] move_base 进程存活" >> "$LOG_DIR/run.log" || echo "  [诊断] move_base 进程已死亡" >> "$LOG_DIR/run.log"
+echo "  [诊断] rostopic list | grep move_base:" >> "$LOG_DIR/run.log"
+rostopic list 2>/dev/null | grep -i move 2>&1 >> "$LOG_DIR/run.log" || echo "  [诊断] 无 move_base 话题" >> "$LOG_DIR/run.log"
+echo "  [诊断] rosservice list | grep move_base:" >> "$LOG_DIR/run.log"
+rosservice list 2>/dev/null | grep -i move 2>&1 >> "$LOG_DIR/run.log" || echo "  [诊断] 无 move_base 服务" >> "$LOG_DIR/run.log"
 
 # 保存 PID
 echo "$PID_MAP"      > "$LOG_DIR/.pid_map"
