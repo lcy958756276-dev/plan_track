@@ -29,5 +29,4 @@ killall -q roslaunch gzserver gzclient 2>/dev/null
 rm -f /tmp/.use_encoder_odom
 echo "  已清理 /tmp/.use_encoder_odom 标志位"
 
-killall -9 rosmaster 2>/dev/null
 echo "清理完成"

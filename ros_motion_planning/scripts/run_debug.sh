@@ -15,9 +15,17 @@ LOG_DIR="$WORKSPACE_DIR/log"
 source "$WORKSPACE_DIR/devel/setup.bash"
 mkdir -p "$LOG_DIR"
 
-# 强制清理残留的 Gazebo 进程（不杀 rosmaster，避免影响已有节点）
+# 强制清理残留的 Gazebo 进程
 killall -9 gzserver gzclient 2>/dev/null
 sleep 1
+
+# 确保 ROS master 在运行
+if ! rostopic list > /dev/null 2>&1; then
+    echo "  roscore 未运行，正在启动..."
+    roscore \
+        >> "$LOG_DIR/run.log" 2>&1 &
+    sleep 3
+fi
 
 # 清理 ROS master 上的僵尸节点（避免新旧 gzserver 名字冲突）
 echo y | rosnode cleanup 2>/dev/null || true
