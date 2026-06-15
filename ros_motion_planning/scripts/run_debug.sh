@@ -78,13 +78,17 @@ echo "[4/6] 启动 Gazebo ..."
 WORLD_FILE="$WORKSPACE_DIR/src/sim_env/worlds/warehouse.world"
 
 # 禁用模型数据库下载（防 libcurl 超时卡死 Gazebo ROS 插件初始化）
-export GAZEBO_MODEL_DATABASE_URI=""
+# 空字符串在某些版本无效，设为不可达地址让连接立即失败
+export GAZEBO_MODEL_DATABASE_URI="http://127.0.0.1:1/"
+
+# 使用自定义节点名（避免与残留的 /gazebo 僵尸节点冲突）
+GZ_NAME="__name:=gz_debug"
 
 # 先启动 Gazebo 服务器
-rosrun gazebo_ros gzserver "$WORLD_FILE" \
+rosrun gazebo_ros gzserver "$WORLD_FILE" "$GZ_NAME" \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_GZSERVER=$!
-echo "  gazebo server PID=$PID_GZSERVER"
+echo "  gazebo server PID=$PID_GZSERVER (节点名: gz_debug)"
 
 sleep 3
 
@@ -101,6 +105,7 @@ sleep 2
 rosrun gazebo_ros spawn_model -urdf \
     -param robot_description \
     -model turtlebot3_waffle \
+    -service /gz_debug/spawn_urdf_model \
     -x 0.0 -y 0.0 -z 0.0 \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_SPAWN=$!

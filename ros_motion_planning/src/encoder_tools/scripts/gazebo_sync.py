@@ -37,7 +37,7 @@ class GazeboSync:
         rospy.Timer(rospy.Duration(0.1), self.main_timer)
 
         rospy.loginfo("gazebo_sync 已启动")
-        rospy.loginfo("  持续尝试连接 /gazebo/set_model_state ...")
+        rospy.loginfo("  持续尝试连接 /gz_debug/set_model_state ...")
 
     def odom_cb(self, msg):
         self.latest_odom = msg
@@ -49,9 +49,9 @@ class GazeboSync:
         # ── 如果还没连上服务，持续尝试 ──
         if not self.have_service:
             try:
-                rospy.wait_for_service("/gazebo/set_model_state", timeout=0.5)
+                rospy.wait_for_service("/gz_debug/set_model_state", timeout=0.5)
                 self.set_state = rospy.ServiceProxy(
-                    "/gazebo/set_model_state", SetModelState
+                    "/gz_debug/set_model_state", SetModelState
                 )
                 self.have_service = True
                 rospy.loginfo("  ✅ 已连接 /gazebo/set_model_state")
