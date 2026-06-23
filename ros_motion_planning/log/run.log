@@ -1,18 +1,18 @@
-=== 启动时间: 2026年 06月 23日 星期二 16:38:20 CST ===
-[16:38:20] [1] main_generate.py start
-[16:38:21] [1] main_generate.py done
-[16:38:21] [2] use_encoder_odom flag set
-[16:38:21] [3] loading robot_description
-[16:38:22] [3] robot_description loaded
-[16:38:25] [4] starting gzserver
-[16:38:31] [4] spawn_model start
-[INFO] [1782203912.929607]: Loading model XML from ros parameter robot_description
-[INFO] [1782203912.938222]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1782203912.943612]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1782203913.584947]: Spawn status: SpawnModel: Successfully spawned entity
-[16:38:34] [4] spawn_model exit=0
-[16:38:43] [8] generating move_base launch file
-[16:38:43] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 06月 23日 星期二 16:42:46 CST ===
+[16:42:46] [1] main_generate.py start
+[16:42:46] [1] main_generate.py done
+[16:42:46] [2] use_encoder_odom flag set
+[16:42:46] [3] loading robot_description
+[16:42:47] [3] robot_description loaded
+[16:42:50] [4] starting gzserver
+[16:42:57] [4] spawn_model start
+[INFO] [1782204178.122784]: Loading model XML from ros parameter robot_description
+[INFO] [1782204178.134672]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1782204178.140428]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1782204178.909932]: Spawn status: SpawnModel: Successfully spawned entity
+[16:42:59] [4] spawn_model exit=0
+[16:43:09] [8] generating move_base launch file
+[16:43:09] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 mpc_controller/MPCController
@@ -43,16 +43,19 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1782203925.671288217]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1782203925.674170843]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1782204191.425279941]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1782204191.428489298]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260623 16:38:46.113214 21059 path_planner_factory.cpp:125] Using path planner: astar
-[33m[WARN] [1782203926.130772385]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-I20260623 16:38:46.239367 21059 mpc_controller.cpp:92] MPC Controller initialized!
-[16:38:47] [8] move_base 启动后状态:
+I20260623 16:43:11.973101 23492 path_planner_factory.cpp:125] Using path planner: astar
+[33m[WARN] [1782204191.999092176]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260623 16:43:12.100927 23492 mpc_controller.cpp:92] MPC Controller initialized!
+[16:43:12] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
+I20260623 16:43:13.059659 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:13.559549 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:14.059593 23517 mpc_controller.cpp:111] Got new plan
 /move_base/PathPlanner/expand
 /move_base/PathPlanner/expand_updates
 /move_base/PathPlanner/key_points
@@ -96,6 +99,7 @@ I20260623 16:38:46.239367 21059 mpc_controller.cpp:92] MPC Controller initialize
 /move_base/status
 /move_base_simple/goal
   [诊断] rosservice list | grep move_base:
+I20260623 16:43:14.559546 23517 mpc_controller.cpp:111] Got new plan
 /move_base/PathPlanner/make_plan
 /move_base/clear_costmaps
 /move_base/get_loggers
@@ -110,228 +114,106 @@ I20260623 16:38:46.239367 21059 mpc_controller.cpp:92] MPC Controller initialize
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-I20260623 16:38:58.234946 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:38:58.734869 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:38:59.234875 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:38:59.734880 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:00.234884 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:00.734887 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:01.234956 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:01.734880 21068 mpc_controller.cpp:111] Got new plan
-
-libcurl: (35) OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to fuel.gazebosim.org:443 
-I20260623 16:39:02.234880 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:02.734901 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:03.234884 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:03.734874 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:04.234880 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:04.734879 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:05.234875 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:05.334887 21068 mpc_controller.cpp:140] GOAL Reached!
-
-libcurl: (35) OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to fuel.ignitionrobotics.org:443 
-E20260623 16:39:10.469492 21069 path_planner_node.cpp:229] Failed to get a path.
-E20260623 16:39:11.150290 21069 path_planner_node.cpp:229] Failed to get a path.
-[33m[WARN] [1782203951.157357121]: Map update loop missed its desired rate of 2.0000Hz... the loop actually took 0.5805 seconds[0m
-E20260623 16:39:11.849244 21069 path_planner_node.cpp:229] Failed to get a path.
-[33m[WARN] [1782203951.858411981]: Map update loop missed its desired rate of 2.0000Hz... the loop actually took 0.7815 seconds[0m
-E20260623 16:39:12.516405 21069 path_planner_node.cpp:229] Failed to get a path.
-E20260623 16:39:13.176081 21069 path_planner_node.cpp:229] Failed to get a path.
-[33m[WARN] [1782203953.183416973]: Map update loop missed its desired rate of 2.0000Hz... the loop actually took 1.6065 seconds[0m
-E20260623 16:39:13.844933 21069 path_planner_node.cpp:229] Failed to get a path.
-E20260623 16:39:14.516585 21069 path_planner_node.cpp:229] Failed to get a path.
-[33m[WARN] [1782203954.523707764]: Map update loop missed its desired rate of 2.0000Hz... the loop actually took 1.3403 seconds[0m
-E20260623 16:39:15.279955 21069 path_planner_node.cpp:229] Failed to get a path.
-[33m[WARN] [1782203955.287282697]: Map update loop missed its desired rate of 2.0000Hz... the loop actually took 0.7636 seconds[0m
-E20260623 16:39:15.954928 21069 path_planner_node.cpp:229] Failed to get a path.
-[33m[WARN] [1782203955.963561773]: Map update loop missed its desired rate of 2.0000Hz... the loop actually took 0.9399 seconds[0m
-E20260623 16:39:16.680328 21069 path_planner_node.cpp:229] Failed to get a path.
-[33m[WARN] [1782203956.708794900]: Map update loop missed its desired rate of 2.0000Hz... the loop actually took 1.1851 seconds[0m
-I20260623 16:39:16.780350 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:17.280352 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:17.780354 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:18.280364 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:18.780362 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:19.280366 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:19.780359 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:20.280380 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:20.680375 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:21.180354 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:21.680359 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:22.180363 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:22.680354 21068 mpc_controller.cpp:111] Got new plan
-W20260623 16:39:22.788936 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260623 16:39:23.180366 21068 mpc_controller.cpp:111] Got new plan
-W20260623 16:39:23.194352 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-W20260623 16:39:23.495190 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260623 16:39:23.680352 21068 mpc_controller.cpp:111] Got new plan
-W20260623 16:39:24.092716 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260623 16:39:24.180358 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:24.680377 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:25.180351 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:25.680377 21068 mpc_controller.cpp:111] Got new plan
-W20260623 16:39:25.790315 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260623 16:39:26.180351 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:26.680346 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:27.180356 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:27.680349 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:28.180362 21068 mpc_controller.cpp:111] Got new plan
-W20260623 16:39:28.188040 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-W20260623 16:39:28.589331 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260623 16:39:28.680408 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:29.180367 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:29.680372 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:30.180352 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:30.680321 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:31.180365 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:31.680357 21068 mpc_controller.cpp:111] Got new plan
-W20260623 16:39:31.688088 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260623 16:39:32.180351 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:32.680368 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:33.180352 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:33.680349 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:34.180357 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:34.680368 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:35.180357 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:35.680455 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:36.180353 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:36.680366 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:37.180375 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:37.680364 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:38.180356 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:38.680365 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:39.180352 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:39.680363 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:40.180371 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:40.680370 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:41.180364 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:41.680356 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:42.180370 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:42.680401 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:43.180361 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:43.680357 21068 mpc_controller.cpp:111] Got new plan
-W20260623 16:39:43.689015 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260623 16:39:44.180356 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:44.680361 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:45.180361 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:45.680363 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:46.180366 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:46.680371 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:47.180356 21068 mpc_controller.cpp:111] Got new plan
-W20260623 16:39:47.195492 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-W20260623 16:39:47.387910 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-W20260623 16:39:47.488409 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260623 16:39:47.680359 21068 mpc_controller.cpp:111] Got new plan
-W20260623 16:39:47.692152 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260623 16:39:48.180359 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:48.680346 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:49.180343 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:49.680351 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:50.180387 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:50.680358 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:51.180368 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:51.680333 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:52.180354 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:52.680390 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:53.180353 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:53.680359 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:54.180451 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:54.680354 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:55.180349 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:55.680352 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:56.180351 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:56.680346 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:57.180351 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:57.680342 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:58.180356 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:58.680375 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:59.180348 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:39:59.680357 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:00.180341 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:00.680354 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:01.180351 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:01.680359 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:02.180349 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:02.680356 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:03.180354 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:03.680312 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:04.180354 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:04.680354 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:05.180346 21068 mpc_controller.cpp:111] Got new plan
-W20260623 16:40:05.490573 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260623 16:40:05.680364 21068 mpc_controller.cpp:111] Got new plan
-W20260623 16:40:05.789924 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260623 16:40:06.180387 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:06.680370 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:07.180370 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:07.680353 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:08.180349 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:08.680369 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:09.180372 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:09.680348 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:10.180356 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:10.680357 21068 mpc_controller.cpp:111] Got new plan
-W20260623 16:40:10.688263 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260623 16:40:11.180358 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:11.680354 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:12.180361 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:12.680379 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:13.180379 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:13.680469 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:14.180359 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:14.680373 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:15.180359 21068 mpc_controller.cpp:111] Got new plan
-W20260623 16:40:15.189414 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260623 16:40:15.680362 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:16.180402 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:16.680362 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:17.180370 21068 mpc_controller.cpp:111] Got new plan
-W20260623 16:40:17.188535 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260623 16:40:17.680363 21068 mpc_controller.cpp:111] Got new plan
-W20260623 16:40:17.691174 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-W20260623 16:40:18.091331 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260623 16:40:18.180363 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:18.680362 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:19.180370 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:19.680369 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:20.180380 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:20.680364 21068 mpc_controller.cpp:111] Got new plan
-W20260623 16:40:20.688901 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-W20260623 16:40:21.089823 21068 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260623 16:40:21.180367 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:21.680356 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:22.180364 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:22.680365 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:23.180358 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:23.680352 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:24.180372 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:24.680519 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:25.180358 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:25.680357 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:26.180426 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:26.680372 21068 mpc_controller.cpp:111] Got new plan
-I20260623 16:40:27.180356 21068 mpc_controller.cpp:111] Got new plan
-[0m[INFO] [1782203925.675363171]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1782203925.686409594]: Requesting the map...[0m
-[0m[INFO] [1782203925.891244993]: Resizing costmap to 480 X 480 at 0.050000 m/pix[0m
-[0m[INFO] [1782203925.990905079]: Received a 480 X 480 map at 0.050000 m/pix[0m
-[0m[INFO] [1782203925.996777758]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782203926.000396281]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1782203926.028789180]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1782203926.035242903]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782203926.132814534]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782203926.137907827]:     Subscribed to Topics: [0m
-[0m[INFO] [1782203926.149271797]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782203926.236162393]: Created local_planner mpc_controller/MPCController[0m
-[0m[INFO] [1782203926.737402570]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782203926.750086040]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782203926.805610292]: odom received![0m
-... logging to /home/lcy/.ros/log/88f3e230-6ed7-11f1-8d48-48b02df90897/roslaunch-ubuntu-21031.log
+I20260623 16:43:15.059535 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:15.559540 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:16.059546 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:16.559545 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:17.059698 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:17.159588 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:17.659534 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:18.159555 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:18.659539 23517 mpc_controller.cpp:111] Got new plan
+W20260623 16:43:18.667227 23517 mpc_controller.cpp:413] failed optimization status: primal infeasible
+W20260623 16:43:19.066983 23517 mpc_controller.cpp:413] failed optimization status: primal infeasible
+I20260623 16:43:19.159549 23517 mpc_controller.cpp:111] Got new plan
+W20260623 16:43:19.568583 23517 mpc_controller.cpp:413] failed optimization status: primal infeasible
+I20260623 16:43:19.659564 23517 mpc_controller.cpp:111] Got new plan
+W20260623 16:43:19.967084 23517 mpc_controller.cpp:413] failed optimization status: primal infeasible
+I20260623 16:43:20.159548 23517 mpc_controller.cpp:111] Got new plan
+W20260623 16:43:20.468104 23517 mpc_controller.cpp:413] failed optimization status: primal infeasible
+I20260623 16:43:20.659669 23517 mpc_controller.cpp:111] Got new plan
+W20260623 16:43:20.770309 23517 mpc_controller.cpp:413] failed optimization status: primal infeasible
+W20260623 16:43:21.070989 23517 mpc_controller.cpp:413] failed optimization status: primal infeasible
+I20260623 16:43:21.159555 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:21.659546 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:22.159545 23517 mpc_controller.cpp:111] Got new plan
+W20260623 16:43:22.168224 23517 mpc_controller.cpp:413] failed optimization status: primal infeasible
+I20260623 16:43:22.659546 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:23.159545 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:23.659533 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:24.159541 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:24.659533 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:25.159525 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:25.659531 23517 mpc_controller.cpp:111] Got new plan
+W20260623 16:43:25.767078 23517 mpc_controller.cpp:413] failed optimization status: primal infeasible
+I20260623 16:43:26.159529 23517 mpc_controller.cpp:111] Got new plan
+W20260623 16:43:26.167121 23517 mpc_controller.cpp:413] failed optimization status: primal infeasible
+W20260623 16:43:26.573287 23517 mpc_controller.cpp:413] failed optimization status: primal infeasible
+I20260623 16:43:26.659535 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:27.159511 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:27.659551 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:28.159545 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:28.659515 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:29.159533 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:29.659529 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:30.159528 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:30.659531 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:31.159494 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:31.659548 23517 mpc_controller.cpp:111] Got new plan
+W20260623 16:43:31.667613 23517 mpc_controller.cpp:413] failed optimization status: primal infeasible
+I20260623 16:43:32.159540 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:32.659533 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:33.159535 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:33.659523 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:34.159524 23517 mpc_controller.cpp:111] Got new plan
+W20260623 16:43:34.167207 23517 mpc_controller.cpp:413] failed optimization status: primal infeasible
+I20260623 16:43:34.659526 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:35.159530 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:35.659523 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:36.159495 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:36.659538 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:37.159526 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:37.659543 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:38.159528 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:38.659525 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:39.159538 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:39.659528 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:40.159528 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:40.659528 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:41.159528 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:41.659528 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:42.159529 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:42.459513 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:42.959522 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:43.459517 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:43.959522 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:44.459537 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:44.959555 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:45.459543 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:45.959518 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:46.459520 23517 mpc_controller.cpp:111] Got new plan
+I20260623 16:43:46.559542 23517 mpc_controller.cpp:140] GOAL Reached!
+[0m[INFO] [1782204191.430860770]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1782204191.450135792]: Requesting the map...[0m
+[0m[INFO] [1782204191.755942199]: Resizing costmap to 480 X 480 at 0.050000 m/pix[0m
+[0m[INFO] [1782204191.855633389]: Received a 480 X 480 map at 0.050000 m/pix[0m
+[0m[INFO] [1782204191.862202956]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782204191.866701861]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1782204191.894080101]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1782204191.906043483]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782204192.001838445]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782204192.006015291]:     Subscribed to Topics: [0m
+[0m[INFO] [1782204192.017943664]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782204192.096021449]: Created local_planner mpc_controller/MPCController[0m
+[0m[INFO] [1782204192.590694231]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782204192.602365955]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782204192.657837469]: odom received![0m
+... logging to /home/lcy/.ros/log/88f3e230-6ed7-11f1-8d48-48b02df90897/roslaunch-ubuntu-23463.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:44841/[0m
+[1mstarted roslaunch server http://ubuntu:36963/[0m
 
 SUMMARY
 ========
@@ -405,7 +287,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [21059][0m
+[1mprocess[move_base-1]: started with pid [23492][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
