@@ -9,8 +9,8 @@ send_mpc_speed.py
     v_right = v + ω * wheel_base / 2
 
 串口协议 (文本格式, 方便 MCU 解析):
-    V <left_mps> <right_mps>\r\n
-    例如: V 0.15 0.12\r\n
+    l:<left_mps>,r:<right_mps>\r\n
+    例如: l:0.15,r:0.12\r\n
 
 注意: 波特率必须与 read_uart.py 一致（默认 57600），
       否则会冲掉 read_uart 的串口配置。
@@ -69,7 +69,7 @@ class MpcSpeedSender:
         rospy.loginfo(f"  wheel_radius = {self.wheel_radius:.4f} m")
         rospy.loginfo(f"  wheel_base   = {self.wheel_base:.4f} m")
         rospy.loginfo(f"  差速模型: v_l = v - ω·B/2,  v_r = v + ω·B/2")
-        rospy.loginfo(f"  串口协议: V <left_mps> <right_mps>\\r\\n")
+        rospy.loginfo(f"  串口协议: l:<left_mps>,r:<right_mps>\\r\\n")
         rospy.loginfo(f"  {'串口已连接, 数据将发送到物理车' if self.serial_enabled else '串口未连接, 仅打印日志'}")
         rospy.loginfo("=" * 55)
 
@@ -103,7 +103,7 @@ class MpcSpeedSender:
         if self.ser is not None and self.ser.is_open:
             # 文本协议:  V <left_mps> <right_mps>\r\n
             # 例如 MPU 收到 "V 0.15 -0.02\r\n" 后用 sscanf 即可解析
-            cmd_str = f"V {v_left:.3f} {v_right:.3f}\r\n"
+            cmd_str = f"l:{v_left:.3f},r:{v_right:.3f}\r\n"
             try:
                 self.ser.write(cmd_str.encode("utf-8"))
                 rospy.loginfo_throttle(1.0, f"  [串口发送] {cmd_str.strip()}")
@@ -114,7 +114,7 @@ class MpcSpeedSender:
         if self.ser is not None and self.ser.is_open:
             # 停止时发送零速度
             try:
-                self.ser.write(b"V 0.000 0.000\r\n")
+                self.ser.write(b"l:0.000,r:0.000\r\n")
                 rospy.loginfo("[send_mpc] 发送零速度，关闭串口")
             except Exception:
                 pass
