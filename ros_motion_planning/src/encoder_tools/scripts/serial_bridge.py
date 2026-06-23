@@ -82,6 +82,7 @@ class SerialBridge:
         rospy.loginfo(f"[bridge] wheel_base={self.wheel_base:.4f}, wheel_radius={self.wheel_radius:.4f}")
 
     # ── 写入: /cmd_vel → 左右轮速度 → 串口 ──
+    # 注意: 确保两个轮子都有正速度，避免单轮停转产生摩擦力
     def cmd_vel_cb(self, msg):
         self.cmd_count += 1
         v = msg.linear.x
@@ -90,6 +91,18 @@ class SerialBridge:
         half_base = self.wheel_base / 2.0
         v_left  = v - w * half_base
         v_right = v + w * half_base
+
+        # 防单轮停转: 如果任一轮速过低，降低 ω 来保证两轮都正转
+        min_speed = rospy.get_param("~min_wheel_speed", 0.01)
+        if v_left < min_speed or v_right < min_speed:
+            # 根据当前 v 算出最大允许的 ω (保证两轮都 ≥ min_speed)
+            max_w = (v - min_speed) / half_base
+            if abs(w) > max_w:
+                w = max_w * (1.0 if w >= 0 else -1.0)
+                v_left  = v - w * half_base
+                v_right = v + w * half_base
+                rospy.loginfo_throttle(1.0,
+                    f"[bridge] ω 已被限制: {msg.angular.z:.3f} → {w:.3f} (防单轮停转)")
 
         cmd_str = f"l:{v_left:.3f},r:{v_right:.3f}\r\n"
         try:
