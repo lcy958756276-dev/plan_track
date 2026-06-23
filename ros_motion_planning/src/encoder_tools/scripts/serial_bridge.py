@@ -72,6 +72,12 @@ class SerialBridge:
         self.tick_count = 0
         self.cmd_count = 0
 
+        # ── 斜率检查（防 MCU 数据乱码导致位置跳变） ──
+        self.last_ltick = None
+        self.last_rtick = None
+        self.delta_hist_ltick = []
+        self.delta_hist_rtick = []
+
         rospy.loginfo("[bridge] serial_bridge 已启动 (读+写合并)")
         rospy.loginfo(f"[bridge] wheel_base={self.wheel_base:.4f}, wheel_radius={self.wheel_radius:.4f}")
 
@@ -141,8 +147,50 @@ class SerialBridge:
             except Exception as e:
                 rospy.logwarn(f"[bridge] 异常: {e}")
 
+    def _check_sanity(self, ltick, rtick):
+        """自适应斜率阈值：检查每帧变化量是否合理，防乱码跳变"""
+        if self.last_ltick is not None:
+            delta = ltick - self.last_ltick
+            if not self._delta_ok(delta, self.delta_hist_ltick, "ltick"):
+                return False
+
+        if self.last_rtick is not None:
+            delta = rtick - self.last_rtick
+            if not self._delta_ok(delta, self.delta_hist_rtick, "rtick"):
+                return False
+
+        return True
+
+    def _delta_ok(self, delta, history, name):
+        """自适应检查 delta 是否合理"""
+        if len(history) >= 3:
+            avg = sum(history) / len(history)
+            max_allowed = max(abs(avg) * 8, 30000)
+            if abs(delta) > max_allowed:
+                rospy.logwarn(f"[bridge] {name} 斜率异常: {delta} (平均 delta={avg:.0f}, 阈值={max_allowed:.0f})")
+                return False
+        else:
+            if abs(delta) > 100000:
+                rospy.logwarn(f"[bridge] {name} 首帧斜率异常: {delta}")
+                return False
+
+        history.append(delta)
+        if len(history) > 10:
+            history.pop(0)
+        return True
+
     def _publish_tick(self, ltick, rtick, raw_line):
         self.tick_count += 1
+
+        # 斜率检查：过滤异常跳变
+        if not self._check_sanity(ltick, rtick):
+            return
+
+        # 更新 last 值
+        self.last_ltick = ltick
+        self.last_rtick = rtick
+
+        # 发布
         msg = Int64MultiArray()
         msg.data = [ltick, rtick]
         self.tick_pub.publish(msg)
