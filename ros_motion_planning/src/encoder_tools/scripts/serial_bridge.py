@@ -93,8 +93,10 @@ class SerialBridge:
         v_right = v + w * half_base
 
         # 防单轮停转: 如果任一轮速过低，降低 ω 来保证两轮都正转
+        # 注意: 仅当车在运动时 (v > min_speed) 才生效，
+        #       到达终点 v≈0 时直接两轮归零，不干预
         min_speed = rospy.get_param("~min_wheel_speed", 0.01)
-        if v_left < min_speed or v_right < min_speed:
+        if v > min_speed and (v_left < min_speed or v_right < min_speed):
             # 根据当前 v 算出最大允许的 ω (保证两轮都 ≥ min_speed)
             max_w = (v - min_speed) / half_base
             if abs(w) > max_w:
