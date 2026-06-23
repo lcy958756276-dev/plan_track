@@ -1,28 +1,254 @@
-=== 启动时间: 2026年 06月 15日 星期一 19:29:32 CST ===
-[19:29:32] [1] main_generate.py start
-[19:29:33] [1] main_generate.py done
-[19:29:33] [2] use_encoder_odom flag set
-[19:29:33] [3] loading robot_description
-[19:29:33] [3] robot_description loaded
-[19:29:36] [4] starting gzserver
-[19:29:43] [4] spawn_model start
-[INFO] [1781522984.651921]: Loading model XML from ros parameter robot_description
-[INFO] [1781522984.669600]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1781522984.676359]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1781522985.443212]: Spawn status: SpawnModel: Successfully spawned entity
-[19:29:46] [4] spawn_model exit=0
+=== 启动时间: 2026年 06月 23日 星期二 15:49:56 CST ===
+[15:49:56] [1] main_generate.py start
+[15:49:56] [1] main_generate.py done
+[15:49:56] [2] use_encoder_odom flag set
+[15:49:56] [3] loading robot_description
+[15:49:57] [3] robot_description loaded
+[15:50:00] [4] starting gzserver
+[15:50:07] [4] spawn_model start
+[INFO] [1782201008.222202]: Loading model XML from ros parameter robot_description
+[INFO] [1782201008.233895]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1782201008.239743]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1782201009.012976]: Spawn status: SpawnModel: Successfully spawned entity
+[15:50:09] [4] spawn_model exit=0
+[15:50:18] [8] generating move_base launch file
+[15:50:19] [8] starting move_base via roslaunch
+  启动 move_base 前检查参数状态:
+path_planner/PathPlanner
+mpc_controller/MPCController
+- name: static_map
+  type: costmap_2d::StaticLayer
+- name: obstacle_layer
+  type: costmap_2d::ObstacleLayer
+- name: voronoi_layer
+  type: costmap_2d::VoronoiLayer
+- name: inflation_layer
+  type: costmap_2d::InflationLayer
 
-libcurl: (35) OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to fuel.ignitionrobotics.org:443 
-
-libcurl: (35) OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to fuel.gazebosim.org:443 
-[19:29:55] [8] generating move_base launch file
-[19:29:55] [8] starting move_base via roslaunch
-[31mRLException: error loading <rosparam> tag: 
-	file does not exist [/config/move_base_params.yaml]
-XML is <rosparam command="load" file="/config/move_base_params.yaml"/>[0m
-[31mThe traceback for the exception was written to the log file[0m
-... logging to /home/lcy/.ros/log/5037272c-689c-11f1-898c-48b02df90897/roslaunch-ubuntu-64240.log
+  [诊断] rospack plugins nav_core:
+path_planner /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/path_planner_plugin.xml
+mpc_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/mpc_controller/mpc_controller_plugin.xml
+lqr_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/lqr_controller/lqr_controller_plugin.xml
+orca_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/orca_controller/orca_controller_plugin.xml
+apf_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/apf_controller/apf_controller_plugin.xml
+dwa_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/dwa_controller/dwa_controller_plugin.xml
+rpp_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/rpp_controller/rpp_controller_plugin.xml
+pid_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/pid_controller/pid_controller_plugin.xml
+static_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/static_controller/static_controller_plugin.xml
+move_slow_and_clear /opt/ros/noetic/share/move_slow_and_clear/recovery_plugin.xml
+base_local_planner /opt/ros/noetic/share/base_local_planner/blp_plugin.xml
+navfn /opt/ros/noetic/share/navfn/bgp_plugin.xml
+carrot_planner /opt/ros/noetic/share/carrot_planner/bgp_plugin.xml
+dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
+global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
+rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
+clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
+[33m[WARN] [1782201021.105670006]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1782201021.108346337]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+I20260623 15:50:21.635783  9524 path_planner_factory.cpp:125] Using path planner: astar
+[33m[WARN] [1782201021.653327159]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260623 15:50:21.756978  9524 mpc_controller.cpp:92] MPC Controller initialized!
+[15:50:22] [8] move_base 启动后状态:
+  [诊断] 检查 move_base 是否存活:
+  [诊断] move_base 进程存活
+  [诊断] rostopic list | grep move_base:
+/move_base/PathPlanner/expand
+/move_base/PathPlanner/expand_updates
+/move_base/PathPlanner/key_points
+/move_base/PathPlanner/particles
+/move_base/PathPlanner/particles_array
+/move_base/PathPlanner/plan
+/move_base/PathPlanner/random_tree
+/move_base/PathPlanner/random_tree_array
+/move_base/PathPlanner/safety_corridor
+/move_base/cancel
+/move_base/current_goal
+/move_base/feedback
+/move_base/global_costmap/costmap
+/move_base/global_costmap/costmap_updates
+/move_base/global_costmap/footprint
+/move_base/global_costmap/inflation_layer/parameter_descriptions
+/move_base/global_costmap/inflation_layer/parameter_updates
+/move_base/global_costmap/obstacle_layer/parameter_descriptions
+/move_base/global_costmap/obstacle_layer/parameter_updates
+/move_base/global_costmap/parameter_descriptions
+/move_base/global_costmap/parameter_updates
+/move_base/global_costmap/static_map/parameter_descriptions
+/move_base/global_costmap/static_map/parameter_updates
+/move_base/global_costmap/voronoi_layer/parameter_descriptions
+/move_base/global_costmap/voronoi_layer/parameter_updates
+/move_base/global_costmap/voronoi_layer/voronoi_grid
+/move_base/goal
+/move_base/local_costmap/costmap
+/move_base/local_costmap/costmap_updates
+/move_base/local_costmap/footprint
+/move_base/local_costmap/inflation_layer/parameter_descriptions
+/move_base/local_costmap/inflation_layer/parameter_updates
+/move_base/local_costmap/obstacle_layer/parameter_descriptions
+/move_base/local_costmap/obstacle_layer/parameter_updates
+/move_base/local_costmap/parameter_descriptions
+/move_base/local_costmap/parameter_updates
+/move_base/parameter_descriptions
+/move_base/parameter_updates
+/move_base/recovery_status
+/move_base/result
+/move_base/status
+/move_base_simple/goal
+  [诊断] rosservice list | grep move_base:
+/move_base/PathPlanner/make_plan
+/move_base/clear_costmaps
+/move_base/get_loggers
+/move_base/global_costmap/inflation_layer/set_parameters
+/move_base/global_costmap/obstacle_layer/set_parameters
+/move_base/global_costmap/set_parameters
+/move_base/global_costmap/static_map/set_parameters
+/move_base/global_costmap/voronoi_layer/set_parameters
+/move_base/local_costmap/inflation_layer/set_parameters
+/move_base/local_costmap/obstacle_layer/set_parameters
+/move_base/local_costmap/set_parameters
+/move_base/make_plan
+/move_base/set_logger_level
+/move_base/set_parameters
+I20260623 15:50:39.748677  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:40.248598  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:40.748594  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:41.248594  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:41.748612  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:42.248627  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:42.748617  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:43.248605  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:43.748595  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:44.248624  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:44.748602  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:45.248584  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:45.748592  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:46.248588  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:46.748611  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:47.248673  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:47.749115  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:48.248601  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:48.748605  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:49.248589  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:49.748598  9535 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782201049.848739776]: Clearing both costmaps outside a square (3.00m) large centered on the robot.[0m
+I20260623 15:50:50.048625  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:50.548605  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:51.048588  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:51.548590  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:52.048596  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:52.548642  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:53.048617  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:53.548614  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:54.048597  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:54.548601  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:55.048596  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:55.548606  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:56.048606  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:56.548600  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:57.048604  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:57.548620  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:58.048605  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:58.548606  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:59.048597  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:50:59.548614  9535 mpc_controller.cpp:111] Got new plan
+I20260623 15:51:00.048604  9535 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782201060.148745195]: Rotate recovery behavior started.[0m
+[0m[INFO] [1782201021.109597900]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1782201021.121374958]: Requesting the map...[0m
+[0m[INFO] [1782201021.426310898]: Resizing costmap to 480 X 480 at 0.050000 m/pix[0m
+[0m[INFO] [1782201021.525977678]: Received a 480 X 480 map at 0.050000 m/pix[0m
+[0m[INFO] [1782201021.532875003]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782201021.536760660]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1782201021.564205871]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1782201021.570823983]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782201021.657793672]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782201021.671436396]:     Subscribed to Topics: [0m
+[0m[INFO] [1782201021.700509593]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782201021.754573289]: Created local_planner mpc_controller/MPCController[0m
+[0m[INFO] [1782201022.267499359]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782201022.280665067]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782201022.359808264]: odom received![0m
+... logging to /home/lcy/.ros/log/88f3e230-6ed7-11f1-8d48-48b02df90897/roslaunch-ubuntu-9496.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
+[1mstarted roslaunch server http://ubuntu:36629/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /move_base/PathPlanner/planner_name: astar
+ * /move_base/base_global_planner: path_planner/Path...
+ * /move_base/base_local_planner: mpc_controller/MP...
+ * /move_base/conservative_reset_dist: 3.0
+ * /move_base/controller_frequency: 10.0
+ * /move_base/controller_patience: 15.0
+ * /move_base/global_costmap/cost_scaling_factor: 2.0
+ * /move_base/global_costmap/footprint: [[-0.21, -0.165],...
+ * /move_base/global_costmap/footprint_padding: 0.1
+ * /move_base/global_costmap/global_frame: map
+ * /move_base/global_costmap/inflation_layer/cost_scaling_factor: 2.0
+ * /move_base/global_costmap/inflation_layer/enabled: True
+ * /move_base/global_costmap/inflation_layer/inflation_radius: 0.8
+ * /move_base/global_costmap/inflation_radius: 0.8
+ * /move_base/global_costmap/map_type: costmap
+ * /move_base/global_costmap/meter_scoring: True
+ * /move_base/global_costmap/obstacle_layer/observation_sources: scan
+ * /move_base/global_costmap/obstacle_layer/scan/clearing: True
+ * /move_base/global_costmap/obstacle_layer/scan/data_type: LaserScan
+ * /move_base/global_costmap/obstacle_layer/scan/expected_update_rate: 0.8
+ * /move_base/global_costmap/obstacle_layer/scan/inf_is_valid: True
+ * /move_base/global_costmap/obstacle_layer/scan/marking: True
+ * /move_base/global_costmap/obstacle_layer/scan/max_obstacle_height: 0.8
+ * /move_base/global_costmap/obstacle_layer/scan/min_obstacle_height: 0.0
+ * /move_base/global_costmap/obstacle_layer/scan/observation_persistence: 0.0
+ * /move_base/global_costmap/obstacle_layer/scan/obstacle_range: 2.5
+ * /move_base/global_costmap/obstacle_layer/scan/raytrace_range: 3.0
+ * /move_base/global_costmap/obstacle_layer/scan/sensor_frame: base_footprint
+ * /move_base/global_costmap/obstacle_layer/scan/topic: /scan_fixed
+ * /move_base/global_costmap/origin_z: 0.0
+ * /move_base/global_costmap/plugins: [{'name': 'static...
+ * /move_base/global_costmap/publish_frequency: 1.0
+ * /move_base/global_costmap/publish_voxel_map: False
+ * /move_base/global_costmap/robot_base_frame: base_footprint
+ * /move_base/global_costmap/static_map/clear_time: 20
+ * /move_base/global_costmap/static_map/enabled: True
+ * /move_base/global_costmap/static_map/publish_static_map: True
+ * /move_base/global_costmap/transform_tolerance: 0.5
+ * /move_base/global_costmap/update_frequency: 2.0
+ * /move_base/global_costmap/z_resolution: 1
+ * /move_base/global_costmap/z_voxels: 2
+ * /move_base/local_costmap/global_frame: odom
+ * /move_base/local_costmap/height: 3
+ * /move_base/local_costmap/inflation_radius: 3.0
+ * /move_base/local_costmap/plugins: [{'name': 'obstac...
+ * /move_base/local_costmap/publish_frequency: 1.0
+ * /move_base/local_costmap/resolution: 0.05
+ * /move_base/local_costmap/robot_base_frame: base_footprint
+ * /move_base/local_costmap/rolling_window: True
+ * /move_base/local_costmap/static_map: False
+ * /move_base/local_costmap/transform_tolerance: 0.5
+ * /move_base/local_costmap/update_frequency: 2.0
+ * /move_base/local_costmap/width: 3
+ * /move_base/oscillation_distance: 0.2
+ * /move_base/oscillation_timeout: 10.0
+ * /move_base/planner_frequency: 2.0
+ * /move_base/planner_patience: 5.0
+ * /move_base/shutdown_costmaps: False
+ * /rosdistro: noetic
+ * /rosversion: 1.17.0
+
+NODES
+  /
+    move_base (move_base/move_base)
+
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/tmp/move_base_debug.launch http://localhost:11311
+[1mprocess[move_base-1]: started with pid [9524][0m
+[move_base-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
