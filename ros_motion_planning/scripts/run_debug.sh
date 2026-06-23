@@ -55,11 +55,11 @@ echo "  /tmp/.use_encoder_odom → Gazebo diff_drive 将跳过 odom TF"
 echo "[3/8] 加载 robot_description + 启动核心节点 ..."
 echo "[$(date +%H:%M:%S)] [3] loading robot_description" >> "$LOG_DIR/run.log"
 
-# 从 xacro 加载 robot description（传 use_encoder_odom:=true）
-ROBOT_XACRO="$WORKSPACE_DIR/src/sim_env/urdf/turtlebot3_waffle/turtlebot3_waffle.xacro"
-rosparam set robot_description "$(xacro --inorder "$ROBOT_XACRO" use_encoder_odom:=true)"
+# 加载 SolidWorks 导出的自定义车模型 URDF
+ROBOT_URDF="$WORKSPACE_DIR/src/sim_env/urdf/my_car/my_car.urdf"
+rosparam set robot_description "$(cat "$ROBOT_URDF")"
 echo "[$(date +%H:%M:%S)] [3] robot_description loaded" >> "$LOG_DIR/run.log"
-echo "  robot_description 已加载（物理车模式 → publishOdomTF=false）"
+echo "  robot_description 已加载（自定义车模型）"
 
 # robot_state_publisher（发布 URDF 中固定关节的 TF：base_footprint → base_link → ...）
 rosrun robot_state_publisher robot_state_publisher \
@@ -211,13 +211,13 @@ cat > "$MB_LAUNCH" << MBEOF
     <rosparam command="load" file="$SIM_ENV_DIR/config/move_base_params.yaml"/>
 
     <!-- 全局 costmap（用 robot-specific 文件，不含 global_costmap: 外层键） -->
-    <rosparam command="load" file="$SIM_ENV_DIR/config/robots/turtlebot3_waffle/global_costmap_params_turtlebot3_waffle.yaml" ns="global_costmap"/>
+    <rosparam command="load" file="$SIM_ENV_DIR/config/robots/my_car/global_costmap_params_my_car.yaml" ns="global_costmap"/>
     <!-- 全局 costmap 插件（含 global_costmap: 外层键 → 加载后自动在 /move_base/global_costmap/ 下） -->
     <rosparam command="load" file="$SIM_ENV_DIR/config/costmap/global_costmap_plugins.yaml"/>
     <param name="global_costmap/obstacle_layer/scan/topic" value="/scan_fixed"/>
 
     <!-- 局部 costmap（用 robot-specific 文件） -->
-    <rosparam command="load" file="$SIM_ENV_DIR/config/robots/turtlebot3_waffle/local_costmap_params_turtlebot3_waffle.yaml" ns="local_costmap"/>
+    <rosparam command="load" file="$SIM_ENV_DIR/config/robots/my_car/local_costmap_params_my_car.yaml" ns="local_costmap"/>
     <rosparam ns="local_costmap" command="load">
       plugins:
         - {name: obstacle_layer, type: 'costmap_2d::ObstacleLayer'}
