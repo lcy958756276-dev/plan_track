@@ -61,11 +61,17 @@ rosparam set robot_description "$(cat "$ROBOT_URDF")"
 echo "[$(date +%H:%M:%S)] [3] robot_description loaded" >> "$LOG_DIR/run.log"
 echo "  robot_description 已加载（自定义车模型）"
 
-# robot_state_publisher（发布 URDF 中固定关节的 TF：base_footprint → base_link → ...）
+# robot_state_publisher（发布 URDF 中固定关节的 TF：base_footprint → base_link → base_scan）
 rosrun robot_state_publisher robot_state_publisher \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_RSP=$!
 echo "  robot_state_publisher PID=$PID_RSP"
+
+# joint_state_publisher（发布轮子关节状态，让机器人模型显示轮子）
+rosrun joint_state_publisher joint_state_publisher \
+    >> "$LOG_DIR/run.log" 2>&1 &
+PID_JSP=$!
+echo "  joint_state_publisher PID=$PID_JSP"
 
 sleep 1
 
@@ -261,6 +267,7 @@ sleep 1
 # 保存 PID
 echo "$PID_MAP"      > "$LOG_DIR/.pid_map"
 echo "$PID_RSP"      > "$LOG_DIR/.pid_rsp"
+echo "$PID_JSP"      > "$LOG_DIR/.pid_jsp"
 echo "$PID_TF"       > "$LOG_DIR/.pid_tf"
 echo "$PID_GZSERVER" > "$LOG_DIR/.pid_gzserver"
 echo "$PID_GZCLIENT" > "$LOG_DIR/.pid_gzclient"
