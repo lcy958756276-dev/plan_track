@@ -1,45 +1,31 @@
-=== 启动时间: 2026年 06月 23日 星期二 23:37:46 CST ===
-[23:37:46] [1] main_generate.py start
-[23:37:47] [1] main_generate.py done
-[23:37:47] [2] use_encoder_odom flag set
-[23:37:47] [3] loading robot_description
-[23:37:47] [3] robot_description loaded
-[31m[ERROR] [1782229068.366586838]: Could not find parameter robot_description on parameter server[0m
-[23:37:50] [4] starting gzserver
-[23:37:57] [4] spawn_model start
-[INFO] [1782229078.522863, 0.000000]: Loading model XML from ros parameter robot_description
-Traceback (most recent call last):
-  File "/opt/ros/noetic/lib/gazebo_ros/spawn_model", line 239, in <module>
-    exit_code = sm.run()
-  File "/opt/ros/noetic/lib/gazebo_ros/spawn_model", line 132, in run
-    model_xml = rospy.get_param(self.args.param)
-  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/client.py", line 467, in get_param
-    return _param_server[param_name] #MasterProxy does all the magic for us
-  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/msproxy.py", line 123, in __getitem__
-    raise KeyError(key)
-KeyError: 'robot_description'
-[23:37:59] [4] spawn_model exit=1
-[31m[ERROR] [1782229088.167520442]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229088.255540188]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229088.354593185]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229088.456458205]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229088.552141966]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229088.653246102]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229088.753718201]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[23:38:08] [8] generating move_base launch file
-[23:38:08] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 06月 23日 星期二 23:41:37 CST ===
+[23:41:37] [1] main_generate.py start
+[23:41:38] [1] main_generate.py done
+[23:41:38] [2] use_encoder_odom flag set
+[23:41:38] [3] loading robot_description
+[23:41:38] [3] robot_description loaded
+[23:41:41] [4] starting gzserver
+[23:41:48] [4] spawn_model start
+[INFO] [1782229309.433117]: Loading model XML from ros parameter robot_description
+[INFO] [1782229309.441607]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1782229309.450579]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1782229309.647566]: Spawn status: SpawnModel: Successfully spawned entity
+[23:41:50] [4] spawn_model exit=0
+[23:41:59] [8] generating move_base launch file
+[23:41:59] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
-[31m[ERROR] [1782229088.852833221]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229088.953899337]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-  [诊断] base_global_planner 参数未设置
-[31m[ERROR] [1782229089.052635211]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229089.152154820]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-  [诊断] base_local_planner 参数未设置
-[31m[ERROR] [1782229089.252812443]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229089.352357687]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-  [诊断] global_costmap/plugins 参数未设置
+path_planner/PathPlanner
+mpc_controller/MPCController
+- name: static_map
+  type: costmap_2d::StaticLayer
+- name: obstacle_layer
+  type: costmap_2d::ObstacleLayer
+- name: voronoi_layer
+  type: costmap_2d::VoronoiLayer
+- name: inflation_layer
+  type: costmap_2d::InflationLayer
+
   [诊断] rospack plugins nav_core:
-[31m[ERROR] [1782229089.452381415]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
 path_planner /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/path_planner_plugin.xml
 mpc_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/mpc_controller/mpc_controller_plugin.xml
 lqr_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/lqr_controller/lqr_controller_plugin.xml
@@ -57,58 +43,18 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[31m[ERROR] [1782229089.553045023]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229089.652293946]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229089.752513376]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229089.852256274]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229089.955154400]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229090.053514329]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229090.152227769]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229090.252827657]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229090.353555879]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229090.455084030]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229090.554081438]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229090.654806524]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229090.753285922]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229090.863929128]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229090.952059990]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229090.990110180]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1782229090.992553939]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
-[31m[ERROR] [1782229091.053045297]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229091.151981258]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229091.251956661]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229091.352465627]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229091.466084939]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
+[33m[WARN] [1782229322.491791769]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1782229322.493975536]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260623 23:38:11.467581 72879 path_planner_factory.cpp:125] Using path planner: astar
-[33m[WARN] [1782229091.492473648]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[31m[ERROR] [1782229091.552611272]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-I20260623 23:38:11.582805 72879 mpc_controller.cpp:92] MPC Controller initialized!
-[31m[ERROR] [1782229091.654836172]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229091.752049638]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229091.852188899]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229091.952550905]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229092.052239653]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229092.152380354]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229092.252044491]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229092.354703935]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229092.434007357]: The /scan_fixed observation buffer has not been updated for 1.10 seconds, and it should be updated every 0.80 seconds.[0m
-[31m[ERROR] [1782229092.454202870]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[23:38:12] [8] move_base 启动后状态:
+I20260623 23:42:03.015187 74667 path_planner_factory.cpp:125] Using path planner: astar
+[33m[WARN] [1782229323.035672890]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260623 23:42:03.220417 74667 mpc_controller.cpp:92] MPC Controller initialized!
+[23:42:03] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
-[31m[ERROR] [1782229092.553268029]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229092.652252890]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229092.752570252]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229092.852272921]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229092.933935100]: The /scan_fixed observation buffer has not been updated for 1.60 seconds, and it should be updated every 0.80 seconds.[0m
-[31m[ERROR] [1782229092.952421975]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229093.052801455]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229093.152697298]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229093.253579713]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229093.352226042]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229093.433942915]: The /scan_fixed observation buffer has not been updated for 2.10 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229323.969151176]: The /scan_fixed observation buffer has not been updated for 1.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229324.469095598]: The /scan_fixed observation buffer has not been updated for 1.62 seconds, and it should be updated every 0.80 seconds.[0m
 /move_base/PathPlanner/expand
 /move_base/PathPlanner/expand_updates
 /move_base/PathPlanner/key_points
@@ -152,15 +98,8 @@ I20260623 23:38:11.582805 72879 mpc_controller.cpp:92] MPC Controller initialize
 /move_base/status
 /move_base_simple/goal
   [诊断] rosservice list | grep move_base:
-[31m[ERROR] [1782229093.452613427]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229093.552545209]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229093.652805860]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229093.752212977]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229093.852774589]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229093.933933832]: The /scan_fixed observation buffer has not been updated for 2.60 seconds, and it should be updated every 0.80 seconds.[0m
-[31m[ERROR] [1782229093.952890712]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229094.055482564]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229094.152467781]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
+[33m[WARN] [1782229324.969154789]: The /scan_fixed observation buffer has not been updated for 2.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229325.469030140]: The /scan_fixed observation buffer has not been updated for 2.62 seconds, and it should be updated every 0.80 seconds.[0m
 /move_base/PathPlanner/make_plan
 /move_base/clear_costmaps
 /move_base/get_loggers
@@ -175,248 +114,257 @@ I20260623 23:38:11.582805 72879 mpc_controller.cpp:92] MPC Controller initialize
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-[31m[ERROR] [1782229094.252169426]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229094.352377143]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229094.433935022]: The /scan_fixed observation buffer has not been updated for 3.10 seconds, and it should be updated every 0.80 seconds.[0m
-[31m[ERROR] [1782229094.452654628]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229094.560348900]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229094.652199309]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229094.753716835]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229094.856972281]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229094.933937429]: The /scan_fixed observation buffer has not been updated for 3.60 seconds, and it should be updated every 0.80 seconds.[0m
-[31m[ERROR] [1782229094.953222825]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229095.052277614]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229095.153171071]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229095.252870380]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229095.362716314]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229095.433938043]: The /scan_fixed observation buffer has not been updated for 4.10 seconds, and it should be updated every 0.80 seconds.[0m
-[31m[ERROR] [1782229095.476913130]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229095.556875537]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229095.653116415]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229095.759095906]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229095.853985179]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229095.933935425]: The /scan_fixed observation buffer has not been updated for 4.60 seconds, and it should be updated every 0.80 seconds.[0m
-[31m[ERROR] [1782229095.953510549]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229096.057413747]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229096.152579658]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229096.256056601]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229096.354494106]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229096.433938184]: The /scan_fixed observation buffer has not been updated for 5.10 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229096.434127709]: The scan_real observation buffer has not been updated for 5.08 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229096.453451605]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229096.554826939]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229096.652650808]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229096.753046802]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229096.854141465]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229096.933933837]: The /scan_fixed observation buffer has not been updated for 5.60 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229096.934110561]: The scan_real observation buffer has not been updated for 5.58 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229096.954433223]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229097.053033659]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229097.152423237]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229097.252827616]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229097.352160868]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229097.433956022]: The /scan_fixed observation buffer has not been updated for 6.10 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229097.434122729]: The scan_real observation buffer has not been updated for 6.08 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229097.453843981]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229097.556364945]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229097.652304478]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229097.752436155]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229097.852125383]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229097.933953084]: The /scan_fixed observation buffer has not been updated for 6.60 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229097.934124911]: The scan_real observation buffer has not been updated for 6.58 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229097.953015191]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229098.053970479]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229098.152191992]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229098.252050263]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229098.352901251]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229098.433925887]: The /scan_fixed observation buffer has not been updated for 7.10 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229098.434100435]: The scan_real observation buffer has not been updated for 7.08 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229098.452390328]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229098.552551832]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229098.653754923]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229098.752235537]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229098.852225854]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229098.933952264]: The /scan_fixed observation buffer has not been updated for 7.60 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229098.934156255]: The scan_real observation buffer has not been updated for 7.58 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229098.954439073]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229099.052977133]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229099.153561212]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229099.251745217]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229099.353104678]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229099.433948942]: The /scan_fixed observation buffer has not been updated for 8.10 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229099.434169959]: The scan_real observation buffer has not been updated for 8.08 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229099.452083043]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229099.553311193]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229099.653115697]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229099.753204297]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229099.852244813]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229099.933957814]: The /scan_fixed observation buffer has not been updated for 8.60 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229099.934170733]: The scan_real observation buffer has not been updated for 8.58 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229099.952049605]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229100.053197874]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229100.154279544]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229100.252764991]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229100.352421863]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229100.433946811]: The /scan_fixed observation buffer has not been updated for 9.10 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229100.434156498]: The scan_real observation buffer has not been updated for 9.08 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229100.452318025]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229100.552890583]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229100.666636276]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229100.755878909]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229100.861528284]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229100.934030186]: The /scan_fixed observation buffer has not been updated for 9.60 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229100.934215454]: The scan_real observation buffer has not been updated for 9.58 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229100.953193936]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229101.054495182]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229101.153994565]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229101.253718708]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229101.353756935]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229101.433962217]: The /scan_fixed observation buffer has not been updated for 10.10 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229101.434200227]: The scan_real observation buffer has not been updated for 10.08 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229101.453214937]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229101.552135056]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229101.652591408]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229101.752869213]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229101.852002987]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229101.933940845]: The /scan_fixed observation buffer has not been updated for 10.60 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229101.934132354]: The scan_real observation buffer has not been updated for 10.58 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229101.952907901]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229102.053684257]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229102.151920748]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229102.252201113]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229102.351907687]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229102.433948532]: The /scan_fixed observation buffer has not been updated for 11.10 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229102.434186670]: The scan_real observation buffer has not been updated for 11.08 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229102.452526457]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229102.551999053]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229102.652021950]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229102.751881948]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229102.859093639]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229102.933919447]: The /scan_fixed observation buffer has not been updated for 11.60 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229102.934095146]: The scan_real observation buffer has not been updated for 11.58 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229102.953933787]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229103.053403342]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229103.152456692]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229103.252719807]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229103.352381320]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229103.433933278]: The /scan_fixed observation buffer has not been updated for 12.10 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229103.434132084]: The scan_real observation buffer has not been updated for 12.08 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229103.454726745]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229103.552035549]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229103.652132310]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229103.751763484]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229103.852231325]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229103.933947302]: The /scan_fixed observation buffer has not been updated for 12.60 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229103.934222757]: The scan_real observation buffer has not been updated for 12.58 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229103.952584690]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229104.052900003]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229104.152129436]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229104.253665588]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229104.352963764]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229104.433952429]: The /scan_fixed observation buffer has not been updated for 13.10 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229104.434188135]: The scan_real observation buffer has not been updated for 13.08 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229104.453266052]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229104.552436662]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229104.651764410]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229104.751716067]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229104.851776856]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229104.933938994]: The /scan_fixed observation buffer has not been updated for 13.60 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229104.934147785]: The scan_real observation buffer has not been updated for 13.58 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229104.952087592]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229105.052279723]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229105.152283002]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229105.253680354]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229105.352239473]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229105.433924022]: The /scan_fixed observation buffer has not been updated for 14.10 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229105.434090473]: The scan_real observation buffer has not been updated for 14.08 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229105.452343530]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229105.552043703]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229105.652062407]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229105.752076663]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229105.851791174]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229105.933982115]: The /scan_fixed observation buffer has not been updated for 14.60 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229105.934235455]: The scan_real observation buffer has not been updated for 14.58 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229105.951975240]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229106.053766652]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229106.152397811]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229106.253758647]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229106.351640987]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229106.433968264]: The /scan_fixed observation buffer has not been updated for 15.10 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229106.434257000]: The scan_real observation buffer has not been updated for 15.08 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229106.454620051]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229106.552407404]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229106.652357525]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229106.752221075]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229106.852390740]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229106.933944811]: The /scan_fixed observation buffer has not been updated for 15.60 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229106.934188806]: The scan_real observation buffer has not been updated for 15.58 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229106.952125925]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229107.051674305]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229107.152042744]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229107.252694478]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229107.352090105]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229107.433917583]: The /scan_fixed observation buffer has not been updated for 16.10 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229107.434098883]: The scan_real observation buffer has not been updated for 16.08 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229107.452221078]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229107.552454942]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229107.652397125]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229107.752617132]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229107.852245073]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229107.933923605]: The /scan_fixed observation buffer has not been updated for 16.60 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229107.934111402]: The scan_real observation buffer has not been updated for 16.58 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229107.952406865]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229108.052347672]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229108.152194133]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229108.252117627]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229108.351844395]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229108.433918395]: The /scan_fixed observation buffer has not been updated for 17.10 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229108.434103952]: The scan_real observation buffer has not been updated for 17.08 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229108.452384916]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229108.552285431]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229108.652294182]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229108.752307478]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229108.852352073]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229108.933928322]: The /scan_fixed observation buffer has not been updated for 17.60 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229108.934129209]: The scan_real observation buffer has not been updated for 17.58 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229108.952325780]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229109.052198932]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229109.151851484]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229109.252012956]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229109.352216160]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229109.433932809]: The /scan_fixed observation buffer has not been updated for 18.10 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229109.434099356]: The scan_real observation buffer has not been updated for 18.08 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229109.452418629]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229109.551516975]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229109.651965935]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229109.752239387]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229109.852513063]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[33m[WARN] [1782229109.933923886]: The /scan_fixed observation buffer has not been updated for 18.60 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782229109.934097250]: The scan_real observation buffer has not been updated for 18.58 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782229109.953087157]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229110.053516722]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229110.160297550]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[31m[ERROR] [1782229110.261017195]: Updating ModelState: model [turtlebot3_waffle] does not exist[0m
-[0m[INFO] [1782229090.994695039]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1782229091.006009282]: Requesting the map...[0m
-[0m[INFO] [1782229091.210752362]: Resizing costmap to 480 X 480 at 0.050000 m/pix[0m
-[0m[INFO] [1782229091.310464729]: Received a 480 X 480 map at 0.050000 m/pix[0m
-[0m[INFO] [1782229091.316433836]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782229091.320580631]:     Subscribed to Topics: scan scan_real[0m
-[0m[INFO] [1782229091.375526801]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1782229091.384825044]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782229091.494775566]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782229091.498779241]:     Subscribed to Topics: [0m
-[0m[INFO] [1782229091.510071017]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782229091.579757312]: Created local_planner mpc_controller/MPCController[0m
-[0m[INFO] [1782229092.083189922]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782229092.093708365]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782229092.139905631]: odom received![0m
-... logging to /home/lcy/.ros/log/6dc98d9c-6f19-11f1-9c5c-48b02df90897/roslaunch-ubuntu-72806.log
+[33m[WARN] [1782229325.969045035]: The /scan_fixed observation buffer has not been updated for 3.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229326.469037858]: The /scan_fixed observation buffer has not been updated for 3.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229326.969041250]: The /scan_fixed observation buffer has not been updated for 4.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229327.469089444]: The /scan_fixed observation buffer has not been updated for 4.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229327.969064839]: The /scan_fixed observation buffer has not been updated for 5.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229327.969264065]: The scan_real observation buffer has not been updated for 5.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229328.469043922]: The /scan_fixed observation buffer has not been updated for 5.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229328.469305652]: The scan_real observation buffer has not been updated for 5.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229328.969037933]: The /scan_fixed observation buffer has not been updated for 6.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229328.969241320]: The scan_real observation buffer has not been updated for 6.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229329.469037114]: The /scan_fixed observation buffer has not been updated for 6.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229329.469249174]: The scan_real observation buffer has not been updated for 6.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229329.969033497]: The /scan_fixed observation buffer has not been updated for 7.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229329.969256918]: The scan_real observation buffer has not been updated for 7.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229330.469021998]: The /scan_fixed observation buffer has not been updated for 7.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229330.469226153]: The scan_real observation buffer has not been updated for 7.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229330.969100772]: The /scan_fixed observation buffer has not been updated for 8.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229330.969365254]: The scan_real observation buffer has not been updated for 8.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229331.469022370]: The /scan_fixed observation buffer has not been updated for 8.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229331.469195640]: The scan_real observation buffer has not been updated for 8.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229331.969023905]: The /scan_fixed observation buffer has not been updated for 9.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229331.969210137]: The scan_real observation buffer has not been updated for 9.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229332.469044321]: The /scan_fixed observation buffer has not been updated for 9.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229332.469266205]: The scan_real observation buffer has not been updated for 9.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229332.969042841]: The /scan_fixed observation buffer has not been updated for 10.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229332.969300505]: The scan_real observation buffer has not been updated for 10.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229333.469036878]: The /scan_fixed observation buffer has not been updated for 10.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229333.469243592]: The scan_real observation buffer has not been updated for 10.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229333.969128940]: The /scan_fixed observation buffer has not been updated for 11.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229333.969355689]: The scan_real observation buffer has not been updated for 11.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229334.469029295]: The /scan_fixed observation buffer has not been updated for 11.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229334.469221767]: The scan_real observation buffer has not been updated for 11.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229334.969024828]: The /scan_fixed observation buffer has not been updated for 12.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229334.969209363]: The scan_real observation buffer has not been updated for 12.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229335.469020514]: The /scan_fixed observation buffer has not been updated for 12.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229335.469218043]: The scan_real observation buffer has not been updated for 12.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229335.969015561]: The /scan_fixed observation buffer has not been updated for 13.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229335.969231652]: The scan_real observation buffer has not been updated for 13.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229336.469019524]: The /scan_fixed observation buffer has not been updated for 13.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229336.469210940]: The scan_real observation buffer has not been updated for 13.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229336.969028195]: The /scan_fixed observation buffer has not been updated for 14.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229336.969218490]: The scan_real observation buffer has not been updated for 14.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229337.469028044]: The /scan_fixed observation buffer has not been updated for 14.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229337.469212419]: The scan_real observation buffer has not been updated for 14.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229337.969020473]: The /scan_fixed observation buffer has not been updated for 15.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229337.969201231]: The scan_real observation buffer has not been updated for 15.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229338.469032332]: The /scan_fixed observation buffer has not been updated for 15.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229338.469242597]: The scan_real observation buffer has not been updated for 15.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229338.969025730]: The /scan_fixed observation buffer has not been updated for 16.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229338.969200951]: The scan_real observation buffer has not been updated for 16.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229339.469019253]: The /scan_fixed observation buffer has not been updated for 16.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229339.469199947]: The scan_real observation buffer has not been updated for 16.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229339.969018701]: The /scan_fixed observation buffer has not been updated for 17.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229339.969198403]: The scan_real observation buffer has not been updated for 17.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229340.469063355]: The /scan_fixed observation buffer has not been updated for 17.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229340.469324826]: The scan_real observation buffer has not been updated for 17.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229340.969026405]: The /scan_fixed observation buffer has not been updated for 18.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229340.969211132]: The scan_real observation buffer has not been updated for 18.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229341.469038937]: The /scan_fixed observation buffer has not been updated for 18.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229341.469226608]: The scan_real observation buffer has not been updated for 18.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229341.969040532]: The /scan_fixed observation buffer has not been updated for 19.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229341.969242252]: The scan_real observation buffer has not been updated for 19.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229342.469058214]: The /scan_fixed observation buffer has not been updated for 19.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229342.469236859]: The scan_real observation buffer has not been updated for 19.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229342.969088227]: The /scan_fixed observation buffer has not been updated for 20.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229342.969358179]: The scan_real observation buffer has not been updated for 20.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229343.469036505]: The /scan_fixed observation buffer has not been updated for 20.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229343.469232881]: The scan_real observation buffer has not been updated for 20.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229343.969090730]: The /scan_fixed observation buffer has not been updated for 21.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229343.969332135]: The scan_real observation buffer has not been updated for 21.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229344.469034209]: The /scan_fixed observation buffer has not been updated for 21.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229344.469253851]: The scan_real observation buffer has not been updated for 21.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229344.969085555]: The /scan_fixed observation buffer has not been updated for 22.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229344.969270761]: The scan_real observation buffer has not been updated for 22.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229345.469089633]: The /scan_fixed observation buffer has not been updated for 22.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229345.469348416]: The scan_real observation buffer has not been updated for 22.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229345.969085566]: The /scan_fixed observation buffer has not been updated for 23.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229345.969334684]: The scan_real observation buffer has not been updated for 23.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229346.469049448]: The /scan_fixed observation buffer has not been updated for 23.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229346.469229725]: The scan_real observation buffer has not been updated for 23.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229346.969006273]: The /scan_fixed observation buffer has not been updated for 24.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229346.969205592]: The scan_real observation buffer has not been updated for 24.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229347.469063138]: The /scan_fixed observation buffer has not been updated for 24.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229347.469315680]: The scan_real observation buffer has not been updated for 24.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229347.969075120]: The /scan_fixed observation buffer has not been updated for 25.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229347.969355153]: The scan_real observation buffer has not been updated for 25.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229348.469090408]: The /scan_fixed observation buffer has not been updated for 25.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229348.469347494]: The scan_real observation buffer has not been updated for 25.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229348.969113875]: The /scan_fixed observation buffer has not been updated for 26.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229348.969337197]: The scan_real observation buffer has not been updated for 26.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229349.469048648]: The /scan_fixed observation buffer has not been updated for 26.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229349.469645741]: The scan_real observation buffer has not been updated for 26.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229349.969056409]: The /scan_fixed observation buffer has not been updated for 27.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229349.969304086]: The scan_real observation buffer has not been updated for 27.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229350.469064681]: The /scan_fixed observation buffer has not been updated for 27.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229350.469298244]: The scan_real observation buffer has not been updated for 27.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229350.969149879]: The /scan_fixed observation buffer has not been updated for 28.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229350.969410965]: The scan_real observation buffer has not been updated for 28.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229351.469089564]: The /scan_fixed observation buffer has not been updated for 28.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229351.469271825]: The scan_real observation buffer has not been updated for 28.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229351.969054266]: The /scan_fixed observation buffer has not been updated for 29.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229351.970511170]: The scan_real observation buffer has not been updated for 29.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229352.469078545]: The /scan_fixed observation buffer has not been updated for 29.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229352.469265351]: The scan_real observation buffer has not been updated for 29.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229352.969086204]: The /scan_fixed observation buffer has not been updated for 30.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229352.969347194]: The scan_real observation buffer has not been updated for 30.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229353.469027931]: The /scan_fixed observation buffer has not been updated for 30.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229353.469212368]: The scan_real observation buffer has not been updated for 30.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782229353.969034551]: The /scan_fixed observation buffer has not been updated for 31.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229353.969216748]: The scan_real observation buffer has not been updated for 31.10 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:34.238376 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229354.469348571]: The /scan_fixed observation buffer has not been updated for 31.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229354.469595255]: The scan_real observation buffer has not been updated for 31.60 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:34.738346 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229354.969624145]: The /scan_fixed observation buffer has not been updated for 32.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229354.969844554]: The scan_real observation buffer has not been updated for 32.10 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:35.238330 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229355.469374038]: The /scan_fixed observation buffer has not been updated for 32.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229355.469616018]: The scan_real observation buffer has not been updated for 32.60 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:35.738343 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229355.969094095]: The /scan_fixed observation buffer has not been updated for 33.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229355.969298823]: The scan_real observation buffer has not been updated for 33.10 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:36.238327 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229356.469061112]: The /scan_fixed observation buffer has not been updated for 33.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229356.469260046]: The scan_real observation buffer has not been updated for 33.60 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:36.738304 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229356.969028248]: The /scan_fixed observation buffer has not been updated for 34.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229356.969221966]: The scan_real observation buffer has not been updated for 34.10 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:37.238308 74677 mpc_controller.cpp:111] Got new plan
+
+libcurl: (35) OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to fuel.gazebosim.org:443 
+[33m[WARN] [1782229357.469126305]: The /scan_fixed observation buffer has not been updated for 34.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229357.474192930]: The scan_real observation buffer has not been updated for 34.60 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:37.738353 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229357.969091475]: The /scan_fixed observation buffer has not been updated for 35.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229357.969338160]: The scan_real observation buffer has not been updated for 35.10 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:38.238328 74677 mpc_controller.cpp:111] Got new plan
+W20260623 23:42:38.251034 74677 mpc_controller.cpp:413] failed optimization status: primal infeasible
+[33m[WARN] [1782229358.469083177]: The /scan_fixed observation buffer has not been updated for 35.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229358.469345287]: The scan_real observation buffer has not been updated for 35.60 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:38.738349 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229358.969136126]: The /scan_fixed observation buffer has not been updated for 36.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229358.969382362]: The scan_real observation buffer has not been updated for 36.10 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:39.238322 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229359.469123858]: The /scan_fixed observation buffer has not been updated for 36.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229359.469319816]: The scan_real observation buffer has not been updated for 36.60 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:39.738319 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229359.969032727]: The /scan_fixed observation buffer has not been updated for 37.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229359.969239886]: The scan_real observation buffer has not been updated for 37.10 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:40.238317 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229360.469057556]: The /scan_fixed observation buffer has not been updated for 37.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229360.469354325]: The scan_real observation buffer has not been updated for 37.60 seconds, and it should be updated every 5.00 seconds.[0m
+W20260623 23:42:40.649828 74677 mpc_controller.cpp:413] failed optimization status: primal infeasible
+I20260623 23:42:40.739267 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229360.969024484]: The /scan_fixed observation buffer has not been updated for 38.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229360.969206201]: The scan_real observation buffer has not been updated for 38.10 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:41.238296 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229361.469123477]: The /scan_fixed observation buffer has not been updated for 38.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229361.469752636]: The scan_real observation buffer has not been updated for 38.60 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:41.738306 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229361.969029161]: The /scan_fixed observation buffer has not been updated for 39.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229361.969207133]: The scan_real observation buffer has not been updated for 39.10 seconds, and it should be updated every 5.00 seconds.[0m
+W20260623 23:42:42.046459 74677 mpc_controller.cpp:413] failed optimization status: primal infeasible
+I20260623 23:42:42.238325 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229362.469537400]: The /scan_fixed observation buffer has not been updated for 39.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229362.469716844]: The scan_real observation buffer has not been updated for 39.60 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:42.738312 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229362.969018253]: The /scan_fixed observation buffer has not been updated for 40.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229362.969198145]: The scan_real observation buffer has not been updated for 40.10 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:43.238493 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229363.469025912]: The /scan_fixed observation buffer has not been updated for 40.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229363.469196715]: The scan_real observation buffer has not been updated for 40.60 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:43.738308 74677 mpc_controller.cpp:111] Got new plan
+W20260623 23:42:43.749187 74677 mpc_controller.cpp:413] failed optimization status: primal infeasible
+[33m[WARN] [1782229363.969069090]: The /scan_fixed observation buffer has not been updated for 41.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229363.969310301]: The scan_real observation buffer has not been updated for 41.10 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:44.238291 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229364.469042051]: The /scan_fixed observation buffer has not been updated for 41.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229364.469221079]: The scan_real observation buffer has not been updated for 41.60 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:44.738471 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229364.969028513]: The /scan_fixed observation buffer has not been updated for 42.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229364.969247738]: The scan_real observation buffer has not been updated for 42.10 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:45.238343 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229365.469035044]: The /scan_fixed observation buffer has not been updated for 42.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229365.469221625]: The scan_real observation buffer has not been updated for 42.60 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:45.738276 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229365.969082439]: The /scan_fixed observation buffer has not been updated for 43.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229365.969346052]: The scan_real observation buffer has not been updated for 43.10 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:46.238297 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229366.469075530]: The /scan_fixed observation buffer has not been updated for 43.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229366.469336008]: The scan_real observation buffer has not been updated for 43.60 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:46.738296 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229366.969028005]: The /scan_fixed observation buffer has not been updated for 44.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229366.969186327]: The scan_real observation buffer has not been updated for 44.10 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:47.238297 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229367.469080662]: The /scan_fixed observation buffer has not been updated for 44.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229367.469298382]: The scan_real observation buffer has not been updated for 44.60 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:47.738271 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229367.969021718]: The /scan_fixed observation buffer has not been updated for 45.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229367.969215660]: The scan_real observation buffer has not been updated for 45.10 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:48.238332 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229368.469033323]: The /scan_fixed observation buffer has not been updated for 45.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229368.469220736]: The scan_real observation buffer has not been updated for 45.60 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:48.738302 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229368.969030236]: The /scan_fixed observation buffer has not been updated for 46.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229368.969220177]: The scan_real observation buffer has not been updated for 46.10 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:49.238308 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229369.469062177]: The /scan_fixed observation buffer has not been updated for 46.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229369.469259543]: The scan_real observation buffer has not been updated for 46.60 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:49.738296 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229369.969023962]: The /scan_fixed observation buffer has not been updated for 47.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229369.969220880]: The scan_real observation buffer has not been updated for 47.10 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:50.238322 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229370.469079954]: The /scan_fixed observation buffer has not been updated for 47.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229370.469275624]: The scan_real observation buffer has not been updated for 47.60 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:50.739140 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229370.969064255]: The /scan_fixed observation buffer has not been updated for 48.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229370.969259893]: The scan_real observation buffer has not been updated for 48.10 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:51.238302 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229371.469758545]: The /scan_fixed observation buffer has not been updated for 48.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229371.469958856]: The scan_real observation buffer has not been updated for 48.60 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:51.738306 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229371.969158992]: The /scan_fixed observation buffer has not been updated for 49.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229371.969495958]: The scan_real observation buffer has not been updated for 49.10 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:52.238305 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229372.469010235]: The /scan_fixed observation buffer has not been updated for 49.62 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229372.469195247]: The scan_real observation buffer has not been updated for 49.60 seconds, and it should be updated every 5.00 seconds.[0m
+I20260623 23:42:52.738354 74677 mpc_controller.cpp:111] Got new plan
+[33m[WARN] [1782229372.969188999]: The /scan_fixed observation buffer has not been updated for 50.12 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782229372.969655899]: The scan_real observation buffer has not been updated for 50.10 seconds, and it should be updated every 5.00 seconds.[0m
+[0m[INFO] [1782229322.495169145]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1782229322.507031471]: Requesting the map...[0m
+[0m[INFO] [1782229322.712414254]: Resizing costmap to 480 X 480 at 0.050000 m/pix[0m
+[0m[INFO] [1782229322.812215634]: Received a 480 X 480 map at 0.050000 m/pix[0m
+[0m[INFO] [1782229322.818449512]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782229322.825052626]:     Subscribed to Topics: scan scan_real[0m
+[0m[INFO] [1782229322.901998792]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1782229322.912975231]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782229323.039248495]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782229323.046749610]:     Subscribed to Topics: [0m
+[0m[INFO] [1782229323.070270250]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782229323.209053024]: Created local_planner mpc_controller/MPCController[0m
+[0m[INFO] [1782229323.691437895]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782229323.716811978]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782229323.823684905]: odom received![0m
+... logging to /home/lcy/.ros/log/6dc98d9c-6f19-11f1-9c5c-48b02df90897/roslaunch-ubuntu-74635.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:46045/[0m
+[1mstarted roslaunch server http://ubuntu:32889/[0m
 
 SUMMARY
 ========
@@ -502,7 +450,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [72879][0m
+[1mprocess[move_base-1]: started with pid [74667][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
