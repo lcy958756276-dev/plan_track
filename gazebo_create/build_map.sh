@@ -134,7 +134,7 @@ rosrun gazebo_ros spawn_model -urdf \
     -model my_car \
     -gazebo_namespace /gz_debug \
     -x 0.0 -y 0.0 -z 0.0 \
-    -Y 3.14159 \
+    -Y 0 \
     > "$LOG_DIR/spawn.log" 2>&1
 SPAWN_EXIT=$?
 echo "spawn_model exit=$SPAWN_EXIT (朝向 180°)"
@@ -152,7 +152,7 @@ sleep 1  # 等模型就绪后立即启动 mapper
 PYTHONUNBUFFERED=1 python3 "$GAZEBO_DIR/scripts/gazebo_mapper.py" \
     --gazebo-namespace /gz_debug \
     --init-yaw-offset 0 \
-    --gazebo-yaw-offset 3.14159 \
+    --gazebo-yaw-offset 0 \
     > "$LOG_DIR/mapper.log" 2>&1 &
 PID_MAPPER=$!
 echo "mapper PID=$PID_MAPPER"

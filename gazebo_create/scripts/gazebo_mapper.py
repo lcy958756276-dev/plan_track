@@ -101,24 +101,22 @@ class GazeboMapper:
         self.x = bl_x - (OX * math.cos(self.th) - OY * math.sin(self.th))
         self.y = bl_y - (OX * math.sin(self.th) + OY * math.cos(self.th))
 
-        # 4. 前进运动（整体平移）
-        move_th = self.th + self.gazebo_yaw_offset
-        self.x += self.vx * math.cos(move_th) * dt
-        self.y += self.vx * math.sin(move_th) * dt
+        # 4. 前进运动
+        self.x += self.vx * math.cos(self.th) * dt
+        self.y += self.vx * math.sin(self.th) * dt
 
         q = tft.quaternion_from_euler(0, 0, self.th)
 
-        # Gazebo 朝向（加 gazebo_yaw_offset 补偿 Gazebo 与 RViz 的显示差异）
-        q_gz = tft.quaternion_from_euler(0, 0, move_th)
+
         model_state = ModelState()
         model_state.model_name = self.model_name
         model_state.pose.position.x = self.x
         model_state.pose.position.y = self.y
         model_state.pose.position.z = 0.0
-        model_state.pose.orientation.x = q_gz[0]
-        model_state.pose.orientation.y = q_gz[1]
-        model_state.pose.orientation.z = q_gz[2]
-        model_state.pose.orientation.w = q_gz[3]
+        model_state.pose.orientation.x = q[0]
+        model_state.pose.orientation.y = q[1]
+        model_state.pose.orientation.z = q[2]
+        model_state.pose.orientation.w = q[3]
         model_state.reference_frame = 'world'
         try:
             self.set_state(model_state)
@@ -129,8 +127,7 @@ class GazeboMapper:
             if self._log_count % 100 == 0:
                 import math as m
                 roll, pitch, yaw = tft.euler_from_quaternion([q[0], q[1], q[2], q[3]])
-                roll_gz, pitch_gz, yaw_gz = tft.euler_from_quaternion([q_gz[0], q_gz[1], q_gz[2], q_gz[3]])
-                log(f"位置: x={self.x:.3f}, y={self.y:.3f}, TF heading={yaw*180/m.pi:.1f}°, Gazebo heading={yaw_gz*180/m.pi:.1f}°")
+                log(f"位置: x={self.x:.3f}, y={self.y:.3f}, heading={yaw*180/m.pi:.1f}°")
         except Exception as e:
             log(f"set_model_state 失败: {e}")
 
