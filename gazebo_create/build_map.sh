@@ -122,6 +122,19 @@ rosrun gazebo_ros spawn_model -urdf \
     > "$LOG_DIR/spawn.log" 2>&1
 SPAWN_EXIT=$?
 echo "spawn_model exit=$SPAWN_EXIT"
+
+# 立即设置模型朝向（不等 mapper，让 Gazebo 视觉立刻刷新）
+rosservice call /gz_debug/set_model_state "{
+  model_state: {
+    model_name: 'my_car',
+    pose: {
+      position: {x: 0.0, y: 0.0, z: 0.0},
+      orientation: {x: 0.0, y: 0.0, z: 1.0, w: 0.0}
+    },
+    reference_frame: 'world'
+  }
+}" > /dev/null 2>&1 && echo "  初始朝向已设为 180°" || echo "  初始朝向设置失败"
+
 sleep 3
 
 # 验证模型是否存在
@@ -131,7 +144,7 @@ rosservice call /gz_debug/get_world_properties 2>/dev/null | grep "model_names" 
 
 # ── 4. 启动 mapper ──
 echo "[4] 启动 gazebo_mapper.py..."
-sleep 2  # 等 Gazebo 完全稳定
+sleep 1  # 等模型就绪后立即启动 mapper
 PYTHONUNBUFFERED=1 python3 "$GAZEBO_DIR/scripts/gazebo_mapper.py" \
     --gazebo-namespace /gz_debug \
     --init-yaw-offset 0 \

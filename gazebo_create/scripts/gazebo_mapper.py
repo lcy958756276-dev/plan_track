@@ -53,8 +53,7 @@ class GazeboMapper:
         self.vx = 0.0
         self.vth = 0.0
 
-        # 延迟一下再启动定时器，避免刚启动就和 spawn 竞争
-        rospy.sleep(1.0)
+        # 立即启动定时器，快速覆盖 spawn 默认朝向
         self.timer = rospy.Timer(rospy.Duration(0.05), self.timer_callback)
 
         log(f"✅ 启动完成 (ns={gazebo_ns}, yaw_offset={init_yaw_offset})")
