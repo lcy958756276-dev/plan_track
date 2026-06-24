@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """
 简易键盘遥控小车，用于 gmapping 建图。
-替代 teleop_twist_keyboard，无需安装额外包。
 用法:  python3 key_teleop.py
-    i=前进  k=停止  j=左转  l=右转
-    ,=后退  u=左前  o=右前
+    w=前进  s=后退  a=左转  d=右转
+    空格=停止
 """
 
 import sys
@@ -17,27 +16,21 @@ from geometry_msgs.msg import Twist
 msg = """
 简易键盘遥控
 ---------------------------
-控制键:
-    i         k
-  j   l    ← 键位参考
-    ,
-
-  i = 前进    , = 后退
-  j = 左转    l = 右转
-  u = 左前    o = 右前
-  k = 停止
+  w = 前进
+  a = 左转    d = 右转
+  s = 后退
+  空格 = 停止
 
 CTRL+C 退出
+---------------------------
 """
 
 key_bindings = {
-    'i': (0.2, 0),     # 前进
-    ',': (-0.2, 0),    # 后退
-    'j': (0, 0.5),     # 左转
-    'l': (0, -0.5),    # 右转
-    'u': (0.15, 0.3),  # 左前
-    'o': (0.15, -0.3), # 右前
-    'k': (0, 0),       # 停止
+    'w': (0.2, 0),      # 前进
+    's': (-0.2, 0),     # 后退
+    'a': (0, 0.5),      # 左转
+    'd': (0, -0.5),     # 右转
+    ' ': (0, 0),         # 停止（空格）
 }
 
 def get_key():
@@ -69,7 +62,6 @@ if __name__ == '__main__':
     except rospy.ROSInterruptException:
         pass
     finally:
-        # 停止
         pub.publish(Twist())
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
         print("已退出")
