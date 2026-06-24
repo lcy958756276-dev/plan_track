@@ -44,6 +44,11 @@ echo "" | tee -a "$LOG_DIR/test_$TS.log"
 echo "=== [5] 关键节点 ===" | tee -a "$LOG_DIR/test_$TS.log"
 rosnode list 2>/dev/null | tee -a "$LOG_DIR/test_$TS.log"
 
+# 5b. gmapping 参数确认
+echo "" | tee -a "$LOG_DIR/test_$TS.log"
+echo "=== [5b] gmapping 参数 ===" | tee -a "$LOG_DIR/test_$TS.log"
+rosparam get /slam_gmapping 2>/dev/null | grep -E "base_frame|odom_frame" | tee -a "$LOG_DIR/test_$TS.log"
+
 # 6. 话题列表
 echo "" | tee -a "$LOG_DIR/test_$TS.log"
 echo "=== [6] 话题列表 ===" | tee -a "$LOG_DIR/test_$TS.log"

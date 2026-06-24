@@ -162,6 +162,7 @@ sleep 2
 echo "[5] 启动 gmapping..."
 rosrun gmapping slam_gmapping scan:=/scan \
     _odom_frame:=odom \
+    _base_frame:=base_footprint \
     _map_update_interval:=3.0 \
     _linearUpdate:=0.1 \
     _angularUpdate:=0.15 \
