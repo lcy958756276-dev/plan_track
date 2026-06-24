@@ -101,15 +101,14 @@ class GazeboMapper:
         self.x = bl_x - (OX * math.cos(self.th) - OY * math.sin(self.th))
         self.y = bl_y - (OX * math.sin(self.th) + OY * math.cos(self.th))
 
-        # 4. 前进运动（用 move_th 匹配 Gazebo 朝向）
-        move_th = self.th + self.gazebo_yaw_offset
-        self.x += self.vx * math.cos(move_th) * dt
-        self.y += self.vx * math.sin(move_th) * dt
+        # 4. 前进运动（用 self.th 匹配 RViz 朝向）
+        self.x += self.vx * math.cos(self.th) * dt
+        self.y += self.vx * math.sin(self.th) * dt
 
         q = tft.quaternion_from_euler(0, 0, self.th)
 
         # Gazebo 朝向（加 gazebo_yaw_offset 补偿显示差异）
-        q_gz = tft.quaternion_from_euler(0, 0, move_th)
+        q_gz = tft.quaternion_from_euler(0, 0, self.th + self.gazebo_yaw_offset)
         model_state = ModelState()
         model_state.model_name = self.model_name
         model_state.pose.position.x = self.x
