@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # build_map.sh
 # 【在 Jetson 上运行】启动 Gazebo + 小车 + gmapping 建图
-# 所有输出写入 log/ 目录，终端无打印
+# 所有输出写入 log/ 目录
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 GAZEBO_DIR="$SCRIPT_DIR"
 LOG_DIR="$GAZEBO_DIR/log"
 WORKSPACE_DIR="$(cd "$SCRIPT_DIR/../ros_motion_planning" && pwd 2>/dev/null)"
 
-# 如果相对路径找不到，尝试几个常见位置
+# 自动探测 workspace
 if [ -z "$WORKSPACE_DIR" ] || [ ! -f "$WORKSPACE_DIR/devel/setup.bash" ]; then
     for try_dir in \
         "$SCRIPT_DIR/../ros_motion_planning" \
@@ -24,8 +24,6 @@ fi
 
 mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/build.log"
-
-# 所有输出重定向到日志文件
 exec > "$LOG_FILE" 2>&1
 
 source "$WORKSPACE_DIR/devel/setup.bash"
@@ -34,11 +32,19 @@ echo "=== build_map.sh 启动 ==="
 echo "日志目录: $LOG_DIR"
 date
 
-# 清理
+# ── 清理 ──
+# 杀得彻底：多次杀，确保老进程死透
+echo "[清理] 杀掉残留进程..."
 killall -9 gzserver gzclient 2>/dev/null
-killall -9 gazebo_mapper.py 2>/dev/null
-killall -9 robot_state_publisher 2>/dev/null  # 杀掉残留的 rsp
-sleep 1
+killall -9 gazebo_mapper.py robot_state_publisher 2>/dev/null
+sleep 2
+# 再查一次
+if pgrep -x gzserver > /dev/null 2>&1; then
+    echo "gzserver 仍在运行，强制再杀..."
+    killall -9 gzserver 2>/dev/null
+    sleep 1
+fi
+echo "清理完成"
 
 # ── 1. 加载车模型 ──
 echo "[1] 加载 robot_description..."
@@ -66,7 +72,6 @@ if [ ! -f "$MESH_FILE" ]; then
     fi
 else
     echo "mesh 正常: $MESH_FILE"
-    echo "mesh 目录内容:"; ls "$SIM_ENV_PATH/urdf/my_car/meshes/"
     rosparam set robot_description "$(cat "$GAZEBO_DIR/urdf/my_car/my_car.urdf")"
 fi
 
@@ -79,15 +84,15 @@ PID_RSP=$!
 echo "robot_state_publisher PID=$PID_RSP"
 sleep 1
 
-# ── 2. 启动 Gazebo ──
+# ── 2. 启动 Gazebo（使用 gz_debug 命名空间避免冲突）──
 echo "[2] 启动 Gazebo..."
-rosrun gazebo_ros gzserver "$GAZEBO_DIR/worlds/final.world" \
+rosrun gazebo_ros gzserver "$GAZEBO_DIR/worlds/final.world" __name:=gz_debug \
     > "$LOG_DIR/gzserver.log" 2>&1 &
 PID_GZ=$!
 echo "gzserver PID=$PID_GZ"
 
 for i in $(seq 1 30); do
-    if rosservice list 2>/dev/null | grep -q "/gazebo/set_model_state"; then
+    if rosservice list 2>/dev/null | grep -q "/gz_debug/set_model_state"; then
         echo "Gazebo 就绪（第 ${i} 秒）"
         break
     fi
@@ -108,18 +113,22 @@ echo "[3] spawn_model..."
 rosrun gazebo_ros spawn_model -urdf \
     -param robot_description \
     -model my_car \
+    -gazebo_namespace /gz_debug \
     -x 0.0 -y 0.0 -z 0.0 \
     > "$LOG_DIR/spawn.log" 2>&1
 SPAWN_EXIT=$?
 echo "spawn_model exit=$SPAWN_EXIT"
 sleep 3
 
-echo "=== Gazebo 模型列表 ==="
-rosservice call /gazebo/get_world_properties 2>/dev/null | head -5 || echo "get_world_properties 失败"
+# 验证模型是否存在
+echo "=== 验证模型 ==="
+rosservice call /gz_debug/get_model_state '{model_name: "my_car"}' 2>/dev/null | head -5 || echo "get_model_state 失败（模型可能不存在）"
+rosservice call /gz_debug/get_world_properties 2>/dev/null | grep "model_names" -A 10 || echo "get_world_properties 失败"
 
 # ── 4. 启动 mapper ──
 echo "[4] 启动 gazebo_mapper.py..."
 python3 "$GAZEBO_DIR/scripts/gazebo_mapper.py" \
+    _gazebo_namespace:=/gz_debug \
     > "$LOG_DIR/mapper.log" 2>&1 &
 PID_MAPPER=$!
 echo "mapper PID=$PID_MAPPER"
