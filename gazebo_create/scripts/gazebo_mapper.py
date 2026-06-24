@@ -107,8 +107,8 @@ class GazeboMapper:
 
         q = tft.quaternion_from_euler(0, 0, self.th)
 
-        # Gazebo 朝向（加 gazebo_yaw_offset 补偿 Gazebo 与 RViz 的显示差异）
-        q_gz = tft.quaternion_from_euler(0, 0, move_th)
+        # Gazebo 朝向（gazebo_yaw_offset=0，与 RViz 一致）
+        q_gz = tft.quaternion_from_euler(0, 0, self.th)
         model_state = ModelState()
         model_state.model_name = self.model_name
         model_state.pose.position.x = self.x
@@ -128,8 +128,7 @@ class GazeboMapper:
             if self._log_count % 100 == 0:
                 import math as m
                 roll, pitch, yaw = tft.euler_from_quaternion([q[0], q[1], q[2], q[3]])
-                roll_gz, pitch_gz, yaw_gz = tft.euler_from_quaternion([q_gz[0], q_gz[1], q_gz[2], q_gz[3]])
-                log(f"位置: x={self.x:.3f}, y={self.y:.3f}, TF heading={yaw*180/m.pi:.1f}°, Gazebo heading={yaw_gz*180/m.pi:.1f}°")
+                log(f"位置: x={self.x:.3f}, y={self.y:.3f}, heading={yaw*180/m.pi:.1f}°")
         except Exception as e:
             log(f"set_model_state 失败: {e}")
 
