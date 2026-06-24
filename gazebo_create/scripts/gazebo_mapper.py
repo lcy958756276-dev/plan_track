@@ -17,7 +17,7 @@ import tf.transformations as tft
 
 class GazeboMapper:
     def __init__(self):
-        rospy.init_node('gazebo_mapper')
+        rospy.init_node('gazebo_mapper', anonymous=True)
 
         self.model_name = rospy.get_param('~model_name', 'my_car')
         self.odom_frame = 'odom'

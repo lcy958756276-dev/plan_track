@@ -36,6 +36,7 @@ date
 
 # 清理
 killall -9 gzserver gzclient 2>/dev/null
+killall -9 gazebo_mapper.py 2>/dev/null  # 杀掉残留的 mapper
 sleep 1
 
 # ── 1. 加载车模型 ──
