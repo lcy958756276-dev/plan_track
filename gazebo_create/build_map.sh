@@ -134,7 +134,7 @@ echo "[4] 启动 gazebo_mapper.py..."
 sleep 2  # 等 Gazebo 完全稳定
 PYTHONUNBUFFERED=1 python3 "$GAZEBO_DIR/scripts/gazebo_mapper.py" \
     --gazebo-namespace /gz_debug \
-    --init-yaw-offset 3.14159 \
+    --init-yaw-offset 0 \
     > "$LOG_DIR/mapper.log" 2>&1 &
 PID_MAPPER=$!
 echo "mapper PID=$PID_MAPPER"
