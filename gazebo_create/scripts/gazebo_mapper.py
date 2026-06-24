@@ -142,15 +142,15 @@ class GazeboMapper:
         odom.pose.pose.position.x = self.x
         odom.pose.pose.position.y = self.y
         odom.pose.pose.position.z = 0
-        odom.pose.pose.orientation.x = q[0]
-        odom.pose.pose.orientation.y = q[1]
-        odom.pose.pose.orientation.z = q[2]
-        odom.pose.pose.orientation.w = q[3]
+        odom.pose.pose.orientation.x = q_gz[0]
+        odom.pose.pose.orientation.y = q_gz[1]
+        odom.pose.pose.orientation.z = q_gz[2]
+        odom.pose.pose.orientation.w = q_gz[3]
         odom.twist.twist.linear.x = self.vx
         odom.twist.twist.angular.z = self.vth
         self.odom_pub.publish(odom)
 
-        # 发布 TF
+        # 发布 TF（用 q_gz = move_th 让 RViz 车头朝向与 Gazebo 一致）
         tf = TransformStamped()
         tf.header.frame_id = self.odom_frame
         tf.child_frame_id = self.base_frame
@@ -158,10 +158,10 @@ class GazeboMapper:
         tf.transform.translation.x = self.x
         tf.transform.translation.y = self.y
         tf.transform.translation.z = 0
-        tf.transform.rotation.x = q[0]
-        tf.transform.rotation.y = q[1]
-        tf.transform.rotation.z = q[2]
-        tf.transform.rotation.w = q[3]
+        tf.transform.rotation.x = q_gz[0]
+        tf.transform.rotation.y = q_gz[1]
+        tf.transform.rotation.z = q_gz[2]
+        tf.transform.rotation.w = q_gz[3]
         self.tf_broad.sendTransform(tf)
 
 if __name__ == '__main__':
