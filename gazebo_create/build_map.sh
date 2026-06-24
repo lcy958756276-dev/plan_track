@@ -162,11 +162,13 @@ sleep 2
 echo "[5] 启动 gmapping..."
 rosrun gmapping slam_gmapping scan:=/scan \
     _odom_frame:=odom \
-    _map_update_interval:=0.2 \
+    _map_update_interval:=3.0 \
     _linearUpdate:=0.1 \
-    _angularUpdate:=0.1 \
-    _particles:=80 \
+    _angularUpdate:=0.15 \
+    _particles:=100 \
     _xmin:=-10 _xmax:=10 _ymin:=-10 _ymax:=10 _delta:=0.05 \
+    _srr:=0.05 _srt:=0.1 _str:=0.05 _stt:=0.1 \
+    _sigma:=0.1 _maxUrange:=8.0 \
     > "$LOG_DIR/gmapping.log" 2>&1 &
 PID_GMAPPING=$!
 echo "gmapping PID=$PID_GMAPPING"
