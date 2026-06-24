@@ -16,7 +16,37 @@ sleep 1
 
 # ── 1. 加载车模型 ──
 echo "[1] 加载 robot_description..."
-rosparam set robot_description "$(cat "$GAZEBO_DIR/urdf/my_car/my_car.urdf")"
+
+# 先确认 sim_env 包路径
+SIM_ENV_PATH=$(rospack find sim_env 2>/dev/null)
+if [ -z "$SIM_ENV_PATH" ]; then
+    echo "  ❌ 找不到 sim_env 包！请确认 workspace 已 source"
+    echo "  source $WORKSPACE_DIR/devel/setup.bash"
+    exit 1
+fi
+echo "  sim_env 路径: $SIM_ENV_PATH"
+
+# 检查 mesh 文件是否存在
+MESH_FILE="$SIM_ENV_PATH/urdf/my_car/meshes/base_link.STL"
+if [ ! -f "$MESH_FILE" ]; then
+    echo "  ⚠ mesh 文件不在 sim_env 包内，检查 gazebo_create 本地..."
+    # 尝试用 gazebo_create 本地的 meshes
+    MESH_DIR="$GAZEBO_DIR/urdf/my_car/meshes"
+    if [ -f "$MESH_DIR/base_link.STL" ]; then
+        echo "  使用本地 mesh: $MESH_DIR"
+        SIM_ENV_PATH="$GAZEBO_DIR/urdf/my_car"
+        # 用绝对路径替换 package://
+        sed "s|package://sim_env/urdf/my_car|$SIM_ENV_PATH|g" \
+            "$GAZEBO_DIR/urdf/my_car/my_car.urdf" | rosparam set robot_description -
+    else
+        echo "  ❌ mesh 文件也不在本地！"
+        echo "  请将 meshes/ 复制到: $SIM_ENV_PATH/urdf/my_car/"
+        exit 1
+    fi
+else
+    echo "  mesh 文件正常，使用 package:// 路径"
+    rosparam set robot_description "$(cat "$GAZEBO_DIR/urdf/my_car/my_car.urdf")"
+fi
 
 # robot_state_publisher（发布 URDF 中的固定 TF）
 rosrun robot_state_publisher robot_state_publisher &
