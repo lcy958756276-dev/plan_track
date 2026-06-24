@@ -85,11 +85,26 @@ class GazeboMapper:
         if dt <= 0:
             return
 
-        # 运动方向用 Gazebo 实际朝向（th + gazebo_yaw_offset），保证两边视觉和运动一致
+        # base_link 相对于 base_footprint 的偏移（base_footprint_joint xyz 的 x 值）
+        # 转向时保持 base_link 不动，让 base_footprint 绕它转
+        OX, OY = -0.254, 0.0
+
+        # 1. 记录转向前的 base_link 世界位置
+        old_th = self.th
+        bl_x = self.x + OX * math.cos(old_th) - OY * math.sin(old_th)
+        bl_y = self.y + OX * math.sin(old_th) + OY * math.cos(old_th)
+
+        # 2. 更新朝向
+        self.th += self.vth * dt
+
+        # 3. 保持 base_link 不动，调整 base_footprint
+        self.x = bl_x - (OX * math.cos(self.th) - OY * math.sin(self.th))
+        self.y = bl_y - (OX * math.sin(self.th) + OY * math.cos(self.th))
+
+        # 4. 前进运动（整体平移）
         move_th = self.th + self.gazebo_yaw_offset
         self.x += self.vx * math.cos(move_th) * dt
         self.y += self.vx * math.sin(move_th) * dt
-        self.th += self.vth * dt
 
         q = tft.quaternion_from_euler(0, 0, self.th)
 
