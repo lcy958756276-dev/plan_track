@@ -192,9 +192,10 @@
     <origin xyz="-0.00074 0.127 -0.178" rpy="0 0 0" />
   </joint>
 
-  <!-- Gazebo 配置：静态模型（不受重力影响，只由 set_model_state 驱动位置） -->
+  <!-- Gazebo 配置：非静态但关重力（避免 static 导致 URDF 变换不被应用） -->
   <gazebo>
-    <static>true</static>
+    <static>false</static>
+    <gravity>0</gravity>
   </gazebo>
 
   <!-- Gazebo 激光雷达插件：模拟扫描 → /scan 话题 -->
