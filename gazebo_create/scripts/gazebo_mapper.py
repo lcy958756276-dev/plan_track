@@ -87,7 +87,7 @@ class GazeboMapper:
 
         # base_link 相对于 base_footprint 的偏移（base_footprint_joint xyz 的 x 值）
         # 转向时保持 base_link 不动，让 base_footprint 绕它转
-        OX, OY = -0.254, 0.0
+        OX, OY = 0.254, 0.0
 
         # 1. 记录转向前的 base_link 世界位置
         old_th = self.th
