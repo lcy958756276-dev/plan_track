@@ -119,21 +119,10 @@ rosrun gazebo_ros spawn_model -urdf \
     -model my_car \
     -gazebo_namespace /gz_debug \
     -x 0.0 -y 0.0 -z 0.0 \
+    -Y 3.14159 \
     > "$LOG_DIR/spawn.log" 2>&1
 SPAWN_EXIT=$?
-echo "spawn_model exit=$SPAWN_EXIT"
-
-# 立即设置模型朝向（不等 mapper，让 Gazebo 视觉立刻刷新）
-rosservice call /gz_debug/set_model_state "{
-  model_state: {
-    model_name: 'my_car',
-    pose: {
-      position: {x: 0.0, y: 0.0, z: 0.0},
-      orientation: {x: 0.0, y: 0.0, z: 1.0, w: 0.0}
-    },
-    reference_frame: 'world'
-  }
-}" > /dev/null 2>&1 && echo "  初始朝向已设为 180°" || echo "  初始朝向设置失败"
+echo "spawn_model exit=$SPAWN_EXIT (朝向 180°)"
 
 sleep 3
 

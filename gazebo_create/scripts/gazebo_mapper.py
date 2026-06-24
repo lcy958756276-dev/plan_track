@@ -59,17 +59,14 @@ class GazeboMapper:
         log(f"✅ 启动完成 (ns={gazebo_ns}, yaw_offset={init_yaw_offset})")
 
     def _sync_init_pose(self):
+        """读 x,y 位置，朝向直接用 init_yaw_offset（不读 Gazebo 模型朝向，已被 -Y 预旋转）"""
         try:
             resp = self.get_state(self.model_name, 'world')
             if resp.success:
                 self.x = resp.pose.position.x
                 self.y = resp.pose.position.y
-                _, _, self.th = tft.euler_from_quaternion([
-                    resp.pose.orientation.x, resp.pose.orientation.y,
-                    resp.pose.orientation.z, resp.pose.orientation.w
-                ])
-                self.th += self.init_yaw_offset
-                log(f"初始位置: x={self.x:.3f}, y={self.y:.3f}, th={self.th:.3f}")
+                self.th = self.init_yaw_offset  # 不读 Gazebo 朝向，用 init_yaw_offset
+                log(f"初始位置: x={self.x:.3f}, y={self.y:.3f}, th={self.th:.3f} (init_yaw_offset)")
         except Exception as e:
             log(f"获取初始位置失败: {e}，使用默认 th={self.th:.3f}")
 
