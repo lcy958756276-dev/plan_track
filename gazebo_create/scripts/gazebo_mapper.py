@@ -24,8 +24,10 @@ class GazeboMapper:
     def __init__(self, gazebo_ns, init_yaw_offset, gazebo_yaw_offset):
         rospy.init_node('gazebo_mapper', anonymous=True)
         log(f"等待仿真时钟同步...")
-        rospy.Time.waitForSync()  # 等 Gazebo 开始发 /clock
-        log(f"仿真时钟已同步")
+        # ROS1 Noetic 用轮询等待时钟，没有 waitForSync()
+        while rospy.Time.now().to_sec() == 0 and not rospy.is_shutdown():
+            rospy.sleep(0.1)
+        log(f"仿真时钟已同步 (t={rospy.Time.now().to_sec()}s)")
 
         self.model_name = rospy.get_param('~model_name', 'my_car')
         self.odom_frame = 'odom'
