@@ -36,7 +36,7 @@ date
 # 杀得彻底：多次杀，确保老进程死透
 echo "[清理] 杀掉残留进程..."
 killall -9 gzserver gzclient 2>/dev/null
-killall -9 gazebo_mapper.py robot_state_publisher 2>/dev/null
+killall -9 gazebo_mapper.py robot_state_publisher joint_state_publisher 2>/dev/null
 sleep 2
 # 再查一次
 if pgrep -x gzserver > /dev/null 2>&1; then
@@ -77,11 +77,16 @@ fi
 
 echo "robot_description 已加载"
 
-# robot_state_publisher
+# robot_state_publisher + joint_state_publisher（轮子显示需要）
 rosrun robot_state_publisher robot_state_publisher \
     > "$LOG_DIR/rsp.log" 2>&1 &
 PID_RSP=$!
 echo "robot_state_publisher PID=$PID_RSP"
+
+rosrun joint_state_publisher joint_state_publisher \
+    > "$LOG_DIR/jsp.log" 2>&1 &
+PID_JSP=$!
+echo "joint_state_publisher PID=$PID_JSP"
 sleep 1
 
 # ── 2. 启动 Gazebo（使用 gz_debug 命名空间避免冲突）──
