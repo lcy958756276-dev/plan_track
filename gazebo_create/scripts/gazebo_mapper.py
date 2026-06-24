@@ -95,7 +95,7 @@ class GazeboMapper:
         model_state.model_name = self.model_name
         model_state.pose.position.x = self.x
         model_state.pose.position.y = self.y
-        model_state.pose.position.z = 0.1105
+        model_state.pose.position.z = 0.0  # base_footprint 地面投影，已在 URDF 中提升
         model_state.pose.orientation.x = q[0]
         model_state.pose.orientation.y = q[1]
         model_state.pose.orientation.z = q[2]
@@ -103,6 +103,14 @@ class GazeboMapper:
         model_state.reference_frame = 'world'
         try:
             self.set_state(model_state)
+            # 每 100 帧打一次日志，确认朝向
+            if not hasattr(self, '_log_count'):
+                self._log_count = 0
+            self._log_count += 1
+            if self._log_count % 100 == 0:
+                import math as m
+                roll, pitch, yaw = tft.euler_from_quaternion([q[0], q[1], q[2], q[3]])
+                log(f"设置模型状态: x={self.x:.3f}, y={self.y:.3f}, yaw={yaw:.3f} (deg={yaw*180/m.pi:.1f}°)")
         except Exception as e:
             log(f"set_model_state 失败: {e}")
 
