@@ -23,7 +23,9 @@ def log(msg):
 class GazeboMapper:
     def __init__(self, gazebo_ns, init_yaw_offset, gazebo_yaw_offset):
         rospy.init_node('gazebo_mapper', anonymous=True)
-        log(f"节点初始化完成")
+        log(f"等待仿真时钟同步...")
+        rospy.Time.waitForSync()  # 等 Gazebo 开始发 /clock
+        log(f"仿真时钟已同步")
 
         self.model_name = rospy.get_param('~model_name', 'my_car')
         self.odom_frame = 'odom'

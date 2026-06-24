@@ -79,18 +79,6 @@ fi
 
 echo "robot_description 已加载"
 
-# robot_state_publisher + joint_state_publisher（轮子显示需要）
-rosrun robot_state_publisher robot_state_publisher \
-    > "$LOG_DIR/rsp.log" 2>&1 &
-PID_RSP=$!
-echo "robot_state_publisher PID=$PID_RSP"
-
-rosrun joint_state_publisher joint_state_publisher \
-    > "$LOG_DIR/jsp.log" 2>&1 &
-PID_JSP=$!
-echo "joint_state_publisher PID=$PID_JSP"
-sleep 1
-
 # ── 2. 启动 Gazebo（使用 gz_debug 命名空间避免冲突）──
 echo "[2] 启动 Gazebo..."
 rosrun gazebo_ros gzserver "$GAZEBO_DIR/worlds/final.world" __name:=gz_debug \
@@ -108,6 +96,29 @@ for i in $(seq 1 30); do
     fi
     sleep 1
 done
+
+# 等待仿真时钟开始运行
+echo "  等待仿真时钟..."
+for i in $(seq 1 15); do
+    CLOCK_SEC=$(rostopic echo /clock -n1 2>/dev/null | grep "secs" | head -1 | awk '{print $2}')
+    if [ -n "$CLOCK_SEC" ] && [ "$CLOCK_SEC" != "0" ]; then
+        echo "  ✅ 仿真时钟运行中 (t=${CLOCK_SEC}s)"
+        break
+    fi
+    sleep 1
+done
+
+# 时钟就绪后才启动 RSP（避免时间戳为 0 的 TF 导致 RViz 错乱）
+rosrun robot_state_publisher robot_state_publisher \
+    > "$LOG_DIR/rsp.log" 2>&1 &
+PID_RSP=$!
+echo "robot_state_publisher PID=$PID_RSP"
+
+rosrun joint_state_publisher joint_state_publisher \
+    > "$LOG_DIR/jsp.log" 2>&1 &
+PID_JSP=$!
+echo "joint_state_publisher PID=$PID_JSP"
+sleep 1
 
 rosrun gazebo_ros gzclient \
     > "$LOG_DIR/gzclient.log" 2>&1 &
