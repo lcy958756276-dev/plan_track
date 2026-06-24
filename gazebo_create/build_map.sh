@@ -6,7 +6,21 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 GAZEBO_DIR="$SCRIPT_DIR"
 LOG_DIR="$GAZEBO_DIR/log"
-WORKSPACE_DIR="$HOME/plan_track/ros_motion_planning"
+WORKSPACE_DIR="$(cd "$SCRIPT_DIR/../ros_motion_planning" && pwd 2>/dev/null)"
+
+# 如果相对路径找不到，尝试几个常见位置
+if [ -z "$WORKSPACE_DIR" ] || [ ! -f "$WORKSPACE_DIR/devel/setup.bash" ]; then
+    for try_dir in \
+        "$SCRIPT_DIR/../ros_motion_planning" \
+        "$HOME/plan_track/ros_motion_planning" \
+        "$HOME/robot_graduation/ros_motion_planning" \
+        "$HOME/ros_motion_planning"; do
+        if [ -f "$try_dir/devel/setup.bash" ]; then
+            WORKSPACE_DIR="$try_dir"
+            break
+        fi
+    done
+fi
 
 mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/build.log"
