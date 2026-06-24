@@ -79,7 +79,8 @@ sleep 1
 
 # ── 2. 启动 Gazebo ──
 echo "[2] 启动 Gazebo..."
-gzserver "$GAZEBO_DIR/worlds/final.world" __name:=gz_debug \
+# 必须用 rosrun 启动，直接调用 gzserver 不会加载 ROS 插件
+rosrun gazebo_ros gzserver "$GAZEBO_DIR/worlds/final.world" __name:=gz_debug \
     > "$LOG_DIR/gzserver.log" 2>&1 &
 PID_GZ=$!
 echo "gzserver PID=$PID_GZ"
@@ -95,7 +96,8 @@ for i in $(seq 1 30); do
     sleep 1
 done
 
-gzclient > "$LOG_DIR/gzclient.log" 2>&1 &
+rosrun gazebo_ros gzclient \
+    > "$LOG_DIR/gzclient.log" 2>&1 &
 PID_GUI=$!
 echo "gzclient PID=$PID_GUI"
 sleep 3
