@@ -164,6 +164,21 @@ class GazeboMapper:
         tf.transform.rotation.w = q_gz[3]
         self.tf_broad.sendTransform(tf)
 
+        # 直接发布 base_scan 的 TF（绕过 RSP，确保 TF 链完整）
+        # base_scan 相对于 base_footprint 的位置（已在 URDF 中定义）
+        tf_scan = TransformStamped()
+        tf_scan.header.frame_id = self.base_frame
+        tf_scan.child_frame_id = "base_scan"
+        tf_scan.header.stamp = now
+        tf_scan.transform.translation.x = -0.076
+        tf_scan.transform.translation.y = 0.00074
+        tf_scan.transform.translation.z = 0.2375
+        tf_scan.transform.rotation.x = 0.0
+        tf_scan.transform.rotation.y = 0.0
+        tf_scan.transform.rotation.z = 0.0
+        tf_scan.transform.rotation.w = 1.0
+        self.tf_broad.sendTransform(tf_scan)
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--gazebo-namespace', default='/gazebo')
