@@ -101,14 +101,15 @@ class GazeboMapper:
         self.x = bl_x - (OX * math.cos(self.th) - OY * math.sin(self.th))
         self.y = bl_y - (OX * math.sin(self.th) + OY * math.cos(self.th))
 
-        # 4. 前进运动（用 self.th 匹配 RViz 朝向，因为 RViz 是建图的关键视图）
-        self.x += self.vx * math.cos(self.th) * dt
-        self.y += self.vx * math.sin(self.th) * dt
+        # 4. 前进运动（用 move_th 匹配 Gazebo 朝向）
+        move_th = self.th + self.gazebo_yaw_offset
+        self.x += self.vx * math.cos(move_th) * dt
+        self.y += self.vx * math.sin(move_th) * dt
 
         q = tft.quaternion_from_euler(0, 0, self.th)
 
-        # Gazebo 朝向（gazebo_yaw_offset=0，与 RViz 一致）
-        q_gz = tft.quaternion_from_euler(0, 0, self.th)
+        # Gazebo 朝向（加 gazebo_yaw_offset 补偿显示差异）
+        q_gz = tft.quaternion_from_euler(0, 0, move_th)
         model_state = ModelState()
         model_state.model_name = self.model_name
         model_state.pose.position.x = self.x
@@ -128,7 +129,8 @@ class GazeboMapper:
             if self._log_count % 100 == 0:
                 import math as m
                 roll, pitch, yaw = tft.euler_from_quaternion([q[0], q[1], q[2], q[3]])
-                log(f"位置: x={self.x:.3f}, y={self.y:.3f}, heading={yaw*180/m.pi:.1f}°")
+                roll_gz, pitch_gz, yaw_gz = tft.euler_from_quaternion([q_gz[0], q_gz[1], q_gz[2], q_gz[3]])
+                log(f"位置: x={self.x:.3f}, y={self.y:.3f}, TF={yaw*180/m.pi:.1f}°, Gazebo={yaw_gz*180/m.pi:.1f}°")
         except Exception as e:
             log(f"set_model_state 失败: {e}")
 
