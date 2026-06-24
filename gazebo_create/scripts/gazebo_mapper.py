@@ -21,7 +21,7 @@ def log(msg):
     print(f"[gazebo_mapper] {msg}", flush=True)
 
 class GazeboMapper:
-    def __init__(self, gazebo_ns, init_yaw_offset):
+    def __init__(self, gazebo_ns, init_yaw_offset, gazebo_yaw_offset):
         rospy.init_node('gazebo_mapper', anonymous=True)
         log(f"节点初始化完成")
 
@@ -30,6 +30,7 @@ class GazeboMapper:
         self.base_frame = 'base_footprint'
         self.gazebo_ns = gazebo_ns
         self.init_yaw_offset = init_yaw_offset
+        self.gazebo_yaw_offset = gazebo_yaw_offset
 
         self.x = 0.0
         self.y = 0.0
@@ -90,16 +91,17 @@ class GazeboMapper:
 
         q = tft.quaternion_from_euler(0, 0, self.th)
 
-        # 设置 Gazebo 模型位置
+        # Gazebo 朝向（加 gazebo_yaw_offset 补偿 Gazebo 与 RViz 的显示差异）
+        q_gz = tft.quaternion_from_euler(0, 0, self.th + self.gazebo_yaw_offset)
         model_state = ModelState()
         model_state.model_name = self.model_name
         model_state.pose.position.x = self.x
         model_state.pose.position.y = self.y
-        model_state.pose.position.z = 0.0  # base_footprint 地面投影，已在 URDF 中提升
-        model_state.pose.orientation.x = q[0]
-        model_state.pose.orientation.y = q[1]
-        model_state.pose.orientation.z = q[2]
-        model_state.pose.orientation.w = q[3]
+        model_state.pose.position.z = 0.0
+        model_state.pose.orientation.x = q_gz[0]
+        model_state.pose.orientation.y = q_gz[1]
+        model_state.pose.orientation.z = q_gz[2]
+        model_state.pose.orientation.w = q_gz[3]
         model_state.reference_frame = 'world'
         try:
             self.set_state(model_state)
@@ -110,7 +112,8 @@ class GazeboMapper:
             if self._log_count % 100 == 0:
                 import math as m
                 roll, pitch, yaw = tft.euler_from_quaternion([q[0], q[1], q[2], q[3]])
-                log(f"设置模型状态: x={self.x:.3f}, y={self.y:.3f}, yaw={yaw:.3f} (deg={yaw*180/m.pi:.1f}°)")
+                roll_gz, pitch_gz, yaw_gz = tft.euler_from_quaternion([q_gz[0], q_gz[1], q_gz[2], q_gz[3]])
+                log(f"位置: x={self.x:.3f}, y={self.y:.3f}, TF heading={yaw*180/m.pi:.1f}°, Gazebo heading={yaw_gz*180/m.pi:.1f}°")
         except Exception as e:
             log(f"set_model_state 失败: {e}")
 
@@ -148,14 +151,15 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--gazebo-namespace', default='/gazebo')
     parser.add_argument('--init-yaw-offset', type=float, default=0.0)
+    parser.add_argument('--gazebo-yaw-offset', type=float, default=0.0,
+                        help='仅对 Gazebo model_state 生效的朝向偏移，用于补偿 Gazebo 与 RViz 的显示差异')
     args, unknown = parser.parse_known_args()
 
-    # 打印收到的参数
-    log(f"参数: gazebo_namespace={args.gazebo_namespace}, init_yaw_offset={args.init_yaw_offset}")
+    log(f"参数: ns={args.gazebo_namespace}, init_yaw_offset={args.init_yaw_offset}, gazebo_yaw_offset={args.gazebo_yaw_offset}")
     log(f"未解析参数: {unknown}")
 
     try:
-        GazeboMapper(args.gazebo_namespace, args.init_yaw_offset)
+        GazeboMapper(args.gazebo_namespace, args.init_yaw_offset, args.gazebo_yaw_offset)
         rospy.spin()
     except rospy.ROSInterruptException:
         pass
