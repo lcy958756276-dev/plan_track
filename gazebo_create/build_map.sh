@@ -33,14 +33,13 @@ echo "日志目录: $LOG_DIR"
 date
 
 # ── 清理 ──
-# 杀得彻底：多次杀，确保老进程死透
 echo "[清理] 杀掉残留进程..."
 killall -9 gzserver gzclient 2>/dev/null
-killall -9 gazebo_mapper.py robot_state_publisher joint_state_publisher 2>/dev/null
+pkill -f "gazebo_mapper" 2>/dev/null
+pkill -f "robot_state_publisher" 2>/dev/null
+pkill -f "joint_state_publisher" 2>/dev/null
 sleep 2
-# 再查一次
 if pgrep -x gzserver > /dev/null 2>&1; then
-    echo "gzserver 仍在运行，强制再杀..."
     killall -9 gzserver 2>/dev/null
     sleep 1
 fi
@@ -132,7 +131,8 @@ rosservice call /gz_debug/get_world_properties 2>/dev/null | grep "model_names" 
 
 # ── 4. 启动 mapper ──
 echo "[4] 启动 gazebo_mapper.py..."
-python3 "$GAZEBO_DIR/scripts/gazebo_mapper.py" \
+sleep 2  # 等 Gazebo 完全稳定
+PYTHONUNBUFFERED=1 python3 "$GAZEBO_DIR/scripts/gazebo_mapper.py" \
     --gazebo-namespace /gz_debug \
     --init-yaw-offset 3.14159 \
     > "$LOG_DIR/mapper.log" 2>&1 &
