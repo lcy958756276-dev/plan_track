@@ -1,14 +1,24 @@
 #!/usr/bin/env bash
 # build_map.sh
 # 【在 Jetson 上运行】启动 Gazebo + 小车 + gmapping 建图
-# 用键盘控制小车走一圈，扫完保存地图
+# 所有输出写入 log/ 目录，终端无打印
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 GAZEBO_DIR="$SCRIPT_DIR"
-
-# 替换成你实际的 workspace 路径
+LOG_DIR="$GAZEBO_DIR/log"
 WORKSPACE_DIR="$HOME/plan_track/ros_motion_planning"
+
+mkdir -p "$LOG_DIR"
+LOG_FILE="$LOG_DIR/build.log"
+
+# 所有输出重定向到日志文件
+exec > "$LOG_FILE" 2>&1
+
 source "$WORKSPACE_DIR/devel/setup.bash"
+
+echo "=== build_map.sh 启动 ==="
+echo "日志目录: $LOG_DIR"
+date
 
 # 清理
 killall -9 gzserver gzclient 2>/dev/null
@@ -17,97 +27,105 @@ sleep 1
 # ── 1. 加载车模型 ──
 echo "[1] 加载 robot_description..."
 
-# 先确认 sim_env 包路径
 SIM_ENV_PATH=$(rospack find sim_env 2>/dev/null)
+echo "sim_env 路径: $SIM_ENV_PATH"
+
 if [ -z "$SIM_ENV_PATH" ]; then
-    echo "  ❌ 找不到 sim_env 包！请确认 workspace 已 source"
-    echo "  source $WORKSPACE_DIR/devel/setup.bash"
+    echo "错误: 找不到 sim_env 包"
     exit 1
 fi
-echo "  sim_env 路径: $SIM_ENV_PATH"
 
-# 检查 mesh 文件是否存在
 MESH_FILE="$SIM_ENV_PATH/urdf/my_car/meshes/base_link.STL"
 if [ ! -f "$MESH_FILE" ]; then
-    echo "  ⚠ mesh 文件不在 sim_env 包内，检查 gazebo_create 本地..."
-    # 尝试用 gazebo_create 本地的 meshes
+    echo "mesh 不在 sim_env 内，检查本地..."
     MESH_DIR="$GAZEBO_DIR/urdf/my_car/meshes"
     if [ -f "$MESH_DIR/base_link.STL" ]; then
-        echo "  使用本地 mesh: $MESH_DIR"
+        echo "使用本地 mesh: $MESH_DIR"
         SIM_ENV_PATH="$GAZEBO_DIR/urdf/my_car"
-        # 用绝对路径替换 package://
         sed "s|package://sim_env/urdf/my_car|$SIM_ENV_PATH|g" \
             "$GAZEBO_DIR/urdf/my_car/my_car.urdf" | rosparam set robot_description -
     else
-        echo "  ❌ mesh 文件也不在本地！"
-        echo "  请将 meshes/ 复制到: $SIM_ENV_PATH/urdf/my_car/"
+        echo "错误: 本地也无 mesh 文件"
         exit 1
     fi
 else
-    echo "  mesh 文件正常，使用 package:// 路径"
+    echo "mesh 正常: $MESH_FILE"
+    echo "mesh 目录内容:"; ls "$SIM_ENV_PATH/urdf/my_car/meshes/"
     rosparam set robot_description "$(cat "$GAZEBO_DIR/urdf/my_car/my_car.urdf")"
 fi
 
-# robot_state_publisher（发布 URDF 中的固定 TF）
-rosrun robot_state_publisher robot_state_publisher &
+echo "robot_description 已加载"
+
+# robot_state_publisher
+rosrun robot_state_publisher robot_state_publisher \
+    > "$LOG_DIR/rsp.log" 2>&1 &
 PID_RSP=$!
+echo "robot_state_publisher PID=$PID_RSP"
 sleep 1
 
 # ── 2. 启动 Gazebo ──
-echo "[2] 启动 Gazebo + final.world..."
-gzserver "$GAZEBO_DIR/worlds/final.world" __name:=gz_debug &
+echo "[2] 启动 Gazebo..."
+gzserver "$GAZEBO_DIR/worlds/final.world" __name:=gz_debug \
+    > "$LOG_DIR/gzserver.log" 2>&1 &
 PID_GZ=$!
+echo "gzserver PID=$PID_GZ"
 
-for i in $(seq 1 15); do
+for i in $(seq 1 30); do
     if rosservice list 2>/dev/null | grep -q "/gazebo/set_model_state"; then
-        echo "  ✅ Gazebo 就绪"
+        echo "Gazebo 就绪（第 ${i} 秒）"
         break
+    fi
+    if [ $i -eq 30 ]; then
+        echo "超时: Gazebo 未就绪"
     fi
     sleep 1
 done
 
-# Gazebo GUI（可选，开来看见小车位置）
-gzclient &
+gzclient > "$LOG_DIR/gzclient.log" 2>&1 &
 PID_GUI=$!
-sleep 2
+echo "gzclient PID=$PID_GUI"
+sleep 3
 
-# ── 3. 在 Gazebo 中生成小车 ──
-echo "[3] 生成小车模型..."
+# ── 3. 生成小车 ──
+echo "[3] spawn_model..."
 rosrun gazebo_ros spawn_model -urdf \
     -param robot_description \
     -model my_car \
-    -x 0.0 -y 0.0 -z 0.0
-sleep 2
+    -x 0.0 -y 0.0 -z 0.0 \
+    > "$LOG_DIR/spawn.log" 2>&1
+SPAWN_EXIT=$?
+echo "spawn_model exit=$SPAWN_EXIT"
+sleep 3
 
-# ── 4. 启动建图桥接（cmd_vel → set_model_state + /odom）──
+echo "=== Gazebo 模型列表 ==="
+rosservice call /gazebo/get_world_properties 2>/dev/null | head -5 || echo "get_world_properties 失败"
+
+# ── 4. 启动 mapper ──
 echo "[4] 启动 gazebo_mapper.py..."
-python3 "$GAZEBO_DIR/scripts/gazebo_mapper.py" &
+python3 "$GAZEBO_DIR/scripts/gazebo_mapper.py" \
+    > "$LOG_DIR/mapper.log" 2>&1 &
 PID_MAPPER=$!
+echo "mapper PID=$PID_MAPPER"
 sleep 2
 
-# ── 5. 启动 gmapping ──
+# ── 5. gmapping ──
 echo "[5] 启动 gmapping..."
-rosrun gmapping slam_gmapping scan:=/scan _odom_frame:=odom _map_update_interval:=1.0 &
+rosrun gmapping slam_gmapping scan:=/scan _odom_frame:=odom _map_update_interval:=1.0 \
+    > "$LOG_DIR/gmapping.log" 2>&1 &
 PID_GMAPPING=$!
+echo "gmapping PID=$PID_GMAPPING"
 sleep 2
 
-# ── 6. RViz 查看建图进度 ──
+# ── 6. RViz ──
 echo "[6] 启动 RViz..."
-rosrun rviz rviz -d "$GAZEBO_DIR/rviz/sim_env.rviz" &
+rosrun rviz rviz -d "$GAZEBO_DIR/rviz/sim_env.rviz" \
+    > "$LOG_DIR/rviz.log" 2>&1 &
 PID_RVIZ=$!
+echo "rviz PID=$PID_RVIZ"
 
 echo ""
-echo "========================================"
-echo "  ✅ 建图环境已启动"
-echo "  控制: 另开终端运行以下命令"
-echo "    python3 $GAZEBO_DIR/scripts/key_teleop.py"
-echo ""
-echo "  按键:"
-echo "    i=前进  k=停止  j=左转  l=右转"
-echo "    ,=后退  u=左前  o=右前"
-echo ""
-echo "  在地图中走一圈后，另开终端保存地图:"
-echo "    rosrun map_server map_saver -f $GAZEBO_DIR/maps/my_map"
-echo ""
-echo "  停止: kill $PID_GZ $PID_GUI $PID_RSP $PID_MAPPER $PID_GMAPPING $PID_RVIZ"
-echo "========================================"
+echo "=== 全部启动完毕 ==="
+echo "查看日志: cat $LOG_FILE"
+echo "查看 spawn 日志: cat $LOG_DIR/spawn.log"
+echo "查看 gzserver 日志: cat $LOG_DIR/gzserver.log"
+echo "查看 mapper 日志: cat $LOG_DIR/mapper.log"
