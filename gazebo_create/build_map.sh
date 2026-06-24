@@ -134,6 +134,7 @@ rosservice call /gz_debug/get_world_properties 2>/dev/null | grep "model_names" 
 echo "[4] 启动 gazebo_mapper.py..."
 python3 "$GAZEBO_DIR/scripts/gazebo_mapper.py" \
     _gazebo_namespace:=/gz_debug \
+    _init_yaw_offset:=3.14159 \
     > "$LOG_DIR/mapper.log" 2>&1 &
 PID_MAPPER=$!
 echo "mapper PID=$PID_MAPPER"

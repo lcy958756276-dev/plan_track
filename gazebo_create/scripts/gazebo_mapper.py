@@ -23,10 +23,10 @@ class GazeboMapper:
         self.odom_frame = 'odom'
         self.base_frame = 'base_footprint'
 
-        # 位置/角度
+        # 位置/角度（th=π 让车头朝正确方向，rpy 坐标映射导致的 180°翻转在这里补偿）
         self.x = 0.0
         self.y = 0.0
-        self.th = 0.0
+        self.th = 3.14159
 
         # 等待服务
         self.gazebo_ns = rospy.get_param('~gazebo_namespace', '/gazebo')
@@ -57,7 +57,8 @@ class GazeboMapper:
         rospy.loginfo("✅ gazebo_mapper 已启动，用键盘控制小车扫图")
 
     def _sync_init_pose(self):
-        """获取模型在 Gazebo 中的初始位置"""
+        """获取模型在 Gazebo 中的初始位置，加上朝向偏移"""
+        self.init_yaw_offset = rospy.get_param('~init_yaw_offset', 0.0)
         try:
             resp = self.get_state(self.model_name, 'world')
             if resp.success:
@@ -69,9 +70,10 @@ class GazeboMapper:
                     resp.pose.orientation.z,
                     resp.pose.orientation.w
                 ])
-                rospy.loginfo(f"初始位置: x={self.x:.3f}, y={self.y:.3f}, th={self.th:.3f}")
+                self.th += self.init_yaw_offset
+                rospy.loginfo(f"初始位置: x={self.x:.3f}, y={self.y:.3f}, th={self.th:.3f} (offset={self.init_yaw_offset:.3f})")
         except Exception as e:
-            rospy.logwarn(f"获取初始位置失败，从 0 开始: {e}")
+            rospy.logwarn(f"获取初始位置失败，使用默认值: {e}")
 
     def cmd_callback(self, msg):
         self.vx = msg.linear.x
