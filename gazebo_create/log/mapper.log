@@ -1,16 +1,10 @@
 [gazebo_mapper] 参数: ns=/gz_debug, init_yaw_offset=0.0, gazebo_yaw_offset=3.14159
 [gazebo_mapper] 未解析参数: []
-[gazebo_mapper] 节点初始化完成
-[gazebo_mapper] 等待 Gazebo 服务: /gz_debug/set_model_state
-[gazebo_mapper] Gazebo 服务已连接
-[gazebo_mapper] 初始位置: x=0.000, y=0.000, th=0.000 (init_yaw_offset)
-[gazebo_mapper] ✅ 启动完成 (ns=/gz_debug, yaw_offset=0.0)
-[gazebo_mapper] 位置: x=0.000, y=0.000, TF heading=0.0°, Gazebo heading=180.0°
-[gazebo_mapper] 位置: x=0.000, y=0.000, TF heading=0.0°, Gazebo heading=180.0°
-[gazebo_mapper] 位置: x=0.000, y=0.000, TF heading=0.0°, Gazebo heading=180.0°
-[gazebo_mapper] 位置: x=0.000, y=0.000, TF heading=0.0°, Gazebo heading=180.0°
-[gazebo_mapper] 位置: x=0.000, y=0.000, TF heading=0.0°, Gazebo heading=180.0°
-[gazebo_mapper] 位置: x=0.000, y=0.000, TF heading=0.0°, Gazebo heading=180.0°
-[gazebo_mapper] 位置: x=0.000, y=0.000, TF heading=0.0°, Gazebo heading=180.0°
-[gazebo_mapper] 位置: x=0.000, y=0.000, TF heading=0.0°, Gazebo heading=180.0°
-[gazebo_mapper] 位置: x=0.000, y=0.000, TF heading=0.0°, Gazebo heading=180.0°
+[gazebo_mapper] 等待仿真时钟同步...
+[gazebo_mapper] 致命错误: type object 'Time' has no attribute 'waitForSync'
+Traceback (most recent call last):
+  File "/home/lcy/robot_graduation/gazebo_create/scripts/gazebo_mapper.py", line 160, in <module>
+    GazeboMapper(args.gazebo_namespace, args.init_yaw_offset, args.gazebo_yaw_offset)
+  File "/home/lcy/robot_graduation/gazebo_create/scripts/gazebo_mapper.py", line 27, in __init__
+    rospy.Time.waitForSync()  # 等 Gazebo 开始发 /clock
+AttributeError: type object 'Time' has no attribute 'waitForSync'
