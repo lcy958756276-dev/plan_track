@@ -28,6 +28,9 @@ exec > "$LOG_FILE" 2>&1
 
 source "$WORKSPACE_DIR/devel/setup.bash"
 
+# 使用仿真时间（让 mapper 的 TF 和 Gazebo 激光时间戳对齐）
+rosparam set /use_sim_time true
+
 echo "=== build_map.sh 启动 ==="
 echo "日志目录: $LOG_DIR"
 date
