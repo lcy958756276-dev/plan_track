@@ -41,6 +41,7 @@ killall -9 gzserver gzclient 2>/dev/null
 pkill -f "gazebo_mapper" 2>/dev/null
 pkill -f "robot_state_publisher" 2>/dev/null
 pkill -f "joint_state_publisher" 2>/dev/null
+pkill -f "slam_gmapping" 2>/dev/null
 sleep 2
 if pgrep -x gzserver > /dev/null 2>&1; then
     killall -9 gzserver 2>/dev/null
@@ -159,7 +160,13 @@ sleep 2
 
 # ── 5. gmapping ──
 echo "[5] 启动 gmapping..."
-rosrun gmapping slam_gmapping scan:=/scan _odom_frame:=odom _map_update_interval:=1.0 \
+rosrun gmapping slam_gmapping scan:=/scan \
+    _odom_frame:=odom \
+    _map_update_interval:=0.2 \
+    _linearUpdate:=0.1 \
+    _angularUpdate:=0.1 \
+    _particles:=80 \
+    _xmin:=-10 _xmax:=10 _ymin:=-10 _ymax:=10 _delta:=0.05 \
     > "$LOG_DIR/gmapping.log" 2>&1 &
 PID_GMAPPING=$!
 echo "gmapping PID=$PID_GMAPPING"
