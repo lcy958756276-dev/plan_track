@@ -28,11 +28,12 @@ class GazeboMapper:
         self.y = 0.0
         self.th = 0.0
 
-        # 等待服务
-        rospy.wait_for_service('/gazebo/set_model_state')
-        rospy.wait_for_service('/gazebo/get_model_state')
-        self.set_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
-        self.get_state = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
+        # 等待服务（使用 /gz_debug 命名空间，与 gzserver 启动参数一致）
+        self.gazebo_ns = rospy.get_param('~gazebo_namespace', '/gz_debug')
+        rospy.wait_for_service(self.gazebo_ns + '/set_model_state')
+        rospy.wait_for_service(self.gazebo_ns + '/get_model_state')
+        self.set_state = rospy.ServiceProxy(self.gazebo_ns + '/set_model_state', SetModelState)
+        self.get_state = rospy.ServiceProxy(self.gazebo_ns + '/get_model_state', GetModelState)
 
         # 初始位置设为 0
         self._sync_init_pose()

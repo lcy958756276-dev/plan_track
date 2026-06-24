@@ -86,7 +86,7 @@ PID_GZ=$!
 echo "gzserver PID=$PID_GZ"
 
 for i in $(seq 1 30); do
-    if rosservice list 2>/dev/null | grep -q "/gazebo/set_model_state"; then
+    if rosservice list 2>/dev/null | grep -q "/gz_debug/set_model_state"; then
         echo "Gazebo 就绪（第 ${i} 秒）"
         break
     fi
@@ -107,6 +107,7 @@ echo "[3] spawn_model..."
 rosrun gazebo_ros spawn_model -urdf \
     -param robot_description \
     -model my_car \
+    -gazebo_namespace /gz_debug \
     -x 0.0 -y 0.0 -z 0.0 \
     > "$LOG_DIR/spawn.log" 2>&1
 SPAWN_EXIT=$?
@@ -114,11 +115,12 @@ echo "spawn_model exit=$SPAWN_EXIT"
 sleep 3
 
 echo "=== Gazebo 模型列表 ==="
-rosservice call /gazebo/get_world_properties 2>/dev/null | head -5 || echo "get_world_properties 失败"
+rosservice call /gz_debug/get_world_properties 2>/dev/null | head -5 || echo "get_world_properties 失败"
 
 # ── 4. 启动 mapper ──
 echo "[4] 启动 gazebo_mapper.py..."
 python3 "$GAZEBO_DIR/scripts/gazebo_mapper.py" \
+    _gazebo_namespace:=/gz_debug \
     > "$LOG_DIR/mapper.log" 2>&1 &
 PID_MAPPER=$!
 echo "mapper PID=$PID_MAPPER"
