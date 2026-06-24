@@ -137,6 +137,7 @@ echo "  正在生成机器人模型..."
 rosrun gazebo_ros spawn_model -urdf \
     -param robot_description \
     -model turtlebot3_waffle \
+    -static true \
     -gazebo_namespace /gz_debug \
     -x 0.0 -y 0.0 -z 0.0 \
     >> "$LOG_DIR/run.log" 2>&1
