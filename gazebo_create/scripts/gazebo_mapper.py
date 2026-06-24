@@ -85,14 +85,16 @@ class GazeboMapper:
         if dt <= 0:
             return
 
-        self.x += self.vx * math.cos(self.th) * dt
-        self.y += self.vx * math.sin(self.th) * dt
+        # 运动方向用 Gazebo 实际朝向（th + gazebo_yaw_offset），保证两边视觉和运动一致
+        move_th = self.th + self.gazebo_yaw_offset
+        self.x += self.vx * math.cos(move_th) * dt
+        self.y += self.vx * math.sin(move_th) * dt
         self.th += self.vth * dt
 
         q = tft.quaternion_from_euler(0, 0, self.th)
 
         # Gazebo 朝向（加 gazebo_yaw_offset 补偿 Gazebo 与 RViz 的显示差异）
-        q_gz = tft.quaternion_from_euler(0, 0, self.th + self.gazebo_yaw_offset)
+        q_gz = tft.quaternion_from_euler(0, 0, move_th)
         model_state = ModelState()
         model_state.model_name = self.model_name
         model_state.pose.position.x = self.x
