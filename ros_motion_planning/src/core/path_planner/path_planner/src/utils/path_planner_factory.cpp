@@ -35,6 +35,7 @@
 #include "path_planner/sample_planner/rrt_star_planner.h"
 #include "path_planner/sample_planner/rrt_connect_planner.h"
 #include "path_planner/sample_planner/informed_rrt_star_planner.h"
+#include "path_planner/sample_planner/proved_apf_planner.h"
 
 // evolutionary-based planner
 #include "path_planner/evolutionary_planner/aco_planner.h"
@@ -117,6 +118,9 @@ bool PathPlannerFactory::createPlanner(ros::NodeHandle& nh,
   } else if (planner_name == "ga") {
     planner_props.planner_ptr = std::make_shared<GAPathPlanner>(costmap_ros);
     planner_props.planner_type = EVOLUTION_PLANNER;
+  } else if (planner_name == "proved_apf") {
+    planner_props.planner_ptr = std::make_shared<ProvedAPFPathPlanner>(costmap_ros);
+    planner_props.planner_type = SAMPLE_PLANNER;
   } else {
     R_ERROR << "Unknown planner name: " << planner_name;
     return false;
