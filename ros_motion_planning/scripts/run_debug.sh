@@ -63,7 +63,7 @@ echo "[$(date +%H:%M:%S)] [3] robot_description loaded" >> "$LOG_DIR/run.log"
 echo "  robot_description 已加载（自定义车模型）"
 
 # robot_state_publisher（发布 URDF 中固定关节的 TF：base_footprint → base_link → base_scan）
-rosrun robot_state_publisher robot_state_publisher \
+rosrun robot_state_publisher robot_state_publisher __name:=rsp_main \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_RSP=$!
 echo "  robot_state_publisher PID=$PID_RSP"
