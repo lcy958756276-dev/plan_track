@@ -57,7 +57,7 @@ echo "[3/8] 加载 robot_description + 启动核心节点 ..."
 echo "[$(date +%H:%M:%S)] [3] loading robot_description" >> "$LOG_DIR/run.log"
 
 # 加载 SolidWorks 导出的自定义车模型 URDF
-ROBOT_URDF="$WORKSPACE_DIR/src/sim_env/urdf/my_car/my_car.urdf"
+ROBOT_URDF="$WORKSPACE_DIR/my_robot/urdf/my_robot.urdf"
 rosparam set robot_description "$(cat "$ROBOT_URDF")"
 echo "[$(date +%H:%M:%S)] [3] robot_description loaded" >> "$LOG_DIR/run.log"
 echo "  robot_description 已加载（自定义车模型）"
@@ -90,6 +90,12 @@ rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 map odom \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_TF=$!
 echo "  static_transform_publisher (map→odom) PID=$PID_TF"
+
+# 静态 base_footprint → base_link TF（新模型 URDF 不含 base_footprint，需要补一个）
+rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 base_footprint base_link \
+    >> "$LOG_DIR/run.log" 2>&1 &
+PID_FP=$!
+echo "  static_transform_publisher (base_footprint→base_link) PID=$PID_FP"
 
 sleep 1
 
@@ -137,7 +143,7 @@ echo "[$(date +%H:%M:%S)] [4] spawn_model start" >> "$LOG_DIR/run.log"
 echo "  正在生成机器人模型..."
 rosrun gazebo_ros spawn_model -urdf \
     -param robot_description \
-    -model turtlebot3_waffle \
+    -model my_robot \
     -gazebo_namespace /gz_debug \
     -x 0.0 -y 0.0 -z 0.0 \
     >> "$LOG_DIR/run.log" 2>&1
@@ -270,6 +276,7 @@ echo "$PID_MAP"      > "$LOG_DIR/.pid_map"
 echo "$PID_RSP"      > "$LOG_DIR/.pid_rsp"
 echo "$PID_JSP"      > "$LOG_DIR/.pid_jsp"
 echo "$PID_TF"       > "$LOG_DIR/.pid_tf"
+echo "$PID_FP"       > "$LOG_DIR/.pid_footprint"
 echo "$PID_GZSERVER" > "$LOG_DIR/.pid_gzserver"
 echo "$PID_GZCLIENT" > "$LOG_DIR/.pid_gzclient"
 echo "$PID_RVIZ"     > "$LOG_DIR/.pid_rviz"
