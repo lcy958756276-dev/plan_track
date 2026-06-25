@@ -15,8 +15,9 @@ LOG_DIR="$WORKSPACE_DIR/log"
 source "$WORKSPACE_DIR/devel/setup.bash"
 mkdir -p "$LOG_DIR"
 
-# 强制清理残留的 Gazebo 进程
+# 强制清理残留的 Gazebo、map_server 进程
 killall -9 gzserver gzclient 2>/dev/null
+killall map_server 2>/dev/null
 sleep 1
 
 # 确保 ROS master 在运行
