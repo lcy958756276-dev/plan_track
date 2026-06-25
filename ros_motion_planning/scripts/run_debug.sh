@@ -76,8 +76,8 @@ echo "  joint_state_publisher PID=$PID_JSP"
 
 sleep 1
 
-# map_server（提供背景地图 — my_map）
-MAP_FILE="$WORKSPACE_DIR/../gazebo_create/maps/my_map.yaml"
+# map_server（提供背景地图）
+MAP_FILE="$WORKSPACE_DIR/src/sim_env/maps/warehouse/warehouse.yaml"
 rosrun map_server map_server "$MAP_FILE" \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_MAP=$!
@@ -103,7 +103,7 @@ sleep 1
 # ── 4. 启动 Gazebo（仓库环境）──
 echo "[4/8] 启动 Gazebo ..."
 echo "[$(date +%H:%M:%S)] [4] starting gzserver" >> "$LOG_DIR/run.log"
-WORLD_FILE="$WORKSPACE_DIR/../gazebo_create/worlds/final.world"
+WORLD_FILE="$WORKSPACE_DIR/src/sim_env/worlds/warehouse.world"
 
 # 禁用所有模型数据库下载（防 libcurl SSL 超时阻塞 ROS 插件初始化）
 # GAZEBO_MODEL_DATABASE_URI 管 Gazebo Fuel，IGN_FUEL_URI 管 Ignition Fuel
