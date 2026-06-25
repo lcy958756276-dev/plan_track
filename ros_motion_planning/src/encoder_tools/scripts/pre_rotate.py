@@ -8,9 +8,9 @@ from tf.transformations import euler_from_quaternion
 
 class PreRotate:
     def __init__(self):
-        self.angle_threshold = math.radians(15.0)   # 触发旋转的角度
-        self.alignment_tol = math.radians(3.0)       # 转到位容忍度
-        self.max_angular = 1.5                        # rad/s
+        self.angle_threshold = math.radians(15.0)
+        self.alignment_tol = math.radians(3.0)
+        self.max_angular = 0.6                         # rad/s，慢一点更稳
 
         self.x = 0.0
         self.y = 0.0
@@ -24,12 +24,16 @@ class PreRotate:
         rospy.Subscriber("/move_base_simple/goal", PoseStamped, self.goal_cb)
         rospy.Subscriber("/odom", Odometry, self.odom_cb)
 
+        # 50Hz 定时检查旋转状态，比等 odom 回调更及时
+        rospy.Timer(rospy.Duration(0.02), self._timer_cb)
+
     def odom_cb(self, msg):
         self.x = msg.pose.pose.position.x
         self.y = msg.pose.pose.position.y
         q = msg.pose.pose.orientation
         _, _, self.yaw = euler_from_quaternion([q.x, q.y, q.z, q.w])
 
+    def _timer_cb(self, event):
         if self.rotating and self.goal is not None:
             self._check_rotation()
 
@@ -64,11 +68,14 @@ class PreRotate:
         err = self._norm(target_yaw - self.yaw)
 
         if abs(err) < self.alignment_tol:
+            # 先停稳再转发 goal
+            self.cmd_pub.publish(Twist())
+            rospy.sleep(0.1)
+            self.cmd_pub.publish(Twist())
             rospy.loginfo("pre_rotate: aligned, send goal to move_base")
             self.goal_pub.publish(self.goal)
             self.rotating = False
             self.goal = None
-            self.cmd_pub.publish(Twist())  # stop
         else:
             twist = Twist()
             twist.angular.z = self.max_angular if err > 0 else -self.max_angular
