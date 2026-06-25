@@ -76,8 +76,8 @@ echo "  joint_state_publisher PID=$PID_JSP"
 
 sleep 1
 
-# map_server（提供背景地图）
-MAP_FILE="$WORKSPACE_DIR/src/sim_env/maps/warehouse/warehouse.yaml"
+# map_server（提供背景地图 — my_map_two）
+MAP_FILE="$WORKSPACE_DIR/../gazebo_create/maps/my_map_two.yaml"
 rosrun map_server map_server "$MAP_FILE" \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_MAP=$!
@@ -85,8 +85,8 @@ echo "  map_server PID=$PID_MAP"
 
 sleep 1
 
-# 静态 map → odom TF（让 RViz 在 map 固定帧下能看到小车移动）
-rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 map odom \
+# 静态 map → odom TF（偏移 (0,0.8) 让初始位置落在 my_map_two 空闲区）
+rosrun tf2_ros static_transform_publisher 0 0.8 0 0 0 0 map odom \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_TF=$!
 echo "  static_transform_publisher (map→odom) PID=$PID_TF"
@@ -103,7 +103,7 @@ sleep 1
 # ── 4. 启动 Gazebo（仓库环境）──
 echo "[4/8] 启动 Gazebo ..."
 echo "[$(date +%H:%M:%S)] [4] starting gzserver" >> "$LOG_DIR/run.log"
-WORLD_FILE="$WORKSPACE_DIR/src/sim_env/worlds/warehouse.world"
+WORLD_FILE="$WORKSPACE_DIR/../gazebo_create/worlds/final.world"
 
 # 禁用所有模型数据库下载（防 libcurl SSL 超时阻塞 ROS 插件初始化）
 # GAZEBO_MODEL_DATABASE_URI 管 Gazebo Fuel，IGN_FUEL_URI 管 Ignition Fuel
