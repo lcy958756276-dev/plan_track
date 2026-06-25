@@ -20,6 +20,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/path_planner.dir/src/path_planner.cpp.o"
   "CMakeFiles/path_planner.dir/src/path_planner_node.cpp.o"
   "CMakeFiles/path_planner.dir/src/sample_planner/informed_rrt_star_planner.cpp.o"
+  "CMakeFiles/path_planner.dir/src/sample_planner/proved_apf_planner.cpp.o"
   "CMakeFiles/path_planner.dir/src/sample_planner/rrt_connect_planner.cpp.o"
   "CMakeFiles/path_planner.dir/src/sample_planner/rrt_planner.cpp.o"
   "CMakeFiles/path_planner.dir/src/sample_planner/rrt_star_planner.cpp.o"

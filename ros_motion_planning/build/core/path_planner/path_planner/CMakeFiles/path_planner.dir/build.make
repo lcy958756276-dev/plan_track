@@ -278,9 +278,22 @@ core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/in
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/path_planner.dir/src/sample_planner/informed_rrt_star_planner.cpp.s"
 	cd /home/lcy/robot_graduation/ros_motion_planning/build/core/path_planner/path_planner && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/src/sample_planner/informed_rrt_star_planner.cpp -o CMakeFiles/path_planner.dir/src/sample_planner/informed_rrt_star_planner.cpp.s
 
+core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/proved_apf_planner.cpp.o: core/path_planner/path_planner/CMakeFiles/path_planner.dir/flags.make
+core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/proved_apf_planner.cpp.o: /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/src/sample_planner/proved_apf_planner.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/proved_apf_planner.cpp.o"
+	cd /home/lcy/robot_graduation/ros_motion_planning/build/core/path_planner/path_planner && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/path_planner.dir/src/sample_planner/proved_apf_planner.cpp.o -c /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/src/sample_planner/proved_apf_planner.cpp
+
+core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/proved_apf_planner.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/path_planner.dir/src/sample_planner/proved_apf_planner.cpp.i"
+	cd /home/lcy/robot_graduation/ros_motion_planning/build/core/path_planner/path_planner && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/src/sample_planner/proved_apf_planner.cpp > CMakeFiles/path_planner.dir/src/sample_planner/proved_apf_planner.cpp.i
+
+core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/proved_apf_planner.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/path_planner.dir/src/sample_planner/proved_apf_planner.cpp.s"
+	cd /home/lcy/robot_graduation/ros_motion_planning/build/core/path_planner/path_planner && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/src/sample_planner/proved_apf_planner.cpp -o CMakeFiles/path_planner.dir/src/sample_planner/proved_apf_planner.cpp.s
+
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rrt_connect_planner.cpp.o: core/path_planner/path_planner/CMakeFiles/path_planner.dir/flags.make
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rrt_connect_planner.cpp.o: /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/src/sample_planner/rrt_connect_planner.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rrt_connect_planner.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rrt_connect_planner.cpp.o"
 	cd /home/lcy/robot_graduation/ros_motion_planning/build/core/path_planner/path_planner && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/path_planner.dir/src/sample_planner/rrt_connect_planner.cpp.o -c /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/src/sample_planner/rrt_connect_planner.cpp
 
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rrt_connect_planner.cpp.i: cmake_force
@@ -293,7 +306,7 @@ core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rr
 
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rrt_planner.cpp.o: core/path_planner/path_planner/CMakeFiles/path_planner.dir/flags.make
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rrt_planner.cpp.o: /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/src/sample_planner/rrt_planner.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rrt_planner.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rrt_planner.cpp.o"
 	cd /home/lcy/robot_graduation/ros_motion_planning/build/core/path_planner/path_planner && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/path_planner.dir/src/sample_planner/rrt_planner.cpp.o -c /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/src/sample_planner/rrt_planner.cpp
 
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rrt_planner.cpp.i: cmake_force
@@ -306,7 +319,7 @@ core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rr
 
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rrt_star_planner.cpp.o: core/path_planner/path_planner/CMakeFiles/path_planner.dir/flags.make
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rrt_star_planner.cpp.o: /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/src/sample_planner/rrt_star_planner.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rrt_star_planner.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rrt_star_planner.cpp.o"
 	cd /home/lcy/robot_graduation/ros_motion_planning/build/core/path_planner/path_planner && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/path_planner.dir/src/sample_planner/rrt_star_planner.cpp.o -c /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/src/sample_planner/rrt_star_planner.cpp
 
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rrt_star_planner.cpp.i: cmake_force
@@ -319,7 +332,7 @@ core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rr
 
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/evolutionary_planner/aco_planner.cpp.o: core/path_planner/path_planner/CMakeFiles/path_planner.dir/flags.make
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/evolutionary_planner/aco_planner.cpp.o: /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/src/evolutionary_planner/aco_planner.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/evolutionary_planner/aco_planner.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/evolutionary_planner/aco_planner.cpp.o"
 	cd /home/lcy/robot_graduation/ros_motion_planning/build/core/path_planner/path_planner && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/path_planner.dir/src/evolutionary_planner/aco_planner.cpp.o -c /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/src/evolutionary_planner/aco_planner.cpp
 
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/evolutionary_planner/aco_planner.cpp.i: cmake_force
@@ -332,7 +345,7 @@ core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/evolutionary_plan
 
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/evolutionary_planner/ga_planner.cpp.o: core/path_planner/path_planner/CMakeFiles/path_planner.dir/flags.make
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/evolutionary_planner/ga_planner.cpp.o: /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/src/evolutionary_planner/ga_planner.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/evolutionary_planner/ga_planner.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/evolutionary_planner/ga_planner.cpp.o"
 	cd /home/lcy/robot_graduation/ros_motion_planning/build/core/path_planner/path_planner && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/path_planner.dir/src/evolutionary_planner/ga_planner.cpp.o -c /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/src/evolutionary_planner/ga_planner.cpp
 
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/evolutionary_planner/ga_planner.cpp.i: cmake_force
@@ -345,7 +358,7 @@ core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/evolutionary_plan
 
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/evolutionary_planner/pso_planner.cpp.o: core/path_planner/path_planner/CMakeFiles/path_planner.dir/flags.make
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/evolutionary_planner/pso_planner.cpp.o: /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/src/evolutionary_planner/pso_planner.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/evolutionary_planner/pso_planner.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/evolutionary_planner/pso_planner.cpp.o"
 	cd /home/lcy/robot_graduation/ros_motion_planning/build/core/path_planner/path_planner && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/path_planner.dir/src/evolutionary_planner/pso_planner.cpp.o -c /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/src/evolutionary_planner/pso_planner.cpp
 
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/evolutionary_planner/pso_planner.cpp.i: cmake_force
@@ -375,6 +388,7 @@ path_planner_OBJECTS = \
 "CMakeFiles/path_planner.dir/src/graph_planner/theta_star_planner.cpp.o" \
 "CMakeFiles/path_planner.dir/src/graph_planner/voronoi_planner.cpp.o" \
 "CMakeFiles/path_planner.dir/src/sample_planner/informed_rrt_star_planner.cpp.o" \
+"CMakeFiles/path_planner.dir/src/sample_planner/proved_apf_planner.cpp.o" \
 "CMakeFiles/path_planner.dir/src/sample_planner/rrt_connect_planner.cpp.o" \
 "CMakeFiles/path_planner.dir/src/sample_planner/rrt_planner.cpp.o" \
 "CMakeFiles/path_planner.dir/src/sample_planner/rrt_star_planner.cpp.o" \
@@ -402,6 +416,7 @@ path_planner_EXTERNAL_OBJECTS =
 /home/lcy/robot_graduation/ros_motion_planning/devel/lib/libpath_planner.so: core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/graph_planner/theta_star_planner.cpp.o
 /home/lcy/robot_graduation/ros_motion_planning/devel/lib/libpath_planner.so: core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/graph_planner/voronoi_planner.cpp.o
 /home/lcy/robot_graduation/ros_motion_planning/devel/lib/libpath_planner.so: core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/informed_rrt_star_planner.cpp.o
+/home/lcy/robot_graduation/ros_motion_planning/devel/lib/libpath_planner.so: core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/proved_apf_planner.cpp.o
 /home/lcy/robot_graduation/ros_motion_planning/devel/lib/libpath_planner.so: core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rrt_connect_planner.cpp.o
 /home/lcy/robot_graduation/ros_motion_planning/devel/lib/libpath_planner.so: core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rrt_planner.cpp.o
 /home/lcy/robot_graduation/ros_motion_planning/devel/lib/libpath_planner.so: core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/rrt_star_planner.cpp.o
@@ -487,7 +502,7 @@ path_planner_EXTERNAL_OBJECTS =
 /home/lcy/robot_graduation/ros_motion_planning/devel/lib/libpath_planner.so: /usr/lib/aarch64-linux-gnu/libboost_thread.so.1.71.0
 /home/lcy/robot_graduation/ros_motion_planning/devel/lib/libpath_planner.so: /usr/lib/aarch64-linux-gnu/libconsole_bridge.so.0.4
 /home/lcy/robot_graduation/ros_motion_planning/devel/lib/libpath_planner.so: core/path_planner/path_planner/CMakeFiles/path_planner.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Linking CXX shared library /home/lcy/robot_graduation/ros_motion_planning/devel/lib/libpath_planner.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Linking CXX shared library /home/lcy/robot_graduation/ros_motion_planning/devel/lib/libpath_planner.so"
 	cd /home/lcy/robot_graduation/ros_motion_planning/build/core/path_planner/path_planner && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/path_planner.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

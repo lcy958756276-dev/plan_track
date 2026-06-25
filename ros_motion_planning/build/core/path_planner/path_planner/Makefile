@@ -770,6 +770,33 @@ src/sample_planner/informed_rrt_star_planner.cpp.s:
 	cd /home/lcy/robot_graduation/ros_motion_planning/build && $(MAKE) -f core/path_planner/path_planner/CMakeFiles/path_planner.dir/build.make core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/informed_rrt_star_planner.cpp.s
 .PHONY : src/sample_planner/informed_rrt_star_planner.cpp.s
 
+src/sample_planner/proved_apf_planner.o: src/sample_planner/proved_apf_planner.cpp.o
+
+.PHONY : src/sample_planner/proved_apf_planner.o
+
+# target to build an object file
+src/sample_planner/proved_apf_planner.cpp.o:
+	cd /home/lcy/robot_graduation/ros_motion_planning/build && $(MAKE) -f core/path_planner/path_planner/CMakeFiles/path_planner.dir/build.make core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/proved_apf_planner.cpp.o
+.PHONY : src/sample_planner/proved_apf_planner.cpp.o
+
+src/sample_planner/proved_apf_planner.i: src/sample_planner/proved_apf_planner.cpp.i
+
+.PHONY : src/sample_planner/proved_apf_planner.i
+
+# target to preprocess a source file
+src/sample_planner/proved_apf_planner.cpp.i:
+	cd /home/lcy/robot_graduation/ros_motion_planning/build && $(MAKE) -f core/path_planner/path_planner/CMakeFiles/path_planner.dir/build.make core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/proved_apf_planner.cpp.i
+.PHONY : src/sample_planner/proved_apf_planner.cpp.i
+
+src/sample_planner/proved_apf_planner.s: src/sample_planner/proved_apf_planner.cpp.s
+
+.PHONY : src/sample_planner/proved_apf_planner.s
+
+# target to generate assembly for a file
+src/sample_planner/proved_apf_planner.cpp.s:
+	cd /home/lcy/robot_graduation/ros_motion_planning/build && $(MAKE) -f core/path_planner/path_planner/CMakeFiles/path_planner.dir/build.make core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/sample_planner/proved_apf_planner.cpp.s
+.PHONY : src/sample_planner/proved_apf_planner.cpp.s
+
 src/sample_planner/rrt_connect_planner.o: src/sample_planner/rrt_connect_planner.cpp.o
 
 .PHONY : src/sample_planner/rrt_connect_planner.o
@@ -954,6 +981,9 @@ help:
 	@echo "... src/sample_planner/informed_rrt_star_planner.o"
 	@echo "... src/sample_planner/informed_rrt_star_planner.i"
 	@echo "... src/sample_planner/informed_rrt_star_planner.s"
+	@echo "... src/sample_planner/proved_apf_planner.o"
+	@echo "... src/sample_planner/proved_apf_planner.i"
+	@echo "... src/sample_planner/proved_apf_planner.s"
 	@echo "... src/sample_planner/rrt_connect_planner.o"
 	@echo "... src/sample_planner/rrt_connect_planner.i"
 	@echo "... src/sample_planner/rrt_connect_planner.s"

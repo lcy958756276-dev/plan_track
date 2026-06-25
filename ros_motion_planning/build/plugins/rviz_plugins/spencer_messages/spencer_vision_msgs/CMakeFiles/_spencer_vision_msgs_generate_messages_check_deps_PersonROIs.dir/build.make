@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /home/lcy/robot_graduation/ros_motion_planning/build
 include plugins/rviz_plugins/spencer_messages/spencer_vision_msgs/CMakeFiles/_spencer_vision_msgs_generate_messages_check_deps_PersonROIs.dir/progress.make
 
 plugins/rviz_plugins/spencer_messages/spencer_vision_msgs/CMakeFiles/_spencer_vision_msgs_generate_messages_check_deps_PersonROIs:
-	cd /home/lcy/robot_graduation/ros_motion_planning/build/plugins/rviz_plugins/spencer_messages/spencer_vision_msgs && ../../../../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py spencer_vision_msgs /home/lcy/robot_graduation/ros_motion_planning/src/plugins/rviz_plugins/spencer_messages/spencer_vision_msgs/msg/PersonROIs.msg std_msgs/Header:spencer_vision_msgs/PersonROI:sensor_msgs/RegionOfInterest
+	cd /home/lcy/robot_graduation/ros_motion_planning/build/plugins/rviz_plugins/spencer_messages/spencer_vision_msgs && ../../../../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py spencer_vision_msgs /home/lcy/robot_graduation/ros_motion_planning/src/plugins/rviz_plugins/spencer_messages/spencer_vision_msgs/msg/PersonROIs.msg spencer_vision_msgs/PersonROI:sensor_msgs/RegionOfInterest:std_msgs/Header
 
 _spencer_vision_msgs_generate_messages_check_deps_PersonROIs: plugins/rviz_plugins/spencer_messages/spencer_vision_msgs/CMakeFiles/_spencer_vision_msgs_generate_messages_check_deps_PersonROIs
 _spencer_vision_msgs_generate_messages_check_deps_PersonROIs: plugins/rviz_plugins/spencer_messages/spencer_vision_msgs/CMakeFiles/_spencer_vision_msgs_generate_messages_check_deps_PersonROIs.dir/build.make
