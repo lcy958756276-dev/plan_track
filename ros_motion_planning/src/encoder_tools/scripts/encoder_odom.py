@@ -25,11 +25,6 @@ class EncoderOdometry:
         wheel_radius = rospy.get_param("~wheel_radius", 0.1065)
         wheel_base   = rospy.get_param("~wheel_base", 0.25)
 
-        # 初始位置偏移（让机器人初始位置落在 my_map 空闲区）
-        initial_x = rospy.get_param("~initial_x", 0.0)
-        initial_y = rospy.get_param("~initial_y", 0.0)
-        initial_yaw = rospy.get_param("~initial_yaw", 0.0)
-
         # 编码器参数 → 每脉冲对应距离
         pluse = 1.04190106 * 360.0 / (500.0 * 4 * 91)
         self.dist_per_tick = (pluse / 360.0) * 2.0 * math.pi * wheel_radius
@@ -40,7 +35,6 @@ class EncoderOdometry:
         rospy.loginfo(f"wheel_base      = {wheel_base}")
         rospy.loginfo(f"pluse           = {pluse:.6f}")
         rospy.loginfo(f"dist_per_tick   = {self.dist_per_tick:.8f} m")
-        rospy.loginfo(f"initial_pose    = ({initial_x}, {initial_y}, {initial_yaw})")
         rospy.loginfo("========================")
 
         # 状态
@@ -49,9 +43,9 @@ class EncoderOdometry:
         self.last_time = None
         self.left_dist = 0.0
         self.right_dist = 0.0
-        self.x = initial_x
-        self.y = initial_y
-        self.theta = initial_yaw
+        self.x = 0.0
+        self.y = 0.0
+        self.theta = 0.0
         self.latest_v = 0.0
         self.latest_omega = 0.0
         self.have_pose = False
