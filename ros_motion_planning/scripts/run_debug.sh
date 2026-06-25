@@ -201,15 +201,6 @@ echo "  PID=$PID_SYNC → log/gazebo_sync.log"
 
 sleep 2
 
-# ── 7.5 启动 pre_rotate 预旋转节点 ──
-echo "[7.5/8] 启动 pre_rotate.py (新 goal 大角度时原地旋转对齐)..."
-rosrun encoder_tools pre_rotate.py \
-    > "$LOG_DIR/pre_rotate.log" 2>&1 &
-PID_PREROT=$!
-echo "  PID=$PID_PREROT → log/pre_rotate.log"
-
-sleep 1
-
 # ── 8. 启动 move_base（全局规划器）──
 echo "[8/8] 启动 move_base（A* 全局规划器，仅规划不跟踪）..."
 echo "[$(date +%H:%M:%S)] [8] generating move_base launch file" >> "$LOG_DIR/run.log"
@@ -249,8 +240,6 @@ cat > "$MB_LAUNCH" << MBEOF
 
     <!-- map 重映射 -->
     <remap from="map" to="/map"/>
-    <!-- goal 重映射（pre_rotate 转发后的话题）-->
-    <remap from="move_base_simple/goal" to="/goal_rotated"/>
   </node>
 </launch>
 MBEOF
@@ -295,7 +284,6 @@ echo "$PID_RVIZ"     > "$LOG_DIR/.pid_rviz"
 echo "$PID_READ"     > "$LOG_DIR/.pid_read"
 echo "$PID_ODOM"     > "$LOG_DIR/.pid_odom"
 echo "$PID_SYNC"     > "$LOG_DIR/.pid_sync"
-echo "$PID_PREROT"   > "$LOG_DIR/.pid_prerot"
 echo "$PID_MB"        > "$LOG_DIR/.pid_move_base"
 
 echo ""
