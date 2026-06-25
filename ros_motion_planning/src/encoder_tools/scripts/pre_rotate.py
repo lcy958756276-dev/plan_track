@@ -110,9 +110,10 @@ class PreRotate:
             stop = Twist()
             self.cmd_pub.publish(stop)
         else:
-            # 继续旋转（恒定角速度，防止 odom 噪声导致轮子抖动）
+            # 继续旋转
             twist = Twist()
-            twist.angular.z = math.copysign(self.max_angular, angle_error)
+            twist.angular.z = math.copysign(
+                min(abs(angle_error) * 3.0, self.max_angular), angle_error
             )
             self.cmd_pub.publish(twist)
 
