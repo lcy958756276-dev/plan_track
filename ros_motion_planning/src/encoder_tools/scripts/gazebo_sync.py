@@ -84,7 +84,7 @@ class GazeboSync:
             twist = self.latest_odom.twist.twist
 
             state = ModelState()
-            state.model_name = "turtlebot3_waffle"
+            state.model_name = "my_robot"
             state.pose = pose
             state.twist = twist
             state.reference_frame = ""
