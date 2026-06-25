@@ -253,127 +253,14 @@ echo "  局部规划器: MPC (模型预测控制，跟踪全局路径)"
 echo "  RViz 中点击 2D Nav Goal → 全局路径将显示在地图上"
 
 sleep 3
+echo "[$(date +%H:%M:%S)] [8] move_base 启动后状态:" >> "$LOG_DIR/run.log"
+echo "  [诊断] 检查 move_base 是否存活:" >> "$LOG_DIR/run.log"
+kill -0 "$PID_MB" 2>&1 && echo "  [诊断] move_base 进程存活" >> "$LOG_DIR/run.log" || echo "  [诊断] move_base 进程已死亡" >> "$LOG_DIR/run.log"
+echo "  [诊断] rostopic list | grep move_base:" >> "$LOG_DIR/run.log"
+rostopic list 2>/dev/null | grep -i move 2>&1 >> "$LOG_DIR/run.log" || echo "  [诊断] 无 move_base 话题" >> "$LOG_DIR/run.log"
+echo "  [诊断] rosservice list | grep move_base:" >> "$LOG_DIR/run.log"
+rosservice list 2>/dev/null | grep -i move 2>&1 >> "$LOG_DIR/run.log" || echo "  [诊断] 无 move_base 服务" >> "$LOG_DIR/run.log"
 
-# ── 9. 2D Nav Goal 诊断 ──
-echo "[9/9] 运行 2D Nav Goal 诊断..."
-DIA_LOG="$LOG_DIR/diagnostic.log"
-echo "========================================" > "$DIA_LOG"
-echo "  2D Nav Goal 诊断报告" >> "$DIA_LOG"
-echo "  时间: $(date)" >> "$DIA_LOG"
-echo "========================================" >> "$DIA_LOG"
-echo "" >> "$DIA_LOG"
-
-# 9.1 进程存活检查
-echo "[9.1] 进程存活检查 -----------------------------" >> "$DIA_LOG"
-for proc_name in map rsp jsp tf gzserver gzclient rviz read odom sync move_base; do
-    pid_var="PID_$(echo $proc_name | tr 'a-z' 'A-Z')"
-    pid_file="$LOG_DIR/.pid_$proc_name"
-    if [ -f "$pid_file" ]; then
-        pid=$(cat "$pid_file")
-        if kill -0 "$pid" 2>/dev/null; then
-            echo "  ✅ $proc_name (PID=$pid)" >> "$DIA_LOG"
-        else
-            echo "  ❌ $proc_name (PID=$pid) 已死亡" >> "$DIA_LOG"
-        fi
-    fi
-done
-echo "" >> "$DIA_LOG"
-
-# 9.2 move_base 诊断
-echo "[9.2] move_base 诊断 ----------------------------" >> "$DIA_LOG"
-echo "  move_base 进程 PID=$PID_MB" >> "$DIA_LOG"
-if kill -0 "$PID_MB" 2>/dev/null; then
-    echo "  ✅ move_base 进程存活" >> "$DIA_LOG"
-else
-    echo "  ❌ move_base 进程已死亡" >> "$DIA_LOG"
-fi
-echo "  move_base 话题:" >> "$DIA_LOG"
-rostopic list 2>/dev/null | grep -i move 2>&1 >> "$DIA_LOG" || echo "  ❌ 无 move_base 话题" >> "$DIA_LOG"
-echo "  move_base 服务:" >> "$DIA_LOG"
-rosservice list 2>/dev/null | grep -i move 2>&1 >> "$DIA_LOG" || echo "  ❌ 无 move_base 服务" >> "$DIA_LOG"
-echo "" >> "$DIA_LOG"
-
-# 9.3 关键话题检查
-echo "[9.3] 关键话题检查 ------------------------------" >> "$DIA_LOG"
-for topic in /map /move_base_simple/goal /move_base/NavfnROS/plan /move_base/global_costmap/costmap /move_base/local_costmap/costmap /scan_fixed /odom; do
-    if rostopic info "$topic" 2>/dev/null | grep -q "Type:"; then
-        echo "  ✅ $topic" >> "$DIA_LOG"
-    else
-        echo "  ❌ $topic (不存在)" >> "$DIA_LOG"
-    fi
-done
-echo "" >> "$DIA_LOG"
-
-# 9.4 /map 数据检查
-echo "[9.4] /map 话题数据检查 -------------------------" >> "$DIA_LOG"
-MAP_INFO=$(rostopic echo /map -n1 --noarr 2>/dev/null)
-if [ -n "$MAP_INFO" ]; then
-    MAP_WIDTH=$(echo "$MAP_INFO" | grep -oP 'width: \K\d+' | head -1)
-    MAP_HEIGHT=$(echo "$MAP_INFO" | grep -oP 'height: \K\d+' | head -1)
-    MAP_RES=$(echo "$MAP_INFO" | grep -oP 'resolution: \K[\d.]+' | head -1)
-    echo "  ✅ /map 有数据" >> "$DIA_LOG"
-    echo "     width=$MAP_WIDTH height=$MAP_HEIGHT resolution=$MAP_RES" >> "$DIA_LOG"
-else
-    echo "  ❌ /map 无数据（map_server 可能未正常运行）" >> "$DIA_LOG"
-fi
-echo "" >> "$DIA_LOG"
-
-# 9.5 TF 树检查
-echo "[9.5] TF 树检查 ---------------------------------" >> "$DIA_LOG"
-for tf_pair in "map odom" "odom base_footprint" "base_footprint base_link" "base_link base_scan"; do
-    src=$(echo $tf_pair | cut -d' ' -f1)
-    tgt=$(echo $tf_pair | cut -d' ' -f2)
-    if rosrun tf tf_echo "$src" "$tgt" 2>/dev/null | head -5 | grep -q "Translation"; then
-        echo "  ✅ $src → $tgt" >> "$DIA_LOG"
-    else
-        echo "  ❌ $src → $tgt (不存在)" >> "$DIA_LOG"
-    fi
-done
-echo "" >> "$DIA_LOG"
-
-# 9.6 move_base 全局规划器参数
-echo "[9.6] move_base 参数检查 ------------------------" >> "$DIA_LOG"
-for param in /move_base/base_global_planner /move_base/base_local_planner /move_base/global_costmap/plugins /move_base/local_costmap/plugins; do
-    val=$(rosparam get "$param" 2>/dev/null)
-    if [ -n "$val" ]; then
-        echo "  ✅ $param = $val" >> "$DIA_LOG"
-    else
-        echo "  ❌ $param (未设置)" >> "$DIA_LOG"
-    fi
-done
-echo "" >> "$DIA_LOG"
-
-# 9.7 costmap 状态
-echo "[9.7] costmap 状态检查 --------------------------" >> "$DIA_LOG"
-if rostopic info /move_base/global_costmap/costmap 2>/dev/null | grep -q "Type:"; then
-    echo "  ✅ global_costmap 话题存在" >> "$DIA_LOG"
-else
-    echo "  ❌ global_costmap 话题不存在" >> "$DIA_LOG"
-fi
-if rostopic info /move_base/local_costmap/costmap 2>/dev/null | grep -q "Type:"; then
-    echo "  ✅ local_costmap 话题存在" >> "$DIA_LOG"
-else
-    echo "  ❌ local_costmap 话题不存在" >> "$DIA_LOG"
-fi
-echo "" >> "$DIA_LOG"
-
-# 9.8 /tf 是否有数据
-echo "[9.8] /tf 话题状态 -------------------------------" >> "$DIA_LOG"
-TF_NUM=$(rostopic info /tf 2>/dev/null | grep -c "Subscribers:")
-if [ "$TF_NUM" -gt 0 ]; then
-    echo "  ✅ /tf 话题存在" >> "$DIA_LOG"
-else
-    echo "  ❌ /tf 话题不存在" >> "$DIA_LOG"
-fi
-echo "" >> "$DIA_LOG"
-
-echo "[9/9] 诊断完成 → $DIA_LOG" >> "$LOG_DIR/run.log"
-echo "========================================" >> "$DIA_LOG"
-echo "  诊断完成" >> "$DIA_LOG"
-echo "========================================" >> "$DIA_LOG"
-
-# 打印诊断概要到终端
-echo "  📋 诊断报告已写入 $DIA_LOG"
 
 sleep 1
 
@@ -399,16 +286,13 @@ echo "  ✅ 2D Nav Goal → A* 全局规划 → MPC 路径跟踪"
 echo "  ✅ serial_bridge 合并了串口读写（读tick + 写cmd_vel）"
 echo "========================================"
 echo ""
-echo "  诊断日志:  cat $LOG_DIR/diagnostic.log"
-echo "  启动日志:  tail -f $LOG_DIR/run.log"
-echo "  里程计日志:  tail -f $LOG_DIR/encoder_odom.log"
-echo "  编码器日志:  tail -f $LOG_DIR/read_uart.log"
+echo "  查看里程计日志:  tail -f $LOG_DIR/encoder_odom.log"
+echo "  查看编码器日志:  tail -f $LOG_DIR/read_uart.log"
 echo ""
 echo "  在 RViz 中:"
 echo "    1. 点击上方工具栏的 \"2D Nav Goal\""
 echo "    2. 在地图上点击目标位置（保持按住，拖动设定朝向）"
 echo "    3. 松开 → A* 规划路径并显示在 RViz 中"
-echo "    4. 如果无效，查看诊断日志找出问题"
 echo ""
 echo "  发送指令请另开终端运行:"
 echo "    cd $WORKSPACE_DIR && source devel/setup.bash"
