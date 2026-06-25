@@ -201,6 +201,15 @@ echo "  PID=$PID_SYNC → log/gazebo_sync.log"
 
 sleep 2
 
+# ── 7.5 启动 cmd_vel 角度过滤器 ──
+echo "[7.5/8] 启动 cmd_vel_filter.py (大角度转弯拦截，防撞墙)..."
+rosrun encoder_tools cmd_vel_filter.py \
+    > "$LOG_DIR/cmd_vel_filter.log" 2>&1 &
+PID_FILTER=$!
+echo "  PID=$PID_FILTER → log/cmd_vel_filter.log"
+
+sleep 1
+
 # ── 8. 启动 move_base（全局规划器）──
 echo "[8/8] 启动 move_base（A* 全局规划器，仅规划不跟踪）..."
 echo "[$(date +%H:%M:%S)] [8] generating move_base launch file" >> "$LOG_DIR/run.log"
@@ -284,6 +293,7 @@ echo "$PID_RVIZ"     > "$LOG_DIR/.pid_rviz"
 echo "$PID_READ"     > "$LOG_DIR/.pid_read"
 echo "$PID_ODOM"     > "$LOG_DIR/.pid_odom"
 echo "$PID_SYNC"     > "$LOG_DIR/.pid_sync"
+echo "$PID_FILTER"   > "$LOG_DIR/.pid_filter"
 echo "$PID_MB"        > "$LOG_DIR/.pid_move_base"
 
 echo ""

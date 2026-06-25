@@ -5,7 +5,7 @@ serial_bridge.py
 合并 read_uart + send_mpc_speed 到同一个串口节点。
 
 功能:
-  1) 订阅 /cmd_vel → 差速模型 → 串口发送 "l:左轮,r:右轮\r\n"
+  1) 订阅 /cmd_vel_safe（经过 cmd_vel_filter 角度过滤）→ 差速模型 → 串口发送 "l:左轮,r:右轮\r\n"
   2) 读取串口 → 解析 MCU 返回的 ticks → 发布 /wheel_ticks
   3) 过滤掉命令回显，只保留 tick 数据
 
@@ -57,8 +57,8 @@ class SerialBridge:
         # ── Tick 发布 ──
         self.tick_pub = rospy.Publisher("/wheel_ticks", Int64MultiArray, queue_size=10)
 
-        # ── 订阅 cmd_vel ──
-        rospy.Subscriber("/cmd_vel", Twist, self.cmd_vel_cb, queue_size=1)
+        # ── 订阅 cmd_vel（已经过 cmd_vel_filter 角度过滤） ──
+        rospy.Subscriber("/cmd_vel_safe", Twist, self.cmd_vel_cb, queue_size=1)
 
         # ── 解析模式 ──
         # 模式1: ltick:123 rtick:456（read_uart 原格式）
