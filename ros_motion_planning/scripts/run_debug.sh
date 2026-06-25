@@ -146,7 +146,7 @@ rosrun gazebo_ros spawn_model -urdf \
     -param robot_description \
     -model my_robot \
     -gazebo_namespace /gz_debug \
-    -x 0.0 -y 0.8 -z 0.0 \
+    -x 0.0 -y -0.8 -z 0.0 \
     >> "$LOG_DIR/run.log" 2>&1
 SPAWN_EXIT=$?
 echo "[$(date +%H:%M:%S)] [4] spawn_model exit=$SPAWN_EXIT" >> "$LOG_DIR/run.log"
@@ -186,7 +186,7 @@ sleep 2
 # ── 6. 启动里程计（初始位置偏移到 my_map_two 空闲区）──
 echo "[6/8] 启动 encoder_odom.py (里程计)..."
 rosrun encoder_tools encoder_odom.py \
-    _initial_x:=0.0 _initial_y:=0.8 \
+    _initial_x:=0.0 _initial_y:=-0.8 \
     > "$LOG_DIR/encoder_odom.log" 2>&1 &
 PID_ODOM=$!
 echo "  PID=$PID_ODOM → log/encoder_odom.log"
