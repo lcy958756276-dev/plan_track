@@ -231,7 +231,7 @@ cat > "$MB_LAUNCH" << MBEOF
     <!-- 禁用恢复行为（实物车速度低，不会大幅偏离路径） -->
     <param name="recovery_behavior_enabled" value="false"/>
 
-    <!-- move_base 通用参数 -->
+    <!-- move_base 通用参数  -->
     <rosparam command="load" file="$SIM_ENV_DIR/config/move_base_params.yaml"/>
 
     <!-- 全局 costmap（用 robot-specific 文件，不含 global_costmap: 外层键） -->
