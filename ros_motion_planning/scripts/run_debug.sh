@@ -223,7 +223,7 @@ cat > "$MB_LAUNCH" << MBEOF
 
     <!-- 全局规划器 -->
     <param name="base_global_planner" value="path_planner/PathPlanner"/>
-    <param name="PathPlanner/planner_name" value="hybrid_astar"/>
+    <param name="PathPlanner/planner_name" value="astar"/>
 
     <!-- 局部规划器（MPC = 模型预测控制，跟踪路径） -->
     <param name="base_local_planner" value="mpc_controller/MPCController"/>
