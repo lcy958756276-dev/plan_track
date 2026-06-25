@@ -223,10 +223,10 @@ cat > "$MB_LAUNCH" << MBEOF
 
     <!-- 全局规划器 -->
     <param name="base_global_planner" value="path_planner/PathPlanner"/>
-    <param name="PathPlanner/planner_name" value="proved_apf"/>
+    <param name="PathPlanner/planner_name" value="astar"/>
 
     <!-- 局部规划器（MPC = 模型预测控制，跟踪路径） -->
-    <param name="base_local_planner" value="mpc_controller/MPCController"/>
+    <param name="base_local_planner" value="apf_controller/APFController"/>
 
     <!-- 禁用恢复行为（实物车速度低，不会大幅偏离路径） -->
     <param name="recovery_behavior_enabled" value="false"/>
