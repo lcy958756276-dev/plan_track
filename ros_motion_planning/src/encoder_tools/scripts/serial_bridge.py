@@ -32,7 +32,7 @@ class SerialBridge:
 
         # ── 物理参数（差速模型用） ──
         self.wheel_radius = rospy.get_param("~wheel_radius", 0.1065)
-        self.wheel_base   = rospy.get_param("~wheel_base", 0.245 * 2.05)
+        self.wheel_base   = rospy.get_param("~wheel_base", 0.25)
 
         # ── 打开串口（只开一次） ──
         self.ser = serial.Serial(port=port, baudrate=baud, timeout=0.1)
