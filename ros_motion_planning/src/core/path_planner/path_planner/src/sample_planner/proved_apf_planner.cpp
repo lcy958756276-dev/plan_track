@@ -189,11 +189,13 @@ double ProvedAPFPathPlanner::nearestObstacleInfo(
     double px, double py, double& dir_x, double& dir_y) {
   // Search range in costmap cells
   int range_cells = static_cast<int>(d0_ / costmap_->getResolution()) + 1;
-  int mx, my;
-  if (!world2Map(px, py, mx, my)) {
+  double mxd, myd;
+  if (!world2Map(px, py, mxd, myd)) {
     dir_x = 0.0; dir_y = 0.0;
     return d0_ + 1.0;  // outside map, no repulsion
   }
+  int mx = static_cast<int>(mxd);
+  int my = static_cast<int>(myd);
 
   double min_dist = d0_ + 1.0;
   double nearest_x = px, nearest_y = py;
