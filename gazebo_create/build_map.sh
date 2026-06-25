@@ -82,7 +82,7 @@ echo "robot_description 已加载"
 
 # ── 2. 启动 Gazebo（使用 gz_debug 命名空间避免冲突）──
 echo "[2] 启动 Gazebo..."
-rosrun gazebo_ros gzserver "$GAZEBO_DIR/worlds/final.world" __name:=gz_debug \
+rosrun gazebo_ros gzserver "$GAZEBO_DIR/worlds/final_two.world" __name:=gz_debug \
     > "$LOG_DIR/gzserver.log" 2>&1 &
 PID_GZ=$!
 echo "gzserver PID=$PID_GZ"
