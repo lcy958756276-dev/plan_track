@@ -78,6 +78,7 @@ class PreRotate:
             self.goal = None
         else:
             twist = Twist()
+            twist.linear.x = -0.03   # 小后退压重心，让 ICR 回到中心
             twist.angular.z = self.max_angular if err > 0 else -self.max_angular
             self.cmd_pub.publish(twist)
 
