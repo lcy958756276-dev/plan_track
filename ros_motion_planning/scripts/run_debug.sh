@@ -85,8 +85,8 @@ echo "  map_server PID=$PID_MAP"
 
 sleep 1
 
-# 静态 map → odom TF（偏移 (0,0.8) 让初始位置落在 my_map_two 空闲区）
-rosrun tf2_ros static_transform_publisher 0 0.8 0 0 0 0 map odom \
+# 静态 map → odom TF（初始位置偏移在 encoder_odom 中处理）
+rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 map odom \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_TF=$!
 echo "  static_transform_publisher (map→odom) PID=$PID_TF"
@@ -146,7 +146,7 @@ rosrun gazebo_ros spawn_model -urdf \
     -param robot_description \
     -model my_robot \
     -gazebo_namespace /gz_debug \
-    -x 0.0 -y 0.0 -z 0.0 \
+    -x 0.0 -y 0.8 -z 0.0 \
     >> "$LOG_DIR/run.log" 2>&1
 SPAWN_EXIT=$?
 echo "[$(date +%H:%M:%S)] [4] spawn_model exit=$SPAWN_EXIT" >> "$LOG_DIR/run.log"
@@ -183,9 +183,10 @@ echo "  PID=$PID_READ → log/serial_bridge.log"
 
 sleep 2
 
-# ── 6. 启动里程计 ──
+# ── 6. 启动里程计（初始位置偏移到 my_map_two 空闲区）──
 echo "[6/8] 启动 encoder_odom.py (里程计)..."
 rosrun encoder_tools encoder_odom.py \
+    _initial_x:=0.0 _initial_y:=0.8 \
     > "$LOG_DIR/encoder_odom.log" 2>&1 &
 PID_ODOM=$!
 echo "  PID=$PID_ODOM → log/encoder_odom.log"
