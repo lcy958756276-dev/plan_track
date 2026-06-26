@@ -78,7 +78,10 @@ class PreRotate:
             self.goal = None
         else:
             twist = Twist()
-            twist.angular.z = self.max_angular if err > 0 else -self.max_angular
+            # 越靠近目标角度越慢，比例降速
+            ratio = min(1.0, abs(err) / self.angle_threshold)
+            speed = max(0.05, self.max_angular * ratio)
+            twist.angular.z = speed if err > 0 else -speed
             self.cmd_pub.publish(twist)
 
     @staticmethod
