@@ -151,18 +151,15 @@ class GazeboSync:
                 ranges[i] = msg.range_max + 1.0  # 设为无效
                 continue
 
-            # (2) 混合像素过滤：如果该点与相邻点距离差距很大，视为孤点
-            if 0 < i < len(ranges) - 1:
-                r_prev = ranges[i - 1]
-                r_next = ranges[i + 1]
-                if r_prev > 0 and r_next > 0:
-                    # 当前点与邻居平均值的偏差
-                    avg = (r_prev + r_next) / 2.0
-                    # 如果当前点明显不同于两侧邻居，且两侧邻居本身接近，则判定为孤点
-                    if abs(r - avg) > 0.08 and abs(r - r_prev) > 0.08 and abs(r - r_next) > 0.08:
-                        ranges[i] = msg.range_max + 1.0  # 设为无效
-                    # 额外：如果当前点比两侧都远 2 倍以上，也是孤点
-                    elif r > r_prev * 2.0 and r > r_next * 2.0 and r_prev > 0.1 and r_next > 0.1:
+            # (2) 混合像素过滤：基于 0.5° 角分辨率，最大波束间距约 6.2cm
+            # 用前后各 2 个邻居做一致性检查，防止连续 2~3 个假点漏检
+            if 1 < i < len(ranges) - 2:
+                neighbors = [ranges[i-2], ranges[i-1], ranges[i+1], ranges[i+2]]
+                valid_n = [n for n in neighbors if n > 0]
+                if len(valid_n) >= 2:  # 至少有两个有效邻居
+                    avg_n = sum(valid_n) / len(valid_n)
+                    # 当前点与邻居平均偏差 > 10cm，且跟每个有效邻居都差 > 6cm
+                    if abs(r - avg_n) > 0.07 and all(abs(r - n) > 0.07 for n in valid_n):
                         ranges[i] = msg.range_max + 1.0
 
         msg.ranges = tuple(ranges)
