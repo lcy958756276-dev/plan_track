@@ -1,25 +1,59 @@
-=== 启动时间: 2026年 06月 25日 星期四 23:22:37 CST ===
-[23:22:37] [1] main_generate.py start
-[23:22:38] [1] main_generate.py done
-[23:22:38] [2] use_encoder_odom flag set
-[23:22:38] [3] loading robot_description
-[23:22:38] [3] robot_description loaded
-[23:22:41] [4] starting gzserver
-[23:22:48] [4] spawn_model start
-[INFO] [1782400969.227594]: Loading model XML from ros parameter robot_description
-[INFO] [1782400969.234366]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1782400969.239442]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1782400969.690168]: Spawn status: SpawnModel: Successfully spawned entity
-[23:22:50] [4] spawn_model exit=0
-
-libcurl: (35) OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to fuel.ignitionrobotics.org:443 
-
-libcurl: (35) OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to fuel.gazebosim.org:443 
-[23:23:00] [8] generating move_base launch file
-[23:23:00] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 06月 26日 星期五 12:30:42 CST ===
+[12:30:42] [1] main_generate.py start
+[12:30:42] [1] main_generate.py done
+[12:30:42] [2] use_encoder_odom flag set
+[12:30:42] [3] loading robot_description
+[12:30:43] [3] robot_description loaded
+[31m[ERROR] [1782448243.885055384]: Could not find parameter robot_description on parameter server[0m
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/joint_state_publisher/joint_state_publisher", line 42, in <module>
+    jsp = joint_state_publisher.JointStatePublisher()
+  File "/opt/ros/noetic/lib/python3/dist-packages/joint_state_publisher/__init__.py", line 145, in __init__
+    raise RuntimeError('The robot_description parameter is required and not set.')
+RuntimeError: The robot_description parameter is required and not set.
+[12:30:46] [4] starting gzserver
+[12:30:53] [4] spawn_model start
+[INFO] [1782448254.148614]: Loading model XML from ros parameter robot_description
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/gazebo_ros/spawn_model", line 239, in <module>
+    exit_code = sm.run()
+  File "/opt/ros/noetic/lib/gazebo_ros/spawn_model", line 132, in run
+    model_xml = rospy.get_param(self.args.param)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/client.py", line 467, in get_param
+    return _param_server[param_name] #MasterProxy does all the magic for us
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/msproxy.py", line 123, in __getitem__
+    raise KeyError(key)
+KeyError: 'robot_description'
+[12:30:55] [4] spawn_model exit=1
+[31m[ERROR] [1782448263.578381952]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448263.674101902]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448263.774045443]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448263.874865832]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448263.973854921]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448264.074011738]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448264.174067244]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448264.274951500]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448264.373908290]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448264.473618050]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448264.575152293]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448264.674140637]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448264.773590478]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448264.875129330]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448264.974561698]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448265.074180589]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448265.173771068]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448265.273943500]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448265.373761896]: Updating ModelState: model [my_robot] does not exist[0m
+[12:31:05] [8] generating move_base launch file
+[12:31:05] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
+[31m[ERROR] [1782448265.473168142]: Updating ModelState: model [my_robot] does not exist[0m
 path_planner/PathPlanner
-mpc_controller/MPCController
+[31m[ERROR] [1782448265.573398145]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448265.673471307]: Updating ModelState: model [my_robot] does not exist[0m
+apf_controller/APFController
+[31m[ERROR] [1782448265.774654899]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448265.874018518]: Updating ModelState: model [my_robot] does not exist[0m
 - name: static_map
   type: costmap_2d::StaticLayer
 - name: obstacle_layer
@@ -30,6 +64,7 @@ mpc_controller/MPCController
   type: costmap_2d::InflationLayer
 
   [诊断] rospack plugins nav_core:
+[31m[ERROR] [1782448265.973841490]: Updating ModelState: model [my_robot] does not exist[0m
 path_planner /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/path_planner_plugin.xml
 mpc_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/mpc_controller/mpc_controller_plugin.xml
 lqr_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/lqr_controller/lqr_controller_plugin.xml
@@ -47,16 +82,57 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1782400982.998600924]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1782400983.003285175]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[31m[ERROR] [1782448266.073859017]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448266.173899656]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448266.283779240]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448266.376314632]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448266.473596174]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448266.574467035]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448266.673734479]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448266.774492150]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448266.874075068]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448266.973584413]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448267.073374046]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448267.173228169]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448267.274165328]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782448267.346310520]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1782448267.349245339]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[31m[ERROR] [1782448267.374425201]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448267.474088658]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448267.574486587]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448267.675049165]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448267.777048879]: Updating ModelState: model [my_robot] does not exist[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260625 23:23:03.466112 332197 path_planner_factory.cpp:129] Using path planner: astar
-[33m[WARN] [1782400983.480767620]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-I20260625 23:23:03.566416 332197 apf_controller.cpp:77] APF controller initialized!
-[23:23:04] [8] move_base 启动后状态:
+I20260626 12:31:07.793531 14032 path_planner_factory.cpp:129] Using path planner: astar
+[33m[WARN] [1782448267.807958436]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[31m[ERROR] [1782448267.873745227]: Updating ModelState: model [my_robot] does not exist[0m
+I20260626 12:31:07.888774 14032 apf_controller.cpp:77] APF controller initialized!
+[31m[ERROR] [1782448267.973330471]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448268.073694845]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448268.175299712]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448268.273714288]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448268.374734194]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448268.473525751]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448268.574317132]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448268.674356375]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782448268.763692429]: The /scan_fixed observation buffer has not been updated for 1.07 seconds, and it should be updated every 0.80 seconds.[0m
+[31m[ERROR] [1782448268.773403883]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448268.874095450]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448268.975008214]: Updating ModelState: model [my_robot] does not exist[0m
+[12:31:08] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
+[31m[ERROR] [1782448269.074137342]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448269.174027190]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782448269.263677041]: The /scan_fixed observation buffer has not been updated for 1.57 seconds, and it should be updated every 0.80 seconds.[0m
+[31m[ERROR] [1782448269.275150995]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448269.373766436]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448269.474273183]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448269.574910561]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448269.674416324]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782448269.763682921]: The /scan_fixed observation buffer has not been updated for 2.07 seconds, and it should be updated every 0.80 seconds.[0m
+[31m[ERROR] [1782448269.775364407]: Updating ModelState: model [my_robot] does not exist[0m
 /move_base/PathPlanner/expand
 /move_base/PathPlanner/expand_updates
 /move_base/PathPlanner/key_points
@@ -100,6 +176,14 @@ I20260625 23:23:03.566416 332197 apf_controller.cpp:77] APF controller initializ
 /move_base/status
 /move_base_simple/goal
   [诊断] rosservice list | grep move_base:
+[31m[ERROR] [1782448269.874494309]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448269.976630651]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448270.075515402]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448270.174779188]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782448270.263679576]: The /scan_fixed observation buffer has not been updated for 2.57 seconds, and it should be updated every 0.80 seconds.[0m
+[31m[ERROR] [1782448270.274299341]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448270.373968334]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448270.474888181]: Updating ModelState: model [my_robot] does not exist[0m
 /move_base/PathPlanner/make_plan
 /move_base/clear_costmaps
 /move_base/get_loggers
@@ -114,149 +198,59 @@ I20260625 23:23:03.566416 332197 apf_controller.cpp:77] APF controller initializ
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-[33m[WARN] [1782400988.441897178]: The scan_real observation buffer has not been updated for 5.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782400988.941913158]: The scan_real observation buffer has not been updated for 5.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782400989.441907834]: The scan_real observation buffer has not been updated for 6.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782400989.941916945]: The scan_real observation buffer has not been updated for 6.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782400990.441893518]: The scan_real observation buffer has not been updated for 7.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782400990.941894479]: The scan_real observation buffer has not been updated for 7.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782400991.441891386]: The scan_real observation buffer has not been updated for 8.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782400991.941886629]: The scan_real observation buffer has not been updated for 8.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782400992.441881435]: The scan_real observation buffer has not been updated for 9.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782400992.941884371]: The scan_real observation buffer has not been updated for 9.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782400993.441892117]: The scan_real observation buffer has not been updated for 10.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782400993.941903577]: The scan_real observation buffer has not been updated for 10.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782400994.441892325]: The scan_real observation buffer has not been updated for 11.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782400994.941870033]: The scan_real observation buffer has not been updated for 11.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782400995.441895179]: The scan_real observation buffer has not been updated for 12.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:15.816045 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782400995.941899237]: The scan_real observation buffer has not been updated for 12.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:16.315919 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782400996.441911914]: The scan_real observation buffer has not been updated for 13.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:16.815955 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782400996.941905357]: The scan_real observation buffer has not been updated for 13.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:17.315974 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782400997.441902331]: The scan_real observation buffer has not been updated for 14.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:17.815943 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782400997.941898859]: The scan_real observation buffer has not been updated for 14.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:18.315979 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782400998.441931944]: The scan_real observation buffer has not been updated for 15.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:18.815953 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782400998.942049039]: The scan_real observation buffer has not been updated for 15.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:19.315971 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782400999.441891907]: The scan_real observation buffer has not been updated for 16.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:19.815950 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782400999.941916715]: The scan_real observation buffer has not been updated for 16.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:20.315960 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401000.441910330]: The scan_real observation buffer has not been updated for 17.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:20.815945 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401000.941911307]: The scan_real observation buffer has not been updated for 17.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:21.316306 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401001.441909350]: The scan_real observation buffer has not been updated for 18.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:21.815950 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401001.941910626]: The scan_real observation buffer has not been updated for 18.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:22.315965 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401002.441889830]: The scan_real observation buffer has not been updated for 19.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:22.815954 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401002.941894381]: The scan_real observation buffer has not been updated for 19.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:23.316061 332208 apf_controller.cpp:97] Got new plan
-I20260625 23:23:23.415951 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401003.441891038]: The scan_real observation buffer has not been updated for 20.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:23.915952 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401003.941880463]: The scan_real observation buffer has not been updated for 20.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:24.415969 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401004.441967828]: The scan_real observation buffer has not been updated for 21.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:24.915964 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401004.941883272]: The scan_real observation buffer has not been updated for 21.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:25.415946 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401005.441877742]: The scan_real observation buffer has not been updated for 22.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:25.915956 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401005.941901881]: The scan_real observation buffer has not been updated for 22.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:26.415969 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401006.441898667]: The scan_real observation buffer has not been updated for 23.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:26.915958 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401006.942168379]: The scan_real observation buffer has not been updated for 23.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:27.415956 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401007.441893722]: The scan_real observation buffer has not been updated for 24.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:27.915969 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401007.941887895]: The scan_real observation buffer has not been updated for 24.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:28.415949 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401008.441900864]: The scan_real observation buffer has not been updated for 25.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:28.915979 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401008.941890760]: The scan_real observation buffer has not been updated for 25.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:29.415941 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401009.441908349]: The scan_real observation buffer has not been updated for 26.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:29.915954 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401009.941896431]: The scan_real observation buffer has not been updated for 26.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:30.415959 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401010.441896013]: The scan_real observation buffer has not been updated for 27.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:30.915953 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401010.941893323]: The scan_real observation buffer has not been updated for 27.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:31.415958 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401011.441902709]: The scan_real observation buffer has not been updated for 28.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:31.915952 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401011.941889533]: The scan_real observation buffer has not been updated for 28.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:32.415947 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401012.441948470]: The scan_real observation buffer has not been updated for 29.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:32.915961 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401012.941879107]: The scan_real observation buffer has not been updated for 29.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:33.415944 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401013.441892419]: The scan_real observation buffer has not been updated for 30.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:33.915956 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401013.941884321]: The scan_real observation buffer has not been updated for 30.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:34.415972 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401014.441892811]: The scan_real observation buffer has not been updated for 31.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:34.915951 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401014.941890485]: The scan_real observation buffer has not been updated for 31.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:35.415975 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401015.441934413]: The scan_real observation buffer has not been updated for 32.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:35.915959 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401015.941913920]: The scan_real observation buffer has not been updated for 32.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:36.415948 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401016.441899388]: The scan_real observation buffer has not been updated for 33.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:36.915951 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401016.941898108]: The scan_real observation buffer has not been updated for 33.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:37.415957 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401017.441887876]: The scan_real observation buffer has not been updated for 34.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:37.915972 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401017.941904560]: The scan_real observation buffer has not been updated for 34.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:38.415977 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401018.441895363]: The scan_real observation buffer has not been updated for 35.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:38.915975 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401018.941911514]: The scan_real observation buffer has not been updated for 35.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:39.415951 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401019.441878580]: The scan_real observation buffer has not been updated for 36.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:39.915951 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401019.941898422]: The scan_real observation buffer has not been updated for 36.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:40.415983 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401020.441919170]: The scan_real observation buffer has not been updated for 37.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:40.915953 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401020.941882376]: The scan_real observation buffer has not been updated for 37.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:41.415961 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401021.441897662]: The scan_real observation buffer has not been updated for 38.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260625 23:23:41.915951 332208 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782401021.941894130]: The scan_real observation buffer has not been updated for 38.58 seconds, and it should be updated every 5.00 seconds.[0m
-[0m[INFO] [1782400983.005236330]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1782400983.017478871]: Requesting the map...[0m
-[0m[INFO] [1782400983.222222687]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1782400983.321999786]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1782400983.328233933]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782400983.333878255]:     Subscribed to Topics: scan scan_real[0m
-[0m[INFO] [1782400983.375418110]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1782400983.391266544]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782400983.482467452]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782400983.486246037]:     Subscribed to Topics: [0m
-[0m[INFO] [1782400983.505440305]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782400983.563387599]: Created local_planner apf_controller/APFController[0m
-[0m[INFO] [1782400984.056764693]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782400984.064662860]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782400984.108891582]: odom received![0m
-... logging to /home/lcy/.ros/log/36889bfc-704a-11f1-8724-48b02df90897/roslaunch-ubuntu-332155.log
+[31m[ERROR] [1782448270.575507691]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448270.674123153]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782448270.763660793]: The /scan_fixed observation buffer has not been updated for 3.07 seconds, and it should be updated every 0.80 seconds.[0m
+[31m[ERROR] [1782448270.774104292]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448270.874001329]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448270.974137133]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448271.074511268]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448271.174180378]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782448271.263720372]: The /scan_fixed observation buffer has not been updated for 3.57 seconds, and it should be updated every 0.80 seconds.[0m
+[31m[ERROR] [1782448271.274200419]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448271.374182827]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448271.473986376]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448271.573362765]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448271.673737547]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782448271.763708542]: The /scan_fixed observation buffer has not been updated for 4.07 seconds, and it should be updated every 0.80 seconds.[0m
+[31m[ERROR] [1782448271.773989282]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448271.873781950]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448271.974656536]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448272.074385920]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448272.174228020]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782448272.263696573]: The /scan_fixed observation buffer has not been updated for 4.57 seconds, and it should be updated every 0.80 seconds.[0m
+[31m[ERROR] [1782448272.274174926]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448272.373938973]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448272.473702701]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448272.574574587]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448272.673768363]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782448272.763671756]: The /scan_fixed observation buffer has not been updated for 5.07 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782448272.763865079]: The scan_real observation buffer has not been updated for 5.05 seconds, and it should be updated every 5.00 seconds.[0m
+[31m[ERROR] [1782448272.774177823]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448272.874310851]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448272.978895236]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782448273.082612227]: Updating ModelState: model [my_robot] does not exist[0m
+[0m[INFO] [1782448267.350880277]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1782448267.364641938]: Requesting the map...[0m
+[0m[INFO] [1782448267.569009739]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1782448267.668745295]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1782448267.678199580]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782448267.682637107]:     Subscribed to Topics: scan scan_real[0m
+[0m[INFO] [1782448267.720361410]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1782448267.727108281]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782448267.809419445]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782448267.812410331]:     Subscribed to Topics: [0m
+[0m[INFO] [1782448267.821612891]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782448267.882563380]: Created local_planner apf_controller/APFController[0m
+[0m[INFO] [1782448268.379844239]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782448268.387790442]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782448268.430011804]: odom received![0m
+... logging to /home/lcy/.ros/log/9e845b7e-7117-11f1-8045-48b02df90897/roslaunch-ubuntu-14005.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:42333/[0m
+[1mstarted roslaunch server http://ubuntu:42659/[0m
 
 SUMMARY
 ========
@@ -342,7 +336,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [332197][0m
+[1mprocess[move_base-1]: started with pid [14032][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
