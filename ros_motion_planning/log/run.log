@@ -1,19 +1,19 @@
-=== 启动时间: 2026年 06月 26日 星期五 22:16:49 CST ===
-[22:16:49] [1] main_generate.py start
-[22:16:50] [1] main_generate.py done
-[22:16:50] [2] use_encoder_odom flag set
-[22:16:50] [3] loading robot_description
-[22:16:50] [3] robot_description loaded
-[33m[WARN] [1782483410.933951478]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
-[22:16:53] [4] starting gzserver
-[22:17:00] [4] spawn_model start
-[INFO] [1782483421.126380]: Loading model XML from ros parameter robot_description
-[INFO] [1782483421.135818]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1782483421.141938]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1782483421.681415]: Spawn status: SpawnModel: Successfully spawned entity
-[22:17:02] [4] spawn_model exit=0
-[22:17:12] [8] generating move_base launch file
-[22:17:12] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 06月 26日 星期五 22:20:34 CST ===
+[22:20:34] [1] main_generate.py start
+[22:20:34] [1] main_generate.py done
+[22:20:34] [2] use_encoder_odom flag set
+[22:20:34] [3] loading robot_description
+[22:20:34] [3] robot_description loaded
+[33m[WARN] [1782483635.420066984]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[22:20:37] [4] starting gzserver
+[22:20:44] [4] spawn_model start
+[INFO] [1782483645.660841]: Loading model XML from ros parameter robot_description
+[INFO] [1782483645.669249]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1782483645.677313]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1782483646.241564]: Spawn status: SpawnModel: Successfully spawned entity
+[22:20:46] [4] spawn_model exit=0
+[22:20:57] [8] generating move_base launch file
+[22:20:57] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 mpc_controller/MPCController
@@ -44,13 +44,13 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1782483435.036498974]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1782483435.039037544]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1782483660.134420539]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1782483660.138078498]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260626 22:17:15.493767 163696 path_planner_factory.cpp:133] Using path planner: astar_prove
-[33m[WARN] [1782483435.530828052]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-I20260626 22:17:15.683933 163696 mpc_controller.cpp:92] MPC Controller initialized!
-[22:17:16] [8] move_base 启动后状态:
+I20260626 22:21:00.661872 168864 path_planner_factory.cpp:133] Using path planner: astar_prove
+[33m[WARN] [1782483660.683195051]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260626 22:21:00.824471 168864 mpc_controller.cpp:92] MPC Controller initialized!
+[22:21:01] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -76,6 +76,7 @@ I20260626 22:17:15.683933 163696 mpc_controller.cpp:92] MPC Controller initializ
 /move_base/global_costmap/parameter_descriptions
 /move_base/global_costmap/parameter_updates
 /move_base/global_costmap/static_map/parameter_descriptions
+/move_base/global_costmap/static_map/parameter_updates
 /move_base/global_costmap/voronoi_layer/parameter_descriptions
 /move_base/global_costmap/voronoi_layer/parameter_updates
 /move_base/global_costmap/voronoi_layer/voronoi_grid
@@ -110,72 +111,91 @@ I20260626 22:17:15.683933 163696 mpc_controller.cpp:92] MPC Controller initializ
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-I20260626 22:17:27.901125 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:28.401314 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:28.901062 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:29.401134 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:29.901060 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:30.401064 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:30.901060 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:31.401057 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:31.901113 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:32.401053 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:32.901069 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:33.401072 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:33.901065 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:34.401069 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:34.901067 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:35.401154 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:35.901089 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:36.401063 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:36.901103 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:37.401039 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:37.901083 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:38.401046 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:38.901276 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:39.401064 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:39.901144 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:40.401077 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:40.901034 163707 mpc_controller.cpp:111] Got new plan
-I20260626 22:17:41.401058 163707 mpc_controller.cpp:111] Got new plan
-E20260626 22:17:41.815985 163708 path_planner_node.cpp:229] Failed to get a path.
-I20260626 22:17:42.401075 163707 mpc_controller.cpp:111] Got new plan
-E20260626 22:17:42.816497 163708 path_planner_node.cpp:229] Failed to get a path.
-I20260626 22:17:43.401062 163707 mpc_controller.cpp:111] Got new plan
-E20260626 22:17:43.816838 163708 path_planner_node.cpp:229] Failed to get a path.
-I20260626 22:17:44.401093 163707 mpc_controller.cpp:111] Got new plan
-E20260626 22:17:44.817257 163708 path_planner_node.cpp:229] Failed to get a path.
-I20260626 22:17:45.401059 163707 mpc_controller.cpp:111] Got new plan
-E20260626 22:17:45.817553 163708 path_planner_node.cpp:229] Failed to get a path.
-I20260626 22:17:46.401072 163707 mpc_controller.cpp:111] Got new plan
-E20260626 22:17:46.818091 163708 path_planner_node.cpp:229] Failed to get a path.
-I20260626 22:17:47.401091 163707 mpc_controller.cpp:111] Got new plan
-E20260626 22:17:47.818624 163708 path_planner_node.cpp:229] Failed to get a path.
-I20260626 22:17:48.401085 163707 mpc_controller.cpp:111] Got new plan
-E20260626 22:17:48.818981 163708 path_planner_node.cpp:229] Failed to get a path.
-I20260626 22:17:49.401053 163707 mpc_controller.cpp:111] Got new plan
-E20260626 22:17:49.819654 163708 path_planner_node.cpp:229] Failed to get a path.
-[0m[INFO] [1782483435.040809957]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1782483435.054775563]: Requesting the map...[0m
-[0m[INFO] [1782483435.259020083]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1782483435.358942946]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1782483435.363860403]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782483435.371843351]:     Subscribed to Topics: scan scan_real[0m
-[0m[INFO] [1782483435.416936830]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1782483435.423547147]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782483435.535888584]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782483435.548799133]:     Subscribed to Topics: [0m
-[0m[INFO] [1782483435.565186571]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782483435.679533768]: Created local_planner mpc_controller/MPCController[0m
-[0m[INFO] [1782483436.166346437]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782483436.178994486]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782483436.221943739]: odom received![0m
-... logging to /home/lcy/.ros/log/41c951fe-7131-11f1-9a6b-48b02df90897/roslaunch-ubuntu-163671.log
+I20260626 22:21:21.235690 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:21.735601 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:22.235599 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:22.735605 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:23.235610 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:23.736332 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:24.236552 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:24.735613 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:25.235602 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:25.735579 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:26.235620 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:26.735581 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:27.235598 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:27.735592 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:28.235850 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:28.735606 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:29.235603 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:29.735596 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:30.235802 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:30.735579 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:31.235610 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:31.735598 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:32.235597 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:32.735605 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:33.235601 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:33.735599 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:34.235606 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:34.735590 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:35.235631 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:35.735600 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:36.235642 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:36.735606 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:37.235610 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:37.735595 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:38.235603 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:38.735596 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:39.235991 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:39.735597 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:40.235637 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:40.735594 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:41.235636 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:41.735610 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:42.235634 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:42.735596 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:43.235625 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:43.735599 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:44.235628 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:44.735613 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:45.235617 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:45.735611 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:46.235632 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:46.735601 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:47.235924 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:47.735610 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:48.235596 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:48.735630 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:49.235699 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:49.735630 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:50.235600 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:50.735642 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:51.235605 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:51.735603 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:52.236153 168873 mpc_controller.cpp:111] Got new plan
+I20260626 22:21:52.735636 168873 mpc_controller.cpp:111] Got new plan
+[0m[INFO] [1782483660.140005223]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1782483660.159025752]: Requesting the map...[0m
+[0m[INFO] [1782483660.373359604]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1782483660.473038624]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1782483660.480168683]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782483660.485745815]:     Subscribed to Topics: scan scan_real[0m
+[0m[INFO] [1782483660.542659718]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1782483660.552397507]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782483660.686196709]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782483660.691850579]:     Subscribed to Topics: [0m
+[0m[INFO] [1782483660.714011649]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782483660.821154238]: Created local_planner mpc_controller/MPCController[0m
+[0m[INFO] [1782483661.309399612]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782483661.327954948]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782483661.425960434]: odom received![0m
+... logging to /home/lcy/.ros/log/41c951fe-7131-11f1-9a6b-48b02df90897/roslaunch-ubuntu-168828.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:42443/[0m
+[1mstarted roslaunch server http://ubuntu:33919/[0m
 
 SUMMARY
 ========
@@ -263,7 +283,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [163696][0m
+[1mprocess[move_base-1]: started with pid [168864][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
