@@ -1,18 +1,20 @@
-=== 启动时间: 2026年 06月 26日 星期五 15:01:40 CST ===
-[15:01:40] [1] main_generate.py start
-[15:01:41] [1] main_generate.py done
-[15:01:41] [2] use_encoder_odom flag set
-[15:01:41] [3] loading robot_description
-[15:01:41] [3] robot_description loaded
-[15:01:45] [4] starting gzserver
-[15:01:51] [4] spawn_model start
-[INFO] [1782457312.591769]: Loading model XML from ros parameter robot_description
-[INFO] [1782457312.599596]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1782457312.604377]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1782457312.815536]: Spawn status: SpawnModel: Successfully spawned entity
-[15:01:53] [4] spawn_model exit=0
-[15:02:03] [8] generating move_base launch file
-[15:02:03] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 06月 26日 星期五 15:14:13 CST ===
+[15:14:13] [1] main_generate.py start
+[15:14:14] [1] main_generate.py done
+[15:14:14] [2] use_encoder_odom flag set
+[15:14:14] [3] loading robot_description
+[15:14:14] [3] robot_description loaded
+[15:14:17] [4] starting gzserver
+[15:14:24] [4] spawn_model start
+[INFO] [1782458065.193705]: Loading model XML from ros parameter robot_description
+[INFO] [1782458065.200842]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1782458065.205503]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1782458065.498562]: Spawn status: SpawnModel: Successfully spawned entity
+[15:14:26] [4] spawn_model exit=0
+[33m[WARN] [1782458074.061633106]: Shutdown request received.[0m
+[33m[WARN] [1782458074.062204440]: Reason given for shutdown: [[/encoder_odometry] Reason: new node registered with same name][0m
+[15:14:36] [8] generating move_base launch file
+[15:14:36] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 mpc_controller/MPCController
@@ -43,27 +45,23 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1782457325.790615112]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1782457325.793012186]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1782458078.540876333]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1782458078.543584672]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260626 15:02:06.255949 20688 path_planner_factory.cpp:129] Using path planner: astar
-[33m[WARN] [1782457326.274745515]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-I20260626 15:02:06.359752 20688 mpc_controller.cpp:92] MPC Controller initialized!
-[33m[WARN] [1782457327.216481029]: The /scan_fixed observation buffer has not been updated for 1.08 seconds, and it should be updated every 0.80 seconds.[0m
-[15:02:07] [8] move_base 启动后状态:
+I20260626 15:14:39.009295 22803 path_planner_factory.cpp:129] Using path planner: astar
+[33m[WARN] [1782458079.025312733]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260626 15:14:39.112805 22803 apf_controller.cpp:77] APF controller initialized!
+[33m[WARN] [1782458079.979131253]: The /scan_fixed observation buffer has not been updated for 1.10 seconds, and it should be updated every 0.80 seconds.[0m
+[15:14:40] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
-[33m[WARN] [1782457327.716453665]: The /scan_fixed observation buffer has not been updated for 1.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457328.216464520]: The /scan_fixed observation buffer has not been updated for 2.08 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782458080.479146784]: The /scan_fixed observation buffer has not been updated for 1.60 seconds, and it should be updated every 0.80 seconds.[0m
 /move_base/PathPlanner/expand
-/move_base/PathPlanner/expand_updates
 /move_base/PathPlanner/key_points
 /move_base/PathPlanner/particles
-/move_base/PathPlanner/particles_array
 /move_base/PathPlanner/plan
 /move_base/PathPlanner/random_tree
-/move_base/PathPlanner/random_tree_array
 /move_base/PathPlanner/safety_corridor
 /move_base/cancel
 /move_base/current_goal
@@ -99,7 +97,8 @@ I20260626 15:02:06.359752 20688 mpc_controller.cpp:92] MPC Controller initialize
 /move_base/status
 /move_base_simple/goal
   [诊断] rosservice list | grep move_base:
-[33m[WARN] [1782457328.716463163]: The /scan_fixed observation buffer has not been updated for 2.58 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782458080.979119654]: The /scan_fixed observation buffer has not been updated for 2.10 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782458081.479127498]: The /scan_fixed observation buffer has not been updated for 2.60 seconds, and it should be updated every 0.80 seconds.[0m
 /move_base/PathPlanner/make_plan
 /move_base/clear_costmaps
 /move_base/get_loggers
@@ -114,199 +113,30 @@ I20260626 15:02:06.359752 20688 mpc_controller.cpp:92] MPC Controller initialize
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-[33m[WARN] [1782457329.216446904]: The /scan_fixed observation buffer has not been updated for 3.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457329.716485186]: The /scan_fixed observation buffer has not been updated for 3.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457330.216474646]: The /scan_fixed observation buffer has not been updated for 4.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457330.716456854]: The /scan_fixed observation buffer has not been updated for 4.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457331.216442143]: The /scan_fixed observation buffer has not been updated for 5.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457331.216617953]: The scan_real observation buffer has not been updated for 5.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782457331.716481046]: The /scan_fixed observation buffer has not been updated for 5.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457331.716646807]: The scan_real observation buffer has not been updated for 5.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782457332.216454966]: The /scan_fixed observation buffer has not been updated for 6.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457332.216610999]: The scan_real observation buffer has not been updated for 6.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782457332.716446914]: The /scan_fixed observation buffer has not been updated for 6.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457332.716660836]: The scan_real observation buffer has not been updated for 6.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:13.050736 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457333.216452664]: The /scan_fixed observation buffer has not been updated for 7.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457333.216616026]: The scan_real observation buffer has not been updated for 7.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:13.550652 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457333.716513084]: The /scan_fixed observation buffer has not been updated for 7.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457333.716714525]: The scan_real observation buffer has not been updated for 7.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:14.050657 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457334.216448167]: The /scan_fixed observation buffer has not been updated for 8.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457334.216606505]: The scan_real observation buffer has not been updated for 8.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:14.550678 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457334.716459808]: The /scan_fixed observation buffer has not been updated for 8.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457334.716627586]: The scan_real observation buffer has not been updated for 8.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:15.050659 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457335.216457058]: The /scan_fixed observation buffer has not been updated for 9.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457335.216645476]: The scan_real observation buffer has not been updated for 9.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:15.550665 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457335.716464145]: The /scan_fixed observation buffer has not been updated for 9.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457335.716633138]: The scan_real observation buffer has not been updated for 9.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:16.050666 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457336.216457449]: The /scan_fixed observation buffer has not been updated for 10.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457336.216621194]: The scan_real observation buffer has not been updated for 10.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:16.550660 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457336.716464686]: The /scan_fixed observation buffer has not been updated for 10.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457336.716646479]: The scan_real observation buffer has not been updated for 10.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:17.050664 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457337.216477979]: The /scan_fixed observation buffer has not been updated for 11.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457337.216677789]: The scan_real observation buffer has not been updated for 11.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:17.550660 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457337.716465270]: The /scan_fixed observation buffer has not been updated for 11.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457337.716634615]: The scan_real observation buffer has not been updated for 11.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:18.050693 20697 mpc_controller.cpp:111] Got new plan
-W20260626 15:02:18.059386 20697 mpc_controller.cpp:413] failed optimization status: primal infeasible
-[33m[WARN] [1782457338.216484569]: The /scan_fixed observation buffer has not been updated for 12.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457338.216659099]: The scan_real observation buffer has not been updated for 12.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:18.550670 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457338.716448425]: The /scan_fixed observation buffer has not been updated for 12.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457338.716597002]: The scan_real observation buffer has not been updated for 12.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:19.050665 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457339.216449122]: The /scan_fixed observation buffer has not been updated for 13.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457339.216612547]: The scan_real observation buffer has not been updated for 13.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:19.550668 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457339.716447464]: The /scan_fixed observation buffer has not been updated for 13.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457339.716607081]: The scan_real observation buffer has not been updated for 13.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:20.050660 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457340.216443894]: The /scan_fixed observation buffer has not been updated for 14.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457340.216599928]: The scan_real observation buffer has not been updated for 14.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:20.550655 20697 mpc_controller.cpp:111] Got new plan
-W20260626 15:02:20.558370 20697 mpc_controller.cpp:413] failed optimization status: primal infeasible
-[33m[WARN] [1782457340.716450545]: The /scan_fixed observation buffer has not been updated for 14.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457340.716614259]: The scan_real observation buffer has not been updated for 14.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:21.050683 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457341.216456950]: The /scan_fixed observation buffer has not been updated for 15.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457341.216617463]: The scan_real observation buffer has not been updated for 15.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:21.550652 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457341.716464102]: The /scan_fixed observation buffer has not been updated for 15.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457341.716658664]: The scan_real observation buffer has not been updated for 15.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:22.050680 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457342.216465728]: The /scan_fixed observation buffer has not been updated for 16.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457342.216627969]: The scan_real observation buffer has not been updated for 16.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:22.550670 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457342.716456773]: The /scan_fixed observation buffer has not been updated for 16.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457342.716618151]: The scan_real observation buffer has not been updated for 16.57 seconds, and it should be updated every 5.00 seconds.[0m
-W20260626 15:02:22.757774 20697 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260626 15:02:23.050665 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457343.216447636]: The /scan_fixed observation buffer has not been updated for 17.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457343.216610421]: The scan_real observation buffer has not been updated for 17.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:23.550668 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457343.716427375]: The /scan_fixed observation buffer has not been updated for 17.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457343.716599664]: The scan_real observation buffer has not been updated for 17.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:24.050659 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457344.216462931]: The /scan_fixed observation buffer has not been updated for 18.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457344.216639541]: The scan_real observation buffer has not been updated for 18.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:24.550659 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457344.716474468]: The /scan_fixed observation buffer has not been updated for 18.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457344.716637509]: The scan_real observation buffer has not been updated for 18.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:25.050717 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457345.216455517]: The /scan_fixed observation buffer has not been updated for 19.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457345.216625566]: The scan_real observation buffer has not been updated for 19.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:25.550673 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457345.716453154]: The /scan_fixed observation buffer has not been updated for 19.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457345.716610211]: The scan_real observation buffer has not been updated for 19.57 seconds, and it should be updated every 5.00 seconds.[0m
-W20260626 15:02:25.958992 20697 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260626 15:02:26.050654 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457346.216461136]: The /scan_fixed observation buffer has not been updated for 20.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457346.216634290]: The scan_real observation buffer has not been updated for 20.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:26.550663 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457346.716460650]: The /scan_fixed observation buffer has not been updated for 20.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457346.716611244]: The scan_real observation buffer has not been updated for 20.57 seconds, and it should be updated every 5.00 seconds.[0m
-W20260626 15:02:26.859622 20697 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260626 15:02:27.050676 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457347.216468014]: The /scan_fixed observation buffer has not been updated for 21.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457347.216633551]: The scan_real observation buffer has not been updated for 21.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:27.550666 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457347.716484413]: The /scan_fixed observation buffer has not been updated for 21.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457347.716673951]: The scan_real observation buffer has not been updated for 21.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:28.050671 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457348.216494005]: The /scan_fixed observation buffer has not been updated for 22.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457348.216671959]: The scan_real observation buffer has not been updated for 22.07 seconds, and it should be updated every 5.00 seconds.[0m
-W20260626 15:02:28.357910 20697 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260626 15:02:28.550684 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457348.716455673]: The /scan_fixed observation buffer has not been updated for 22.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457348.716619898]: The scan_real observation buffer has not been updated for 22.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:29.050670 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457349.216489382]: The /scan_fixed observation buffer has not been updated for 23.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457349.216679176]: The scan_real observation buffer has not been updated for 23.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:29.550675 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457349.716471167]: The /scan_fixed observation buffer has not been updated for 23.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457349.716629696]: The scan_real observation buffer has not been updated for 23.57 seconds, and it should be updated every 5.00 seconds.[0m
-W20260626 15:02:29.860157 20697 mpc_controller.cpp:413] failed optimization status: primal infeasible
-I20260626 15:02:30.050637 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457350.216476640]: The /scan_fixed observation buffer has not been updated for 24.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457350.216692418]: The scan_real observation buffer has not been updated for 24.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:30.550658 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457350.716467342]: The /scan_fixed observation buffer has not been updated for 24.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457350.716678256]: The scan_real observation buffer has not been updated for 24.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:31.050659 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457351.216454596]: The /scan_fixed observation buffer has not been updated for 25.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457351.216635909]: The scan_real observation buffer has not been updated for 25.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:31.550664 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457351.716461254]: The /scan_fixed observation buffer has not been updated for 25.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457351.716624871]: The scan_real observation buffer has not been updated for 25.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:32.050669 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457352.216469265]: The /scan_fixed observation buffer has not been updated for 26.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457352.216642098]: The scan_real observation buffer has not been updated for 26.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:32.550668 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457352.716455943]: The /scan_fixed observation buffer has not been updated for 26.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457352.716622793]: The scan_real observation buffer has not been updated for 26.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:33.050665 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457353.216464231]: The /scan_fixed observation buffer has not been updated for 27.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457353.216619112]: The scan_real observation buffer has not been updated for 27.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:33.550652 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457353.716450001]: The /scan_fixed observation buffer has not been updated for 27.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457353.716623443]: The scan_real observation buffer has not been updated for 27.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:34.050695 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457354.216493446]: The /scan_fixed observation buffer has not been updated for 28.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457354.216735976]: The scan_real observation buffer has not been updated for 28.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:34.550668 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457354.716466213]: The /scan_fixed observation buffer has not been updated for 28.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457354.716626438]: The scan_real observation buffer has not been updated for 28.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:35.050665 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457355.216462413]: The /scan_fixed observation buffer has not been updated for 29.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457355.216638574]: The scan_real observation buffer has not been updated for 29.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:35.550660 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457355.716454560]: The /scan_fixed observation buffer has not been updated for 29.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457355.716649858]: The scan_real observation buffer has not been updated for 29.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:36.050666 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457356.216649950]: The /scan_fixed observation buffer has not been updated for 30.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457356.216831392]: The scan_real observation buffer has not been updated for 30.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:36.550673 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457356.716488677]: The /scan_fixed observation buffer has not been updated for 30.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457356.716677670]: The scan_real observation buffer has not been updated for 30.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:37.050657 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457357.216486293]: The /scan_fixed observation buffer has not been updated for 31.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457357.216737175]: The scan_real observation buffer has not been updated for 31.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:37.550668 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457357.716458129]: The /scan_fixed observation buffer has not been updated for 31.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457357.716631570]: The scan_real observation buffer has not been updated for 31.57 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 15:02:38.050647 20697 mpc_controller.cpp:111] Got new plan
-[33m[WARN] [1782457358.216476597]: The /scan_fixed observation buffer has not been updated for 32.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782457358.216666871]: The scan_real observation buffer has not been updated for 32.07 seconds, and it should be updated every 5.00 seconds.[0m
-[0m[INFO] [1782457325.794133986]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1782457325.804332720]: Requesting the map...[0m
-[0m[INFO] [1782457326.008275578]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1782457326.108053428]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1782457326.114069313]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782457326.120361457]:     Subscribed to Topics: scan scan_real[0m
-[0m[INFO] [1782457326.161609676]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1782457326.168931684]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782457326.283244460]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782457326.287908176]:     Subscribed to Topics: [0m
-[0m[INFO] [1782457326.298644418]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782457326.356796829]: Created local_planner mpc_controller/MPCController[0m
-[0m[INFO] [1782457326.857604234]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782457326.865983753]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782457326.910709951]: odom received![0m
-... logging to /home/lcy/.ros/log/79a452fc-7129-11f1-a07f-48b02df90897/roslaunch-ubuntu-20661.log
+[33m[WARN] [1782458081.979112235]: The /scan_fixed observation buffer has not been updated for 3.10 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782458082.479101352]: The /scan_fixed observation buffer has not been updated for 3.60 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782458082.979112676]: The /scan_fixed observation buffer has not been updated for 4.10 seconds, and it should be updated every 0.80 seconds.[0m
+[0m[INFO] [1782458078.544693609]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1782458078.555104504]: Requesting the map...[0m
+[0m[INFO] [1782458078.758527120]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1782458078.858354287]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1782458078.863989667]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782458078.868722203]:     Subscribed to Topics: scan scan_real[0m
+[0m[INFO] [1782458078.917543827]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1782458078.932460460]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782458079.027896071]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782458079.033499033]:     Subscribed to Topics: [0m
+[0m[INFO] [1782458079.045585302]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782458079.108682487]: Created local_planner apf_controller/APFController[0m
+[0m[INFO] [1782458079.600788637]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782458079.610215627]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782458079.658648229]: odom received![0m
+... logging to /home/lcy/.ros/log/79a452fc-7129-11f1-a07f-48b02df90897/roslaunch-ubuntu-22775.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:35691/[0m
+[1mstarted roslaunch server http://ubuntu:37523/[0m
 
 SUMMARY
 ========
@@ -314,7 +144,7 @@ SUMMARY
 PARAMETERS
  * /move_base/PathPlanner/planner_name: astar
  * /move_base/base_global_planner: path_planner/Path...
- * /move_base/base_local_planner: mpc_controller/MP...
+ * /move_base/base_local_planner: apf_controller/AP...
  * /move_base/conservative_reset_dist: 3.0
  * /move_base/controller_frequency: 10.0
  * /move_base/controller_patience: 15.0
@@ -392,7 +222,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [20688][0m
+[1mprocess[move_base-1]: started with pid [22803][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete

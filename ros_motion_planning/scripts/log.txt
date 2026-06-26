@@ -1,69 +1,35 @@
-lcy@ubuntu:~/robot_graduation/ros_motion_planning/scripts$ rospack find my_robot
-/home/lcy/robot_graduation/ros_motion_planning/src/my_robot
-lcy@ubuntu:~/robot_graduation/ros_motion_planning/scripts$ 
-
-lcy@ubuntu:~/robot_graduation/ros_motion_planning/scripts$ bash run_debug.sh 
-Unable to contact the following nodes:
- * /gazebo
-Warning: these might include alive and functioning nodes, e.g. in unstable networks.
-Cleanup will purge all information about these nodes from the master.
-Please type y or n to continue:
-Unregistering /gazebo
-done
-[1/8] 生成动态启动文件...
 [2/8] 设置 use_encoder_odom 标志位...
   /tmp/.use_encoder_odom → Gazebo diff_drive 将跳过 odom TF
 [3/8] 加载 robot_description + 启动核心节点 ...
-stat: 无法获取'bytes' 的文件状态(stat): 没有那个文件或目录
-  robot_description 已加载（自定义车模型）
-  robot_state_publisher PID=40960
-  joint_state_publisher PID=40961
-  map_server PID=41008
-  static_transform_publisher (map→odom) PID=41031
-  static_transform_publisher (base_footprint→base_link) PID=41032
-[4/8] 启动 Gazebo ...
-  gazebo server PID=41065 (节点名: gz_debug)
-  等待 Gazebo ROS 服务就绪...
-  ✅ Gazebo ROS 服务已就绪（第 3 秒）
-  gazebo client PID=41218
-  重新加载 robot_description...
-  正在生成机器人模型...
-  ✅ 机器人已在 Gazebo 中生成
-  rviz PID=41441
-  /use_sim_time → false（编码器/里程计使用真实时钟）
-[5/8] 启动 serial_bridge.py (串口桥接：读编码器 + 写 cmd_vel)...
-  PID=41484 → log/serial_bridge.log
-[6/8] 启动 encoder_odom.py (里程计)...
-  PID=41535 → log/encoder_odom.log
-[7/8] 启动 gazebo_sync.py (里程计→Gazebo 同步 + LaserScan 时间戳修复)...
-  PID=41579 → log/gazebo_sync.log
-[7.5/8] 启动 pre_rotate.py (新 goal 大角度时原地旋转)...
-  PID=41639
-[8/8] 启动 move_base（A* 全局规划器，仅规划不跟踪）...
-  move_base PID=41735 (roslaunch)
-  全局规划器: A* (path_planner/PathPlanner)
-  局部规划器: MPC (模型预测控制，跟踪全局路径)
-  RViz 中点击 2D Nav Goal → 全局路径将显示在地图上
-
-========================================
-  全部已启动，日志文件在 log/ 目录下
-
-  ✅ Gazebo + RViz + 实物编码器同步运行
-  ✅ 2D Nav Goal → A* 全局规划 → MPC 路径跟踪
-  ✅ serial_bridge 合并了串口读写（读tick + 写cmd_vel）
-========================================
-
-  查看里程计日志:  tail -f /home/lcy/robot_graduation/ros_motion_planning/log/encoder_odom.log
-  查看编码器日志:  tail -f /home/lcy/robot_graduation/ros_motion_planning/log/read_uart.log
-
-  在 RViz 中:
-    1. 点击上方工具栏的 "2D Nav Goal"
-    2. 在地图上点击目标位置（保持按住，拖动设定朝向）
-    3. 松开 → A* 规划路径并显示在 RViz 中
-
-  发送指令请另开终端运行:
-    cd /home/lcy/robot_graduation/ros_motion_planning && source devel/setup.bash
-    rosrun encoder_tools send_uart.py
-
-  停止所有进程:   bash /home/lcy/robot_graduation/ros_motion_planning/scripts/stop_debug.sh
-========================================
+Traceback (most recent call last):
+  File "/opt/ros/noetic/bin/rosparam", line 35, in <module>
+    rosparam.yamlmain()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rosparam/__init__.py", line 622, in yamlmain
+    _rosparam_cmd_set_load(command, argv)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rosparam/__init__.py", line 539, in _rosparam_cmd_set_load
+    set_param(name, arg2, verbose=options.verbose)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rosparam/__init__.py", line 371, in set_param
+    set_param_raw(param, yaml.safe_load(value), verbose=verbose)
+  File "/usr/lib/python3/dist-packages/yaml/__init__.py", line 162, in safe_load
+    return load(stream, SafeLoader)
+  File "/usr/lib/python3/dist-packages/yaml/__init__.py", line 114, in load
+    return loader.get_single_data()
+  File "/usr/lib/python3/dist-packages/yaml/constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+  File "/usr/lib/python3/dist-packages/yaml/composer.py", line 36, in get_single_node
+    document = self.compose_document()
+  File "/usr/lib/python3/dist-packages/yaml/composer.py", line 58, in compose_document
+    self.get_event()
+  File "/usr/lib/python3/dist-packages/yaml/parser.py", line 118, in get_event
+    self.current_event = self.state()
+  File "/usr/lib/python3/dist-packages/yaml/parser.py", line 193, in parse_document_end
+    token = self.peek_token()
+  File "/usr/lib/python3/dist-packages/yaml/scanner.py", line 129, in peek_token
+    self.fetch_more_tokens()
+  File "/usr/lib/python3/dist-packages/yaml/scanner.py", line 223, in fetch_more_tokens
+    return self.fetch_value()
+  File "/usr/lib/python3/dist-packages/yaml/scanner.py", line 577, in fetch_value
+    raise ScannerError(None, None,
+yaml.scanner.ScannerError: mapping values are not allowed here
+  in "<unicode string>", line 3, column 20:
+         Commit Version: 1.6.0-1-g15f4949  Build Versio ... 
