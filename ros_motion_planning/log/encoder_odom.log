@@ -1,42 +1,88 @@
-[INFO] [1782466376.780800]: === encoder_odom 参数 ===
-[INFO] [1782466376.783003]: wheel_radius    = 0.1065
-[INFO] [1782466376.785216]: wheel_base      = 0.25
-[INFO] [1782466376.787092]: pluse           = 0.002061
-[INFO] [1782466376.788867]: dist_per_tick   = 0.00000383 m
-[INFO] [1782466376.791135]: initial_pose    = (0.0, -0.8, 0.0)
-[INFO] [1782466376.793234]: ========================
-[INFO] [1782466376.807744]: encoder_odom 已启动，等待 /wheel_ticks ...
-[INFO] [1782466376.810933]: 提示: 确保 read_uart.py 也在运行，否则收不到编码器数据
-[INFO] [1782466376.819398]: 收到第一条编码器数据: ltick=0, rtick=0
-[INFO] [1782466376.821953]: 里程计开始计算...
-[INFO] [1782466376.973078]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
-[INFO] [1782466376.977187]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
-[INFO] [1782466376.979909]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
-[INFO] [1782466379.007566]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
-[INFO] [1782466379.071634]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
-[INFO] [1782466379.075870]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
-[INFO] [1782466381.022355]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
-[INFO] [1782466381.175402]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
-[INFO] [1782466381.178980]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
-[INFO] [1782466383.107969]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
-[INFO] [1782466383.273654]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
-[INFO] [1782466383.277850]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
-[INFO] [1782466385.207260]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
-[INFO] [1782466385.372777]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
-[INFO] [1782466385.375623]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
-[INFO] [1782466387.207312]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
-[INFO] [1782466387.475075]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
-[INFO] [1782466387.479329]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
-[INFO] [1782466389.273136]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
-[INFO] [1782466389.573443]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
-[INFO] [1782466389.577547]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
-[INFO] [1782466391.307344]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
-[INFO] [1782466391.674709]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
-[INFO] [1782466391.679196]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
-[INFO] [1782466393.307368]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
-[INFO] [1782466393.775504]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
-[INFO] [1782466393.779456]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
-[INFO] [1782466395.407389]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
-[INFO] [1782466395.873709]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
-[INFO] [1782466395.877621]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
-[INFO] [1782466397.507263]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[ERROR] [1782466545.438972]: bad callback: <bound method EncoderOdometry.tick_cb of <__main__.EncoderOdometry object at 0xffffae1bec10>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/lcy/robot_graduation/ros_motion_planning/src/encoder_tools/scripts/encoder_odom.py", line 159, in tick_cb
+    self._pub_odom(now, v, omega)
+  File "/home/lcy/robot_graduation/ros_motion_planning/src/encoder_tools/scripts/encoder_odom.py", line 193, in _pub_odom
+    self.odom_pub.publish(odom)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 882, in publish
+    self.impl.publish(data)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 1041, in publish
+    raise ROSException("publish() to a closed topic")
+rospy.exceptions.ROSException: publish() to a closed topic
+
+[INFO] [1782466502.798327]: === encoder_odom 参数 ===
+[INFO] [1782466502.803075]: wheel_radius    = 0.1065
+[INFO] [1782466502.806932]: wheel_base      = 0.25
+[INFO] [1782466502.810028]: pluse           = 0.002061
+[INFO] [1782466502.815223]: dist_per_tick   = 0.00000383 m
+[INFO] [1782466502.825089]: initial_pose    = (0.0, -0.8, 0.0)
+[INFO] [1782466502.832846]: ========================
+[INFO] [1782466502.865876]: encoder_odom 已启动，等待 /wheel_ticks ...
+[INFO] [1782466502.870032]: 提示: 确保 read_uart.py 也在运行，否则收不到编码器数据
+[INFO] [1782466502.985298]: 收到第一条编码器数据: ltick=0, rtick=0
+[INFO] [1782466502.989378]: 里程计开始计算...
+[INFO] [1782466503.131817]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466503.135718]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466503.140844]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466505.166381]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466505.229488]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466505.234830]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466507.167105]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466507.333402]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466507.336278]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466509.266679]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466509.431464]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466509.435342]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466511.366310]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466511.529559]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466511.532867]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466513.466314]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466513.633240]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466513.636228]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466515.466677]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466515.731386]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466515.734779]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466517.467001]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466517.829806]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466517.833107]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466519.484437]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466519.933450]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466519.937407]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466521.566361]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466522.032396]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466522.035401]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466523.566460]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466524.130052]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466524.133395]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466525.632699]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466526.233526]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466526.236451]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466527.666530]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466528.331789]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466528.334707]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466529.666508]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466530.430102]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466530.433313]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466531.766547]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466532.533767]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466532.536420]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466533.766851]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466534.632141]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466534.635154]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466535.832692]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466536.730461]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466536.734103]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466537.866743]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466538.834029]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466538.836975]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466539.866946]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466540.933735]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466540.937945]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466541.966875]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466543.030720]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466543.033749]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
+[INFO] [1782466544.068568]: 已发布 /odom: pose=(0.00, -0.80, 0.00)
+[INFO] [1782466545.134014]: 编码器: ltick=0 rtick=0 Δl=0 Δr=0 d_left=0.0000m d_right=0.0000m
+[INFO] [1782466545.137818]: 里程计: x=0.000 y=-0.800 θ=0.000 v=0.000m/s ω=0.000rad/s
