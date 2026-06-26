@@ -115,12 +115,13 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
           double new_x = alpha * (px + nx) / 2.0 + (1.0 - alpha) * cx;
           double new_y = alpha * (py + ny) / 2.0 + (1.0 - alpha) * cy;
 
-          // collision check using costmap
+          // collision check: 与 A* 逻辑一致，过滤膨胀层内的高代价格子
           double mx, my;
           if (world2Map(new_x, new_y, mx, my)) {
             int idx = grid2Index((int)mx, (int)my);
             if (idx >= 0 && idx < map_size_ &&
-                costmap_->getCharMap()[idx] < costmap_2d::LETHAL_OBSTACLE) {
+                costmap_->getCharMap()[idx] <
+                    costmap_2d::LETHAL_OBSTACLE * config_.obstacle_inflation_factor()) {
               smooth_path[i].setX(new_x);
               smooth_path[i].setY(new_y);
             }
