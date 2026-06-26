@@ -39,7 +39,7 @@ class GazeboSync:
 
         # ── 定期清理 costmap 旧标记（动态障碍物 / 混合像素残留） ──
         self.clear_costmap_srv = None
-        rospy.Timer(rospy.Duration(0.3), self.clear_costmap_timer)
+        rospy.Timer(rospy.Duration(1.0), self.clear_costmap_timer)
 
         # ── 主循环（5Hz）：不断尝试服务 + 同步位置 ──
         # 注意：10Hz 太频繁，set_model_state 容易超时（returned no response）
