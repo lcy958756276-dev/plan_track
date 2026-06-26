@@ -13,10 +13,6 @@ WORKSPACE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 LOG_DIR="$WORKSPACE_DIR/log"
 
 source "$WORKSPACE_DIR/devel/setup.bash"
-# my_robot 在 src/ 外面，创建软链接让 rospack 能找到
-if [ ! -L "$WORKSPACE_DIR/src/my_robot" ] && [ ! -d "$WORKSPACE_DIR/src/my_robot" ]; then
-    ln -s "$WORKSPACE_DIR/my_robot" "$WORKSPACE_DIR/src/my_robot" 2>/dev/null || true
-fi
 mkdir -p "$LOG_DIR"
 
 # 强制清理残留的 Gazebo、map_server 进程
@@ -61,32 +57,13 @@ echo "[3/8] 加载 robot_description + 启动核心节点 ..."
 echo "[$(date +%H:%M:%S)] [3] loading robot_description" >> "$LOG_DIR/run.log"
 
 # 加载 SolidWorks 导出的自定义车模型 URDF
-ROBOT_URDF_FILE="$WORKSPACE_DIR/my_robot/urdf/my_robot.urdf"
-if [ -f "$ROBOT_URDF_FILE" ]; then
-    echo "[$(date +%H:%M:%S)] [3] URDF: $ROBOT_URDF_FILE ($(stat -c%s bytes))" >> "$LOG_DIR/run.log"
-    # 先用简单字符串测试参数服务器
-    rosparam set /test_param hello_world
-    if [ "$(rosparam get /test_param 2>/dev/null)" = "hello_world" ]; then
-        echo "[$(date +%H:%M:%S)] [3] param server OK" >> "$LOG_DIR/run.log"
-    else
-        echo "[$(date +%H:%M:%S)] [3] ❌ param server NOT working!" >> "$LOG_DIR/run.log"
-    fi
-    rosparam delete /test_param 2>/dev/null
-    # 用 Python 加载 URDF（避免 shell 转义问题）
-    python3 -c "
-import rospy, sys
-rospy.init_node('load_urdf', anonymous=True)
-with open('$ROBOT_URDF_FILE', 'r') as f:
-    rospy.set_param('robot_description', f.read())
-print('robot_description set, size=' + str(len(rospy.get_param('robot_description'))))
-" >> "$LOG_DIR/run.log" 2>&1
-else
-    echo "[$(date +%H:%M:%S)] [3] ❌ URDF NOT FOUND: $ROBOT_URDF_FILE" >> "$LOG_DIR/run.log"
-fi
+ROBOT_URDF="$WORKSPACE_DIR/my_robot/urdf/my_robot.urdf"
+rosparam set robot_description "$(cat "$ROBOT_URDF")"
+echo "[$(date +%H:%M:%S)] [3] robot_description loaded" >> "$LOG_DIR/run.log"
 echo "  robot_description 已加载（自定义车模型）"
 
 # robot_state_publisher（发布 URDF 中固定关节的 TF：base_footprint → base_link → base_scan）
-rosrun robot_state_publisher robot_state_publisher __name:=rsp_main \
+rosrun robot_state_publisher robot_state_publisher \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_RSP=$!
 echo "  robot_state_publisher PID=$PID_RSP"
@@ -99,7 +76,7 @@ echo "  joint_state_publisher PID=$PID_JSP"
 
 sleep 1
 
-# map_server（提供背景地图 — my_large_map）
+# map_server（提供背景地图）
 MAP_FILE="$WORKSPACE_DIR/../gazebo_create/maps/my_large_map.yaml"
 rosrun map_server map_server "$MAP_FILE" \
     >> "$LOG_DIR/run.log" 2>&1 &
@@ -108,7 +85,7 @@ echo "  map_server PID=$PID_MAP"
 
 sleep 1
 
-# 静态 map → odom TF（初始位置偏移在 encoder_odom 中处理）
+# 静态 map → odom TF（让 RViz 在 map 固定帧下能看到小车移动）
 rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 map odom \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_TF=$!
@@ -126,7 +103,7 @@ sleep 1
 # ── 4. 启动 Gazebo（仓库环境）──
 echo "[4/8] 启动 Gazebo ..."
 echo "[$(date +%H:%M:%S)] [4] starting gzserver" >> "$LOG_DIR/run.log"
-WORLD_FILE="$WORKSPACE_DIR/../gazebo_create/worlds/final_two.world"
+WORLD_FILE="$WORKSPACE_DIR/src/sim_env/worlds/final_two.world"
 
 # 禁用所有模型数据库下载（防 libcurl SSL 超时阻塞 ROS 插件初始化）
 # GAZEBO_MODEL_DATABASE_URI 管 Gazebo Fuel，IGN_FUEL_URI 管 Ignition Fuel
@@ -164,18 +141,6 @@ sleep 2
 
 # 在 Gazebo 中生成机器人模型（使用已加载的 robot_description）
 echo "[$(date +%H:%M:%S)] [4] spawn_model start" >> "$LOG_DIR/run.log"
-echo "  重新加载 robot_description..."
-ROBO_URDF_FILE="$WORKSPACE_DIR/my_robot/urdf/my_robot.urdf"
-echo "[$(date +%H:%M:%S)] [4] ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH" >> "$LOG_DIR/run.log"
-rospack find my_robot 2>&1 >> "$LOG_DIR/run.log" || echo "[$(date +%H:%M:%S)] [4] ❌ rospack find my_robot failed" >> "$LOG_DIR/run.log"
-python3 -c "
-import rospy, sys
-rospy.init_node('reload_urdf', anonymous=True)
-with open('$ROBO_URDF_FILE', 'r') as f:
-    rospy.set_param('robot_description', f.read())
-s = rospy.get_param('robot_description','')
-print('reload: robot_description set, len=' + str(len(s)))
-" >> "$LOG_DIR/run.log" 2>&1
 echo "  正在生成机器人模型..."
 rosrun gazebo_ros spawn_model -urdf \
     -param robot_description \
@@ -218,7 +183,7 @@ echo "  PID=$PID_READ → log/serial_bridge.log"
 
 sleep 2
 
-# ── 6. 启动里程计（初始位置偏移到 my_map_two 空闲区）──
+# ── 6. 启动里程计 ──
 echo "[6/8] 启动 encoder_odom.py (里程计)..."
 rosrun encoder_tools encoder_odom.py \
     _initial_x:=0.0 _initial_y:=-0.8 \
@@ -261,12 +226,12 @@ cat > "$MB_LAUNCH" << MBEOF
     <param name="PathPlanner/planner_name" value="astar"/>
 
     <!-- 局部规划器（MPC = 模型预测控制，跟踪路径） -->
-    <param name="base_local_planner" value="apf_controller/APFController"/>
+    <param name="base_local_planner" value="mpc_controller/MPCController"/>
 
     <!-- 禁用恢复行为（实物车速度低，不会大幅偏离路径） -->
     <param name="recovery_behavior_enabled" value="false"/>
 
-    <!-- move_base 通用参数  -->
+    <!-- move_base 通用参数 -->
     <rosparam command="load" file="$SIM_ENV_DIR/config/move_base_params.yaml"/>
 
     <!-- 全局 costmap（用 robot-specific 文件，不含 global_costmap: 外层键） -->
