@@ -8,7 +8,7 @@ from tf.transformations import euler_from_quaternion
 
 class PreRotate:
     def __init__(self):
-        self.angle_threshold = math.radians(15.0)
+        self.angle_threshold = math.radians(25.0)
         self.alignment_tol = math.radians(3.0)
         self.max_angular = 0.6                         # rad/s，慢一点更稳
 
@@ -68,10 +68,10 @@ class PreRotate:
         err = self._norm(target_yaw - self.yaw)
 
         if abs(err) < self.alignment_tol:
-            # 先停稳再转发 goal
-            self.cmd_pub.publish(Twist())
-            rospy.sleep(0.1)
-            self.cmd_pub.publish(Twist())
+            # 先停稳再转发 goal（多次发停命令，等速度降下来）
+            for _ in range(5):
+                self.cmd_pub.publish(Twist())
+                rospy.sleep(0.05)
             rospy.loginfo("pre_rotate: aligned, send goal to move_base")
             self.goal_pub.publish(self.goal)
             self.rotating = False
