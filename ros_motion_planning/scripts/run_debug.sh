@@ -59,20 +59,25 @@ echo "[$(date +%H:%M:%S)] [3] loading robot_description" >> "$LOG_DIR/run.log"
 # 加载 SolidWorks 导出的自定义车模型 URDF
 ROBOT_URDF_FILE="$WORKSPACE_DIR/my_robot/urdf/my_robot.urdf"
 if [ -f "$ROBOT_URDF_FILE" ]; then
-    echo "[$(date +%H:%M:%S)] [3] URDF file exists ($(stat -c%s "$ROBOT_URDF_FILE") bytes)" >> "$LOG_DIR/run.log"
-    # 用 rosparam load 代替 set，更可靠
-    rosparam set robot_description "$(cat "$ROBOT_URDF_FILE")"
-    RET=$?
-    echo "[$(date +%H:%M:%S)] [3] rosparam set exit=$RET" >> "$LOG_DIR/run.log"
-    # 验证是否设置成功
-    if rosparam get robot_description > /dev/null 2>&1; then
-        echo "[$(date +%H:%M:%S)] [3] robot_description verified OK" >> "$LOG_DIR/run.log"
+    echo "[$(date +%H:%M:%S)] [3] URDF: $ROBOT_URDF_FILE ($(stat -c%s bytes))" >> "$LOG_DIR/run.log"
+    # 先用简单字符串测试参数服务器
+    rosparam set /test_param hello_world
+    if [ "$(rosparam get /test_param 2>/dev/null)" = "hello_world" ]; then
+        echo "[$(date +%H:%M:%S)] [3] param server OK" >> "$LOG_DIR/run.log"
     else
-        echo "[$(date +%H:%M:%S)] [3] ❌ robot_description NOT on server after set" >> "$LOG_DIR/run.log"
+        echo "[$(date +%H:%M:%S)] [3] ❌ param server NOT working!" >> "$LOG_DIR/run.log"
     fi
+    rosparam delete /test_param 2>/dev/null
+    # 用 Python 加载 URDF（避免 shell 转义问题）
+    python3 -c "
+import rospy, sys
+rospy.init_node('load_urdf', anonymous=True)
+with open('$ROBOT_URDF_FILE', 'r') as f:
+    rospy.set_param('robot_description', f.read())
+print('robot_description set, size=' + str(len(rospy.get_param('robot_description'))))
+" >> "$LOG_DIR/run.log" 2>&1
 else
-    echo "[$(date +%H:%M:%S)] [3] ❌ URDF file NOT FOUND: $ROBOT_URDF_FILE" >> "$LOG_DIR/run.log"
-    echo "[$(date +%H:%M:%S)] [3] WORKSPACE_DIR=$WORKSPACE_DIR" >> "$LOG_DIR/run.log"
+    echo "[$(date +%H:%M:%S)] [3] ❌ URDF NOT FOUND: $ROBOT_URDF_FILE" >> "$LOG_DIR/run.log"
 fi
 echo "  robot_description 已加载（自定义车模型）"
 
@@ -155,19 +160,16 @@ sleep 2
 
 # 在 Gazebo 中生成机器人模型（使用已加载的 robot_description）
 echo "[$(date +%H:%M:%S)] [4] spawn_model start" >> "$LOG_DIR/run.log"
-echo "  检查 robot_description..."
+echo "  重新加载 robot_description..."
 ROBO_URDF_FILE="$WORKSPACE_DIR/my_robot/urdf/my_robot.urdf"
-echo "[$(date +%H:%M:%S)] [4] URDF: $ROBO_URDF_FILE" >> "$LOG_DIR/run.log"
-if [ -f "$ROBO_URDF_FILE" ]; then
-    rosparam set robot_description "$(cat "$ROBO_URDF_FILE")"
-    if rosparam get robot_description > /dev/null 2>&1; then
-        echo "[$(date +%H:%M:%S)] [4] robot_description OK" >> "$LOG_DIR/run.log"
-    else
-        echo "[$(date +%H:%M:%S)] [4] ❌ robot_description STILL MISSING after set" >> "$LOG_DIR/run.log"
-    fi
-else
-    echo "[$(date +%H:%M:%S)] [4] ❌ URDF NOT FOUND" >> "$LOG_DIR/run.log"
-fi
+python3 -c "
+import rospy, sys
+rospy.init_node('reload_urdf', anonymous=True)
+with open('$ROBO_URDF_FILE', 'r') as f:
+    rospy.set_param('robot_description', f.read())
+s = rospy.get_param('robot_description','')
+print('reload: robot_description set, len=' + str(len(s)))
+" >> "$LOG_DIR/run.log" 2>&1
 echo "  正在生成机器人模型..."
 rosrun gazebo_ros spawn_model -urdf \
     -param robot_description \
