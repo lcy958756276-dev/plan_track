@@ -11,6 +11,7 @@ gazebo_sync.py
     rosrun encoder_tools gazebo_sync.py
 """
 
+import math
 import rospy
 import sys
 import os
@@ -118,7 +119,43 @@ class GazeboSync:
             self._next_retry = rospy.Time.now().to_sec() + self.service_retry_delay
 
     def scan_cb(self, msg):
-        """修复 LaserScan 时间戳"""
+        """修复 LaserScan 时间戳 + 过滤自检测 + 去除孤点（混合像素）"""
+        # 机器人足迹（相对 base_link）
+        # footprint: [[-0.1, -0.3], [-0.1, 0.3], [0.8, 0.3], [0.8, -0.3]]
+        # base_scan 在 base_link 下的坐标: x=0.19, y=0
+        # 在 base_scan 坐标系内，车身范围大致为一个矩形
+        SELF_MIN_X = -0.3   # 车身在 base_scan 背后的范围
+        SELF_MAX_X = 0.2
+        SELF_MIN_Y = -0.35
+        SELF_MAX_Y = 0.35
+
+        ranges = list(msg.ranges)
+        angle_min = msg.angle_min
+        angle_increment = msg.angle_increment
+
+        for i in range(len(ranges)):
+            r = ranges[i]
+            if r < msg.range_min or r > msg.range_max:
+                continue
+
+            # (1) 过滤自检测：计算该点在 base_scan 坐标系下的 (x, y)
+            theta = angle_min + i * angle_increment
+            px = r * math.cos(theta)
+            py = r * math.sin(theta)
+            if SELF_MIN_X <= px <= SELF_MAX_X and SELF_MIN_Y <= py <= SELF_MAX_Y:
+                ranges[i] = msg.range_max + 1.0  # 设为无效
+                continue
+
+            # (2) 混合像素过滤：如果该点与相邻点距离差距很大，视为孤点
+            if 0 < i < len(ranges) - 1:
+                r_prev = ranges[i - 1]
+                r_next = ranges[i + 1]
+                if r_prev > 0 and r_next > 0:
+                    avg = (r_prev + r_next) / 2.0
+                    if abs(r - avg) > 0.3 and abs(r_prev - r) > 0.3 and abs(r_next - r) > 0.3:
+                        ranges[i] = msg.range_max + 1.0  # 设为无效
+
+        msg.ranges = tuple(ranges)
         msg.header.stamp = rospy.Time.now()
         msg.header.frame_id = "base_scan"
         self.scan_pub.publish(msg)
