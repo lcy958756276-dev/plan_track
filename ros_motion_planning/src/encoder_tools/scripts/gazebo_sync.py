@@ -27,6 +27,7 @@ class GazeboSync:
         self.have_service = False
         self.set_state = None
         self.service_retry_delay = 0.5  # 初始重试间隔（指数退避）
+        self.last_sent_pose = None      # 上次成功发送的位置，用于判断是否变化
 
         # ── 订阅 /odom ──
         rospy.Subscriber("/odom", Odometry, self.odom_cb, queue_size=10)
@@ -91,15 +92,24 @@ class GazeboSync:
             pose = self.latest_odom.pose.pose
             twist = self.latest_odom.twist.twist
 
+            # 位置变化阈值：超过 3cm 或 5° 才更新，静止时不调用避免与 ODE 打架
+            if self.last_sent_pose is not None:
+                dx = pose.position.x - self.last_sent_pose[0]
+                dy = pose.position.y - self.last_sent_pose[1]
+                dtheta = abs(pose.orientation.z - self.last_sent_pose[3])
+                if abs(dx) < 0.03 and abs(dy) < 0.03 and dtheta < 0.087:  # 5°
+                    return  # 位置变化太小，跳过
+
             state = ModelState()
             state.model_name = "my_robot"
             state.pose = pose
-            state.pose.position.z = 0.1  # 提高模型使其在地面上方（编碼器 z=0 是地面投影）
             state.twist = twist
             state.reference_frame = ""
 
-            # 暂时注释掉 set_model_state，用于诊断跳动问题
-            # self.set_state(state)
+            self.set_state(state)
+
+            # 记录成功发送的位置
+            self.last_sent_pose = (pose.position.x, pose.position.y, pose.position.z, pose.orientation.z)
 
             rospy.loginfo_throttle(
                 2.0,
