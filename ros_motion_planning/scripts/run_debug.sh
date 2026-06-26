@@ -92,8 +92,9 @@ PID_TF=$!
 echo "  static_transform_publisher (map→odom) PID=$PID_TF"
 
 # 静态 base_footprint → base_link TF（新模型 URDF 不含 base_footprint，需要补一个）
-# rpy=(1.5708 0 -1.5708) 是 SolidWorks 坐标系到 ROS 坐标系的转换
-rosrun tf2_ros static_transform_publisher 0 0 0 1.5708 0 -1.5708 base_footprint base_link \
+# my_robot.urdf 的 base_link 已经是 ROS 坐标系（Z 向上），所以 rpy=(0 0 0)
+# 原来 rpy=(1.5708 0 -1.5708) 会让车体侧躺，已移除
+rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 base_footprint base_link \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_FP=$!
 echo "  static_transform_publisher (base_footprint→base_link) PID=$PID_FP"
