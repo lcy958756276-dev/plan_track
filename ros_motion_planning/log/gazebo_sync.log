@@ -1,71 +1,36 @@
-Exception in thread Thread-7:
-Traceback (most recent call last):
-  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_service.py", line 523, in call
-    responses = transport.receive_once()
-  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_base.py", line 744, in receive_once
-    self.stat_bytes += recv_buff(sock, b, p.buff_size)
-  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_base.py", line 111, in recv_buff
-    raise TransportTerminated("unable to receive data from sender, check sender's logs for details")
-rospy.exceptions.TransportTerminated: unable to receive data from sender, check sender's logs for details
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/usr/lib/python3.8/threading.py", line 932, in _bootstrap_inner
-    self.run()
-  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/timer.py", line 237, in run
-    self._callback(TimerEvent(last_expected, last_real, current_expected, current_real, last_duration))
-  File "/home/lcy/robot_graduation/ros_motion_planning/src/encoder_tools/scripts/gazebo_sync.py", line 112, in main_timer
-    self.set_state(state)
-  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_service.py", line 442, in __call__
-    return self.call(*args, **kwds)
-  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_service.py", line 531, in call
-    raise rospy.exceptions.ROSInterruptException("node shutdown interrupted service call")
-rospy.exceptions.ROSInterruptException: node shutdown interrupted service call
-[INFO] [1782479284.907924]: gazebo_sync 已启动
-[INFO] [1782479284.911174]:   持续尝试连接 /gz_debug/set_model_state ...
-[INFO] [1782479285.112567]:   ✅ 已连接 /gz_debug/set_model_state
-[INFO] [1782479285.124052]: 已同步 Gazebo 位置: x=0.00 y=-0.80 θ=0.00
-[INFO] [1782479287.315437]: 已同步 Gazebo 位置: x=0.00 y=-0.80 θ=0.00
-[INFO] [1782479289.316776]: 已同步 Gazebo 位置: x=0.00 y=-0.80 θ=0.00
-[INFO] [1782479289.800911]: 已清理 costmap 旧障碍物标记
-[INFO] [1782479291.335538]: 已同步 Gazebo 位置: x=0.00 y=-0.80 θ=0.00
-[INFO] [1782479293.524125]: 已同步 Gazebo 位置: x=0.00 y=-0.80 θ=0.00
-[INFO] [1782479295.715020]: 已同步 Gazebo 位置: x=0.00 y=-0.80 θ=0.00
-[INFO] [1782479297.716597]: 已同步 Gazebo 位置: x=0.00 y=-0.80 θ=-0.14
-[INFO] [1782479299.719976]: 已同步 Gazebo 位置: x=0.01 y=-0.80 θ=-0.49
-[INFO] [1782479299.996994]: 已清理 costmap 旧障碍物标记
-[INFO] [1782479301.724072]: 已同步 Gazebo 位置: x=0.01 y=-0.81 θ=-0.81
-[INFO] [1782479303.912651]: 已同步 Gazebo 位置: x=-0.03 y=-0.86 θ=-0.94
-[INFO] [1782479305.913998]: 已同步 Gazebo 位置: x=-0.09 y=-0.90 θ=-0.96
-[INFO] [1782479307.916690]: 已同步 Gazebo 位置: x=-0.16 y=-0.95 θ=-0.94
-[INFO] [1782479310.116412]: 已同步 Gazebo 位置: x=-0.22 y=-1.02 θ=-0.86
-[INFO] [1782479310.187729]: 已清理 costmap 旧障碍物标记
-[INFO] [1782479312.118856]: 已同步 Gazebo 位置: x=-0.26 y=-1.11 θ=-0.81
-[INFO] [1782479314.315136]: 已同步 Gazebo 位置: x=-0.27 y=-1.21 θ=-0.73
-[INFO] [1782479316.329904]: 已同步 Gazebo 位置: x=-0.28 y=-1.31 θ=-0.73
-[INFO] [1782479318.517072]: 已同步 Gazebo 位置: x=-0.30 y=-1.41 θ=-0.80
-[INFO] [1782479320.385492]: 已清理 costmap 旧障碍物标记
-[INFO] [1782479320.523131]: 已同步 Gazebo 位置: x=-0.33 y=-1.51 θ=-0.78
-[INFO] [1782479322.714596]: 已同步 Gazebo 位置: x=-0.34 y=-1.61 θ=-0.76
-[INFO] [1782479324.915185]: 已同步 Gazebo 位置: x=-0.36 y=-1.72 θ=-0.77
-[INFO] [1782479326.917474]: 已同步 Gazebo 位置: x=-0.37 y=-1.82 θ=-0.74
-[INFO] [1782479329.113983]: 已同步 Gazebo 位置: x=-0.37 y=-1.93 θ=-0.75
-[INFO] [1782479330.584741]: 已清理 costmap 旧障碍物标记
-[INFO] [1782479331.116755]: 已同步 Gazebo 位置: x=-0.39 y=-2.03 θ=-0.80
-[INFO] [1782479333.117940]: 已同步 Gazebo 位置: x=-0.42 y=-2.13 θ=-0.79
-[INFO] [1782479335.126552]: 已同步 Gazebo 位置: x=-0.45 y=-2.22 θ=-0.80
-[INFO] [1782479337.314484]: 已同步 Gazebo 位置: x=-0.46 y=-2.26 θ=-0.80
-[INFO] [1782479339.314814]: 已同步 Gazebo 位置: x=-0.46 y=-2.26 θ=-0.80
-[INFO] [1782479340.782312]: 已清理 costmap 旧障碍物标记
-[INFO] [1782479341.317816]: 已同步 Gazebo 位置: x=-0.46 y=-2.26 θ=-0.80
-[INFO] [1782479343.318753]: 已同步 Gazebo 位置: x=-0.46 y=-2.26 θ=-0.80
-[INFO] [1782479345.517876]: 已同步 Gazebo 位置: x=-0.46 y=-2.26 θ=-0.80
-[INFO] [1782479347.715356]: 已同步 Gazebo 位置: x=-0.46 y=-2.26 θ=-0.80
-[INFO] [1782479349.716657]: 已同步 Gazebo 位置: x=-0.46 y=-2.26 θ=-0.80
-[INFO] [1782479350.979848]: 已清理 costmap 旧障碍物标记
-[INFO] [1782479351.914150]: 已同步 Gazebo 位置: x=-0.46 y=-2.26 θ=-0.80
-[INFO] [1782479354.113205]: 已同步 Gazebo 位置: x=-0.46 y=-2.26 θ=-0.80
-[INFO] [1782479356.113369]: 已同步 Gazebo 位置: x=-0.46 y=-2.26 θ=-0.80
-[INFO] [1782479358.153856]: 已同步 Gazebo 位置: x=-0.46 y=-2.26 θ=-0.80
-[INFO] [1782479360.363402]: 已同步 Gazebo 位置: x=-0.46 y=-2.26 θ=-0.80
+[WARN] [1782480356.004489]: set_model_state 失败: unable to connect to service: [Errno 104] Connection reset by peer
+[INFO] [1782480300.716308]: gazebo_sync 已启动
+[INFO] [1782480300.719842]:   持续尝试连接 /gz_debug/set_model_state ...
+[INFO] [1782480300.921320]:   ✅ 已连接 /gz_debug/set_model_state
+[INFO] [1782480300.929624]: 已同步 Gazebo 位置: x=0.00 y=-0.80 θ=0.00
+[INFO] [1782480303.133894]: 已同步 Gazebo 位置: x=0.00 y=-0.80 θ=0.00
+[INFO] [1782480305.331484]: 已同步 Gazebo 位置: x=0.00 y=-0.80 θ=0.00
+[INFO] [1782480305.600877]: 已清理 costmap 旧障碍物标记
+[INFO] [1782480307.357881]: 已同步 Gazebo 位置: x=0.00 y=-0.80 θ=0.00
+[INFO] [1782480309.528143]: 已同步 Gazebo 位置: x=0.00 y=-0.80 θ=0.00
+[INFO] [1782480311.723653]: 已同步 Gazebo 位置: x=0.00 y=-0.80 θ=0.00
+[INFO] [1782480313.725857]: 已同步 Gazebo 位置: x=0.00 y=-0.80 θ=0.00
+[INFO] [1782480315.791633]: 已清理 costmap 旧障碍物标记
+[INFO] [1782480315.924905]: 已同步 Gazebo 位置: x=0.00 y=-0.80 θ=0.00
+[INFO] [1782480317.927650]: 已同步 Gazebo 位置: x=-0.01 y=-0.80 θ=0.26
+[INFO] [1782480319.928922]: 已同步 Gazebo 位置: x=-0.01 y=-0.81 θ=0.62
+[INFO] [1782480322.128299]: 已同步 Gazebo 位置: x=-0.01 y=-0.81 θ=0.94
+[INFO] [1782480324.131593]: 已同步 Gazebo 位置: x=-0.04 y=-0.80 θ=-1.00
+[INFO] [1782480325.990318]: 已清理 costmap 旧障碍物标记
+[INFO] [1782480326.322797]: 已同步 Gazebo 位置: x=-0.12 y=-0.83 θ=-0.96
+[INFO] [1782480328.323133]: 已同步 Gazebo 位置: x=-0.18 y=-0.88 θ=-0.94
+[INFO] [1782480330.328215]: 已同步 Gazebo 位置: x=-0.25 y=-0.92 θ=-0.97
+[INFO] [1782480332.524490]: 已同步 Gazebo 位置: x=-0.35 y=-0.95 θ=-1.00
+[INFO] [1782480334.746381]: 已同步 Gazebo 位置: x=-0.46 y=-0.94 θ=0.99
+[INFO] [1782480336.192472]: 已清理 costmap 旧障碍物标记
+[INFO] [1782480336.924243]: 已同步 Gazebo 位置: x=-0.56 y=-0.92 θ=1.00
+[INFO] [1782480338.926943]: 已同步 Gazebo 位置: x=-0.66 y=-0.92 θ=-1.00
+[INFO] [1782480341.124396]: 已同步 Gazebo 位置: x=-0.77 y=-0.93 θ=1.00
+[INFO] [1782480343.125013]: 已同步 Gazebo 位置: x=-0.87 y=-0.91 θ=0.99
+[INFO] [1782480345.126726]: 已同步 Gazebo 位置: x=-0.96 y=-0.89 θ=1.00
+[INFO] [1782480346.393978]: 已清理 costmap 旧障碍物标记
+[INFO] [1782480347.126730]: 已同步 Gazebo 位置: x=-1.06 y=-0.88 θ=1.00
+[INFO] [1782480349.324763]: 已同步 Gazebo 位置: x=-1.17 y=-0.85 θ=0.99
+[INFO] [1782480351.333388]: 已同步 Gazebo 位置: x=-1.26 y=-0.82 θ=0.99
+[INFO] [1782480353.351820]: 已同步 Gazebo 位置: x=-1.36 y=-0.79 θ=0.98
+[INFO] [1782480355.536022]: 已同步 Gazebo 位置: x=-1.44 y=-0.75 θ=0.97
