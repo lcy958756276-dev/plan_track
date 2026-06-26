@@ -19,6 +19,7 @@
 // graph-based planner
 #include "path_planner/path_planner_node.h"
 #include "path_planner/graph_planner/astar_planner.h"
+#include "path_planner/graph_planner/astar_prove_planner.h"
 #include "path_planner/graph_planner/jps_planner.h"
 #include "path_planner/graph_planner/dstar_planner.h"
 #include "path_planner/graph_planner/lpa_star_planner.h"
@@ -58,6 +59,9 @@ bool PathPlannerFactory::createPlanner(ros::NodeHandle& nh,
 
   if (planner_name == "astar") {
     planner_props.planner_ptr = std::make_shared<AStarPathPlanner>(costmap_ros);
+    planner_props.planner_type = GRAPH_PLANNER;
+  } else if (planner_name == "astar_prove") {
+    planner_props.planner_ptr = std::make_shared<AStarProvePathPlanner>(costmap_ros);
     planner_props.planner_type = GRAPH_PLANNER;
   } else if (planner_name == "dijkstra") {
     planner_props.planner_ptr = std::make_shared<AStarPathPlanner>(costmap_ros, true);
