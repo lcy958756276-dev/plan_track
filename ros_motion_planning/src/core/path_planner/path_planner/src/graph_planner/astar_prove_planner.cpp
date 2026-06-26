@@ -121,8 +121,8 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
             int idx = grid2Index((int)mx, (int)my);
             if (idx >= 0 && idx < map_size_ &&
                 costmap_->getCharMap()[idx] < costmap_2d::LETHAL_OBSTACLE) {
-              smooth_path[i].x() = new_x;
-              smooth_path[i].y() = new_y;
+              smooth_path[i].setX(new_x);
+              smooth_path[i].setY(new_y);
             }
           }
         }
