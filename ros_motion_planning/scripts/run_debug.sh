@@ -141,6 +141,17 @@ sleep 2
 
 # 在 Gazebo 中生成机器人模型（使用已加载的 robot_description）
 echo "[$(date +%H:%M:%S)] [4] spawn_model start" >> "$LOG_DIR/run.log"
+echo "  确保 robot_description 参数存在..."
+rosparam get robot_description > /dev/null 2>&1 || {
+    echo "  ⚠ robot_description 丢失，重新加载..."
+    ROBO_URDF="$WORKSPACE_DIR/my_robot/urdf/my_robot.urdf"
+    if [ -f "$ROBO_URDF" ]; then
+        rosparam set robot_description "$(cat "$ROBO_URDF")"
+        echo "  ✅ robot_description 已重新加载"
+    else
+        echo "  ❌ URDF 文件不存在: $ROBO_URDF"
+    fi
+}
 echo "  正在生成机器人模型..."
 rosrun gazebo_ros spawn_model -urdf \
     -param robot_description \
