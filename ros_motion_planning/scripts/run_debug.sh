@@ -57,9 +57,18 @@ echo "[3/8] 加载 robot_description + 启动核心节点 ..."
 echo "[$(date +%H:%M:%S)] [3] loading robot_description" >> "$LOG_DIR/run.log"
 
 # 加载 SolidWorks 导出的自定义车模型 URDF
-ROBOT_URDF="$WORKSPACE_DIR/my_robot/urdf/my_robot.urdf"
-rosparam set robot_description "$(cat "$ROBOT_URDF")"
-echo "[$(date +%H:%M:%S)] [3] robot_description loaded" >> "$LOG_DIR/run.log"
+ROBOT_URDF_FILE="$WORKSPACE_DIR/my_robot/urdf/my_robot.urdf"
+if [ -f "$ROBOT_URDF_FILE" ]; then
+    echo "[$(date +%H:%M:%S)] [3] URDF file exists ($(stat -c%s "$ROBOT_URDF_FILE") bytes)" >> "$LOG_DIR/run.log"
+    rosparam set robot_description "$(cat "$ROBOT_URDF_FILE")"
+    if [ $? -eq 0 ]; then
+        echo "[$(date +%H:%M:%S)] [3] robot_description loaded successfully" >> "$LOG_DIR/run.log"
+    else
+        echo "[$(date +%H:%M:%S)] [3] ❌ rosparam set FAILED" >> "$LOG_DIR/run.log"
+    fi
+else
+    echo "[$(date +%H:%M:%S)] [3] ❌ URDF file NOT FOUND: $ROBOT_URDF_FILE" >> "$LOG_DIR/run.log"
+fi
 echo "  robot_description 已加载（自定义车模型）"
 
 # robot_state_publisher（发布 URDF 中固定关节的 TF：base_footprint → base_link → base_scan）
@@ -141,17 +150,16 @@ sleep 2
 
 # 在 Gazebo 中生成机器人模型（使用已加载的 robot_description）
 echo "[$(date +%H:%M:%S)] [4] spawn_model start" >> "$LOG_DIR/run.log"
-echo "  确保 robot_description 参数存在..."
-rosparam get robot_description > /dev/null 2>&1 || {
-    echo "  ⚠ robot_description 丢失，重新加载..."
-    ROBO_URDF="$WORKSPACE_DIR/my_robot/urdf/my_robot.urdf"
-    if [ -f "$ROBO_URDF" ]; then
-        rosparam set robot_description "$(cat "$ROBO_URDF")"
-        echo "  ✅ robot_description 已重新加载"
-    else
-        echo "  ❌ URDF 文件不存在: $ROBO_URDF"
-    fi
-}
+echo "  检查 robot_description..."
+ROBO_URDF_FILE="$WORKSPACE_DIR/my_robot/urdf/my_robot.urdf"
+echo "[$(date +%H:%M:%S)] [4] URDF文件路径: $ROBO_URDF_FILE" >> "$LOG_DIR/run.log"
+if [ -f "$ROBO_URDF_FILE" ]; then
+    echo "[$(date +%H:%M:%S)] [4] URDF文件存在，大小=$(stat -c%s "$ROBO_URDF_FILE")字节" >> "$LOG_DIR/run.log"
+    rosparam set robot_description "$(cat "$ROBO_URDF_FILE")"
+    echo "[$(date +%H:%M:%S)] [4] robot_description已重新加载" >> "$LOG_DIR/run.log"
+else
+    echo "[$(date +%H:%M:%S)] [4] ❌ URDF文件不存在!" >> "$LOG_DIR/run.log"
+fi
 echo "  正在生成机器人模型..."
 rosrun gazebo_ros spawn_model -urdf \
     -param robot_description \
