@@ -21,7 +21,6 @@
 #include <costmap_2d/cost_values.h>
 
 #include "common/structure/node.h"
-#include "common/geometry/curve/cubic_spline_curve.h"
 #include "path_planner/graph_planner/astar_prove_planner.h"
 
 using namespace rmp::common::geometry;
@@ -98,32 +97,38 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
         raw_path.emplace_back(wx, wy);
       }
 
-      // simplify path: extract only turning points (where direction changes > 10°)
-      Points3d key_points;
-      key_points.emplace_back(raw_path.front());
-      for (size_t i = 2; i < raw_path.size(); ++i) {
-        double dx1 = raw_path[i-1].x() - raw_path[i-2].x();
-        double dy1 = raw_path[i-1].y() - raw_path[i-2].y();
-        double dx2 = raw_path[i].x()   - raw_path[i-1].x();
-        double dy2 = raw_path[i].y()   - raw_path[i-1].y();
-        double angle = std::atan2(dy1, dx1) - std::atan2(dy2, dx2);
-        // normalize to [-π, π]
-        while (angle > M_PI) angle -= 2 * M_PI;
-        while (angle < -M_PI) angle += 2 * M_PI;
-        if (std::abs(angle) > 0.174) {  // 10° threshold
-          key_points.emplace_back(raw_path[i-1]);
+      // smooth path using inertial smoothing (from matlab.txt)
+      // p_new = alpha * (p_prev + p_next) / 2 + (1 - alpha) * p_curr
+      // with collision check against costmap
+      Points3d smooth_path = raw_path;
+      const double alpha = 0.6;       // 平滑权重
+      const int iterations = 5;       // 迭代次数
+      const double safe_dist = 0.3;   // 安全距离（米）
+
+      for (int iter = 0; iter < iterations; ++iter) {
+        for (size_t i = 1; i < smooth_path.size() - 1; ++i) {
+          double px = smooth_path[i-1].x(), py = smooth_path[i-1].y();
+          double cx = smooth_path[i].x(),   cy = smooth_path[i].y();
+          double nx = smooth_path[i+1].x(), ny = smooth_path[i+1].y();
+
+          // inertial smoothing
+          double new_x = alpha * (px + nx) / 2.0 + (1.0 - alpha) * cx;
+          double new_y = alpha * (py + ny) / 2.0 + (1.0 - alpha) * cy;
+
+          // collision check using costmap
+          double mx, my;
+          if (world2Map(new_x, new_y, mx, my)) {
+            int idx = grid2Index((int)mx, (int)my);
+            if (idx >= 0 && idx < map_size_ &&
+                costmap_->getCharMap()[idx] < costmap_2d::LETHAL_OBSTACLE) {
+              smooth_path[i].x() = new_x;
+              smooth_path[i].y() = new_y;
+            }
+          }
         }
       }
-      key_points.emplace_back(raw_path.back());
 
-      // smooth path using cubic spline interpolation on key points
-      if (key_points.size() >= 3) {
-        CubicSplineCurve spline(0.1);  // step = 0.1m
-        spline.run(key_points, *path);
-      } else {
-        // too short to smooth, use raw path directly
-        *path = raw_path;
-      }
+      *path = smooth_path;
 
       return true;
     }
