@@ -10,7 +10,7 @@ class PreRotate:
     def __init__(self):
         self.angle_threshold = math.radians(15.0)
         self.alignment_tol = math.radians(3.0)
-        self.max_angular = 0.6                         # rad/s，慢一点更稳
+        self.max_angular = 0.5                         # rad/s，比例降速中作为上限
 
         self.x = 0.0
         self.y = 0.0
@@ -78,7 +78,10 @@ class PreRotate:
             self.goal = None
         else:
             twist = Twist()
-            twist.angular.z = self.max_angular if err > 0 else -self.max_angular
+            # 比例降速：误差越大转越快，靠近目标时减速
+            ratio = min(1.0, abs(err) / self.angle_threshold)
+            speed = max(0.05, self.max_angular * ratio)
+            twist.angular.z = speed if err > 0 else -speed
             self.cmd_pub.publish(twist)
 
     @staticmethod
