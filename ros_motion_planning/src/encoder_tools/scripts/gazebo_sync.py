@@ -94,6 +94,7 @@ class GazeboSync:
             state = ModelState()
             state.model_name = "my_robot"
             state.pose = pose
+            state.pose.position.z = 0.1  # 提高模型使其在地面上方（编碼器 z=0 是地面投影）
             state.twist = twist
             state.reference_frame = ""
 

@@ -4,6 +4,12 @@
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
   name="my_robot">
+
+  <!-- Gazebo 模型級參數：關閉重力，避免模型掉落 →
+       因為車體靠 gazebo_sync.py 的 set_model_state 定位，不需要物理模擬 -->
+  <gazebo>
+    <gravity>0</gravity>
+  </gazebo>
   <link
     name="base_link">
     <inertial>
