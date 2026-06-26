@@ -151,9 +151,14 @@ class GazeboSync:
                 r_prev = ranges[i - 1]
                 r_next = ranges[i + 1]
                 if r_prev > 0 and r_next > 0:
+                    # 当前点与邻居平均值的偏差
                     avg = (r_prev + r_next) / 2.0
-                    if abs(r - avg) > 0.3 and abs(r_prev - r) > 0.3 and abs(r_next - r) > 0.3:
+                    # 如果当前点明显不同于两侧邻居，且两侧邻居本身接近，则判定为孤点
+                    if abs(r - avg) > 0.15 and abs(r - r_prev) > 0.15 and abs(r - r_next) > 0.15:
                         ranges[i] = msg.range_max + 1.0  # 设为无效
+                    # 额外：如果当前点比两侧都远 2 倍以上，也是孤点
+                    elif r > r_prev * 2.0 and r > r_next * 2.0 and r_prev > 0.1 and r_next > 0.1:
+                        ranges[i] = msg.range_max + 1.0
 
         msg.ranges = tuple(ranges)
         msg.header.stamp = rospy.Time.now()
