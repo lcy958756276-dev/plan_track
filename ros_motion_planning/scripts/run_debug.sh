@@ -13,8 +13,10 @@ WORKSPACE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 LOG_DIR="$WORKSPACE_DIR/log"
 
 source "$WORKSPACE_DIR/devel/setup.bash"
-# my_robot 在 src/ 外面，需要手动加入 ROS 包路径
-export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$WORKSPACE_DIR/my_robot
+# my_robot 在 src/ 外面，创建软链接让 rospack 能找到
+if [ ! -L "$WORKSPACE_DIR/src/my_robot" ] && [ ! -d "$WORKSPACE_DIR/src/my_robot" ]; then
+    ln -s "$WORKSPACE_DIR/my_robot" "$WORKSPACE_DIR/src/my_robot" 2>/dev/null || true
+fi
 mkdir -p "$LOG_DIR"
 
 # 强制清理残留的 Gazebo、map_server 进程
@@ -164,6 +166,8 @@ sleep 2
 echo "[$(date +%H:%M:%S)] [4] spawn_model start" >> "$LOG_DIR/run.log"
 echo "  重新加载 robot_description..."
 ROBO_URDF_FILE="$WORKSPACE_DIR/my_robot/urdf/my_robot.urdf"
+echo "[$(date +%H:%M:%S)] [4] ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH" >> "$LOG_DIR/run.log"
+rospack find my_robot 2>&1 >> "$LOG_DIR/run.log" || echo "[$(date +%H:%M:%S)] [4] ❌ rospack find my_robot failed" >> "$LOG_DIR/run.log"
 python3 -c "
 import rospy, sys
 rospy.init_node('reload_urdf', anonymous=True)
