@@ -154,7 +154,7 @@ class GazeboSync:
                     # 当前点与邻居平均值的偏差
                     avg = (r_prev + r_next) / 2.0
                     # 如果当前点明显不同于两侧邻居，且两侧邻居本身接近，则判定为孤点
-                    if abs(r - avg) > 0.15 and abs(r - r_prev) > 0.15 and abs(r - r_next) > 0.15:
+                    if abs(r - avg) > 0.08 and abs(r - r_prev) > 0.08 and abs(r - r_next) > 0.08:
                         ranges[i] = msg.range_max + 1.0  # 设为无效
                     # 额外：如果当前点比两侧都远 2 倍以上，也是孤点
                     elif r > r_prev * 2.0 and r > r_next * 2.0 and r_prev > 0.1 and r_next > 0.1:
