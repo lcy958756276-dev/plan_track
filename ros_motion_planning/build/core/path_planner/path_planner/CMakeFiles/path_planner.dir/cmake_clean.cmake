@@ -5,6 +5,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/path_planner.dir/src/evolutionary_planner/ga_planner.cpp.o"
   "CMakeFiles/path_planner.dir/src/evolutionary_planner/pso_planner.cpp.o"
   "CMakeFiles/path_planner.dir/src/graph_planner/astar_planner.cpp.o"
+  "CMakeFiles/path_planner.dir/src/graph_planner/astar_prove_planner.cpp.o"
   "CMakeFiles/path_planner.dir/src/graph_planner/dstar_lite_planner.cpp.o"
   "CMakeFiles/path_planner.dir/src/graph_planner/dstar_planner.cpp.o"
   "CMakeFiles/path_planner.dir/src/graph_planner/hybrid_astar_planner/hybrid_astar_planner.cpp.o"

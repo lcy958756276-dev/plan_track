@@ -365,6 +365,33 @@ src/graph_planner/astar_planner.cpp.s:
 	cd /home/lcy/robot_graduation/ros_motion_planning/build && $(MAKE) -f core/path_planner/path_planner/CMakeFiles/path_planner.dir/build.make core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/graph_planner/astar_planner.cpp.s
 .PHONY : src/graph_planner/astar_planner.cpp.s
 
+src/graph_planner/astar_prove_planner.o: src/graph_planner/astar_prove_planner.cpp.o
+
+.PHONY : src/graph_planner/astar_prove_planner.o
+
+# target to build an object file
+src/graph_planner/astar_prove_planner.cpp.o:
+	cd /home/lcy/robot_graduation/ros_motion_planning/build && $(MAKE) -f core/path_planner/path_planner/CMakeFiles/path_planner.dir/build.make core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/graph_planner/astar_prove_planner.cpp.o
+.PHONY : src/graph_planner/astar_prove_planner.cpp.o
+
+src/graph_planner/astar_prove_planner.i: src/graph_planner/astar_prove_planner.cpp.i
+
+.PHONY : src/graph_planner/astar_prove_planner.i
+
+# target to preprocess a source file
+src/graph_planner/astar_prove_planner.cpp.i:
+	cd /home/lcy/robot_graduation/ros_motion_planning/build && $(MAKE) -f core/path_planner/path_planner/CMakeFiles/path_planner.dir/build.make core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/graph_planner/astar_prove_planner.cpp.i
+.PHONY : src/graph_planner/astar_prove_planner.cpp.i
+
+src/graph_planner/astar_prove_planner.s: src/graph_planner/astar_prove_planner.cpp.s
+
+.PHONY : src/graph_planner/astar_prove_planner.s
+
+# target to generate assembly for a file
+src/graph_planner/astar_prove_planner.cpp.s:
+	cd /home/lcy/robot_graduation/ros_motion_planning/build && $(MAKE) -f core/path_planner/path_planner/CMakeFiles/path_planner.dir/build.make core/path_planner/path_planner/CMakeFiles/path_planner.dir/src/graph_planner/astar_prove_planner.cpp.s
+.PHONY : src/graph_planner/astar_prove_planner.cpp.s
+
 src/graph_planner/dstar_lite_planner.o: src/graph_planner/dstar_lite_planner.cpp.o
 
 .PHONY : src/graph_planner/dstar_lite_planner.o
@@ -936,6 +963,9 @@ help:
 	@echo "... src/graph_planner/astar_planner.o"
 	@echo "... src/graph_planner/astar_planner.i"
 	@echo "... src/graph_planner/astar_planner.s"
+	@echo "... src/graph_planner/astar_prove_planner.o"
+	@echo "... src/graph_planner/astar_prove_planner.i"
+	@echo "... src/graph_planner/astar_prove_planner.s"
 	@echo "... src/graph_planner/dstar_lite_planner.o"
 	@echo "... src/graph_planner/dstar_lite_planner.i"
 	@echo "... src/graph_planner/dstar_lite_planner.s"

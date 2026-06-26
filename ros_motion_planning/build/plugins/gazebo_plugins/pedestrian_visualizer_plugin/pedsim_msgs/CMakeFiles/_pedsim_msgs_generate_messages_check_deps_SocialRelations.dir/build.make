@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /home/lcy/robot_graduation/ros_motion_planning/build
 include plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/_pedsim_msgs_generate_messages_check_deps_SocialRelations.dir/progress.make
 
 plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/_pedsim_msgs_generate_messages_check_deps_SocialRelations:
-	cd /home/lcy/robot_graduation/ros_motion_planning/build/plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs && ../../../../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py pedsim_msgs /home/lcy/robot_graduation/ros_motion_planning/src/plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/msg/SocialRelations.msg std_msgs/Header:pedsim_msgs/SocialRelation
+	cd /home/lcy/robot_graduation/ros_motion_planning/build/plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs && ../../../../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py pedsim_msgs /home/lcy/robot_graduation/ros_motion_planning/src/plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/msg/SocialRelations.msg pedsim_msgs/SocialRelation:std_msgs/Header
 
 _pedsim_msgs_generate_messages_check_deps_SocialRelations: plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/_pedsim_msgs_generate_messages_check_deps_SocialRelations
 _pedsim_msgs_generate_messages_check_deps_SocialRelations: plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/_pedsim_msgs_generate_messages_check_deps_SocialRelations.dir/build.make
