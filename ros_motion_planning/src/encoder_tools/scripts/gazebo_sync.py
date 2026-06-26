@@ -98,7 +98,8 @@ class GazeboSync:
             state.twist = twist
             state.reference_frame = ""
 
-            self.set_state(state)
+            # 暂时注释掉 set_model_state，用于诊断跳动问题
+            # self.set_state(state)
 
             rospy.loginfo_throttle(
                 2.0,
