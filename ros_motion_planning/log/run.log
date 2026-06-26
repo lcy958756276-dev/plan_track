@@ -1,19 +1,19 @@
-=== 启动时间: 2026年 06月 26日 星期五 20:27:40 CST ===
-[20:27:40] [1] main_generate.py start
-[20:27:41] [1] main_generate.py done
-[20:27:41] [2] use_encoder_odom flag set
-[20:27:41] [3] loading robot_description
-[20:27:41] [3] robot_description loaded
-[33m[WARN] [1782476861.850745924]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
-[20:27:44] [4] starting gzserver
-[20:27:51] [4] spawn_model start
-[INFO] [1782476872.065346]: Loading model XML from ros parameter robot_description
-[INFO] [1782476872.072345]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1782476872.077905]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1782476872.683461]: Spawn status: SpawnModel: Successfully spawned entity
-[20:27:53] [4] spawn_model exit=0
-[20:28:03] [8] generating move_base launch file
-[20:28:03] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 06月 26日 星期五 20:46:22 CST ===
+[20:46:22] [1] main_generate.py start
+[20:46:23] [1] main_generate.py done
+[20:46:23] [2] use_encoder_odom flag set
+[20:46:23] [3] loading robot_description
+[20:46:23] [3] robot_description loaded
+[33m[WARN] [1782477983.961007959]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[20:46:26] [4] starting gzserver
+[20:46:33] [4] spawn_model start
+[INFO] [1782477994.127831]: Loading model XML from ros parameter robot_description
+[INFO] [1782477994.135736]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1782477994.141822]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1782477994.676751]: Spawn status: SpawnModel: Successfully spawned entity
+[20:46:35] [4] spawn_model exit=0
+[20:46:45] [8] generating move_base launch file
+[20:46:45] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 apf_controller/APFController
@@ -44,13 +44,13 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1782476886.041270956]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1782476886.045048807]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1782478007.965205772]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1782478007.967382316]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260626 20:28:06.495090 121342 path_planner_factory.cpp:133] Using path planner: astar
-[33m[WARN] [1782476886.513581990]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-I20260626 20:28:06.618619 121342 apf_controller.cpp:77] APF controller initialized!
-[20:28:07] [8] move_base 启动后状态:
+I20260626 20:46:48.527956 124128 path_planner_factory.cpp:133] Using path planner: astar
+[33m[WARN] [1782478008.560321808]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260626 20:46:48.695967 124128 apf_controller.cpp:77] APF controller initialized!
+[20:46:49] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -111,307 +111,436 @@ I20260626 20:28:06.618619 121342 apf_controller.cpp:77] APF controller initializ
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-[33m[WARN] [1782476891.471285192]: The scan_real observation buffer has not been updated for 5.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476891.971249908]: The scan_real observation buffer has not been updated for 5.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476892.471728142]: The scan_real observation buffer has not been updated for 6.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476892.971246151]: The scan_real observation buffer has not been updated for 6.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476893.471244013]: The scan_real observation buffer has not been updated for 7.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476893.971252819]: The scan_real observation buffer has not been updated for 7.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476894.471250389]: The scan_real observation buffer has not been updated for 8.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476894.971236791]: The scan_real observation buffer has not been updated for 8.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476895.471254357]: The scan_real observation buffer has not been updated for 9.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476895.971245555]: The scan_real observation buffer has not been updated for 9.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476896.471273263]: The scan_real observation buffer has not been updated for 10.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476896.971247848]: The scan_real observation buffer has not been updated for 10.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476897.471236959]: The scan_real observation buffer has not been updated for 11.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476897.971240949]: The scan_real observation buffer has not been updated for 11.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476898.471235656]: The scan_real observation buffer has not been updated for 12.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476898.971245980]: The scan_real observation buffer has not been updated for 12.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476899.471236491]: The scan_real observation buffer has not been updated for 13.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476899.971230938]: The scan_real observation buffer has not been updated for 13.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476900.471217925]: The scan_real observation buffer has not been updated for 14.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476900.971228529]: The scan_real observation buffer has not been updated for 14.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476901.471245049]: The scan_real observation buffer has not been updated for 15.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476901.971244513]: The scan_real observation buffer has not been updated for 15.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476902.471244933]: The scan_real observation buffer has not been updated for 16.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476902.971235112]: The scan_real observation buffer has not been updated for 16.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476903.471210824]: The scan_real observation buffer has not been updated for 17.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476903.971229353]: The scan_real observation buffer has not been updated for 17.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476904.471234854]: The scan_real observation buffer has not been updated for 18.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476904.971247235]: The scan_real observation buffer has not been updated for 18.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476905.471238620]: The scan_real observation buffer has not been updated for 19.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476905.971261141]: The scan_real observation buffer has not been updated for 19.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476906.471231146]: The scan_real observation buffer has not been updated for 20.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476906.971248255]: The scan_real observation buffer has not been updated for 20.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476907.471246321]: The scan_real observation buffer has not been updated for 21.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476907.971256163]: The scan_real observation buffer has not been updated for 21.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476908.471244561]: The scan_real observation buffer has not been updated for 22.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476908.971251295]: The scan_real observation buffer has not been updated for 22.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476909.471255785]: The scan_real observation buffer has not been updated for 23.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476909.971206898]: The scan_real observation buffer has not been updated for 23.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476910.471248282]: The scan_real observation buffer has not been updated for 24.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476910.971237440]: The scan_real observation buffer has not been updated for 24.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476911.471269892]: The scan_real observation buffer has not been updated for 25.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476911.971244774]: The scan_real observation buffer has not been updated for 25.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476912.471256006]: The scan_real observation buffer has not been updated for 26.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476912.971273286]: The scan_real observation buffer has not been updated for 26.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476913.471234336]: The scan_real observation buffer has not been updated for 27.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476913.971255452]: The scan_real observation buffer has not been updated for 27.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476914.471242772]: The scan_real observation buffer has not been updated for 28.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476914.971237484]: The scan_real observation buffer has not been updated for 28.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476915.471256673]: The scan_real observation buffer has not been updated for 29.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476915.971356505]: The scan_real observation buffer has not been updated for 29.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:36.294795 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476916.471248390]: The scan_real observation buffer has not been updated for 30.06 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:36.794723 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476916.971275896]: The scan_real observation buffer has not been updated for 30.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:37.294764 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476917.471282629]: The scan_real observation buffer has not been updated for 31.06 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:37.794723 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476917.971253330]: The scan_real observation buffer has not been updated for 31.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:38.294729 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476918.471260091]: The scan_real observation buffer has not been updated for 32.06 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:38.794725 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476918.971281606]: The scan_real observation buffer has not been updated for 32.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:39.294714 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476919.471254507]: The scan_real observation buffer has not been updated for 33.06 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:39.794721 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476919.971252497]: The scan_real observation buffer has not been updated for 33.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:40.294749 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476920.471365495]: The scan_real observation buffer has not been updated for 34.06 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:40.794729 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476920.971273366]: The scan_real observation buffer has not been updated for 34.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:41.294727 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476921.471281718]: The scan_real observation buffer has not been updated for 35.06 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:41.795774 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476921.971265492]: The scan_real observation buffer has not been updated for 35.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:42.294689 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476922.471226414]: The scan_real observation buffer has not been updated for 36.06 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:42.794726 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476922.971251210]: The scan_real observation buffer has not been updated for 36.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:43.294687 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476923.471250498]: The scan_real observation buffer has not been updated for 37.06 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:43.794829 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476923.971231641]: The scan_real observation buffer has not been updated for 37.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:44.294718 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476924.471243117]: The scan_real observation buffer has not been updated for 38.06 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:44.794725 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476924.971239841]: The scan_real observation buffer has not been updated for 38.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:45.294708 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476925.471246674]: The scan_real observation buffer has not been updated for 39.06 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:45.795043 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476925.971248099]: The scan_real observation buffer has not been updated for 39.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:46.294724 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476926.471231247]: The scan_real observation buffer has not been updated for 40.06 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:46.794723 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476926.971243357]: The scan_real observation buffer has not been updated for 40.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:47.294721 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476927.471254375]: The scan_real observation buffer has not been updated for 41.06 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:47.794723 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476927.971234000]: The scan_real observation buffer has not been updated for 41.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:48.294724 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476928.471266327]: The scan_real observation buffer has not been updated for 42.06 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:48.794727 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476928.971247868]: The scan_real observation buffer has not been updated for 42.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:49.294718 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476929.471251519]: The scan_real observation buffer has not been updated for 43.06 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:49.794728 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476929.971249281]: The scan_real observation buffer has not been updated for 43.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:50.294724 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476930.471256160]: The scan_real observation buffer has not been updated for 44.06 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:50.794721 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476930.971258655]: The scan_real observation buffer has not been updated for 44.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:51.294718 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476931.471243578]: The scan_real observation buffer has not been updated for 45.06 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:51.794718 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476931.971207573]: The scan_real observation buffer has not been updated for 45.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:52.294716 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476932.471247278]: The scan_real observation buffer has not been updated for 46.06 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:52.794721 121353 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782476932.971276487]: The scan_real observation buffer has not been updated for 46.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260626 20:28:53.194721 121353 apf_controller.cpp:126] GOAL Reached!
-[33m[WARN] [1782476933.471241914]: The scan_real observation buffer has not been updated for 47.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476933.971251535]: The scan_real observation buffer has not been updated for 47.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476934.471237631]: The scan_real observation buffer has not been updated for 48.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476934.971268433]: The scan_real observation buffer has not been updated for 48.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476935.471251198]: The scan_real observation buffer has not been updated for 49.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476935.971247340]: The scan_real observation buffer has not been updated for 49.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476936.471253430]: The scan_real observation buffer has not been updated for 50.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476936.971256320]: The scan_real observation buffer has not been updated for 50.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476937.471227110]: The scan_real observation buffer has not been updated for 51.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476937.971258637]: The scan_real observation buffer has not been updated for 51.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476938.471239152]: The scan_real observation buffer has not been updated for 52.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476938.971241491]: The scan_real observation buffer has not been updated for 52.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476939.471249395]: The scan_real observation buffer has not been updated for 53.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476939.971234930]: The scan_real observation buffer has not been updated for 53.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476940.471244014]: The scan_real observation buffer has not been updated for 54.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476940.971274539]: The scan_real observation buffer has not been updated for 54.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476941.471250659]: The scan_real observation buffer has not been updated for 55.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476941.971256092]: The scan_real observation buffer has not been updated for 55.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476942.471242001]: The scan_real observation buffer has not been updated for 56.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476942.971250279]: The scan_real observation buffer has not been updated for 56.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476943.471244888]: The scan_real observation buffer has not been updated for 57.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476943.971240010]: The scan_real observation buffer has not been updated for 57.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476944.471240313]: The scan_real observation buffer has not been updated for 58.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476944.971256263]: The scan_real observation buffer has not been updated for 58.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476945.471248914]: The scan_real observation buffer has not been updated for 59.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476945.971236061]: The scan_real observation buffer has not been updated for 59.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476946.471247333]: The scan_real observation buffer has not been updated for 60.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476946.971243244]: The scan_real observation buffer has not been updated for 60.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476947.471254161]: The scan_real observation buffer has not been updated for 61.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476947.971240053]: The scan_real observation buffer has not been updated for 61.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476948.471248886]: The scan_real observation buffer has not been updated for 62.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476948.971244630]: The scan_real observation buffer has not been updated for 62.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476949.471235412]: The scan_real observation buffer has not been updated for 63.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476949.971259986]: The scan_real observation buffer has not been updated for 63.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476950.471246668]: The scan_real observation buffer has not been updated for 64.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476950.971232645]: The scan_real observation buffer has not been updated for 64.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476951.471244444]: The scan_real observation buffer has not been updated for 65.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476951.971240499]: The scan_real observation buffer has not been updated for 65.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476952.471266887]: The scan_real observation buffer has not been updated for 66.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476952.971420319]: The scan_real observation buffer has not been updated for 66.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476953.471242377]: The scan_real observation buffer has not been updated for 67.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476953.971236505]: The scan_real observation buffer has not been updated for 67.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476954.471244550]: The scan_real observation buffer has not been updated for 68.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476954.971241715]: The scan_real observation buffer has not been updated for 68.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476955.471238812]: The scan_real observation buffer has not been updated for 69.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476955.971257670]: The scan_real observation buffer has not been updated for 69.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476956.471251851]: The scan_real observation buffer has not been updated for 70.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476956.971252785]: The scan_real observation buffer has not been updated for 70.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476957.471329142]: The scan_real observation buffer has not been updated for 71.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476957.971243350]: The scan_real observation buffer has not been updated for 71.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476958.471253846]: The scan_real observation buffer has not been updated for 72.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476958.971252565]: The scan_real observation buffer has not been updated for 72.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476959.471241937]: The scan_real observation buffer has not been updated for 73.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476959.971335439]: The scan_real observation buffer has not been updated for 73.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476960.471233637]: The scan_real observation buffer has not been updated for 74.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476960.971252766]: The scan_real observation buffer has not been updated for 74.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476961.471248403]: The scan_real observation buffer has not been updated for 75.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476961.971252392]: The scan_real observation buffer has not been updated for 75.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476962.471271067]: The scan_real observation buffer has not been updated for 76.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476962.971234380]: The scan_real observation buffer has not been updated for 76.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476963.471266140]: The scan_real observation buffer has not been updated for 77.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476963.971227913]: The scan_real observation buffer has not been updated for 77.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476964.471244341]: The scan_real observation buffer has not been updated for 78.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476964.971307490]: The scan_real observation buffer has not been updated for 78.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476965.471240361]: The scan_real observation buffer has not been updated for 79.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476965.971274642]: The scan_real observation buffer has not been updated for 79.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476966.471256022]: The scan_real observation buffer has not been updated for 80.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476966.971248186]: The scan_real observation buffer has not been updated for 80.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476967.471252380]: The scan_real observation buffer has not been updated for 81.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476967.971232413]: The scan_real observation buffer has not been updated for 81.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476968.471249084]: The scan_real observation buffer has not been updated for 82.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476968.971246138]: The scan_real observation buffer has not been updated for 82.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476969.471240053]: The scan_real observation buffer has not been updated for 83.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476969.971241488]: The scan_real observation buffer has not been updated for 83.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476970.471250632]: The scan_real observation buffer has not been updated for 84.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476970.971241312]: The scan_real observation buffer has not been updated for 84.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476971.471242196]: The scan_real observation buffer has not been updated for 85.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476971.971260201]: The scan_real observation buffer has not been updated for 85.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476972.471249691]: The scan_real observation buffer has not been updated for 86.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476972.971238987]: The scan_real observation buffer has not been updated for 86.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476973.471237050]: The scan_real observation buffer has not been updated for 87.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476973.971344107]: The scan_real observation buffer has not been updated for 87.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476974.471248307]: The scan_real observation buffer has not been updated for 88.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476974.971252350]: The scan_real observation buffer has not been updated for 88.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476975.471322088]: The scan_real observation buffer has not been updated for 89.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476975.971325935]: The scan_real observation buffer has not been updated for 89.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476976.471262610]: The scan_real observation buffer has not been updated for 90.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476976.971248502]: The scan_real observation buffer has not been updated for 90.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476977.471218838]: The scan_real observation buffer has not been updated for 91.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476977.971254072]: The scan_real observation buffer has not been updated for 91.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476978.471259831]: The scan_real observation buffer has not been updated for 92.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476978.971239732]: The scan_real observation buffer has not been updated for 92.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476979.471243119]: The scan_real observation buffer has not been updated for 93.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476979.971237961]: The scan_real observation buffer has not been updated for 93.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476980.471240641]: The scan_real observation buffer has not been updated for 94.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476980.971250617]: The scan_real observation buffer has not been updated for 94.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476981.471286479]: The scan_real observation buffer has not been updated for 95.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476981.971252642]: The scan_real observation buffer has not been updated for 95.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476982.471250547]: The scan_real observation buffer has not been updated for 96.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476982.971236868]: The scan_real observation buffer has not been updated for 96.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476983.471248211]: The scan_real observation buffer has not been updated for 97.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476983.971203039]: The scan_real observation buffer has not been updated for 97.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476984.471237835]: The scan_real observation buffer has not been updated for 98.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476984.971243190]: The scan_real observation buffer has not been updated for 98.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476985.471254143]: The scan_real observation buffer has not been updated for 99.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476985.971244038]: The scan_real observation buffer has not been updated for 99.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476986.471254411]: The scan_real observation buffer has not been updated for 100.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476986.971249232]: The scan_real observation buffer has not been updated for 100.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476987.471243921]: The scan_real observation buffer has not been updated for 101.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476987.971251379]: The scan_real observation buffer has not been updated for 101.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476988.471242097]: The scan_real observation buffer has not been updated for 102.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476988.971259568]: The scan_real observation buffer has not been updated for 102.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476989.471212041]: The scan_real observation buffer has not been updated for 103.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476989.971244101]: The scan_real observation buffer has not been updated for 103.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476990.471254750]: The scan_real observation buffer has not been updated for 104.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476990.971235989]: The scan_real observation buffer has not been updated for 104.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476991.471246507]: The scan_real observation buffer has not been updated for 105.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476991.971225791]: The scan_real observation buffer has not been updated for 105.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476992.471238417]: The scan_real observation buffer has not been updated for 106.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476992.971317190]: The scan_real observation buffer has not been updated for 106.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476993.471326645]: The scan_real observation buffer has not been updated for 107.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476993.971245185]: The scan_real observation buffer has not been updated for 107.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476994.471337520]: The scan_real observation buffer has not been updated for 108.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476994.971245784]: The scan_real observation buffer has not been updated for 108.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476995.471242689]: The scan_real observation buffer has not been updated for 109.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476995.971227945]: The scan_real observation buffer has not been updated for 109.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476996.471238159]: The scan_real observation buffer has not been updated for 110.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476996.971243508]: The scan_real observation buffer has not been updated for 110.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476997.471237462]: The scan_real observation buffer has not been updated for 111.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476997.971242841]: The scan_real observation buffer has not been updated for 111.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476998.471237080]: The scan_real observation buffer has not been updated for 112.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476998.971244343]: The scan_real observation buffer has not been updated for 112.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476999.471257716]: The scan_real observation buffer has not been updated for 113.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782476999.971251344]: The scan_real observation buffer has not been updated for 113.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477000.471244457]: The scan_real observation buffer has not been updated for 114.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477000.971272483]: The scan_real observation buffer has not been updated for 114.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477001.471241240]: The scan_real observation buffer has not been updated for 115.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477001.971247406]: The scan_real observation buffer has not been updated for 115.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477002.471247650]: The scan_real observation buffer has not been updated for 116.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477002.971254101]: The scan_real observation buffer has not been updated for 116.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477003.471248741]: The scan_real observation buffer has not been updated for 117.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477003.971239796]: The scan_real observation buffer has not been updated for 117.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477004.471238305]: The scan_real observation buffer has not been updated for 118.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477004.971246862]: The scan_real observation buffer has not been updated for 118.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477005.471234648]: The scan_real observation buffer has not been updated for 119.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477005.971240962]: The scan_real observation buffer has not been updated for 119.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477006.471245129]: The scan_real observation buffer has not been updated for 120.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477006.971238768]: The scan_real observation buffer has not been updated for 120.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477007.471257140]: The scan_real observation buffer has not been updated for 121.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477007.971230839]: The scan_real observation buffer has not been updated for 121.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477008.471234360]: The scan_real observation buffer has not been updated for 122.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477008.971233849]: The scan_real observation buffer has not been updated for 122.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477009.471330938]: The scan_real observation buffer has not been updated for 123.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477009.971254709]: The scan_real observation buffer has not been updated for 123.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477010.471217775]: The scan_real observation buffer has not been updated for 124.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477010.971254379]: The scan_real observation buffer has not been updated for 124.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477011.471244610]: The scan_real observation buffer has not been updated for 125.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477011.971280155]: The scan_real observation buffer has not been updated for 125.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477012.471518168]: The scan_real observation buffer has not been updated for 126.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477012.971257732]: The scan_real observation buffer has not been updated for 126.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782477013.471274422]: The scan_real observation buffer has not been updated for 127.06 seconds, and it should be updated every 5.00 seconds.[0m
-[0m[INFO] [1782476886.046927908]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1782476886.060845673]: Requesting the map...[0m
-[0m[INFO] [1782476886.266766333]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1782476886.366543888]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1782476886.371954880]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782476886.376766749]:     Subscribed to Topics: scan scan_real[0m
-[0m[INFO] [1782476886.423907613]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1782476886.431867584]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782476886.515352607]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782476886.522864756]:     Subscribed to Topics: [0m
-[0m[INFO] [1782476886.537350060]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782476886.614789351]: Created local_planner apf_controller/APFController[0m
-[0m[INFO] [1782476887.115585376]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782476887.124744458]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782476887.170064366]: odom received![0m
-... logging to /home/lcy/.ros/log/41c951fe-7131-11f1-9a6b-48b02df90897/roslaunch-ubuntu-121319.log
+[33m[WARN] [1782478013.499447303]: The scan_real observation buffer has not been updated for 5.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478013.999488442]: The scan_real observation buffer has not been updated for 5.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478014.499443691]: The scan_real observation buffer has not been updated for 6.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478014.999453309]: The scan_real observation buffer has not been updated for 6.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478015.499454703]: The scan_real observation buffer has not been updated for 7.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478015.999468737]: The scan_real observation buffer has not been updated for 7.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478016.499447697]: The scan_real observation buffer has not been updated for 8.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478016.999455714]: The scan_real observation buffer has not been updated for 8.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478017.499492116]: The scan_real observation buffer has not been updated for 9.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478017.999442339]: The scan_real observation buffer has not been updated for 9.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478018.499444340]: The scan_real observation buffer has not been updated for 10.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478018.999450404]: The scan_real observation buffer has not been updated for 10.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478019.499459572]: The scan_real observation buffer has not been updated for 11.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478019.999444163]: The scan_real observation buffer has not been updated for 11.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478020.499443539]: The scan_real observation buffer has not been updated for 12.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478020.999440994]: The scan_real observation buffer has not been updated for 12.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478021.499467986]: The scan_real observation buffer has not been updated for 13.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478021.999480449]: The scan_real observation buffer has not been updated for 13.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478022.499453295]: The scan_real observation buffer has not been updated for 14.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478022.999459774]: The scan_real observation buffer has not been updated for 14.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478023.499477068]: The scan_real observation buffer has not been updated for 15.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478023.999460986]: The scan_real observation buffer has not been updated for 15.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478024.499444487]: The scan_real observation buffer has not been updated for 16.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478024.999454389]: The scan_real observation buffer has not been updated for 16.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478025.499446914]: The scan_real observation buffer has not been updated for 17.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:05.518813 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478025.999510354]: The scan_real observation buffer has not been updated for 17.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:06.018771 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478026.499469213]: The scan_real observation buffer has not been updated for 18.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:06.518743 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478026.999463722]: The scan_real observation buffer has not been updated for 18.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:07.018747 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478027.499476055]: The scan_real observation buffer has not been updated for 19.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:07.518735 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478027.999557926]: The scan_real observation buffer has not been updated for 19.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:08.018754 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478028.499462639]: The scan_real observation buffer has not been updated for 20.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:08.518743 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478028.999471835]: The scan_real observation buffer has not been updated for 20.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:09.018724 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478029.499529577]: The scan_real observation buffer has not been updated for 21.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:09.518738 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478029.999452690]: The scan_real observation buffer has not been updated for 21.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:10.018841 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478030.499473822]: The scan_real observation buffer has not been updated for 22.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:10.518728 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478030.999544427]: The scan_real observation buffer has not been updated for 22.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:11.018734 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478031.499474068]: The scan_real observation buffer has not been updated for 23.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:11.518757 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478031.999523008]: The scan_real observation buffer has not been updated for 23.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:12.018738 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478032.499490282]: The scan_real observation buffer has not been updated for 24.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:12.518748 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478032.999446739]: The scan_real observation buffer has not been updated for 24.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:13.018736 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478033.499444349]: The scan_real observation buffer has not been updated for 25.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:13.518740 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478033.999457287]: The scan_real observation buffer has not been updated for 25.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:14.018735 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478034.499456849]: The scan_real observation buffer has not been updated for 26.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:14.518743 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478034.999451131]: The scan_real observation buffer has not been updated for 26.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:15.018746 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478035.499471972]: The scan_real observation buffer has not been updated for 27.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:15.518750 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478035.999454413]: The scan_real observation buffer has not been updated for 27.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:16.018744 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478036.499552857]: The scan_real observation buffer has not been updated for 28.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:16.518733 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478036.999452287]: The scan_real observation buffer has not been updated for 28.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:17.018832 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478037.499472776]: The scan_real observation buffer has not been updated for 29.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:17.518751 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478037.999465776]: The scan_real observation buffer has not been updated for 29.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:18.018731 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478038.499549210]: The scan_real observation buffer has not been updated for 30.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:18.518760 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478038.999445503]: The scan_real observation buffer has not been updated for 30.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:19.018745 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478039.499446375]: The scan_real observation buffer has not been updated for 31.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:19.518747 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478039.999469007]: The scan_real observation buffer has not been updated for 31.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:20.018745 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478040.499466486]: The scan_real observation buffer has not been updated for 32.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:20.518741 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478040.999513599]: The scan_real observation buffer has not been updated for 32.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:21.018728 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478041.499448420]: The scan_real observation buffer has not been updated for 33.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:21.518736 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478041.999542285]: The scan_real observation buffer has not been updated for 33.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:22.018747 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478042.499453745]: The scan_real observation buffer has not been updated for 34.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:22.518730 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478042.999457016]: The scan_real observation buffer has not been updated for 34.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:23.018738 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478043.499451998]: The scan_real observation buffer has not been updated for 35.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:23.518745 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478043.999467268]: The scan_real observation buffer has not been updated for 35.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:24.018729 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478044.499497002]: The scan_real observation buffer has not been updated for 36.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:24.518741 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478044.999518833]: The scan_real observation buffer has not been updated for 36.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:25.018738 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478045.499447092]: The scan_real observation buffer has not been updated for 37.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:25.518731 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478045.999460633]: The scan_real observation buffer has not been updated for 37.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:26.018740 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478046.499474783]: The scan_real observation buffer has not been updated for 38.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:26.518746 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478046.999466083]: The scan_real observation buffer has not been updated for 38.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:27.019001 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478047.499458279]: The scan_real observation buffer has not been updated for 39.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:27.518766 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478047.999454508]: The scan_real observation buffer has not been updated for 39.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:28.018746 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478048.499510865]: The scan_real observation buffer has not been updated for 40.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:28.518741 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478048.999463060]: The scan_real observation buffer has not been updated for 40.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:29.018734 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478049.499456312]: The scan_real observation buffer has not been updated for 41.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:29.518750 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478049.999467547]: The scan_real observation buffer has not been updated for 41.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:30.018752 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478050.499487327]: The scan_real observation buffer has not been updated for 42.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:30.518860 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478050.999470626]: The scan_real observation buffer has not been updated for 42.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:47:31.018875 124139 apf_controller.cpp:97] Got new plan
+I20260626 20:47:31.218801 124139 apf_controller.cpp:126] GOAL Reached!
+[33m[WARN] [1782478051.499538823]: The scan_real observation buffer has not been updated for 43.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478051.999517097]: The scan_real observation buffer has not been updated for 43.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478052.499447594]: The scan_real observation buffer has not been updated for 44.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478052.999478445]: The scan_real observation buffer has not been updated for 44.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478053.499446734]: The scan_real observation buffer has not been updated for 45.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478053.999491697]: The scan_real observation buffer has not been updated for 45.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478054.499514740]: The scan_real observation buffer has not been updated for 46.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478054.999526262]: The scan_real observation buffer has not been updated for 46.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478055.499461461]: The scan_real observation buffer has not been updated for 47.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478055.999589562]: The scan_real observation buffer has not been updated for 47.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478056.499447831]: The scan_real observation buffer has not been updated for 48.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478056.999463192]: The scan_real observation buffer has not been updated for 48.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478057.499460601]: The scan_real observation buffer has not been updated for 49.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478057.999501754]: The scan_real observation buffer has not been updated for 49.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478058.499449049]: The scan_real observation buffer has not been updated for 50.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478058.999371575]: The scan_real observation buffer has not been updated for 50.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478059.499450649]: The scan_real observation buffer has not been updated for 51.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478059.999455321]: The scan_real observation buffer has not been updated for 51.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478060.499480633]: The scan_real observation buffer has not been updated for 52.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478060.999513465]: The scan_real observation buffer has not been updated for 52.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478061.499480503]: The scan_real observation buffer has not been updated for 53.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478061.999448533]: The scan_real observation buffer has not been updated for 53.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478062.499450036]: The scan_real observation buffer has not been updated for 54.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478062.999448786]: The scan_real observation buffer has not been updated for 54.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478063.499447792]: The scan_real observation buffer has not been updated for 55.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478063.999458415]: The scan_real observation buffer has not been updated for 55.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478064.499468717]: The scan_real observation buffer has not been updated for 56.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478064.999457227]: The scan_real observation buffer has not been updated for 56.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478065.499447592]: The scan_real observation buffer has not been updated for 57.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478065.999453765]: The scan_real observation buffer has not been updated for 57.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478066.499495940]: The scan_real observation buffer has not been updated for 58.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478066.999540802]: The scan_real observation buffer has not been updated for 58.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478067.499458940]: The scan_real observation buffer has not been updated for 59.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478067.999459801]: The scan_real observation buffer has not been updated for 59.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478068.499468949]: The scan_real observation buffer has not been updated for 60.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478068.999456593]: The scan_real observation buffer has not been updated for 60.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478069.499523887]: The scan_real observation buffer has not been updated for 61.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478069.999456105]: The scan_real observation buffer has not been updated for 61.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478070.499449860]: The scan_real observation buffer has not been updated for 62.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478070.999487521]: The scan_real observation buffer has not been updated for 62.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478071.500192209]: The scan_real observation buffer has not been updated for 63.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478071.999458871]: The scan_real observation buffer has not been updated for 63.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478072.499463217]: The scan_real observation buffer has not been updated for 64.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478072.999455852]: The scan_real observation buffer has not been updated for 64.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478073.499458598]: The scan_real observation buffer has not been updated for 65.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478073.999478529]: The scan_real observation buffer has not been updated for 65.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478074.499452635]: The scan_real observation buffer has not been updated for 66.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478074.999480182]: The scan_real observation buffer has not been updated for 66.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478075.499459983]: The scan_real observation buffer has not been updated for 67.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478075.999458920]: The scan_real observation buffer has not been updated for 67.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478076.499448865]: The scan_real observation buffer has not been updated for 68.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478076.999463259]: The scan_real observation buffer has not been updated for 68.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478077.499451347]: The scan_real observation buffer has not been updated for 69.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478077.999465357]: The scan_real observation buffer has not been updated for 69.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478078.499443717]: The scan_real observation buffer has not been updated for 70.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478078.999443005]: The scan_real observation buffer has not been updated for 70.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478079.499449077]: The scan_real observation buffer has not been updated for 71.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478079.999510671]: The scan_real observation buffer has not been updated for 71.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478080.499460358]: The scan_real observation buffer has not been updated for 72.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478080.999452061]: The scan_real observation buffer has not been updated for 72.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478081.499450549]: The scan_real observation buffer has not been updated for 73.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478081.999406251]: The scan_real observation buffer has not been updated for 73.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478082.499458691]: The scan_real observation buffer has not been updated for 74.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478082.999463002]: The scan_real observation buffer has not been updated for 74.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478083.499456081]: The scan_real observation buffer has not been updated for 75.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478083.999462888]: The scan_real observation buffer has not been updated for 75.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478084.499492767]: The scan_real observation buffer has not been updated for 76.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478084.999457236]: The scan_real observation buffer has not been updated for 76.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478085.499446730]: The scan_real observation buffer has not been updated for 77.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478085.999455808]: The scan_real observation buffer has not been updated for 77.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478086.499460534]: The scan_real observation buffer has not been updated for 78.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478086.999447595]: The scan_real observation buffer has not been updated for 78.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478087.499456864]: The scan_real observation buffer has not been updated for 79.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478087.999459062]: The scan_real observation buffer has not been updated for 79.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478088.499461675]: The scan_real observation buffer has not been updated for 80.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478088.999467232]: The scan_real observation buffer has not been updated for 80.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478089.499515893]: The scan_real observation buffer has not been updated for 81.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478089.999461320]: The scan_real observation buffer has not been updated for 81.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478090.499528990]: The scan_real observation buffer has not been updated for 82.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478090.999501202]: The scan_real observation buffer has not been updated for 82.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478091.499441732]: The scan_real observation buffer has not been updated for 83.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478091.999449208]: The scan_real observation buffer has not been updated for 83.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478092.499449675]: The scan_real observation buffer has not been updated for 84.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478092.999467103]: The scan_real observation buffer has not been updated for 84.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478093.499456210]: The scan_real observation buffer has not been updated for 85.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478093.999511846]: The scan_real observation buffer has not been updated for 85.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478094.499473112]: The scan_real observation buffer has not been updated for 86.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478094.999461226]: The scan_real observation buffer has not been updated for 86.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478095.499480029]: The scan_real observation buffer has not been updated for 87.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478095.999476239]: The scan_real observation buffer has not been updated for 87.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478096.499452672]: The scan_real observation buffer has not been updated for 88.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478096.999500212]: The scan_real observation buffer has not been updated for 88.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478097.499453028]: The scan_real observation buffer has not been updated for 89.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478097.999456342]: The scan_real observation buffer has not been updated for 89.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478098.499457895]: The scan_real observation buffer has not been updated for 90.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478098.999447480]: The scan_real observation buffer has not been updated for 90.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478099.499449353]: The scan_real observation buffer has not been updated for 91.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478099.999530076]: The scan_real observation buffer has not been updated for 91.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478100.499459530]: The scan_real observation buffer has not been updated for 92.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478100.999510300]: The scan_real observation buffer has not been updated for 92.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478101.499477516]: The scan_real observation buffer has not been updated for 93.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478101.999444667]: The scan_real observation buffer has not been updated for 93.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478102.499459627]: The scan_real observation buffer has not been updated for 94.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478102.999479003]: The scan_real observation buffer has not been updated for 94.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478103.499443338]: The scan_real observation buffer has not been updated for 95.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478103.999439577]: The scan_real observation buffer has not been updated for 95.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478104.499454697]: The scan_real observation buffer has not been updated for 96.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478104.999449911]: The scan_real observation buffer has not been updated for 96.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478105.499555337]: The scan_real observation buffer has not been updated for 97.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478105.999503382]: The scan_real observation buffer has not been updated for 97.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478106.499466820]: The scan_real observation buffer has not been updated for 98.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478106.999486387]: The scan_real observation buffer has not been updated for 98.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478107.499459296]: The scan_real observation buffer has not been updated for 99.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478107.999447758]: The scan_real observation buffer has not been updated for 99.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478108.499448059]: The scan_real observation buffer has not been updated for 100.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478108.999453193]: The scan_real observation buffer has not been updated for 100.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478109.499441846]: The scan_real observation buffer has not been updated for 101.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478109.999444772]: The scan_real observation buffer has not been updated for 101.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478110.499549652]: The scan_real observation buffer has not been updated for 102.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478110.999457854]: The scan_real observation buffer has not been updated for 102.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478111.499453450]: The scan_real observation buffer has not been updated for 103.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478111.999454135]: The scan_real observation buffer has not been updated for 103.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478112.499451203]: The scan_real observation buffer has not been updated for 104.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478112.999489681]: The scan_real observation buffer has not been updated for 104.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478113.499503677]: The scan_real observation buffer has not been updated for 105.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478113.999579851]: The scan_real observation buffer has not been updated for 105.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478114.499514869]: The scan_real observation buffer has not been updated for 106.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478114.999495168]: The scan_real observation buffer has not been updated for 106.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478115.499466410]: The scan_real observation buffer has not been updated for 107.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478115.999486006]: The scan_real observation buffer has not been updated for 107.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478116.499445248]: The scan_real observation buffer has not been updated for 108.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478116.999462635]: The scan_real observation buffer has not been updated for 108.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478117.499459126]: The scan_real observation buffer has not been updated for 109.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478117.999451168]: The scan_real observation buffer has not been updated for 109.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478118.499515180]: The scan_real observation buffer has not been updated for 110.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478118.999461845]: The scan_real observation buffer has not been updated for 110.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478119.499667972]: The scan_real observation buffer has not been updated for 111.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478119.999466984]: The scan_real observation buffer has not been updated for 111.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478120.499465810]: The scan_real observation buffer has not been updated for 112.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478120.999450331]: The scan_real observation buffer has not been updated for 112.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478121.499460036]: The scan_real observation buffer has not been updated for 113.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478121.999466766]: The scan_real observation buffer has not been updated for 113.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:42.423591 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478122.499518872]: The scan_real observation buffer has not been updated for 114.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:42.923590 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478122.999477376]: The scan_real observation buffer has not been updated for 114.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:43.423604 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478123.499458312]: The scan_real observation buffer has not been updated for 115.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:43.923599 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478123.999518354]: The scan_real observation buffer has not been updated for 115.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:44.423596 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478124.499467416]: The scan_real observation buffer has not been updated for 116.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:44.923599 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478124.999520322]: The scan_real observation buffer has not been updated for 116.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:45.423601 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478125.499484297]: The scan_real observation buffer has not been updated for 117.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:45.923625 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478125.999473584]: The scan_real observation buffer has not been updated for 117.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:46.423576 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478126.499460823]: The scan_real observation buffer has not been updated for 118.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:46.923570 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478126.999500896]: The scan_real observation buffer has not been updated for 118.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:47.423596 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478127.499449030]: The scan_real observation buffer has not been updated for 119.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:47.923596 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478127.999465133]: The scan_real observation buffer has not been updated for 119.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:48.423594 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478128.499455604]: The scan_real observation buffer has not been updated for 120.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:48.923620 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478128.999476571]: The scan_real observation buffer has not been updated for 120.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:49.423596 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478129.499498594]: The scan_real observation buffer has not been updated for 121.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:49.923599 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478129.999463688]: The scan_real observation buffer has not been updated for 121.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:50.423589 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478130.499443341]: The scan_real observation buffer has not been updated for 122.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:50.923594 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478130.999473172]: The scan_real observation buffer has not been updated for 122.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:51.423599 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478131.499452633]: The scan_real observation buffer has not been updated for 123.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:51.923597 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478131.999455039]: The scan_real observation buffer has not been updated for 123.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:52.423594 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478132.499483334]: The scan_real observation buffer has not been updated for 124.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:52.923594 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478132.999491659]: The scan_real observation buffer has not been updated for 124.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:53.423588 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478133.499470384]: The scan_real observation buffer has not been updated for 125.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:53.923595 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478133.999466453]: The scan_real observation buffer has not been updated for 125.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:54.423590 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478134.499451993]: The scan_real observation buffer has not been updated for 126.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:54.923599 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478134.999530432]: The scan_real observation buffer has not been updated for 126.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:55.423593 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478135.499498756]: The scan_real observation buffer has not been updated for 127.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:55.923592 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478135.999527817]: The scan_real observation buffer has not been updated for 127.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:56.423589 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478136.499528333]: The scan_real observation buffer has not been updated for 128.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:56.923595 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478136.999464847]: The scan_real observation buffer has not been updated for 128.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:57.423596 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478137.499451795]: The scan_real observation buffer has not been updated for 129.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:57.923589 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478137.999470583]: The scan_real observation buffer has not been updated for 129.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:58.423592 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478138.499527356]: The scan_real observation buffer has not been updated for 130.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:58.923602 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478138.999492126]: The scan_real observation buffer has not been updated for 130.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:59.424912 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478139.499675943]: The scan_real observation buffer has not been updated for 131.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:48:59.923642 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478139.999460580]: The scan_real observation buffer has not been updated for 131.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:00.423595 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478140.499472263]: The scan_real observation buffer has not been updated for 132.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:00.923581 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478140.999541164]: The scan_real observation buffer has not been updated for 132.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:01.423605 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478141.499478988]: The scan_real observation buffer has not been updated for 133.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:01.923596 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478141.999472015]: The scan_real observation buffer has not been updated for 133.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:02.423645 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478142.499468529]: The scan_real observation buffer has not been updated for 134.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:02.923597 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478142.999451090]: The scan_real observation buffer has not been updated for 134.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:03.423604 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478143.499456212]: The scan_real observation buffer has not been updated for 135.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:03.923580 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478143.999472502]: The scan_real observation buffer has not been updated for 135.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:04.423595 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478144.499452119]: The scan_real observation buffer has not been updated for 136.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:04.923600 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478144.999498810]: The scan_real observation buffer has not been updated for 136.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:05.423924 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478145.499514908]: The scan_real observation buffer has not been updated for 137.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:05.923599 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478145.999478716]: The scan_real observation buffer has not been updated for 137.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:06.423597 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478146.499455452]: The scan_real observation buffer has not been updated for 138.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:06.923593 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478146.999460605]: The scan_real observation buffer has not been updated for 138.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:07.423604 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478147.499447933]: The scan_real observation buffer has not been updated for 139.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:07.923607 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478147.999462558]: The scan_real observation buffer has not been updated for 139.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:08.423628 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478148.499455582]: The scan_real observation buffer has not been updated for 140.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:08.923601 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478148.999451774]: The scan_real observation buffer has not been updated for 140.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:09.423604 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478149.499455998]: The scan_real observation buffer has not been updated for 141.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:09.923595 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478149.999466910]: The scan_real observation buffer has not been updated for 141.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:10.423609 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478150.499475038]: The scan_real observation buffer has not been updated for 142.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:10.923614 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478150.999441404]: The scan_real observation buffer has not been updated for 142.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:11.423602 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478151.499474301]: The scan_real observation buffer has not been updated for 143.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:11.923604 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478151.999442523]: The scan_real observation buffer has not been updated for 143.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:12.423599 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478152.499453786]: The scan_real observation buffer has not been updated for 144.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:12.924010 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478152.999445529]: The scan_real observation buffer has not been updated for 144.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:13.423592 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478153.499459128]: The scan_real observation buffer has not been updated for 145.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:13.923651 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478153.999445558]: The scan_real observation buffer has not been updated for 145.57 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:14.423617 124139 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782478154.499469525]: The scan_real observation buffer has not been updated for 146.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260626 20:49:14.923664 124139 apf_controller.cpp:97] Got new plan
+I20260626 20:49:14.923846 124139 apf_controller.cpp:126] GOAL Reached!
+[33m[WARN] [1782478154.999495124]: The scan_real observation buffer has not been updated for 146.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478155.499477969]: The scan_real observation buffer has not been updated for 147.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478155.999453198]: The scan_real observation buffer has not been updated for 147.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478156.499508781]: The scan_real observation buffer has not been updated for 148.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478156.999459434]: The scan_real observation buffer has not been updated for 148.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782478157.499468199]: The scan_real observation buffer has not been updated for 149.07 seconds, and it should be updated every 5.00 seconds.[0m
+[0m[INFO] [1782478007.969138719]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1782478007.984949835]: Requesting the map...[0m
+[0m[INFO] [1782478008.292977197]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1782478008.392713283]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1782478008.400447908]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782478008.406756476]:     Subscribed to Topics: scan scan_real[0m
+[0m[INFO] [1782478008.445645448]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1782478008.454557035]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782478008.562998526]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782478008.569174386]:     Subscribed to Topics: [0m
+[0m[INFO] [1782478008.586382599]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782478008.690610783]: Created local_planner apf_controller/APFController[0m
+[0m[INFO] [1782478009.187820610]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782478009.200997730]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782478009.255378256]: odom received![0m
+... logging to /home/lcy/.ros/log/41c951fe-7131-11f1-9a6b-48b02df90897/roslaunch-ubuntu-124105.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:41849/[0m
+[1mstarted roslaunch server http://ubuntu:37213/[0m
 
 SUMMARY
 ========
@@ -499,7 +628,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [121342][0m
+[1mprocess[move_base-1]: started with pid [124128][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
