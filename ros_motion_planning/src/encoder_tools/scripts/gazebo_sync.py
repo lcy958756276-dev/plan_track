@@ -91,9 +91,15 @@ class GazeboSync:
             pose = self.latest_odom.pose.pose
             twist = self.latest_odom.twist.twist
 
+            wheel_radius = 0.1065    # 与 encoder_odom.py 保持一致
+            joint_z = 0.03            # 轮子 joint 在 base_link 下的 z 偏移
+            ground_clearance = 0.005  # 微小离地间隙，避免碰撞穿透
+            model_z = wheel_radius - joint_z + ground_clearance  # base_link 高度，使轮底贴地
+
             state = ModelState()
             state.model_name = "my_robot"
             state.pose = pose
+            state.pose.position.z = model_z
             state.twist = twist
             state.reference_frame = ""
 
