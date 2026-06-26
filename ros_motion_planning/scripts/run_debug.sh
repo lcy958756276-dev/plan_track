@@ -58,7 +58,7 @@ echo "[$(date +%H:%M:%S)] [3] loading robot_description" >> "$LOG_DIR/run.log"
 
 # 加载 SolidWorks 导出的自定义车模型 URDF
 ROBOT_URDF="$WORKSPACE_DIR/my_robot/urdf/my_robot.urdf"
-rosparam set robot_description "$(cat "$ROBOT_URDF")"
+rosparam set robot_description -t "$ROBOT_URDF"
 echo "[$(date +%H:%M:%S)] [3] robot_description loaded" >> "$LOG_DIR/run.log"
 echo "  robot_description 已加载（自定义车模型）"
 
