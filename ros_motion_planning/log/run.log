@@ -1,66 +1,100 @@
-=== 启动时间: 2026年 06月 26日 星期五 12:45:50 CST ===
-[12:45:50] [1] main_generate.py start
-[12:45:51] [1] main_generate.py done
-[12:45:51] [2] use_encoder_odom flag set
-[12:45:51] [3] loading robot_description
-[12:45:51] [3] URDF file exists (8306 bytes)
-[12:45:51] [3] rosparam set exit=1
-[12:45:51] [3] ❌ robot_description NOT on server after set
-[31m[ERROR] [1782449152.056287789]: Could not find parameter robot_description on parameter server[0m
-Traceback (most recent call last):
-  File "/opt/ros/noetic/lib/joint_state_publisher/joint_state_publisher", line 42, in <module>
-    jsp = joint_state_publisher.JointStatePublisher()
-  File "/opt/ros/noetic/lib/python3/dist-packages/joint_state_publisher/__init__.py", line 145, in __init__
-    raise RuntimeError('The robot_description parameter is required and not set.')
-RuntimeError: The robot_description parameter is required and not set.
-[12:45:54] [4] starting gzserver
-[12:46:01] [4] spawn_model start
-[12:46:01] [4] URDF: /home/lcy/robot_graduation/ros_motion_planning/my_robot/urdf/my_robot.urdf
-[12:46:01] [4] ❌ robot_description STILL MISSING after set
-[INFO] [1782449162.807835, 0.000000]: Loading model XML from ros parameter robot_description
-Traceback (most recent call last):
-  File "/opt/ros/noetic/lib/gazebo_ros/spawn_model", line 239, in <module>
-    exit_code = sm.run()
-  File "/opt/ros/noetic/lib/gazebo_ros/spawn_model", line 132, in run
-    model_xml = rospy.get_param(self.args.param)
-  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/client.py", line 467, in get_param
-    return _param_server[param_name] #MasterProxy does all the magic for us
-  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/msproxy.py", line 123, in __getitem__
-    raise KeyError(key)
-KeyError: 'robot_description'
-[12:46:03] [4] spawn_model exit=1
-[31m[ERROR] [1782449172.275561066]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449172.377640558]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449172.467097106]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449172.567142966]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449172.669391306]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449172.767258210]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449172.867487417]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449172.967897728]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449173.067896701]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449173.169987580]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449173.267676734]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449173.369456640]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449173.471742577]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449173.567559716]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449173.676827267]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449173.771296088]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449173.867934008]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449173.968294228]: Updating ModelState: model [my_robot] does not exist[0m
-[12:46:14] [8] generating move_base launch file
-[12:46:14] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 06月 26日 星期五 12:49:16 CST ===
+[12:49:16] [1] main_generate.py start
+[12:49:17] [1] main_generate.py done
+[12:49:17] [2] use_encoder_odom flag set
+[12:49:17] [3] loading robot_description
+[12:49:17] [3] URDF: /home/lcy/robot_graduation/ros_motion_planning/my_robot/urdf/my_robot.urdf ()
+[12:49:17] [3] param server OK
+robot_description set, size=7995
+[33m[WARN] [1782449359.788185155]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[12:49:22] [4] starting gzserver
+[12:49:28] [4] spawn_model start
+reload: robot_description set, len=7995
+[rospack] Error: package 'my_robot' not found
+[librospack]: error while executing command
+[31m[FATAL] [1782449371.381239046]: Package[my_robot] does not have a path[0m
+[ERROR] [1782449371.382148]: Spawn service failed. Exiting.
+[INFO] [1782449371.335836]: Loading model XML from ros parameter robot_description
+[INFO] [1782449371.342028]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1782449371.346712]: Calling service /gz_debug/spawn_urdf_model
+Service call failed: service [/gz_debug/spawn_urdf_model] responded with an error: b''
+[12:49:32] [4] spawn_model exit=1
+[rospack] Error: package 'my_robot' not found
+[librospack]: error while executing command
+[31m[ERROR] [1782449376.263385495]: Could not load resource [package://my_robot/meshes/base_link.STL]: Unable to open file "package://my_robot/meshes/base_link.STL".[0m
+[rospack] Error: package 'my_robot' not found
+[librospack]: error while executing command
+[31m[ERROR] [1782449376.289563198]: Could not load resource [package://my_robot/meshes/base_link.STL]: Unable to open file "package://my_robot/meshes/base_link.STL".[0m
+[rospack] Error: package 'my_robot' not found
+[librospack]: error while executing command
+[31m[ERROR] [1782449376.317752146]: Could not load resource [package://my_robot/meshes/base_scan.STL]: Unable to open file "package://my_robot/meshes/base_scan.STL".[0m
+[rospack] Error: package 'my_robot' not found
+[librospack]: error while executing command
+[31m[ERROR] [1782449376.343769676]: Could not load resource [package://my_robot/meshes/base_scan.STL]: Unable to open file "package://my_robot/meshes/base_scan.STL".[0m
+[rospack] Error: package 'my_robot' not found
+[librospack]: error while executing command
+[31m[ERROR] [1782449376.373467874]: Could not load resource [package://my_robot/meshes/left_wheel_front_Link.STL]: Unable to open file "package://my_robot/meshes/left_wheel_front_Link.STL".[0m
+[rospack] Error: package 'my_robot' not found
+[librospack]: error while executing command
+[31m[ERROR] [1782449376.415877563]: Could not load resource [package://my_robot/meshes/left_wheel_front_Link.STL]: Unable to open file "package://my_robot/meshes/left_wheel_front_Link.STL".[0m
+[rospack] Error: package 'my_robot' not found
+[librospack]: error while executing command
+[31m[ERROR] [1782449376.445053059]: Could not load resource [package://my_robot/meshes/left_wheel_rear_Link.STL]: Unable to open file "package://my_robot/meshes/left_wheel_rear_Link.STL".[0m
+[rospack] Error: package 'my_robot' not found
+[librospack]: error while executing command
+[31m[ERROR] [1782449376.471268142]: Could not load resource [package://my_robot/meshes/left_wheel_rear_Link.STL]: Unable to open file "package://my_robot/meshes/left_wheel_rear_Link.STL".[0m
+[rospack] Error: package 'my_robot' not found
+[librospack]: error while executing command
+[31m[ERROR] [1782449376.496903047]: Could not load resource [package://my_robot/meshes/right_wheel_front_Link.STL]: Unable to open file "package://my_robot/meshes/right_wheel_front_Link.STL".[0m
+[rospack] Error: package 'my_robot' not found
+[librospack]: error while executing command
+[31m[ERROR] [1782449376.523388777]: Could not load resource [package://my_robot/meshes/right_wheel_front_Link.STL]: Unable to open file "package://my_robot/meshes/right_wheel_front_Link.STL".[0m
+[rospack] Error: package 'my_robot' not found
+[librospack]: error while executing command
+[31m[ERROR] [1782449376.549160557]: Could not load resource [package://my_robot/meshes/right_wheel_rear_Link.STL]: Unable to open file "package://my_robot/meshes/right_wheel_rear_Link.STL".[0m
+[rospack] Error: package 'my_robot' not found
+[librospack]: error while executing command
+[31m[ERROR] [1782449376.575880483]: Could not load resource [package://my_robot/meshes/right_wheel_rear_Link.STL]: Unable to open file "package://my_robot/meshes/right_wheel_rear_Link.STL".[0m
+[31m[ERROR] [1782449380.495048460]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449380.590481283]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449380.689379588]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449380.790381401]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449380.890018617]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449380.989890797]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449381.090674125]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449381.189707895]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449381.289725781]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449381.390677443]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449381.489767377]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449381.589633506]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449381.690470951]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449381.790390749]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449381.893120643]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449381.989817893]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449382.089676851]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449382.190080272]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449382.289594400]: Updating ModelState: model [my_robot] does not exist[0m
+[12:49:42] [8] generating move_base launch file
+[12:49:42] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
-[31m[ERROR] [1782449174.068760792]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449174.169692996]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449174.268257971]: Updating ModelState: model [my_robot] does not exist[0m
-  [诊断] base_global_planner 参数未设置
-[31m[ERROR] [1782449174.367097500]: Updating ModelState: model [my_robot] does not exist[0m
-  [诊断] base_local_planner 参数未设置
-[31m[ERROR] [1782449174.467701194]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449174.571482113]: Updating ModelState: model [my_robot] does not exist[0m
-  [诊断] global_costmap/plugins 参数未设置
+[31m[ERROR] [1782449382.389642526]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449382.490107744]: Updating ModelState: model [my_robot] does not exist[0m
+path_planner/PathPlanner
+[31m[ERROR] [1782449382.589811297]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449382.690309222]: Updating ModelState: model [my_robot] does not exist[0m
+apf_controller/APFController
+[31m[ERROR] [1782449382.791078178]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449382.894355541]: Updating ModelState: model [my_robot] does not exist[0m
+- name: static_map
+  type: costmap_2d::StaticLayer
+- name: obstacle_layer
+  type: costmap_2d::ObstacleLayer
+- name: voronoi_layer
+  type: costmap_2d::VoronoiLayer
+- name: inflation_layer
+  type: costmap_2d::InflationLayer
+
   [诊断] rospack plugins nav_core:
-[31m[ERROR] [1782449174.669968841]: Updating ModelState: model [my_robot] does not exist[0m
 path_planner /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/path_planner_plugin.xml
 mpc_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/mpc_controller/mpc_controller_plugin.xml
 lqr_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/lqr_controller/lqr_controller_plugin.xml
@@ -78,58 +112,60 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[31m[ERROR] [1782449174.767624387]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449174.869378524]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449174.968069975]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449175.067181814]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449175.167279407]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449175.269057381]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449175.369397301]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449175.467545431]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449175.567141953]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449175.670173037]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449175.767696821]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449175.867701061]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449175.967075322]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449176.067418694]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449176.146028384]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1782449176.148556108]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
-[31m[ERROR] [1782449176.169690437]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449176.268057175]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449176.369140742]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449176.467386668]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449176.568480765]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449382.991107384]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449383.090085337]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449383.195217352]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449383.292179867]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449383.390794780]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449383.489718552]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449383.590219738]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449383.690528268]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449383.789828840]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449383.890132122]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449383.989787668]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449384.089800490]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449384.190443575]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449384.301520193]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449384.389956119]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782449384.474336563]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1782449384.476593748]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[31m[ERROR] [1782449384.489806944]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449384.589628998]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449384.689360580]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449384.790518076]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449384.890422633]: Updating ModelState: model [my_robot] does not exist[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260626 12:46:16.605954 24610 path_planner_factory.cpp:129] Using path planner: astar
-[33m[WARN] [1782449176.628229458]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[31m[ERROR] [1782449176.669865193]: Updating ModelState: model [my_robot] does not exist[0m
-I20260626 12:46:16.732990 24610 apf_controller.cpp:77] APF controller initialized!
-[31m[ERROR] [1782449176.767630338]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449176.868356848]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449176.967486569]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449177.074866721]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449177.171551696]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449177.267770483]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449177.367955529]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449177.467624495]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449177.567101539]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449177.576420266]: The /scan_fixed observation buffer has not been updated for 1.08 seconds, and it should be updated every 0.80 seconds.[0m
-[31m[ERROR] [1782449177.667055235]: Updating ModelState: model [my_robot] does not exist[0m
-[12:46:17] [8] move_base 启动后状态:
+I20260626 12:49:44.922931 27179 path_planner_factory.cpp:129] Using path planner: astar
+[33m[WARN] [1782449384.936668866]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[31m[ERROR] [1782449384.995985883]: Updating ModelState: model [my_robot] does not exist[0m
+I20260626 12:49:45.046380 27179 apf_controller.cpp:77] APF controller initialized!
+[31m[ERROR] [1782449385.092810206]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449385.191071420]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449385.290576580]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449385.390193686]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449385.489886094]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449385.589835421]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449385.690421089]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449385.789776733]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449385.889418929]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782449385.896281789]: The /scan_fixed observation buffer has not been updated for 1.08 seconds, and it should be updated every 0.80 seconds.[0m
+[31m[ERROR] [1782449385.990815291]: Updating ModelState: model [my_robot] does not exist[0m
+[12:49:45] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
-[31m[ERROR] [1782449177.767275516]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449177.867006376]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449177.967655209]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449178.069894876]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449178.076435103]: The /scan_fixed observation buffer has not been updated for 1.58 seconds, and it should be updated every 0.80 seconds.[0m
-[31m[ERROR] [1782449178.167566913]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449178.267324330]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449178.367416818]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449178.467521723]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449178.568494741]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449178.576427290]: The /scan_fixed observation buffer has not been updated for 2.08 seconds, and it should be updated every 0.80 seconds.[0m
+[31m[ERROR] [1782449386.090618459]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449386.190042074]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449386.289825592]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449386.390916549]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782449386.396275952]: The /scan_fixed observation buffer has not been updated for 1.58 seconds, and it should be updated every 0.80 seconds.[0m
+[31m[ERROR] [1782449386.494939662]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449386.590472800]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449386.690507891]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449386.790242125]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449386.890117074]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782449386.896253120]: The /scan_fixed observation buffer has not been updated for 2.08 seconds, and it should be updated every 0.80 seconds.[0m
+[31m[ERROR] [1782449386.990172071]: Updating ModelState: model [my_robot] does not exist[0m
 /move_base/PathPlanner/expand
 /move_base/PathPlanner/expand_updates
 /move_base/PathPlanner/key_points
@@ -173,14 +209,14 @@ I20260626 12:46:16.732990 24610 apf_controller.cpp:77] APF controller initialize
 /move_base/status
 /move_base_simple/goal
   [诊断] rosservice list | grep move_base:
-[31m[ERROR] [1782449178.668114736]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449178.767802802]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449178.866981445]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449178.967559450]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449179.068004831]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449179.076431346]: The /scan_fixed observation buffer has not been updated for 2.58 seconds, and it should be updated every 0.80 seconds.[0m
-[31m[ERROR] [1782449179.168779329]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449179.271938274]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449387.092000914]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449387.190300782]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449387.290360609]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449387.390438422]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782449387.396272745]: The /scan_fixed observation buffer has not been updated for 2.58 seconds, and it should be updated every 0.80 seconds.[0m
+[31m[ERROR] [1782449387.490196015]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449387.589745526]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449387.689969175]: Updating ModelState: model [my_robot] does not exist[0m
 /move_base/PathPlanner/make_plan
 /move_base/clear_costmaps
 /move_base/get_loggers
@@ -195,872 +231,71 @@ I20260626 12:46:16.732990 24610 apf_controller.cpp:77] APF controller initialize
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-[31m[ERROR] [1782449179.367895970]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449179.469053096]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449179.567642782]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449179.576434995]: The /scan_fixed observation buffer has not been updated for 3.08 seconds, and it should be updated every 0.80 seconds.[0m
-[31m[ERROR] [1782449179.667528909]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449179.767957199]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449179.868315978]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449179.967546844]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449180.069349882]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449180.076444912]: The /scan_fixed observation buffer has not been updated for 3.58 seconds, and it should be updated every 0.80 seconds.[0m
-[31m[ERROR] [1782449180.167834497]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449180.266972357]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449180.374240223]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449180.468027055]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449180.569154669]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449180.576463607]: The /scan_fixed observation buffer has not been updated for 4.08 seconds, and it should be updated every 0.80 seconds.[0m
-[31m[ERROR] [1782449180.667936847]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449180.767121528]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449180.867690145]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449180.968205765]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449181.068150545]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449181.076454519]: The /scan_fixed observation buffer has not been updated for 4.58 seconds, and it should be updated every 0.80 seconds.[0m
-[31m[ERROR] [1782449181.167498147]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449181.267412425]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449181.367722453]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449181.467336768]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449181.567188513]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449181.576362104]: The /scan_fixed observation buffer has not been updated for 5.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449181.576491909]: The scan_real observation buffer has not been updated for 5.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449181.668238898]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449181.768480151]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449181.868002969]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449181.967627653]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449182.067575019]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449182.076419332]: The /scan_fixed observation buffer has not been updated for 5.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449182.076596596]: The scan_real observation buffer has not been updated for 5.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449182.167798761]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449182.267064558]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449182.367397687]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449182.468714203]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449182.568196372]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449182.576416978]: The /scan_fixed observation buffer has not been updated for 6.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449182.576570208]: The scan_real observation buffer has not been updated for 6.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449182.668259971]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449182.767409469]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449182.868065956]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449182.968584541]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449183.067694384]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449183.076441631]: The /scan_fixed observation buffer has not been updated for 6.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449183.076631729]: The scan_real observation buffer has not been updated for 6.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449183.168278987]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449183.267292691]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449183.367503402]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449183.468008797]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449183.567724519]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449183.576426673]: The /scan_fixed observation buffer has not been updated for 7.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449183.576603458]: The scan_real observation buffer has not been updated for 7.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449183.667388011]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449183.768438385]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449183.868226145]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449183.969877279]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449184.070534076]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449184.076424801]: The /scan_fixed observation buffer has not been updated for 7.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449184.076582384]: The scan_real observation buffer has not been updated for 7.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449184.167766393]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449184.268080053]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449184.367030226]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449184.468073298]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449184.569558074]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449184.576420921]: The /scan_fixed observation buffer has not been updated for 8.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449184.576568711]: The scan_real observation buffer has not been updated for 8.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449184.667639622]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449184.768088463]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449184.867227421]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449184.967235100]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449185.067357827]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449185.076420782]: The /scan_fixed observation buffer has not been updated for 8.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449185.076585501]: The scan_real observation buffer has not been updated for 8.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449185.167913808]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449185.267880934]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449185.367517117]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449185.467300034]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449185.568100678]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449185.576416588]: The /scan_fixed observation buffer has not been updated for 9.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449185.576617054]: The scan_real observation buffer has not been updated for 9.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449185.667587375]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449185.767868771]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449185.869056874]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449185.969251702]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449186.068617904]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449186.076417734]: The /scan_fixed observation buffer has not been updated for 9.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449186.076579605]: The scan_real observation buffer has not been updated for 9.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449186.168803093]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449186.267493872]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449186.368302127]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449186.469443212]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449186.576393671]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449186.576393703]: The /scan_fixed observation buffer has not been updated for 10.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449186.576563863]: The scan_real observation buffer has not been updated for 10.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449186.673825868]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449186.767481458]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449186.867695993]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449186.968523546]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449187.067777157]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449187.076752807]: The /scan_fixed observation buffer has not been updated for 10.59 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449187.076913334]: The scan_real observation buffer has not been updated for 10.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449187.168226461]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449187.273522648]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449187.368316579]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449187.469090297]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449187.567806865]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449187.576440915]: The /scan_fixed observation buffer has not been updated for 11.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449187.576590369]: The scan_real observation buffer has not been updated for 11.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449187.667849091]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449187.767878228]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449187.867593192]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449187.967929878]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449188.067118998]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449188.076416373]: The /scan_fixed observation buffer has not been updated for 11.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449188.076569540]: The scan_real observation buffer has not been updated for 11.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449188.167619822]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449188.267413412]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449188.368660705]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449188.467667662]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449188.567824133]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449188.576414883]: The /scan_fixed observation buffer has not been updated for 12.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449188.576573074]: The scan_real observation buffer has not been updated for 12.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449188.668447913]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449188.768101042]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449188.868324656]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449188.967329660]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449189.071288434]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449189.076421006]: The /scan_fixed observation buffer has not been updated for 12.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449189.076577693]: The scan_real observation buffer has not been updated for 12.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449189.168121008]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449189.267659017]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449189.368091605]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449189.467033910]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449189.567861479]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449189.576405921]: The /scan_fixed observation buffer has not been updated for 13.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449189.576587697]: The scan_real observation buffer has not been updated for 13.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449189.667578353]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449189.767310620]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449189.867188245]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449189.968883766]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449190.067808979]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449190.076428754]: The /scan_fixed observation buffer has not been updated for 13.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449190.076614500]: The scan_real observation buffer has not been updated for 13.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449190.167329189]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449190.268214998]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449190.367142929]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449190.469011069]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449190.567864273]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449190.576427692]: The /scan_fixed observation buffer has not been updated for 14.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449190.576601852]: The scan_real observation buffer has not been updated for 14.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449190.667652412]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449190.767732130]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449190.868148200]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449190.967850123]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449191.068381591]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449191.076408736]: The /scan_fixed observation buffer has not been updated for 14.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449191.076574575]: The scan_real observation buffer has not been updated for 14.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449191.168441174]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449191.270409670]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449191.368015074]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449191.470729783]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449191.567700183]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449191.576439874]: The /scan_fixed observation buffer has not been updated for 15.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449191.576591792]: The scan_real observation buffer has not been updated for 15.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449191.667577541]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449191.768539032]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449191.868403173]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449191.967407202]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449192.067702611]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449192.076420059]: The /scan_fixed observation buffer has not been updated for 15.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449192.076593547]: The scan_real observation buffer has not been updated for 15.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449192.167858582]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449192.268321941]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449192.368154426]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449192.467240089]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449192.567629074]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449192.576398206]: The /scan_fixed observation buffer has not been updated for 16.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449192.576545676]: The scan_real observation buffer has not been updated for 16.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449192.668092529]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449192.768208304]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449192.867531237]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449192.968159060]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449193.068294833]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449193.076420994]: The /scan_fixed observation buffer has not been updated for 16.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449193.076615988]: The scan_real observation buffer has not been updated for 16.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449193.167680071]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449193.267357880]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449193.368463854]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449193.466995637]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449193.568737509]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449193.576435566]: The /scan_fixed observation buffer has not been updated for 17.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449193.576630976]: The scan_real observation buffer has not been updated for 17.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449193.668831773]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449193.768421126]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449193.866956525]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449193.967241655]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449194.067499578]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449194.076424084]: The /scan_fixed observation buffer has not been updated for 17.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449194.076629127]: The scan_real observation buffer has not been updated for 17.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449194.167974576]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449194.267283258]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449194.367296421]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449194.466996851]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449194.567824266]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449194.576438791]: The /scan_fixed observation buffer has not been updated for 18.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449194.576640922]: The scan_real observation buffer has not been updated for 18.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449194.667685415]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449194.768408531]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449194.867659384]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449194.967621918]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449195.068132052]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449195.076475512]: The /scan_fixed observation buffer has not been updated for 18.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449195.076673770]: The scan_real observation buffer has not been updated for 18.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449195.168077140]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449195.268531554]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449195.367411007]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449195.468537868]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449195.567309375]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449195.576479600]: The /scan_fixed observation buffer has not been updated for 19.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449195.576652128]: The scan_real observation buffer has not been updated for 19.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449195.667954720]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449195.768102418]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449195.867492414]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449195.967979824]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449196.067736347]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449196.076412541]: The /scan_fixed observation buffer has not been updated for 19.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449196.076592750]: The scan_real observation buffer has not been updated for 19.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449196.167828835]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449196.267438110]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449196.367957582]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449196.467899464]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449196.569767188]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449196.576426972]: The /scan_fixed observation buffer has not been updated for 20.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449196.576590795]: The scan_real observation buffer has not been updated for 20.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449196.668443578]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449196.768740501]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449196.872738342]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449196.976760953]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449197.076439864]: The /scan_fixed observation buffer has not been updated for 20.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449197.076625481]: The scan_real observation buffer has not been updated for 20.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449197.080264185]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449197.168311875]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449197.269516717]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449197.369693335]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449197.468083965]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449197.568473819]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449197.576440252]: The /scan_fixed observation buffer has not been updated for 21.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449197.576628141]: The scan_real observation buffer has not been updated for 21.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449197.675554116]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449197.774094552]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449197.869078019]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449197.976383456]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449198.070191867]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449198.077259176]: The /scan_fixed observation buffer has not been updated for 21.59 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449198.077436664]: The scan_real observation buffer has not been updated for 21.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449198.177739946]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449198.272691053]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449198.368020018]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449198.479137707]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449198.567688158]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449198.577360092]: The /scan_fixed observation buffer has not been updated for 22.09 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449198.577514250]: The scan_real observation buffer has not been updated for 22.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449198.672734438]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449198.777082925]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449198.867349663]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449198.968755830]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449199.068325729]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449199.076427597]: The /scan_fixed observation buffer has not been updated for 22.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449199.076590460]: The scan_real observation buffer has not been updated for 22.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449199.167037626]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449199.272702389]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449199.374169677]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449199.467786896]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449199.568056569]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449199.576451872]: The /scan_fixed observation buffer has not been updated for 23.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449199.576627344]: The scan_real observation buffer has not been updated for 23.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449199.668821200]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449199.767964145]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449199.868550327]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449199.968019703]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449200.072877892]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449200.076412234]: The /scan_fixed observation buffer has not been updated for 23.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449200.076559672]: The scan_real observation buffer has not been updated for 23.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449200.167781209]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449200.267945075]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449200.371522441]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449200.466786399]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449200.567599061]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449200.576449318]: The /scan_fixed observation buffer has not been updated for 24.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449200.576629014]: The scan_real observation buffer has not been updated for 24.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449200.667193947]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449200.769785557]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449200.868279253]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449200.967782835]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449201.068001647]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449201.076423191]: The /scan_fixed observation buffer has not been updated for 24.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449201.076564388]: The scan_real observation buffer has not been updated for 24.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449201.167009753]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449201.269359640]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449201.368712131]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449201.467501049]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449201.567664975]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449201.576857054]: The /scan_fixed observation buffer has not been updated for 25.09 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449201.577022894]: The scan_real observation buffer has not been updated for 25.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449201.667603759]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449201.768158888]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449201.867344644]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449201.967872154]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449202.066769272]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449202.076412336]: The /scan_fixed observation buffer has not been updated for 25.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449202.076570847]: The scan_real observation buffer has not been updated for 25.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449202.167872542]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449202.268525884]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449202.368158395]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449202.467532323]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449202.569921280]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449202.576439289]: The /scan_fixed observation buffer has not been updated for 26.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449202.576624330]: The scan_real observation buffer has not been updated for 26.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449202.668539682]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449202.768735637]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449202.867960015]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449202.967706968]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449203.067150659]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449203.076439163]: The /scan_fixed observation buffer has not been updated for 26.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449203.076616107]: The scan_real observation buffer has not been updated for 26.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449203.167705106]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449203.267702222]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449203.367551068]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449203.468197044]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449203.567756232]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449203.576400868]: The /scan_fixed observation buffer has not been updated for 27.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449203.576530736]: The scan_real observation buffer has not been updated for 27.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449203.666858257]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449203.767324632]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449203.867468193]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449203.966698359]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449204.068445425]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449204.076400461]: The /scan_fixed observation buffer has not been updated for 27.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449204.076556347]: The scan_real observation buffer has not been updated for 27.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449204.167836400]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449204.268027224]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449204.366902472]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449204.467668742]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449204.567755621]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449204.576398433]: The /scan_fixed observation buffer has not been updated for 28.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449204.576542926]: The scan_real observation buffer has not been updated for 28.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449204.670977829]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449204.772189035]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449204.867919865]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449204.967554159]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449205.066700564]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449205.076427059]: The /scan_fixed observation buffer has not been updated for 28.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449205.076588610]: The scan_real observation buffer has not been updated for 28.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449205.167093995]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449205.267348084]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449205.367546169]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449205.468032760]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449205.567515226]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449205.576422478]: The /scan_fixed observation buffer has not been updated for 29.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449205.576579101]: The scan_real observation buffer has not been updated for 29.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449205.676247440]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449205.768492825]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449205.867341953]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449205.966771071]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449206.067354307]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449206.076424806]: The /scan_fixed observation buffer has not been updated for 29.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449206.076579764]: The scan_real observation buffer has not been updated for 29.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449206.167640459]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449206.269092702]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449206.376170838]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449206.476447101]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449206.571969294]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449206.576443882]: The /scan_fixed observation buffer has not been updated for 30.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449206.576602168]: The scan_real observation buffer has not been updated for 30.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449206.668993674]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449206.767072518]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449206.867099382]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449206.967632084]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449207.067537174]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449207.076406533]: The /scan_fixed observation buffer has not been updated for 30.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449207.076599127]: The scan_real observation buffer has not been updated for 30.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449207.166864512]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449207.267392921]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449207.372317382]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449207.467502676]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449207.567381681]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449207.576398446]: The /scan_fixed observation buffer has not been updated for 31.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449207.576546268]: The scan_real observation buffer has not been updated for 31.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449207.667005239]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449207.767364000]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449207.867315140]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449207.967411797]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449208.066995732]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449208.076390292]: The /scan_fixed observation buffer has not been updated for 31.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449208.076571044]: The scan_real observation buffer has not been updated for 31.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449208.167124100]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449208.267663609]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449208.367715105]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449208.468268919]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449208.568110348]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449208.576546067]: The /scan_fixed observation buffer has not been updated for 32.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449208.577029631]: The scan_real observation buffer has not been updated for 32.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449208.667391053]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449208.767289447]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449208.867410550]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449208.967404377]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449209.067253100]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449209.077059920]: The /scan_fixed observation buffer has not been updated for 32.59 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449209.077217599]: The scan_real observation buffer has not been updated for 32.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449209.167146208]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449209.267285580]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449209.367762070]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449209.467504509]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449209.567650153]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449209.576428431]: The /scan_fixed observation buffer has not been updated for 33.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449209.576574044]: The scan_real observation buffer has not been updated for 33.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449209.667053361]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449209.766976200]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449209.868074892]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449209.967333894]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449210.067197429]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449210.076407490]: The /scan_fixed observation buffer has not been updated for 33.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449210.076549359]: The scan_real observation buffer has not been updated for 33.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449210.167684860]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449210.267161477]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449210.367489725]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449210.467838359]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449210.568315132]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449210.576409859]: The /scan_fixed observation buffer has not been updated for 34.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449210.576560689]: The scan_real observation buffer has not been updated for 34.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449210.667526894]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449210.767126403]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449210.867635467]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449210.967525563]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449211.066988576]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449211.076396127]: The /scan_fixed observation buffer has not been updated for 34.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449211.076533100]: The scan_real observation buffer has not been updated for 34.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449211.167546344]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449211.267655143]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449211.366882901]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449211.466881322]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449211.567836470]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449211.576413513]: The /scan_fixed observation buffer has not been updated for 35.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449211.576553462]: The scan_real observation buffer has not been updated for 35.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449211.667431494]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449211.767173379]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449211.868476175]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449211.967267765]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449212.066952714]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449212.076458674]: The /scan_fixed observation buffer has not been updated for 35.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449212.076637794]: The scan_real observation buffer has not been updated for 35.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449212.167959383]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449212.267719281]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449212.367633913]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449212.467488060]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449212.568009339]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449212.576433920]: The /scan_fixed observation buffer has not been updated for 36.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449212.576557035]: The scan_real observation buffer has not been updated for 36.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449212.667520799]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449212.767299770]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449212.866958251]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449212.968025181]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449213.067233602]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449213.076416235]: The /scan_fixed observation buffer has not been updated for 36.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449213.076573433]: The scan_real observation buffer has not been updated for 36.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449213.167737787]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449213.268358975]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449213.367376048]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449213.467070560]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449213.568323582]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449213.576388225]: The /scan_fixed observation buffer has not been updated for 37.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449213.576520781]: The scan_real observation buffer has not been updated for 37.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449213.666925001]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449213.767448612]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449213.868183666]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449213.968310729]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449214.067005466]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449214.076410775]: The /scan_fixed observation buffer has not been updated for 37.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449214.076558245]: The scan_real observation buffer has not been updated for 37.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449214.167187057]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449214.267137811]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449214.366854432]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449214.467317264]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449214.567659574]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449214.576408087]: The /scan_fixed observation buffer has not been updated for 38.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449214.576555109]: The scan_real observation buffer has not been updated for 38.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449214.668597682]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449214.768644669]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449214.867428564]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449214.967661936]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449215.066748608]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449215.076443351]: The /scan_fixed observation buffer has not been updated for 38.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449215.076608775]: The scan_real observation buffer has not been updated for 38.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449215.167055422]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449215.267364476]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449215.368264496]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449215.467718239]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449215.567664124]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449215.576423838]: The /scan_fixed observation buffer has not been updated for 39.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449215.576578348]: The scan_real observation buffer has not been updated for 39.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449215.667610617]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449215.767693378]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449215.867709253]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449215.967160085]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449216.068014178]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449216.076439556]: The /scan_fixed observation buffer has not been updated for 39.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449216.076595859]: The scan_real observation buffer has not been updated for 39.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449216.167343105]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449216.267052131]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449216.367260339]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449216.467073023]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449216.567795646]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449216.576413619]: The /scan_fixed observation buffer has not been updated for 40.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449216.576557184]: The scan_real observation buffer has not been updated for 40.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449216.667234792]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449216.767491356]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449216.867773171]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449216.967567677]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449217.067104589]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449217.076412032]: The /scan_fixed observation buffer has not been updated for 40.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449217.076571822]: The scan_real observation buffer has not been updated for 40.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449217.167183756]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449217.266940846]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449217.367600771]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449217.467118159]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449217.567282102]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449217.576412217]: The /scan_fixed observation buffer has not been updated for 41.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449217.576598378]: The scan_real observation buffer has not been updated for 41.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449217.668163199]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449217.767485401]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449217.867073995]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449217.967259957]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449218.067447163]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449218.076418959]: The /scan_fixed observation buffer has not been updated for 41.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449218.076577213]: The scan_real observation buffer has not been updated for 41.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449218.167136850]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449218.268084348]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449218.367009165]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449218.466944379]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449218.567237353]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449218.576422993]: The /scan_fixed observation buffer has not been updated for 42.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449218.576603809]: The scan_real observation buffer has not been updated for 42.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449218.667217691]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449218.767457668]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449218.867134906]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449218.967123405]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449219.067638892]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449219.076402253]: The /scan_fixed observation buffer has not been updated for 42.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449219.076561531]: The scan_real observation buffer has not been updated for 42.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449219.166993632]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449219.272596751]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449219.367087078]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449219.467686892]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449219.567765954]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449219.576694993]: The /scan_fixed observation buffer has not been updated for 43.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449219.577016911]: The scan_real observation buffer has not been updated for 43.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449219.668568794]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449219.767235087]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449219.867057517]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449219.967377145]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449220.067270683]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449220.076416222]: The /scan_fixed observation buffer has not been updated for 43.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449220.076637075]: The scan_real observation buffer has not been updated for 43.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449220.167302120]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449220.267104960]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449220.367576086]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449220.467359052]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449220.567315506]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449220.576418065]: The /scan_fixed observation buffer has not been updated for 44.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449220.576570815]: The scan_real observation buffer has not been updated for 44.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449220.667868206]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449220.767558876]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449220.867139904]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449220.967697277]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449221.067895126]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449221.076403999]: The /scan_fixed observation buffer has not been updated for 44.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449221.076550508]: The scan_real observation buffer has not been updated for 44.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449221.167360107]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449221.268725197]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449221.367170597]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449221.467365852]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449221.567123627]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449221.576392569]: The /scan_fixed observation buffer has not been updated for 45.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449221.576532806]: The scan_real observation buffer has not been updated for 45.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449221.667556984]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449221.767546429]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449221.867343151]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449221.967720759]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449222.067452897]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449222.076414323]: The /scan_fixed observation buffer has not been updated for 45.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449222.076569953]: The scan_real observation buffer has not been updated for 45.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449222.167301172]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449222.267210605]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449222.367636821]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449222.467426146]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449222.567831688]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449222.576412887]: The /scan_fixed observation buffer has not been updated for 46.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449222.576556260]: The scan_real observation buffer has not been updated for 46.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449222.667961461]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449222.767527470]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449222.867230611]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449222.968017788]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449223.067164652]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449223.076434265]: The /scan_fixed observation buffer has not been updated for 46.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449223.076579462]: The scan_real observation buffer has not been updated for 46.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449223.166871598]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449223.268154943]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449223.371732961]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449223.467480666]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449223.567529850]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449223.576416964]: The /scan_fixed observation buffer has not been updated for 47.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449223.576564978]: The scan_real observation buffer has not been updated for 47.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449223.667322148]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449223.767257882]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449223.866695171]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449223.967152425]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449224.067360981]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449224.076421710]: The /scan_fixed observation buffer has not been updated for 47.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449224.076580701]: The scan_real observation buffer has not been updated for 47.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449224.167343659]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449224.267335842]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449224.367139815]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449224.467165217]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449224.567552284]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449224.576406435]: The /scan_fixed observation buffer has not been updated for 48.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449224.576554512]: The scan_real observation buffer has not been updated for 48.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449224.667314174]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449224.767908044]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449224.866805951]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449224.967175480]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449225.067383520]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449225.076414102]: The /scan_fixed observation buffer has not been updated for 48.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449225.076566916]: The scan_real observation buffer has not been updated for 48.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449225.167079479]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449225.267988093]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449225.367422652]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449225.466814712]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449225.567963987]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449225.576421526]: The /scan_fixed observation buffer has not been updated for 49.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449225.576596998]: The scan_real observation buffer has not been updated for 49.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449225.668684360]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449225.767917205]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449225.869017644]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449225.967870935]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449226.067609551]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449226.076425138]: The /scan_fixed observation buffer has not been updated for 49.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449226.076588800]: The scan_real observation buffer has not been updated for 49.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449226.167012359]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449226.267955435]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449226.376077277]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449226.477052772]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449226.574098950]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449226.576434170]: The /scan_fixed observation buffer has not been updated for 50.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449226.576605194]: The scan_real observation buffer has not been updated for 50.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449226.677578193]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449226.774531754]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449226.868091854]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449226.967827813]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449227.071407638]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449227.076412573]: The /scan_fixed observation buffer has not been updated for 50.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449227.076579980]: The scan_real observation buffer has not been updated for 50.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449227.173284106]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449227.267779712]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449227.368141130]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449227.468030122]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449227.567684404]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449227.576418831]: The /scan_fixed observation buffer has not been updated for 51.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449227.576578622]: The scan_real observation buffer has not been updated for 51.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449227.667440712]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449227.767437042]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449227.870263773]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449227.968913164]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449228.074692608]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449228.077151744]: The /scan_fixed observation buffer has not been updated for 51.59 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449228.077319087]: The scan_real observation buffer has not been updated for 51.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449228.167617890]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449228.268220062]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449228.367367958]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449228.467562381]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449228.568115877]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449228.576414871]: The /scan_fixed observation buffer has not been updated for 52.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449228.576575334]: The scan_real observation buffer has not been updated for 52.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449228.667725639]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449228.767299493]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449228.867969671]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449228.967476480]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449229.068861728]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449229.076422576]: The /scan_fixed observation buffer has not been updated for 52.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449229.076576734]: The scan_real observation buffer has not been updated for 52.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449229.167967088]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449229.268376790]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449229.367487846]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449229.468003094]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449229.568647057]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449229.576416755]: The /scan_fixed observation buffer has not been updated for 53.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449229.576572833]: The scan_real observation buffer has not been updated for 53.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449229.667513387]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449229.771560251]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449229.867335516]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449229.967387362]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449230.066915605]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449230.076433333]: The /scan_fixed observation buffer has not been updated for 53.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449230.076606277]: The scan_real observation buffer has not been updated for 53.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449230.167144294]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449230.267137282]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449230.367282603]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449230.467457495]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449230.568515796]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449230.576383326]: The /scan_fixed observation buffer has not been updated for 54.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449230.576534412]: The scan_real observation buffer has not been updated for 54.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449230.667883959]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449230.767300830]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449230.867436327]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449230.967475174]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449231.067987822]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449231.076400618]: The /scan_fixed observation buffer has not been updated for 54.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449231.076551256]: The scan_real observation buffer has not been updated for 54.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449231.167307305]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449231.267542166]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449231.366747557]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449231.467845953]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449231.567156282]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449231.576421219]: The /scan_fixed observation buffer has not been updated for 55.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449231.576610805]: The scan_real observation buffer has not been updated for 55.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449231.666942751]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449231.767454949]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449231.867105789]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449231.966782104]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449232.067792968]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449232.076412055]: The /scan_fixed observation buffer has not been updated for 55.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449232.076573637]: The scan_real observation buffer has not been updated for 55.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449232.167289870]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449232.267094416]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449232.367066625]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449232.468206747]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449232.567184114]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449232.576407319]: The /scan_fixed observation buffer has not been updated for 56.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449232.576547268]: The scan_real observation buffer has not been updated for 56.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449232.666971954]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449232.767376074]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449232.868025560]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449232.967137307]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449233.067854381]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449233.076443224]: The /scan_fixed observation buffer has not been updated for 56.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449233.076652747]: The scan_real observation buffer has not been updated for 56.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449233.167085942]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449233.267233426]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449233.367043600]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449233.468393657]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449233.567269058]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449233.576483398]: The /scan_fixed observation buffer has not been updated for 57.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449233.576664919]: The scan_real observation buffer has not been updated for 57.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449233.667652148]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449233.768163697]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449233.867874566]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449233.967698661]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449234.069342854]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449234.076439434]: The /scan_fixed observation buffer has not been updated for 57.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449234.076625146]: The scan_real observation buffer has not been updated for 57.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449234.167584369]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449234.267097936]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449234.366852996]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449234.467968212]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449234.567589276]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449234.576453343]: The /scan_fixed observation buffer has not been updated for 58.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449234.576639696]: The scan_real observation buffer has not been updated for 58.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449234.667612552]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449234.766828364]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449234.868222101]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449234.968043343]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449235.067294451]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449235.076406124]: The /scan_fixed observation buffer has not been updated for 58.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449235.076555162]: The scan_real observation buffer has not been updated for 58.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449235.167206193]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449235.267729638]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449235.368210104]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449235.466606989]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449235.567658994]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449235.576422956]: The /scan_fixed observation buffer has not been updated for 59.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449235.576600317]: The scan_real observation buffer has not been updated for 59.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449235.667434020]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449235.767401095]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449235.867459283]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449235.967181631]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449236.066861766]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449236.076412455]: The /scan_fixed observation buffer has not been updated for 59.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449236.076585751]: The scan_real observation buffer has not been updated for 59.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449236.168325260]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449236.268722450]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449236.368469821]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449236.467514024]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449236.567329209]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449236.576433265]: The /scan_fixed observation buffer has not been updated for 60.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449236.576594816]: The scan_real observation buffer has not been updated for 60.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449236.667335451]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449236.768653748]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449236.867733122]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449236.967838542]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449237.067847405]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449237.076440791]: The /scan_fixed observation buffer has not been updated for 60.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449237.076632777]: The scan_real observation buffer has not been updated for 60.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449237.167429637]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449237.269643178]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449237.366962101]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449237.467467552]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449237.567090395]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449237.576413703]: The /scan_fixed observation buffer has not been updated for 61.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449237.576562581]: The scan_real observation buffer has not been updated for 61.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449237.666912713]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449237.767443062]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449237.867375213]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449237.967120115]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449238.067108589]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449238.076433785]: The /scan_fixed observation buffer has not been updated for 61.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449238.076578694]: The scan_real observation buffer has not been updated for 61.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449238.167728382]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449238.268210370]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449238.367174334]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449238.467232988]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449238.567322173]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449238.576411379]: The /scan_fixed observation buffer has not been updated for 62.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449238.576570018]: The scan_real observation buffer has not been updated for 62.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449238.667515015]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449238.768481624]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449238.867442131]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449238.967311936]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449239.066731458]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449239.076407853]: The /scan_fixed observation buffer has not been updated for 62.58 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449239.076564635]: The scan_real observation buffer has not been updated for 62.57 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449239.167573890]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449239.267654654]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449239.367008505]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449239.467391664]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449239.567436073]: Updating ModelState: model [my_robot] does not exist[0m
-[33m[WARN] [1782449239.576428566]: The /scan_fixed observation buffer has not been updated for 63.08 seconds, and it should be updated every 0.80 seconds.[0m
-[33m[WARN] [1782449239.576616711]: The scan_real observation buffer has not been updated for 63.07 seconds, and it should be updated every 5.00 seconds.[0m
-[31m[ERROR] [1782449239.667338452]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449239.771077435]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449239.867742978]: Updating ModelState: model [my_robot] does not exist[0m
-[31m[ERROR] [1782449239.973312847]: Updating ModelState: model [my_robot] does not exist[0m
-[0m[INFO] [1782449176.149848869]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1782449176.161835238]: Requesting the map...[0m
-[0m[INFO] [1782449176.369933104]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1782449176.469647936]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1782449176.476140895]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782449176.480745518]:     Subscribed to Topics: scan scan_real[0m
-[0m[INFO] [1782449176.524974295]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1782449176.532159063]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782449176.630899628]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782449176.635549375]:     Subscribed to Topics: [0m
-[0m[INFO] [1782449176.652007554]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782449176.727046509]: Created local_planner apf_controller/APFController[0m
-[0m[INFO] [1782449177.223584432]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782449177.231852053]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782449177.285154636]: odom received![0m
-... logging to /home/lcy/.ros/log/e16ad970-7119-11f1-bdea-48b02df90897/roslaunch-ubuntu-24567.log
+[31m[ERROR] [1782449387.789481659]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449387.889428516]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782449387.896266958]: The /scan_fixed observation buffer has not been updated for 3.08 seconds, and it should be updated every 0.80 seconds.[0m
+[31m[ERROR] [1782449387.989375918]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449388.090416723]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449388.190072737]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449388.290081933]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449388.390093209]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782449388.396238631]: The /scan_fixed observation buffer has not been updated for 3.58 seconds, and it should be updated every 0.80 seconds.[0m
+[31m[ERROR] [1782449388.490046145]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449388.590038795]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449388.690056632]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449388.790349661]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449388.889996490]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782449388.896295109]: The /scan_fixed observation buffer has not been updated for 4.08 seconds, and it should be updated every 0.80 seconds.[0m
+[31m[ERROR] [1782449388.990095646]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449389.089761067]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449389.189841562]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449389.290129532]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449389.390134373]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782449389.396282099]: The /scan_fixed observation buffer has not been updated for 4.58 seconds, and it should be updated every 0.80 seconds.[0m
+[31m[ERROR] [1782449389.490460426]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449389.590086707]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449389.691401773]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449389.790018432]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449389.889831641]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782449389.896218235]: The /scan_fixed observation buffer has not been updated for 5.08 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782449389.896372488]: The scan_real observation buffer has not been updated for 5.06 seconds, and it should be updated every 5.00 seconds.[0m
+[31m[ERROR] [1782449389.989909928]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449390.089680892]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449390.189484369]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449390.290095948]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449390.389628171]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782449390.396263426]: The /scan_fixed observation buffer has not been updated for 5.58 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782449390.396421104]: The scan_real observation buffer has not been updated for 5.56 seconds, and it should be updated every 5.00 seconds.[0m
+[31m[ERROR] [1782449390.490115227]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449390.589881326]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449390.690087014]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449390.797525865]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449390.892938535]: Updating ModelState: model [my_robot] does not exist[0m
+[33m[WARN] [1782449390.897087114]: The /scan_fixed observation buffer has not been updated for 6.08 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782449390.897240439]: The scan_real observation buffer has not been updated for 6.06 seconds, and it should be updated every 5.00 seconds.[0m
+[31m[ERROR] [1782449391.003659458]: Updating ModelState: model [my_robot] does not exist[0m
+[31m[ERROR] [1782449391.105195530]: Updating ModelState: model [my_robot] does not exist[0m
+[0m[INFO] [1782449384.477934631]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1782449384.490622566]: Requesting the map...[0m
+[0m[INFO] [1782449384.694333774]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1782449384.794129777]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1782449384.800074575]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782449384.804894923]:     Subscribed to Topics: scan scan_real[0m
+[0m[INFO] [1782449384.850144751]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1782449384.857170057]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782449384.938584742]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782449384.942695782]:     Subscribed to Topics: [0m
+[0m[INFO] [1782449384.954511418]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782449385.041522038]: Created local_planner apf_controller/APFController[0m
+[0m[INFO] [1782449385.546703855]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782449385.555418201]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782449385.599124664]: odom received![0m
+... logging to /home/lcy/.ros/log/e16ad970-7119-11f1-bdea-48b02df90897/roslaunch-ubuntu-27125.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:38877/[0m
+[1mstarted roslaunch server http://ubuntu:38709/[0m
 
 SUMMARY
 ========
@@ -1146,7 +381,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [24610][0m
+[1mprocess[move_base-1]: started with pid [27179][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
