@@ -60,14 +60,19 @@ echo "[$(date +%H:%M:%S)] [3] loading robot_description" >> "$LOG_DIR/run.log"
 ROBOT_URDF_FILE="$WORKSPACE_DIR/my_robot/urdf/my_robot.urdf"
 if [ -f "$ROBOT_URDF_FILE" ]; then
     echo "[$(date +%H:%M:%S)] [3] URDF file exists ($(stat -c%s "$ROBOT_URDF_FILE") bytes)" >> "$LOG_DIR/run.log"
+    # 用 rosparam load 代替 set，更可靠
     rosparam set robot_description "$(cat "$ROBOT_URDF_FILE")"
-    if [ $? -eq 0 ]; then
-        echo "[$(date +%H:%M:%S)] [3] robot_description loaded successfully" >> "$LOG_DIR/run.log"
+    RET=$?
+    echo "[$(date +%H:%M:%S)] [3] rosparam set exit=$RET" >> "$LOG_DIR/run.log"
+    # 验证是否设置成功
+    if rosparam get robot_description > /dev/null 2>&1; then
+        echo "[$(date +%H:%M:%S)] [3] robot_description verified OK" >> "$LOG_DIR/run.log"
     else
-        echo "[$(date +%H:%M:%S)] [3] ❌ rosparam set FAILED" >> "$LOG_DIR/run.log"
+        echo "[$(date +%H:%M:%S)] [3] ❌ robot_description NOT on server after set" >> "$LOG_DIR/run.log"
     fi
 else
     echo "[$(date +%H:%M:%S)] [3] ❌ URDF file NOT FOUND: $ROBOT_URDF_FILE" >> "$LOG_DIR/run.log"
+    echo "[$(date +%H:%M:%S)] [3] WORKSPACE_DIR=$WORKSPACE_DIR" >> "$LOG_DIR/run.log"
 fi
 echo "  robot_description 已加载（自定义车模型）"
 
@@ -152,13 +157,16 @@ sleep 2
 echo "[$(date +%H:%M:%S)] [4] spawn_model start" >> "$LOG_DIR/run.log"
 echo "  检查 robot_description..."
 ROBO_URDF_FILE="$WORKSPACE_DIR/my_robot/urdf/my_robot.urdf"
-echo "[$(date +%H:%M:%S)] [4] URDF文件路径: $ROBO_URDF_FILE" >> "$LOG_DIR/run.log"
+echo "[$(date +%H:%M:%S)] [4] URDF: $ROBO_URDF_FILE" >> "$LOG_DIR/run.log"
 if [ -f "$ROBO_URDF_FILE" ]; then
-    echo "[$(date +%H:%M:%S)] [4] URDF文件存在，大小=$(stat -c%s "$ROBO_URDF_FILE")字节" >> "$LOG_DIR/run.log"
     rosparam set robot_description "$(cat "$ROBO_URDF_FILE")"
-    echo "[$(date +%H:%M:%S)] [4] robot_description已重新加载" >> "$LOG_DIR/run.log"
+    if rosparam get robot_description > /dev/null 2>&1; then
+        echo "[$(date +%H:%M:%S)] [4] robot_description OK" >> "$LOG_DIR/run.log"
+    else
+        echo "[$(date +%H:%M:%S)] [4] ❌ robot_description STILL MISSING after set" >> "$LOG_DIR/run.log"
+    fi
 else
-    echo "[$(date +%H:%M:%S)] [4] ❌ URDF文件不存在!" >> "$LOG_DIR/run.log"
+    echo "[$(date +%H:%M:%S)] [4] ❌ URDF NOT FOUND" >> "$LOG_DIR/run.log"
 fi
 echo "  正在生成机器人模型..."
 rosrun gazebo_ros spawn_model -urdf \
