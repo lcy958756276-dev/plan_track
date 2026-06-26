@@ -37,9 +37,9 @@ class GazeboSync:
         self.scan_pub = rospy.Publisher("/scan_fixed", LaserScan, queue_size=10)
         rospy.Subscriber("/scan", LaserScan, self.scan_cb, queue_size=10)
 
-        # ── 定期清理 costmap 旧标记（混合像素、动态障碍物） ──
+        # ── 定期清理 costmap 旧标记（动态障碍物 / 混合像素残留） ──
         self.clear_costmap_srv = None
-        rospy.Timer(rospy.Duration(0.61), self.clear_costmap_timer)
+        rospy.Timer(rospy.Duration(1.0), self.clear_costmap_timer)
 
         # ── 主循环（5Hz）：不断尝试服务 + 同步位置 ──
         # 注意：10Hz 太频繁，set_model_state 容易超时（returned no response）
