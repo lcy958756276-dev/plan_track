@@ -26,6 +26,7 @@ class GazeboSync:
         self.got_odom = False
         self.have_service = False
         self.set_state = None
+        self.service_retry_delay = 0.5  # 初始重试间隔（指数退避）
 
         # ── 订阅 /odom ──
         rospy.Subscriber("/odom", Odometry, self.odom_cb, queue_size=10)
@@ -34,8 +35,9 @@ class GazeboSync:
         self.scan_pub = rospy.Publisher("/scan_fixed", LaserScan, queue_size=10)
         rospy.Subscriber("/scan", LaserScan, self.scan_cb, queue_size=10)
 
-        # ── 主循环（10Hz）：不断尝试服务 + 同步位置 ──
-        rospy.Timer(rospy.Duration(0.1), self.main_timer)
+        # ── 主循环（5Hz）：不断尝试服务 + 同步位置 ──
+        # 注意：10Hz 太频繁，set_model_state 容易超时（returned no response）
+        rospy.Timer(rospy.Duration(0.2), self.main_timer)
 
         rospy.loginfo("gazebo_sync 已启动")
         rospy.loginfo("  持续尝试连接 /gz_debug/set_model_state ...")
@@ -47,18 +49,24 @@ class GazeboSync:
     def main_timer(self, event):
         now = rospy.Time.now()
 
-        # ── 如果还没连上服务，持续尝试 ──
+        # ── 如果还没连上服务，持续尝试（指数退避） ──
         if not self.have_service:
+            # 还没到重试时间就跳过
+            if hasattr(self, '_next_retry') and rospy.Time.now().to_sec() < self._next_retry:
+                return
             try:
                 rospy.wait_for_service("/gz_debug/set_model_state", timeout=0.5)
                 self.set_state = rospy.ServiceProxy(
                     "/gz_debug/set_model_state", SetModelState
                 )
                 self.have_service = True
+                self.service_retry_delay = 0.5   # 成功后重置退避
                 rospy.loginfo("  ✅ 已连接 /gz_debug/set_model_state")
             except rospy.ROSException:
-                # 还没就绪，等下一轮
-                rospy.loginfo_throttle(5.0, "  等待 /gz_debug/set_model_state 服务就绪...")
+                # 还没就绪，指数退避
+                self._next_retry = rospy.Time.now().to_sec() + self.service_retry_delay
+                self.service_retry_delay = min(self.service_retry_delay * 2, 10.0)  # 最大10秒
+                rospy.loginfo_throttle(5.0, f"  等待 /gz_debug/set_model_state 服务就绪... (退避 {self.service_retry_delay:.0f}s)")
                 # 每 10 秒打印一次所有 Gazebo 相关服务，诊断
                 diag_counter = int(rospy.Time.now().to_sec() / 10)
                 if not hasattr(self, '_last_diag') or self._last_diag != diag_counter:
@@ -96,9 +104,12 @@ class GazeboSync:
                 f"已同步 Gazebo 位置: x={pose.position.x:.2f} y={pose.position.y:.2f} θ={pose.orientation.z:.2f}",
             )
         except rospy.ServiceException as e:
-            rospy.logwarn(f"set_model_state 失败: {e}")
+            rospy.logwarn_throttle(5.0, f"set_model_state 失败: {e}")
             self.have_service = False  # 服务挂了，重新尝试
             self.set_state = None
+            # 指数退避重试，防止高频重试把 Gazebo 打崩
+            self.service_retry_delay = min(self.service_retry_delay * 2, 10.0)
+            self._next_retry = rospy.Time.now().to_sec() + self.service_retry_delay
 
     def scan_cb(self, msg):
         """修复 LaserScan 时间戳"""

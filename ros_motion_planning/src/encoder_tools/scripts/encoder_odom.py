@@ -209,20 +209,32 @@ class EncoderOdometry:
         self.tf_br.sendTransform(t)
 
     def _pub_zero_tf(self, stamp):
-        """发布零位姿 /odom + TF（无编码器数据时保持 TF 树完整）"""
-        # 发布零 odom
+        """发布初始位姿 /odom + TF（无编码器数据时保持 TF 树完整）"""
+        # 使用 initial_x / initial_y / initial_yaw，让 gazebo_sync 看到正确位置
         odom = Odometry()
         odom.header.stamp = stamp
         odom.header.frame_id = "odom"
         odom.child_frame_id = "base_footprint"
-        odom.pose.pose.orientation.w = 1.0
+        odom.pose.pose.position.x = self.x   # ← 使用 initial_x
+        odom.pose.pose.position.y = self.y   # ← 使用 initial_y
+        q = tf_trans.quaternion_from_euler(0, 0, self.theta)  # ← 使用 initial_yaw
+        odom.pose.pose.orientation.x = q[0]
+        odom.pose.pose.orientation.y = q[1]
+        odom.pose.pose.orientation.z = q[2]
+        odom.pose.pose.orientation.w = q[3]
         self.odom_pub.publish(odom)
-        # 发布零 TF
+        # 发布初始 TF
         t = TransformStamped()
         t.header.stamp = stamp
         t.header.frame_id = "odom"
         t.child_frame_id = "base_footprint"
-        t.transform.rotation.w = 1.0
+        t.transform.translation.x = self.x
+        t.transform.translation.y = self.y
+        t.transform.translation.z = 0.0
+        t.transform.rotation.x = q[0]
+        t.transform.rotation.y = q[1]
+        t.transform.rotation.z = q[2]
+        t.transform.rotation.w = q[3]
         self.tf_br.sendTransform(t)
 
 
