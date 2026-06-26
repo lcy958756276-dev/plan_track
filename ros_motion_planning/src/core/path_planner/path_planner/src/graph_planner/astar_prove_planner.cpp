@@ -98,10 +98,28 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
         raw_path.emplace_back(wx, wy);
       }
 
-      // smooth path using cubic spline interpolation
-      if (raw_path.size() >= 3) {
+      // simplify path: extract only turning points (where direction changes > 10°)
+      Points3d key_points;
+      key_points.emplace_back(raw_path.front());
+      for (size_t i = 2; i < raw_path.size(); ++i) {
+        double dx1 = raw_path[i-1].x() - raw_path[i-2].x();
+        double dy1 = raw_path[i-1].y() - raw_path[i-2].y();
+        double dx2 = raw_path[i].x()   - raw_path[i-1].x();
+        double dy2 = raw_path[i].y()   - raw_path[i-1].y();
+        double angle = std::atan2(dy1, dx1) - std::atan2(dy2, dx2);
+        // normalize to [-π, π]
+        while (angle > M_PI) angle -= 2 * M_PI;
+        while (angle < -M_PI) angle += 2 * M_PI;
+        if (std::abs(angle) > 0.174) {  // 10° threshold
+          key_points.emplace_back(raw_path[i-1]);
+        }
+      }
+      key_points.emplace_back(raw_path.back());
+
+      // smooth path using cubic spline interpolation on key points
+      if (key_points.size() >= 3) {
         CubicSplineCurve spline(0.1);  // step = 0.1m
-        spline.run(raw_path, *path);
+        spline.run(key_points, *path);
       } else {
         // too short to smooth, use raw path directly
         *path = raw_path;
