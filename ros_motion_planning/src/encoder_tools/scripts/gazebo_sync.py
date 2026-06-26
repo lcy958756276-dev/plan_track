@@ -17,6 +17,7 @@ import sys
 import os
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import LaserScan
+from std_srvs.srv import Empty
 from gazebo_msgs.srv import SetModelState
 from gazebo_msgs.msg import ModelState
 
@@ -35,6 +36,10 @@ class GazeboSync:
         # ── LaserScan 时间戳修复 ──
         self.scan_pub = rospy.Publisher("/scan_fixed", LaserScan, queue_size=10)
         rospy.Subscriber("/scan", LaserScan, self.scan_cb, queue_size=10)
+
+        # ── 定期清理 costmap 旧标记（动态障碍物 / 混合像素残留） ──
+        self.clear_costmap_srv = None
+        rospy.Timer(rospy.Duration(0.3), self.clear_costmap_timer)
 
         # ── 主循环（5Hz）：不断尝试服务 + 同步位置 ──
         # 注意：10Hz 太频繁，set_model_state 容易超时（returned no response）
@@ -164,6 +169,23 @@ class GazeboSync:
         msg.header.stamp = rospy.Time.now()
         msg.header.frame_id = "base_scan"
         self.scan_pub.publish(msg)
+
+    def clear_costmap_timer(self, event):
+        """每 3 秒调用 clear_costmaps 服务，清除旧的 obstacle 标记"""
+        if self.clear_costmap_srv is None:
+            try:
+                rospy.wait_for_service("/move_base/clear_costmaps", timeout=0.5)
+                self.clear_costmap_srv = rospy.ServiceProxy(
+                    "/move_base/clear_costmaps", Empty
+                )
+            except (rospy.ROSException, rospy.ServiceException):
+                return
+
+        try:
+            self.clear_costmap_srv()
+            rospy.loginfo_throttle(10.0, "已清理 costmap 旧障碍物标记")
+        except rospy.ServiceException:
+            self.clear_costmap_srv = None
 
 
 if __name__ == "__main__":
