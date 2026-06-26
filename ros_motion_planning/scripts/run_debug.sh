@@ -13,6 +13,8 @@ WORKSPACE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 LOG_DIR="$WORKSPACE_DIR/log"
 
 source "$WORKSPACE_DIR/devel/setup.bash"
+# my_robot 在 src/ 外面，需要手动加入 ROS 包路径
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$WORKSPACE_DIR/my_robot
 mkdir -p "$LOG_DIR"
 
 # 强制清理残留的 Gazebo、map_server 进程
