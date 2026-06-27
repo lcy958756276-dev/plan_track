@@ -1,31 +1,23 @@
-=== 启动时间: 2026年 06月 26日 星期五 22:48:15 CST ===
-[22:48:15] [1] main_generate.py start
-[22:48:16] [1] main_generate.py done
-[22:48:16] [2] use_encoder_odom flag set
-[22:48:16] [3] loading robot_description
-[22:48:16] [3] robot_description loaded
-[33m[WARN] [1782485297.221682371]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
-[22:48:19] [4] starting gzserver
-[22:48:26] [4] spawn_model start
-[INFO] [1782485307.483892]: Loading model XML from ros parameter robot_description
-[INFO] [1782485307.499061]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1782485307.504959]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1782485308.059309]: Spawn status: SpawnModel: Successfully spawned entity
-[22:48:28] [4] spawn_model exit=0
-[22:48:39] [8] generating move_base launch file
-[22:48:39] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 06月 27日 星期六 12:17:44 CST ===
+[12:17:44] [1] main_generate.py start
+[12:17:44] [1] main_generate.py done
+[12:17:44] [2] use_encoder_odom flag set
+[12:17:44] [3] loading robot_description
+[12:17:45] [3] robot_description loaded
+[33m[WARN] [1782533865.598271712]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[12:17:48] [4] starting gzserver
+[12:17:54] [4] spawn_model start
+[INFO] [1782533875.784886, 0.000000]: Loading model XML from ros parameter robot_description
+[INFO] [1782533875.793159, 0.000000]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1782533875.799871, 0.000000]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1782533876.281493, 289.460000]: Spawn status: SpawnModel: Successfully spawned entity
+[12:17:57] [4] spawn_model exit=0
+[12:18:07] [8] generating move_base launch file
+[12:18:07] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
-path_planner/PathPlanner
-mpc_controller/MPCController
-- name: static_map
-  type: costmap_2d::StaticLayer
-- name: obstacle_layer
-  type: costmap_2d::ObstacleLayer
-- name: voronoi_layer
-  type: costmap_2d::VoronoiLayer
-- name: inflation_layer
-  type: costmap_2d::InflationLayer
-
+  [诊断] base_global_planner 参数未设置
+  [诊断] base_local_planner 参数未设置
+  [诊断] global_costmap/plugins 参数未设置
   [诊断] rospack plugins nav_core:
 path_planner /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/path_planner_plugin.xml
 mpc_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/mpc_controller/mpc_controller_plugin.xml
@@ -44,13 +36,13 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1782485321.209978925]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1782485321.218845294]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1782533889.625581161]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1782533889.628031698]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260626 22:48:41.669775 188647 path_planner_factory.cpp:133] Using path planner: astar_prove
-[33m[WARN] [1782485321.699973285]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-I20260626 22:48:41.788412 188647 apf_controller.cpp:77] APF controller initialized!
-[22:48:42] [8] move_base 启动后状态:
+I20260627 12:18:10.079957 81611 path_planner_factory.cpp:133] Using path planner: astar_prove
+[33m[WARN] [1782533890.098692584]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260627 12:18:10.178525 81611 apf_controller.cpp:77] APF controller initialized!
+[12:18:11] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -111,340 +103,27 @@ I20260626 22:48:41.788412 188647 apf_controller.cpp:77] APF controller initializ
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-I20260626 22:49:00.891973 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:01.391902 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:01.891909 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:02.391913 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:02.891904 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:03.391917 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:03.891911 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:04.391912 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:04.891906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:05.391933 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:05.891918 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:06.391920 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:06.891904 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:07.391906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:07.891912 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:08.392063 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:08.891907 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:09.391996 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:09.891908 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:10.391906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:10.891901 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:11.391907 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:11.891906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:12.391898 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:12.891911 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:13.391906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:13.891933 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:14.391906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:14.891904 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:15.391912 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:15.891902 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:16.391913 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:16.891916 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:17.391907 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:17.891916 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:18.391983 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:18.891902 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:19.391907 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:19.891903 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:20.391907 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:20.891903 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:21.391914 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:21.891906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:22.391920 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:22.891912 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:23.391913 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:23.891909 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:24.391920 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:24.891913 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:25.391934 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:25.891906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:26.391914 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:26.891901 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:27.391923 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:27.891907 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:28.391898 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:28.891911 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:29.391912 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:29.891920 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:30.391902 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:30.891904 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:31.391906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:31.891906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:32.391947 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:32.891952 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:33.391914 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:33.891906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:34.391912 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:34.891906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:35.391971 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:35.891901 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:36.391911 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:36.891889 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:37.391918 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:37.891911 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:38.391999 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:38.891870 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:39.391959 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:39.891908 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:40.391903 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:40.891908 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:41.391906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:41.891924 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:42.391907 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:42.891908 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:43.391917 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:43.891901 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:44.391901 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:44.891909 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:45.391907 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:45.891906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:46.391912 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:46.891908 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:47.391911 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:47.891907 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:48.391909 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:48.891909 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:49.391911 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:49.891911 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:50.391906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:50.891909 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:51.391907 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:51.891906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:52.391911 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:52.891923 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:53.391911 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:53.891908 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:54.391908 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:54.891907 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:55.391925 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:55.891916 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:56.391992 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:56.891909 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:57.391914 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:57.891908 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:58.391947 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:58.891916 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:59.391911 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:49:59.891913 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:00.391902 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:00.891911 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:01.391932 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:01.891911 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:02.391906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:02.891898 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:03.391909 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:03.891983 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:04.391902 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:04.891923 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:05.391907 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:05.891913 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:06.391906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:06.891901 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:07.391908 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:07.891913 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:08.391902 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:08.891909 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:09.391947 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:09.891907 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:10.391999 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:10.891942 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:11.391916 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:11.891912 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:12.391899 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:12.891932 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:13.391916 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:13.891918 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:14.391903 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:14.891908 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:15.391920 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:15.891927 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:16.391969 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:16.891920 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:17.391918 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:17.891923 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:18.391913 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:18.891899 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:19.391906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:19.891906 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:20.391904 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:20.891918 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:21.391932 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:21.891916 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:22.391897 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:22.891916 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:22.991940 188657 apf_controller.cpp:126] GOAL Reached!
-I20260626 22:50:30.590406 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:31.090379 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:31.590400 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:32.090376 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:32.590425 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:33.090370 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:33.590380 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:34.090379 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:34.590368 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:35.090384 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:35.591562 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:36.090376 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:36.590917 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:37.090454 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:37.590385 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:38.090373 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:38.590476 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:39.090381 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:39.590382 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:40.090378 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:40.590422 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:41.090390 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:41.590391 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:42.090382 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:42.590412 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:43.090389 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:43.590504 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:44.090382 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:44.590996 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:45.090407 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:45.590386 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:46.090391 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:46.590509 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:47.090380 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:47.590366 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:48.090375 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:48.590395 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:49.090381 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:49.590384 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:50.090384 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:50.590387 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:51.090408 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:51.590404 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:52.090389 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:52.590564 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:53.090359 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:53.590384 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:54.090346 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:54.590372 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:55.090374 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:55.590371 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:56.090394 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:56.590377 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:57.090384 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:57.590360 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:58.090391 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:58.590378 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:59.090888 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:50:59.591822 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:00.090394 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:00.590459 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:01.090380 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:01.591193 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:02.090371 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:02.590389 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:03.090379 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:03.590372 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:04.090427 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:04.590751 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:05.090380 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:05.590394 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:06.090381 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:06.590409 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:07.090376 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:07.590482 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:08.090385 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:08.590395 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:09.090382 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:09.590420 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:10.090413 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:10.590390 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:11.090404 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:11.590382 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:12.090377 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:12.590416 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:13.090384 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:13.590405 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:14.090381 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:14.590427 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:15.090391 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:15.590369 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:16.090380 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:16.590392 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:17.090389 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:17.591061 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:18.090390 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:18.590523 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:19.090376 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:19.590381 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:20.090372 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:20.590898 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:21.090373 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:21.590440 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:22.090378 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:22.590963 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:23.090381 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:23.590564 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:24.090430 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:24.590382 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:25.090389 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:25.590387 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:26.090391 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:26.590385 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:27.090390 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:27.590376 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:28.090391 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:28.590440 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:29.090382 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:29.590430 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:30.090402 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:30.590382 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:31.090381 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:31.590719 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:32.090387 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:32.590425 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:33.090378 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:33.590648 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:34.090384 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:34.590369 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:35.090387 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:35.590378 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:36.090376 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:36.590410 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:37.090384 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:37.590394 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:38.090402 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:38.590430 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:39.090427 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:39.590392 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:40.090413 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:40.590448 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:41.090404 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:41.591069 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:42.090405 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:42.590387 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:43.090426 188657 apf_controller.cpp:97] Got new plan
-I20260626 22:51:43.590395 188657 apf_controller.cpp:97] Got new plan
-[0m[INFO] [1782485321.222259239]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1782485321.237101260]: Requesting the map...[0m
-[0m[INFO] [1782485321.441443259]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1782485321.541161085]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1782485321.548123383]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782485321.552296729]:     Subscribed to Topics: scan scan_real[0m
-[0m[INFO] [1782485321.600430989]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1782485321.609513337]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782485321.702454444]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782485321.708210724]:     Subscribed to Topics: [0m
-[0m[INFO] [1782485321.720693642]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782485321.780674688]: Created local_planner apf_controller/APFController[0m
-[0m[INFO] [1782485322.279098776]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782485322.289264703]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782485322.347542903]: odom received![0m
-... logging to /home/lcy/.ros/log/41c951fe-7131-11f1-9a6b-48b02df90897/roslaunch-ubuntu-188622.log
+[0m[INFO] [1782533889.629513905]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1782533889.641134788]: Requesting the map...[0m
+[0m[INFO] [1782533889.844918631]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1782533889.944711103]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1782533889.949887485]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782533889.953486199]:     Subscribed to Topics: scan scan_real[0m
+[0m[INFO] [1782533890.003545050]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1782533890.010509573]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782533890.100362352]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782533890.103351440]:     Subscribed to Topics: [0m
+[0m[INFO] [1782533890.116810513]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782533890.174194764]: Created local_planner apf_controller/APFController[0m
+[0m[INFO] [1782533890.666326738]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782533890.675321492]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782533890.717687147]: odom received![0m
+... logging to /home/lcy/.ros/log/1da4c91c-71df-11f1-8182-48b02df90897/roslaunch-ubuntu-81585.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:34941/[0m
+[1mstarted roslaunch server http://ubuntu:35713/[0m
 
 SUMMARY
 ========
@@ -532,7 +211,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [188647][0m
+[1mprocess[move_base-1]: started with pid [81611][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
