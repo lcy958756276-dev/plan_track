@@ -70,7 +70,7 @@ class PreRotate:
         if abs(err) < self.alignment_tol:
             # 先停稳再转发 goal
             self.cmd_pub.publish(Twist())
-            rospy.sleep(1.0)
+            rospy.sleep(0.1)
             self.cmd_pub.publish(Twist())
             rospy.loginfo("pre_rotate: aligned, send goal to move_base")
             self.goal_pub.publish(self.goal)
