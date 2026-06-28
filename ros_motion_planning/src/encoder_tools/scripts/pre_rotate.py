@@ -11,6 +11,7 @@ class PreRotate:
         self.angle_threshold = math.radians(15.0)
         self.alignment_tol = math.radians(3.0)
         self.max_angular = 0.6                         # rad/s，慢一点更稳
+        self.kp_rot = 1.5                              # 比例减速系数，越靠近目标转得越慢
 
         self.x = 0.0
         self.y = 0.0
@@ -78,7 +79,8 @@ class PreRotate:
             self.goal = None
         else:
             twist = Twist()
-            twist.angular.z = self.max_angular if err > 0 else -self.max_angular
+            raw = self.kp_rot * err
+            twist.angular.z = max(-self.max_angular, min(self.max_angular, raw))
             self.cmd_pub.publish(twist)
 
     @staticmethod
