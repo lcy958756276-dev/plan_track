@@ -212,15 +212,6 @@ echo "  PID=$PID_PREROT"
 
 sleep 1
 
-# ── 7.6 启动 path_guard ──
-echo "[7.6/8] 启动 path_guard.py (路径安全兜底: 穿墙则丢弃+重规划)..."
-rosrun encoder_tools path_guard.py \
-    > "$LOG_DIR/path_guard.log" 2>&1 &
-PID_GUARD=$!
-echo "  PID=$PID_GUARD"
-
-sleep 1
-
 # ── 8. 启动 move_base（全局规划器）──
 echo "[8/8] 启动 move_base（A* 全局规划器，仅规划不跟踪）..."
 echo "[$(date +%H:%M:%S)] [8] generating move_base launch file" >> "$LOG_DIR/run.log"
@@ -307,7 +298,6 @@ echo "$PID_READ"     > "$LOG_DIR/.pid_read"
 echo "$PID_ODOM"     > "$LOG_DIR/.pid_odom"
 echo "$PID_SYNC"     > "$LOG_DIR/.pid_sync"
 echo "$PID_PREROT"   > "$LOG_DIR/.pid_prerot"
-echo "$PID_GUARD"    > "$LOG_DIR/.pid_guard"
 echo "$PID_MB"        > "$LOG_DIR/.pid_move_base"
 
 echo ""
