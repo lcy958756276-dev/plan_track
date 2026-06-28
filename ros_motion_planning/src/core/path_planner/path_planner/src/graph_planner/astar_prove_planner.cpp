@@ -132,31 +132,7 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
       }
 
       // shortcut optimization: remove detours by straight-line shortcuts (from matlab.txt Stage 3)
-      shortcutOptimize(smooth_path);
-
-      // ── 最终安全兜底检查 ──
-      // 遍历路径每个点，若有任意点在 lethal 格子上则拒绝整条路径。
-      // 场景：clear_costmaps 短暂清空后规划器跑在空白地图上，但局部
-      // 规划器执行时障碍物已重新出现。拒绝后 move_base 沿用上一条
-      // 正确路径，等下一个 planning cycle 重新规划。
-      bool path_safe = true;
-      for (const auto& pt : smooth_path) {
-        double mx, my;
-        if (world2Map(pt.x(), pt.y(), mx, my)) {
-          int idx = grid2Index(static_cast<int>(mx), static_cast<int>(my));
-          if (idx >= 0 && idx < map_size_ &&
-              costmap_->getCharMap()[idx] >=
-                  costmap_2d::LETHAL_OBSTACLE * config_.obstacle_inflation_factor()) {
-            path_safe = false;
-            break;
-          }
-        }
-      }
-      if (!path_safe) {
-        R_WARN << "astar_prove: 最终路径穿过障碍物，已拒绝（costmap 可能刚清空）";
-        path->clear();
-        return false;
-      }
+      // shortcutOptimize(smooth_path);  // TODO: 暂时注释，测试穿障碍是否由剪裁引起
 
       *path = smooth_path;
 
