@@ -79,6 +79,9 @@ class ClearScheduler:
             return
 
         self.plan_count += 1
+        rospy.loginfo(
+            f"clear_scheduler: 📊 plan #{self.plan_count}/{self.PLANS_PER_CYCLE}"
+        )
 
         if self.plan_count >= self.PLANS_PER_CYCLE:
             self.plan_count = 0
