@@ -1,19 +1,19 @@
-=== 启动时间: 2026年 06月 28日 星期日 14:21:43 CST ===
-[14:21:43] [1] main_generate.py start
-[14:21:44] [1] main_generate.py done
-[14:21:44] [2] use_encoder_odom flag set
-[14:21:44] [3] loading robot_description
-[14:21:44] [3] robot_description loaded
-[33m[WARN] [1782627705.132486672]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
-[14:21:47] [4] starting gzserver
-[14:21:54] [4] spawn_model start
-[INFO] [1782627715.340569]: Loading model XML from ros parameter robot_description
-[INFO] [1782627715.349688]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1782627715.355810]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1782627715.817883]: Spawn status: SpawnModel: Successfully spawned entity
-[14:21:56] [4] spawn_model exit=0
-[14:22:06] [8] generating move_base launch file
-[14:22:06] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 06月 28日 星期日 14:31:06 CST ===
+[14:31:06] [1] main_generate.py start
+[14:31:07] [1] main_generate.py done
+[14:31:07] [2] use_encoder_odom flag set
+[14:31:07] [3] loading robot_description
+[14:31:07] [3] robot_description loaded
+[33m[WARN] [1782628267.997833204]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[14:31:10] [4] starting gzserver
+[14:31:17] [4] spawn_model start
+[INFO] [1782628278.203563]: Loading model XML from ros parameter robot_description
+[INFO] [1782628278.212457]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1782628278.218084]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1782628278.771378]: Spawn status: SpawnModel: Successfully spawned entity
+[14:31:19] [4] spawn_model exit=0
+[14:31:29] [8] generating move_base launch file
+[14:31:29] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 apf_controller/APFController
@@ -44,14 +44,13 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1782627729.004234211]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1782627729.006266302]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1782628291.996356010]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1782628292.000461964]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-E20260628 14:22:09.456697 30688 path_planner_factory.cpp:129] Unknown planner name: proved_apf_planner
-E20260628 14:22:09.457087 30688 path_planner_node.cpp:77] Create path planner failed.
-[33m[WARN] [1782627729.469193622]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-I20260628 14:22:09.582578 30688 apf_controller.cpp:77] APF controller initialized!
-[14:22:10] [8] move_base 启动后状态:
+I20260628 14:31:32.435858 37862 path_planner_factory.cpp:133] Using path planner: astar_prove
+[33m[WARN] [1782628292.447660656]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260628 14:31:32.564530 37862 apf_controller.cpp:77] APF controller initialized!
+[14:31:33] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -112,20 +111,42 @@ I20260628 14:22:09.582578 30688 apf_controller.cpp:77] APF controller initialize
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-[31m[move_base-1] process has died [pid 30688, exit code -11, cmd /opt/ros/noetic/lib/move_base/move_base map:=/map move_base_simple/goal:=/goal_rotated __name:=move_base __log:=/home/lcy/.ros/log/c36d78ac-72b2-11f1-94f3-48b02df90897/move_base-1.log].
-log file: /home/lcy/.ros/log/c36d78ac-72b2-11f1-94f3-48b02df90897/move_base-1*.log[0m
-... logging to /home/lcy/.ros/log/c36d78ac-72b2-11f1-94f3-48b02df90897/roslaunch-ubuntu-30664.log
+I20260628 14:31:48.771121 37870 apf_controller.cpp:97] Got new plan
+I20260628 14:31:49.271029 37870 apf_controller.cpp:97] Got new plan
+I20260628 14:31:49.771034 37870 apf_controller.cpp:97] Got new plan
+I20260628 14:31:50.271039 37870 apf_controller.cpp:97] Got new plan
+I20260628 14:31:50.771073 37870 apf_controller.cpp:97] Got new plan
+I20260628 14:31:51.271085 37870 apf_controller.cpp:97] Got new plan
+I20260628 14:31:51.771031 37870 apf_controller.cpp:97] Got new plan
+I20260628 14:31:52.271013 37870 apf_controller.cpp:97] Got new plan
+I20260628 14:31:52.771632 37870 apf_controller.cpp:97] Got new plan
+[0m[INFO] [1782628292.002223683]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1782628292.014328898]: Requesting the map...[0m
+[0m[INFO] [1782628292.218545823]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1782628292.318334772]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1782628292.323725215]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782628292.327965317]:     Subscribed to Topics: scan scan_real[0m
+[0m[INFO] [1782628292.366651885]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1782628292.373464101]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782628292.449378214]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782628292.454468296]:     Subscribed to Topics: [0m
+[0m[INFO] [1782628292.480659012]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782628292.560148823]: Created local_planner apf_controller/APFController[0m
+[0m[INFO] [1782628293.053641812]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782628293.061363337]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782628293.103088273]: odom received![0m
+... logging to /home/lcy/.ros/log/c36d78ac-72b2-11f1-94f3-48b02df90897/roslaunch-ubuntu-37805.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:38793/[0m
+[1mstarted roslaunch server http://ubuntu:34033/[0m
 
 SUMMARY
 ========
 
 PARAMETERS
- * /move_base/PathPlanner/planner_name: proved_apf_planner
+ * /move_base/PathPlanner/planner_name: astar_prove
  * /move_base/base_global_planner: path_planner/Path...
  * /move_base/base_local_planner: apf_controller/AP...
  * /move_base/conservative_reset_dist: 3.0
@@ -207,8 +228,8 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [30688][0m
-all processes on machine have died, roslaunch will exit
+[1mprocess[move_base-1]: started with pid [37862][0m
+[move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
 [1mdone[0m
