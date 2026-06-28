@@ -36,6 +36,7 @@ class GazeboSync:
         self.scan_pub = rospy.Publisher("/scan_fixed", LaserScan, queue_size=10)
         rospy.Subscriber("/scan", LaserScan, self.scan_cb, queue_size=10)
 
+        # 注：clear_costmaps 由 clear_scheduler 同步调度，不再在此异步定时
         # ── 主循环（5Hz）：不断尝试服务 + 同步位置 ──
         # 注意：10Hz 太频繁，set_model_state 容易超时（returned no response）
         rospy.Timer(rospy.Duration(0.2), self.main_timer)

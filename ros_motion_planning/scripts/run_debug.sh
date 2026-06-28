@@ -212,6 +212,15 @@ echo "  PID=$PID_PREROT"
 
 sleep 1
 
+# ── 7.6 启动 clear_scheduler ──
+echo "[7.6/8] 启动 clear_scheduler.py (同步 clear + planner 周期)..."
+rosrun encoder_tools clear_scheduler.py \
+    > "$LOG_DIR/clear_scheduler.log" 2>&1 &
+PID_CLEAR_SCHED=$!
+echo "  PID=$PID_CLEAR_SCHED"
+
+sleep 1
+
 # ── 8. 启动 move_base（全局规划器）──
 echo "[8/8] 启动 move_base（A* 全局规划器，仅规划不跟踪）..."
 echo "[$(date +%H:%M:%S)] [8] generating move_base launch file" >> "$LOG_DIR/run.log"
@@ -297,8 +306,9 @@ echo "$PID_RVIZ"     > "$LOG_DIR/.pid_rviz"
 echo "$PID_READ"     > "$LOG_DIR/.pid_read"
 echo "$PID_ODOM"     > "$LOG_DIR/.pid_odom"
 echo "$PID_SYNC"     > "$LOG_DIR/.pid_sync"
-echo "$PID_PREROT"   > "$LOG_DIR/.pid_prerot"
-echo "$PID_MB"        > "$LOG_DIR/.pid_move_base"
+echo "$PID_PREROT"     > "$LOG_DIR/.pid_prerot"
+echo "$PID_CLEAR_SCHED" > "$LOG_DIR/.pid_clear_sched"
+echo "$PID_MB"          > "$LOG_DIR/.pid_move_base"
 
 echo ""
 echo "========================================"
