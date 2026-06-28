@@ -120,19 +120,12 @@ class GazeboSync:
             self._next_retry = rospy.Time.now().to_sec() + self.service_retry_delay
 
     def scan_cb(self, msg):
-        """修复 LaserScan 时间戳 + 过滤自检测 + 去除孤点（混合像素）+ 时间域一致性"""
-        # 初始化时间域滤波器（每束激光的历史 range 环形 buffer）
-        if not hasattr(self, '_range_history'):
-            n = len(msg.ranges)
-            self._range_history = [None] * n   # 每束保留最近 3 帧
-            self._range_n = 3
-            for i in range(n):
-                self._range_history[i] = [0.0] * self._range_n
-            self._range_idx = 0
-            self._range_tol = 0.05  # 容忍度（米），约 1 个 costmap 格子
-
-        # 机器人自身过滤范围（相对 base_scan）
-        SELF_MIN_X = -0.3
+        """修复 LaserScan 时间戳 + 过滤自检测 + 去除孤点（混合像素）"""
+        # 机器人足迹（相对 base_link）
+        # footprint: [[-0.1, -0.3], [-0.1, 0.3], [0.8, 0.3], [0.8, -0.3]]
+        # base_scan 在 base_link 下的坐标: x=0.19, y=0
+        # 在 base_scan 坐标系内，车身范围大致为一个矩形
+        SELF_MIN_X = -0.3   # 车身在 base_scan 背后的范围
         SELF_MAX_X = 0.2
         SELF_MIN_Y = -0.35
         SELF_MAX_Y = 0.35
@@ -140,48 +133,27 @@ class GazeboSync:
         ranges = list(msg.ranges)
         angle_min = msg.angle_min
         angle_increment = msg.angle_increment
-        bidx = self._range_idx  # 当前帧写入环形 buffer 的位置
 
         for i in range(len(ranges)):
             r = ranges[i]
             if r < msg.range_min or r > msg.range_max:
-                # 无效点不参与时间域滤波
-                self._range_history[i][bidx] = r
                 continue
 
-            # ── (1) 自检测过滤 ──
+            # (1) 过滤自检测：计算该点在 base_scan 坐标系下的 (x, y)
             theta = angle_min + i * angle_increment
             px = r * math.cos(theta)
             py = r * math.sin(theta)
             if SELF_MIN_X <= px <= SELF_MAX_X and SELF_MIN_Y <= py <= SELF_MAX_Y:
-                ranges[i] = msg.range_max + 1.0
-                self._range_history[i][bidx] = r
+                ranges[i] = msg.range_max + 1.0  # 设为无效
                 continue
 
-            # ── (2) 混合像素过滤（空间域） ──
+            # (2) 混合像素过滤：与左右邻居对比（用原始数据 msg.ranges，避免被自过滤影响）
             if 0 < i < len(ranges) - 1:
                 r_prev = msg.ranges[i - 1]
                 r_next = msg.ranges[i + 1]
                 if r_prev < msg.range_max and r_next < msg.range_max:
                     if abs(r - r_prev) > 0.07 and abs(r - r_next) > 0.07:
-                        ranges[i] = msg.range_max + 1.0
-                        self._range_history[i][bidx] = r
-                        continue
-
-            # ── (3) 时间域一致性滤波 ──
-            # 保存当前帧到环形 buffer
-            hist = self._range_history[i]
-            hist[bidx] = r
-            # 取前几帧的中位数作为参考（排除无效值）
-            valid_vals = [v for v in hist if v > msg.range_min and v < msg.range_max]
-            if len(valid_vals) >= 2:
-                median = sorted(valid_vals)[len(valid_vals) // 2]
-                # 当前值偏离中位数超过容忍度 → 可能是噪声抖动，抑制掉
-                if abs(r - median) > self._range_tol:
-                    ranges[i] = msg.range_max + 1.0
-
-        # 更新环形 buffer 写指针
-        self._range_idx = (bidx + 1) % self._range_n
+                        ranges[i] = msg.range_max + 1.0  # 设为无效
 
         msg.ranges = tuple(ranges)
         msg.header.stamp = rospy.Time.now()
