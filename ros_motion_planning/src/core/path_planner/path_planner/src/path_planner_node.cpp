@@ -14,6 +14,7 @@
  *
  * ********************************************************
  */
+#include <angles/angles.h>
 #include <tf2/utils.h>
 #include <pluginlib/class_list_macros.h>
 
@@ -180,6 +181,52 @@ bool PathPlannerNode::makePlan(const geometry_msgs::PoseStamped& start,
       plan.pop_back();
       plan.push_back(goalCopy);
       plan[0].pose.orientation = start.pose.orientation;
+
+      // ── 航向安全检查 ──
+      // 新路径第一个有效点与当前车头偏角 > 90° 时，沿用上一次规划
+      if (!plan.empty()) {
+        double start_x = start.pose.position.x;
+        double start_y = start.pose.position.y;
+        double start_yaw = tf2::getYaw(start.pose.orientation);
+
+        // 跳过起点自身，寻找第一个距离 >= 0.3m 的路径点
+        const double MIN_AHEAD_DIST = 0.3;
+        size_t ahead_idx = 0;
+        for (size_t i = 0; i < plan.size(); ++i) {
+          double dx = plan[i].pose.position.x - start_x;
+          double dy = plan[i].pose.position.y - start_y;
+          if (dx * dx + dy * dy >= MIN_AHEAD_DIST * MIN_AHEAD_DIST) {
+            ahead_idx = i;
+            break;
+          }
+        }
+
+        if (ahead_idx > 0) {
+          double target_yaw = std::atan2(
+              plan[ahead_idx].pose.position.y - start_y,
+              plan[ahead_idx].pose.position.x - start_x);
+          double diff =
+              std::abs(angles::shortest_angular_distance(start_yaw, target_yaw));
+
+          if (diff > M_PI_2) {
+            if (!last_accepted_plan_.empty()) {
+              R_WARN << "Path heading change " << diff * 180.0 / M_PI
+                     << " deg > 90 deg, keeping previous plan ("
+                     << last_accepted_plan_.size() << " poses)";
+              plan = last_accepted_plan_;
+            } else {
+              R_WARN << "Path heading change " << diff * 180.0 / M_PI
+                     << " deg > 90 deg, no previous plan to fallback, accepting";
+              last_accepted_plan_ = plan;
+            }
+          } else {
+            last_accepted_plan_ = plan;
+          }
+        } else {
+          // 路径太短（终点在附近），不做检查
+          last_accepted_plan_ = plan;
+        }
+      }
 
       // publish visulization plan
       if (g_planner_->config().expand_zone()) {
