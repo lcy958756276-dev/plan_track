@@ -132,7 +132,7 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
       }
 
       // shortcut optimization: remove detours by straight-line shortcuts (from matlab.txt Stage 3)
-      // shortcutOptimize(smooth_path);  // TODO: 暂时注释，测试穿障碍是否由剪裁引起
+      // shortcutOptimize(smooth_path);  // 暂时注释
 
       *path = smooth_path;
 
