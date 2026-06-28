@@ -88,7 +88,7 @@ class PreRotate:
 
             # 再停稳，然后转发 goal
             self.cmd_pub.publish(Twist())
-            rospy.sleep(0.1)
+            rospy.sleep(1)
             rospy.loginfo("pre_rotate: aligned, counter-steer done, send goal to move_base")
             self.goal_pub.publish(self.goal)
             self.rotating = False
