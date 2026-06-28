@@ -97,11 +97,11 @@ class PedGenerator(XMLGenerator):
             # human skin
             skin = PedGenerator.createElement("skin")
             skin.append(PedGenerator.createElement("filename", text="walk.dae"))
-            skin.append(PedGenerator.createElement("scale", text=human.get("scale", "1.0")))
+            skin.append(PedGenerator.createElement("scale", text=str(human.get("scale", "1.0"))))
 
             animation = PedGenerator.createElement("animation", props={"name": "walking"})
             animation.append(PedGenerator.createElement("filename", text="walk.dae"))
-            animation.append(PedGenerator.createElement("scale", text=human.get("scale", "1.0")))
+            animation.append(PedGenerator.createElement("scale", text=str(human.get("scale", "1.0"))))
             animation.append(PedGenerator.createElement("interpolate_x", text="true"))
 
             # plugin
