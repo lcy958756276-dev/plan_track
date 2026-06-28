@@ -171,23 +171,6 @@ class PedGenerator(XMLGenerator):
 
             return actor
 
-        if not self.ped_cfg is None:
-            world_file = self.root_path + "sim_env/worlds/" + self.user_cfg["world"] + ".world"
-            tree = ET.parse(world_file)
-            world = tree.getroot().find("world")
-
-            human_num = len(self.ped_cfg["pedestrians"]["ped_property"])
-            for i in range(human_num):
-                obj = self.ped_cfg["pedestrians"]["ped_property"][i]
-                # type: "human" (default) or "box"
-                if obj.get("type", "human") == "box":
-                    world.append(createBox(self.ped_cfg, i))
-                else:
-                    world.append(createHuman(self.ped_cfg, i))
-
-            with open(path, "wb+") as f:
-                tree.write(f, encoding="utf-8", xml_declaration=True)
-
         def createBox(config, index):
             """
             Create a moving box model element in the world file.
@@ -235,3 +218,21 @@ class PedGenerator(XMLGenerator):
 
             PedGenerator.indent(model)
             return model
+
+        if not self.ped_cfg is None:
+            world_file = self.root_path + "sim_env/worlds/" + self.user_cfg["world"] + ".world"
+            tree = ET.parse(world_file)
+            world = tree.getroot().find("world")
+
+            human_num = len(self.ped_cfg["pedestrians"]["ped_property"])
+            for i in range(human_num):
+                obj = self.ped_cfg["pedestrians"]["ped_property"][i]
+                # type: "human" (default) or "box"
+                if obj.get("type", "human") == "box":
+                    world.append(createBox(self.ped_cfg, i))
+                else:
+                    world.append(createHuman(self.ped_cfg, i))
+
+            with open(path, "wb+") as f:
+                tree.write(f, encoding="utf-8", xml_declaration=True)
+
