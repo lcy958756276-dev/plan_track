@@ -45,21 +45,6 @@ public:
 private:
   using Node = rmp::common::structure::Node<int>;
   static std::vector<Node> motions_;
-
-  /**
-   * @brief Check if a world point is in collision with costmap obstacles
-   * @param px  world x
-   * @param py  world y
-   * @return true if in collision
-   */
-  bool pointInCollision(double px, double py);
-
-  /**
-   * @brief Shortcut optimization: for each pair of non-adjacent points,
-   *        check straight-line feasibility and cut out detour waypoints.
-   * @param path  path to optimize (in-place)
-   */
-  void shortcutOptimize(common::geometry::Points3d& path);
 };
 }  // namespace rmp
 #endif

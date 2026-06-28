@@ -17,8 +17,6 @@
 #include <queue>
 #include <vector>
 #include <unordered_set>
-#include <cmath>
-#include <algorithm>
 
 #include <costmap_2d/cost_values.h>
 
@@ -131,9 +129,6 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
         }
       }
 
-      // shortcut optimization: remove detours by straight-line shortcuts (from matlab.txt Stage 3)
-      shortcutOptimize(smooth_path);
-
       *path = smooth_path;
 
       return true;
@@ -172,65 +167,4 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
 
   return false;
 }
-// ════════════════════════════════════════════════════════════
-// Collision check for a single world point (costmap-based)
-// ════════════════════════════════════════════════════════════
-bool AStarProvePathPlanner::pointInCollision(double px, double py) {
-  double mx, my;
-  if (!world2Map(px, py, mx, my))
-    return true;  // outside map → collision
-  int ix = static_cast<int>(mx);
-  int iy = static_cast<int>(my);
-  if (ix < 0 || ix >= nx_ || iy < 0 || iy >= ny_)
-    return true;
-  unsigned int idx = iy * nx_ + ix;
-  // LETHAL_OBSTACLE = 253; threshold consistent with A* expansion logic
-  return costmap_->getCharMap()[idx] >= costmap_2d::LETHAL_OBSTACLE * 0.8;
-}
-
-// ════════════════════════════════════════════════════════════
-// Shortcut optimization (Stage 3 from matlab.txt)
-// For each non-adjacent pair (i, j), check straight-line
-// feasibility with adaptive sampling, cut out intermediate
-// waypoints if safe.
-// ════════════════════════════════════════════════════════════
-void AStarProvePathPlanner::shortcutOptimize(Points3d& path) {
-  if (path.size() < 3) return;
-
-  size_t i = 0;
-  while (i < path.size() - 2) {
-    size_t j = i + 2;
-    bool changed = false;
-
-    while (j < path.size()) {
-      double seg_len = std::hypot(path[j].x() - path[i].x(),
-                                   path[j].y() - path[i].y());
-      // adaptive sampling density (match matlab: max(ceil(seg_len/0.3), 12))
-      int N = std::max(static_cast<int>(std::ceil(seg_len / 0.3)), 12);
-
-      bool collide = false;
-      for (int t = 1; t <= N; ++t) {
-        double frac = static_cast<double>(t) / N;
-        double cx = path[i].x() + frac * (path[j].x() - path[i].x());
-        double cy = path[i].y() + frac * (path[j].y() - path[i].y());
-        if (pointInCollision(cx, cy)) {
-          collide = true;
-          break;
-        }
-      }
-
-      if (!collide) {
-        // straight line is safe → cut out intermediate points
-        path.erase(path.begin() + i + 1, path.begin() + j);
-        changed = true;
-        j = i + 2;  // re-scan from the same i
-      } else {
-        ++j;
-      }
-    }
-
-    if (!changed) ++i;
-  }
-}
-
 }  // namespace rmp
