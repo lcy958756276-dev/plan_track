@@ -38,13 +38,15 @@ class GazeboSync:
         rospy.Subscriber("/scan", LaserScan, self.scan_cb, queue_size=10)
 
         # ── 周期性清理 costmap 噪声累积 ──
-        # 10 秒清一次，清除累积噪声，同时给规划器充足时间避开真正障碍物
+        # 清理间隔 0.6s，用于动态障碍物快速过期 + 噪声清理。
+        # 规划器 astar_prove 末尾自带 lethal 碰撞兜底检查，
+        # 清空窗口期内生成的穿障碍路径会被拒绝（move_base 保持上一条正确路径）。
         self.clear_costmap_srv = None
-        rospy.Timer(rospy.Duration(0.6), self.clear_costmap_timer)
+        rospy.Timer(rospy.Duration(0.7), self.clear_costmap_timer)
 
         # ── 主循环（5Hz）：不断尝试服务 + 同步位置 ──
         # 注意：10Hz 太频繁，set_model_state 容易超时（returned no response）
-        rospy.Timer(rospy.Duration(0.6), self.main_timer)
+        rospy.Timer(rospy.Duration(0.3), self.main_timer)
 
         rospy.loginfo("gazebo_sync 已启动")
         rospy.loginfo("  持续尝试连接 /gz_debug/set_model_state ...")
