@@ -12,11 +12,14 @@ class PreRotate:
         self.alignment_tol = math.radians(3.0)
         self.max_angular = 0.6                         # rad/s，慢一点更稳
         self.kp_rot = 1.5                              # 比例减速系数，越靠近目标转得越慢
+        self.counter_steer = 0.3                      # 反向脉冲角速度 (rad/s)
+        self.counter_duration = 0.15                  # 反向脉冲时长 (s)
 
         self.x = 0.0
         self.y = 0.0
         self.yaw = 0.0
         self.rotating = False
+        self.rotate_dir = 0                           # +1=顺时针, -1=逆时针
         self.goal = None
 
         self.goal_pub = rospy.Publisher("/goal_rotated", PoseStamped, queue_size=1)
@@ -55,7 +58,10 @@ class PreRotate:
         if abs(err) > self.angle_threshold:
             self.rotating = True
             self.goal = msg
-            rospy.loginfo("pre_rotate: err=%.1fdeg, start rotation", err * 180 / math.pi)
+            self.rotate_dir = 1 if err > 0 else -1    # 记录旋转方向：+1=顺时针, -1=逆时针
+            rospy.loginfo("pre_rotate: err=%.1fdeg, start rotation (%s)",
+                          err * 180 / math.pi,
+                          "CW" if self.rotate_dir > 0 else "CCW")
         else:
             self.goal_pub.publish(msg)
 
@@ -69,11 +75,21 @@ class PreRotate:
         err = self._norm(target_yaw - self.yaw)
 
         if abs(err) < self.alignment_tol:
-            # 先停稳再转发 goal
+            # 停稳
+            self.cmd_pub.publish(Twist())
+            rospy.sleep(0.15)
+
+            # 反向脉冲：补偿慢减速侧轮子
+            # 顺时针旋转后右轮响应快、左轮响应慢→逆时针脉冲帮左轮减速
+            counter_twist = Twist()
+            counter_twist.angular.z = -self.rotate_dir * self.counter_steer
+            self.cmd_pub.publish(counter_twist)
+            rospy.sleep(self.counter_duration)
+
+            # 再停稳，然后转发 goal
             self.cmd_pub.publish(Twist())
             rospy.sleep(0.1)
-            self.cmd_pub.publish(Twist())
-            rospy.loginfo("pre_rotate: aligned, send goal to move_base")
+            rospy.loginfo("pre_rotate: aligned, counter-steer done, send goal to move_base")
             self.goal_pub.publish(self.goal)
             self.rotating = False
             self.goal = None
