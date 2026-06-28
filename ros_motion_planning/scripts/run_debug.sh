@@ -104,7 +104,7 @@ sleep 1
 # ── 4. 启动 Gazebo（仓库环境）──
 echo "[4/8] 启动 Gazebo ..."
 echo "[$(date +%H:%M:%S)] [4] starting gzserver" >> "$LOG_DIR/run.log"
-WORLD_FILE="$WORKSPACE_DIR/src/sim_env/worlds/final_four_with_pedestrians.world"
+WORLD_FILE="$WORKSPACE_DIR/../gazebo_create/worlds/final_four.world"
 
 # 禁用所有模型数据库下载（防 libcurl SSL 超时阻塞 ROS 插件初始化）
 # GAZEBO_MODEL_DATABASE_URI 管 Gazebo Fuel，IGN_FUEL_URI 管 Ignition Fuel
@@ -212,16 +212,6 @@ echo "  PID=$PID_PREROT"
 
 sleep 1
 
-# ── 7.6 启动 moving_object（移动箱子等动态物体）──
-echo "[7.6/8] 启动 moving_object.py (控制动态物体沿轨迹运动)..."
-rosrun encoder_tools moving_object.py \
-    _config:="$WORKSPACE_DIR/src/user_config/pedestrian_config_four.yaml" \
-    > "$LOG_DIR/moving_object.log" 2>&1 &
-PID_MOVING=$!
-echo "  PID=$PID_MOVING → log/moving_object.log"
-
-sleep 1
-
 # ── 8. 启动 move_base（全局规划器）──
 echo "[8/8] 启动 move_base（A* 全局规划器，仅规划不跟踪）..."
 echo "[$(date +%H:%M:%S)] [8] generating move_base launch file" >> "$LOG_DIR/run.log"
@@ -308,7 +298,6 @@ echo "$PID_READ"     > "$LOG_DIR/.pid_read"
 echo "$PID_ODOM"     > "$LOG_DIR/.pid_odom"
 echo "$PID_SYNC"     > "$LOG_DIR/.pid_sync"
 echo "$PID_PREROT"   > "$LOG_DIR/.pid_prerot"
-echo "$PID_MOVING"   > "$LOG_DIR/.pid_moving"
 echo "$PID_MB"        > "$LOG_DIR/.pid_move_base"
 
 echo ""
