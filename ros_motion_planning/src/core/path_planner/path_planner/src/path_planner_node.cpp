@@ -267,7 +267,14 @@ bool PathPlannerNode::makePlan(const geometry_msgs::PoseStamped& start,
         }
       }
 
-      visualizer->publishPlan(origin_plan, plan_pub_, frame_id_);
+      // publish the plan actually being followed (heading check may have substituted it)
+      {
+        nav_msgs::Path plan_msg;
+        plan_msg.header.frame_id = frame_id_;
+        plan_msg.header.stamp = ros::Time::now();
+        plan_msg.poses = plan;
+        plan_pub_.publish(plan_msg);
+      }
     } else {
       R_ERROR << "Failed to get a plan from path when a legal path was found. This "
                  "shouldn't happen.";
