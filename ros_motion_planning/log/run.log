@@ -1,19 +1,19 @@
-=== 启动时间: 2026年 06月 28日 星期日 18:06:29 CST ===
-[18:06:29] [1] main_generate.py start
-[18:06:29] [1] main_generate.py done
-[18:06:29] [2] use_encoder_odom flag set
-[18:06:29] [3] loading robot_description
-[18:06:30] [3] robot_description loaded
-[33m[WARN] [1782641190.582409436]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
-[18:06:33] [4] starting gzserver
-[18:06:39] [4] spawn_model start
-[INFO] [1782641200.717643]: Loading model XML from ros parameter robot_description
-[INFO] [1782641200.724346]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1782641200.728616]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1782641201.237777]: Spawn status: SpawnModel: Successfully spawned entity
-[18:06:41] [4] spawn_model exit=0
-[18:06:53] [8] generating move_base launch file
-[18:06:53] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 06月 28日 星期日 18:31:50 CST ===
+[18:31:50] [1] main_generate.py start
+[18:31:50] [1] main_generate.py done
+[18:31:50] [2] use_encoder_odom flag set
+[18:31:50] [3] loading robot_description
+[18:31:51] [3] robot_description loaded
+[33m[WARN] [1782642711.512305721]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[18:31:54] [4] starting gzserver
+[18:32:00] [4] spawn_model start
+[INFO] [1782642721.621881]: Loading model XML from ros parameter robot_description
+[INFO] [1782642721.628821]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1782642721.633519]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1782642722.184487]: Spawn status: SpawnModel: Successfully spawned entity
+[18:32:02] [4] spawn_model exit=0
+[18:32:14] [8] generating move_base launch file
+[18:32:14] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 apf_controller/APFController
@@ -44,13 +44,13 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1782641215.508130440]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1782641215.510727508]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1782642736.574795653]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1782642736.577754547]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260628 18:06:55.993204 154229 path_planner_factory.cpp:133] Using path planner: astar_prove
-[33m[WARN] [1782641216.028088416]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-I20260628 18:06:56.156610 154229 apf_controller.cpp:77] APF controller initialized!
-[18:06:56] [8] move_base 启动后状态:
+I20260628 18:32:17.020257 160414 path_planner_factory.cpp:133] Using path planner: astar_prove
+[33m[WARN] [1782642737.045565449]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260628 18:32:17.143234 160414 apf_controller.cpp:77] APF controller initialized!
+[18:32:17] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -93,6 +93,7 @@ I20260628 18:06:56.156610 154229 apf_controller.cpp:77] APF controller initializ
 /move_base/local_costmap/parameter_updates
 /move_base/parameter_descriptions
 /move_base/parameter_updates
+/move_base/path_planner/PathPlanner/plan
 /move_base/recovery_status
 /move_base/result
 /move_base/status
@@ -112,305 +113,185 @@ I20260628 18:06:56.156610 154229 apf_controller.cpp:77] APF controller initializ
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-[33m[WARN] [1782641220.954689359]: The scan_real observation buffer has not been updated for 5.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782641221.455369500]: The scan_real observation buffer has not been updated for 5.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782641221.954654496]: The scan_real observation buffer has not been updated for 6.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782641222.454643738]: The scan_real observation buffer has not been updated for 6.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782641222.954649172]: The scan_real observation buffer has not been updated for 7.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782641223.454654415]: The scan_real observation buffer has not been updated for 7.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782641223.954654345]: The scan_real observation buffer has not been updated for 8.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782641224.454657893]: The scan_real observation buffer has not been updated for 8.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782641224.954660224]: The scan_real observation buffer has not been updated for 9.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782641225.454660861]: The scan_real observation buffer has not been updated for 9.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1782641225.954652281]: The scan_real observation buffer has not been updated for 10.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:06.405431 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641226.454649366]: The scan_real observation buffer has not been updated for 10.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:06.905329 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641226.954671347]: The scan_real observation buffer has not been updated for 11.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:07.405328 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641227.454656657]: The scan_real observation buffer has not been updated for 11.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:07.905336 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641227.954646126]: The scan_real observation buffer has not been updated for 12.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:08.405336 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641228.454667469]: The scan_real observation buffer has not been updated for 12.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:08.905336 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641228.954671532]: The scan_real observation buffer has not been updated for 13.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:09.405328 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641229.454661035]: The scan_real observation buffer has not been updated for 13.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:09.905313 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641229.954677931]: The scan_real observation buffer has not been updated for 14.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:10.405336 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641230.454668747]: The scan_real observation buffer has not been updated for 14.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:10.905316 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641230.954671787]: The scan_real observation buffer has not been updated for 15.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:11.405346 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641231.454668364]: The scan_real observation buffer has not been updated for 15.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:11.905321 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641231.954656236]: The scan_real observation buffer has not been updated for 16.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:12.405344 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641232.454655758]: The scan_real observation buffer has not been updated for 16.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:12.905323 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641232.954645136]: The scan_real observation buffer has not been updated for 17.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:13.405311 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641233.454657554]: The scan_real observation buffer has not been updated for 17.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:13.905326 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641233.954671861]: The scan_real observation buffer has not been updated for 18.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:14.405351 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641234.454648280]: The scan_real observation buffer has not been updated for 18.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:14.905334 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641234.954666876]: The scan_real observation buffer has not been updated for 19.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:15.405325 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641235.454678944]: The scan_real observation buffer has not been updated for 19.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:15.905340 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641235.954654947]: The scan_real observation buffer has not been updated for 20.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:16.405328 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641236.454651016]: The scan_real observation buffer has not been updated for 20.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:16.905318 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641236.954646285]: The scan_real observation buffer has not been updated for 21.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:17.405330 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641237.454686644]: The scan_real observation buffer has not been updated for 21.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:17.905318 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641237.954661656]: The scan_real observation buffer has not been updated for 22.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:18.405314 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641238.454649534]: The scan_real observation buffer has not been updated for 22.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:18.905329 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641238.954664261]: The scan_real observation buffer has not been updated for 23.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:19.405311 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641239.454664396]: The scan_real observation buffer has not been updated for 23.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:19.905339 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641239.954654195]: The scan_real observation buffer has not been updated for 24.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:20.405329 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641240.454653947]: The scan_real observation buffer has not been updated for 24.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:20.905335 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641240.954651139]: The scan_real observation buffer has not been updated for 25.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:21.405318 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641241.454644875]: The scan_real observation buffer has not been updated for 25.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:21.905335 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641241.954649300]: The scan_real observation buffer has not been updated for 26.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:22.405349 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641242.454655102]: The scan_real observation buffer has not been updated for 26.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:22.905340 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641242.954653319]: The scan_real observation buffer has not been updated for 27.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:23.405334 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641243.454652977]: The scan_real observation buffer has not been updated for 27.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:23.905332 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641243.954658748]: The scan_real observation buffer has not been updated for 28.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:24.405313 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641244.454649222]: The scan_real observation buffer has not been updated for 28.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:24.905827 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641244.954635857]: The scan_real observation buffer has not been updated for 29.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:25.405345 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641245.454644349]: The scan_real observation buffer has not been updated for 29.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:25.905323 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641245.954680234]: The scan_real observation buffer has not been updated for 30.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:26.405330 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641246.454642549]: The scan_real observation buffer has not been updated for 30.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:26.905332 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641246.954653346]: The scan_real observation buffer has not been updated for 31.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:27.405360 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641247.454667343]: The scan_real observation buffer has not been updated for 31.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:27.905366 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641247.954667133]: The scan_real observation buffer has not been updated for 32.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:28.405341 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641248.454658890]: The scan_real observation buffer has not been updated for 32.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:28.905326 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641248.954649112]: The scan_real observation buffer has not been updated for 33.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:29.405328 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641249.454642727]: The scan_real observation buffer has not been updated for 33.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:29.905325 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641249.954664278]: The scan_real observation buffer has not been updated for 34.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:30.405383 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641250.454645893]: The scan_real observation buffer has not been updated for 34.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:30.905311 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641250.954652821]: The scan_real observation buffer has not been updated for 35.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:31.405316 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641251.454676550]: The scan_real observation buffer has not been updated for 35.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:31.905318 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641251.954665974]: The scan_real observation buffer has not been updated for 36.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:32.405330 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641252.454618565]: The scan_real observation buffer has not been updated for 36.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:32.905325 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641252.954650519]: The scan_real observation buffer has not been updated for 37.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:33.405339 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641253.454650633]: The scan_real observation buffer has not been updated for 37.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:33.905323 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641253.954653467]: The scan_real observation buffer has not been updated for 38.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:34.405334 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641254.454644493]: The scan_real observation buffer has not been updated for 38.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:34.905326 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641254.954653632]: The scan_real observation buffer has not been updated for 39.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:35.405344 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641255.454662867]: The scan_real observation buffer has not been updated for 39.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:35.905336 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641255.954659527]: The scan_real observation buffer has not been updated for 40.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:36.405323 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641256.454661947]: The scan_real observation buffer has not been updated for 40.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:36.905332 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641256.954644942]: The scan_real observation buffer has not been updated for 41.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:37.405346 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641257.454646819]: The scan_real observation buffer has not been updated for 41.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:37.905328 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641257.955037955]: The scan_real observation buffer has not been updated for 42.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:38.405313 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641258.454650221]: The scan_real observation buffer has not been updated for 42.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:38.905333 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641258.954677475]: The scan_real observation buffer has not been updated for 43.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:39.405339 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641259.454657625]: The scan_real observation buffer has not been updated for 43.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:39.905319 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641259.954650863]: The scan_real observation buffer has not been updated for 44.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:40.405319 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641260.454664422]: The scan_real observation buffer has not been updated for 44.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:40.905308 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641260.954674238]: The scan_real observation buffer has not been updated for 45.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:41.405336 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641261.454648661]: The scan_real observation buffer has not been updated for 45.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:41.905332 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641261.954663565]: The scan_real observation buffer has not been updated for 46.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:42.405324 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641262.454654565]: The scan_real observation buffer has not been updated for 46.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:42.905323 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641262.954682078]: The scan_real observation buffer has not been updated for 47.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:43.405330 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641263.454672151]: The scan_real observation buffer has not been updated for 47.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:43.905462 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641263.954648240]: The scan_real observation buffer has not been updated for 48.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:44.405329 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641264.454658474]: The scan_real observation buffer has not been updated for 48.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:44.905326 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641264.954667236]: The scan_real observation buffer has not been updated for 49.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:45.405320 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641265.454652670]: The scan_real observation buffer has not been updated for 49.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:45.905365 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641265.954656281]: The scan_real observation buffer has not been updated for 50.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:46.405328 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641266.454660692]: The scan_real observation buffer has not been updated for 50.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:46.905431 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641266.954660624]: The scan_real observation buffer has not been updated for 51.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:47.405320 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641267.454661260]: The scan_real observation buffer has not been updated for 51.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:47.905326 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641267.954661704]: The scan_real observation buffer has not been updated for 52.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:48.405336 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641268.454665349]: The scan_real observation buffer has not been updated for 52.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:48.905308 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641268.954633537]: The scan_real observation buffer has not been updated for 53.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:49.405346 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641269.454631870]: The scan_real observation buffer has not been updated for 53.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:49.905328 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641269.954659068]: The scan_real observation buffer has not been updated for 54.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:50.405328 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641270.454664507]: The scan_real observation buffer has not been updated for 54.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:50.905329 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641270.954656569]: The scan_real observation buffer has not been updated for 55.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:51.405328 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641271.454664472]: The scan_real observation buffer has not been updated for 55.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:51.905747 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641271.954641334]: The scan_real observation buffer has not been updated for 56.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:52.405341 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641272.454658039]: The scan_real observation buffer has not been updated for 56.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:52.905349 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641272.954658262]: The scan_real observation buffer has not been updated for 57.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:53.405340 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641273.454650647]: The scan_real observation buffer has not been updated for 57.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:53.905333 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641273.954653975]: The scan_real observation buffer has not been updated for 58.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:54.205331 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641274.454649592]: The scan_real observation buffer has not been updated for 58.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:54.705318 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641274.954659674]: The scan_real observation buffer has not been updated for 59.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:55.205319 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641275.454669724]: The scan_real observation buffer has not been updated for 59.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:55.705340 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641275.954648285]: The scan_real observation buffer has not been updated for 60.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:56.205330 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641276.454658368]: The scan_real observation buffer has not been updated for 60.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:56.705341 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641276.954663363]: The scan_real observation buffer has not been updated for 61.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:57.205332 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641277.454649445]: The scan_real observation buffer has not been updated for 61.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:57.705338 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641277.954649289]: The scan_real observation buffer has not been updated for 62.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:58.205345 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641278.454647981]: The scan_real observation buffer has not been updated for 62.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:58.705328 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641278.954659569]: The scan_real observation buffer has not been updated for 63.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:59.205334 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641279.454658486]: The scan_real observation buffer has not been updated for 63.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:07:59.705317 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641279.954672539]: The scan_real observation buffer has not been updated for 64.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:00.205322 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641280.454655040]: The scan_real observation buffer has not been updated for 64.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:00.705319 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641280.954655301]: The scan_real observation buffer has not been updated for 65.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:01.205329 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641281.454653035]: The scan_real observation buffer has not been updated for 65.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:01.705328 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641281.954674226]: The scan_real observation buffer has not been updated for 66.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:02.205325 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641282.454639896]: The scan_real observation buffer has not been updated for 66.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:02.705317 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641282.954673024]: The scan_real observation buffer has not been updated for 67.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:03.205322 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641283.454650727]: The scan_real observation buffer has not been updated for 67.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:03.705324 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641283.954653998]: The scan_real observation buffer has not been updated for 68.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:04.205345 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641284.454646102]: The scan_real observation buffer has not been updated for 68.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:04.705327 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641284.954650175]: The scan_real observation buffer has not been updated for 69.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:05.205339 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641285.454624487]: The scan_real observation buffer has not been updated for 69.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:05.705329 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641285.954656497]: The scan_real observation buffer has not been updated for 70.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:06.205332 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641286.454647450]: The scan_real observation buffer has not been updated for 70.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:06.705308 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641286.954656164]: The scan_real observation buffer has not been updated for 71.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:07.205328 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641287.454645262]: The scan_real observation buffer has not been updated for 71.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:07.705344 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641287.954645977]: The scan_real observation buffer has not been updated for 72.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:08.205315 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641288.454654788]: The scan_real observation buffer has not been updated for 72.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:08.705318 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641288.954653295]: The scan_real observation buffer has not been updated for 73.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:09.205324 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641289.454654747]: The scan_real observation buffer has not been updated for 73.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:09.705329 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641289.954659847]: The scan_real observation buffer has not been updated for 74.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:10.205313 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641290.454649811]: The scan_real observation buffer has not been updated for 74.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:10.705328 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641290.954670048]: The scan_real observation buffer has not been updated for 75.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:11.205341 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641291.454677933]: The scan_real observation buffer has not been updated for 75.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:11.705336 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641291.954668666]: The scan_real observation buffer has not been updated for 76.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:12.205327 154238 apf_controller.cpp:97] Got new plan
-[33m[WARN] [1782641292.455195319]: The scan_real observation buffer has not been updated for 76.58 seconds, and it should be updated every 5.00 seconds.[0m
-I20260628 18:08:12.743273 154238 apf_controller.cpp:97] Got new plan
-[0m[INFO] [1782641215.511953271]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1782641215.524894735]: Requesting the map...[0m
-[0m[INFO] [1782641215.729650087]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1782641215.829443353]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1782641215.836678763]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782641215.843713399]:     Subscribed to Topics: scan scan_real[0m
-[0m[INFO] [1782641215.896340527]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1782641215.903562049]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782641216.031131000]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782641216.036177931]:     Subscribed to Topics: [0m
-[0m[INFO] [1782641216.053364574]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782641216.149204508]: Created local_planner apf_controller/APFController[0m
-[0m[INFO] [1782641216.635045878]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782641216.643959289]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782641216.696679860]: odom received![0m
-... logging to /home/lcy/.ros/log/c36d78ac-72b2-11f1-94f3-48b02df90897/roslaunch-ubuntu-154206.log
+[33m[WARN] [1782642741.986041221]: The scan_real observation buffer has not been updated for 5.05 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642742.485995040]: The scan_real observation buffer has not been updated for 5.55 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642742.985995772]: The scan_real observation buffer has not been updated for 6.05 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642743.485995675]: The scan_real observation buffer has not been updated for 6.55 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642743.986002810]: The scan_real observation buffer has not been updated for 7.05 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642744.485994139]: The scan_real observation buffer has not been updated for 7.55 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642744.985987196]: The scan_real observation buffer has not been updated for 8.05 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642745.485989024]: The scan_real observation buffer has not been updated for 8.55 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642745.986004101]: The scan_real observation buffer has not been updated for 9.05 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642746.486002027]: The scan_real observation buffer has not been updated for 9.55 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642746.986001074]: The scan_real observation buffer has not been updated for 10.05 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642747.486000380]: The scan_real observation buffer has not been updated for 10.55 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642747.985990661]: The scan_real observation buffer has not been updated for 11.05 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642748.486020818]: The scan_real observation buffer has not been updated for 11.55 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642748.986002014]: The scan_real observation buffer has not been updated for 12.05 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642749.485999116]: The scan_real observation buffer has not been updated for 12.55 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642749.985994363]: The scan_real observation buffer has not been updated for 13.05 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642750.486003437]: The scan_real observation buffer has not been updated for 13.55 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642750.986006911]: The scan_real observation buffer has not been updated for 14.05 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1782642751.485989810]: The scan_real observation buffer has not been updated for 14.55 seconds, and it should be updated every 5.00 seconds.[0m
+I20260628 18:32:31.534507 160422 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782642751.986009607]: The scan_real observation buffer has not been updated for 15.05 seconds, and it should be updated every 5.00 seconds.[0m
+I20260628 18:32:32.034440 160422 apf_controller.cpp:97] Got new plan
+[33m[WARN] [1782642752.485993469]: The scan_real observation buffer has not been updated for 15.55 seconds, and it should be updated every 5.00 seconds.[0m
+I20260628 18:32:32.534449 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:33.034451 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:33.534433 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:33.834443 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:34.334439 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:34.834445 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:35.334451 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:35.634426 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:36.134425 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:36.634428 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:37.134423 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:37.434460 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:37.934443 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:38.434449 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:38.934437 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:39.234436 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:39.734436 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:40.234428 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:40.734465 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:41.034447 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:41.534574 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:42.034443 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:42.534430 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:42.834434 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:43.334445 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:43.834439 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:44.334465 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:44.634440 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:45.134438 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:45.634431 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:46.134431 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:46.434441 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:46.934451 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:47.434453 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:47.934439 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:48.234459 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:48.734432 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:49.234469 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:49.734449 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:50.034433 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:50.334442 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:50.834426 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:51.334439 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:51.834432 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:52.334438 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:52.634442 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:53.134439 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:53.634416 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:54.134438 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:54.434438 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:54.934448 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:55.434432 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:55.934453 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:56.234431 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:56.734434 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:57.234433 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:57.734408 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:58.034431 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:58.534438 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:59.034436 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:59.534421 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:32:59.834437 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:00.334442 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:00.834443 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:01.334450 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:01.634430 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:02.134462 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:02.634440 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:03.134455 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:03.434425 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:03.934448 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:04.434435 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:04.934433 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:05.234436 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:05.734433 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:06.234434 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:06.734432 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:07.035395 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:07.534444 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:08.034442 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:08.534565 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:08.834425 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:09.334430 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:09.834444 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:10.334435 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:10.634433 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:11.134439 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:11.634444 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:12.134424 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:12.434434 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:12.934437 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:13.434427 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:13.934415 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:14.234437 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:14.734437 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:15.234436 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:15.734413 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:16.034441 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:16.534440 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:17.034443 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:17.534485 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:17.834443 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:18.334447 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:18.834444 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:19.334434 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:19.634428 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:20.134445 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:20.634430 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:21.134436 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:21.434450 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:21.934432 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:22.434442 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:22.934448 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:23.234442 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:23.734442 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:24.234440 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:24.734436 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:25.034432 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:25.534433 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:26.034439 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:26.534408 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:26.834430 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:27.334431 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:27.834390 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:28.334435 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:28.634451 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:29.134430 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:29.634431 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:30.134449 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:30.434514 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:30.934429 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:31.434442 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:31.934437 160422 apf_controller.cpp:97] Got new plan
+I20260628 18:33:32.240500 160422 apf_controller.cpp:97] Got new plan
+[0m[INFO] [1782642736.578926322]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1782642736.591188471]: Requesting the map...[0m
+[0m[INFO] [1782642736.800720652]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1782642736.900498882]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1782642736.905874545]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782642736.909535090]:     Subscribed to Topics: scan scan_real[0m
+[0m[INFO] [1782642736.945710129]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1782642736.952272543]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782642737.049808666]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782642737.054667707]:     Subscribed to Topics: [0m
+[0m[INFO] [1782642737.074515497]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782642737.138909589]: Created local_planner apf_controller/APFController[0m
+[0m[INFO] [1782642737.632743904]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782642737.640445901]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782642737.706962225]: odom received![0m
+... logging to /home/lcy/.ros/log/c36d78ac-72b2-11f1-94f3-48b02df90897/roslaunch-ubuntu-160391.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:41509/[0m
+[1mstarted roslaunch server http://ubuntu:35449/[0m
 
 SUMMARY
 ========
@@ -498,7 +379,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [154229][0m
+[1mprocess[move_base-1]: started with pid [160414][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
