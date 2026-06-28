@@ -10,7 +10,7 @@ class PreRotate:
     def __init__(self):
         self.angle_threshold = math.radians(15.0)
         self.alignment_tol = math.radians(3.0)
-        self.max_angular = 0.6                         # rad/s，慢一点更稳
+        self.max_angular = 0.4                         # rad/s，慢一点更稳
 
         self.x = 0.0
         self.y = 0.0
