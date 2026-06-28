@@ -41,7 +41,7 @@ class GazeboSync:
         # 注意：频率过高（< 1s）会导致规划器频繁看到空白 costmap → 路径穿障碍
         # 这里设为 30s 一次，仅清理动态漂浮的残留
         self.clear_costmap_srv = None
-        rospy.Timer(rospy.Duration(0.399), self.clear_costmap_timer)
+        rospy.Timer(rospy.Duration(3000), self.clear_costmap_timer)
 
         # ── 主循环（5Hz）：不断尝试服务 + 同步位置 ──
         # 注意：10Hz 太频繁，set_model_state 容易超时（returned no response）
