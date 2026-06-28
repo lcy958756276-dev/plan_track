@@ -1,19 +1,23 @@
-=== 启动时间: 2026年 06月 28日 星期日 14:43:39 CST ===
-[14:43:39] [1] main_generate.py start
-[14:43:40] [1] main_generate.py done
-[14:43:40] [2] use_encoder_odom flag set
-[14:43:40] [3] loading robot_description
-[14:43:40] [3] robot_description loaded
-[33m[WARN] [1782629020.756186160]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
-[14:43:43] [4] starting gzserver
-[14:43:49] [4] spawn_model start
-[INFO] [1782629031.033455]: Loading model XML from ros parameter robot_description
-[INFO] [1782629031.040734]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1782629031.045807]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1782629031.509129]: Spawn status: SpawnModel: Successfully spawned entity
-[14:43:52] [4] spawn_model exit=0
-[14:44:02] [8] generating move_base launch file
-[14:44:02] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 06月 28日 星期日 14:50:59 CST ===
+[14:50:59] [1] main_generate.py start
+[14:51:00] [1] main_generate.py done
+[14:51:00] [2] use_encoder_odom flag set
+[14:51:00] [3] loading robot_description
+[14:51:00] [3] robot_description loaded
+[33m[WARN] [1782629461.001467855]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[14:51:03] [4] starting gzserver
+[14:51:10] [4] spawn_model start
+[INFO] [1782629471.204561]: Loading model XML from ros parameter robot_description
+[INFO] [1782629471.212699]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1782629471.219280]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1782629471.664778]: Spawn status: SpawnModel: Successfully spawned entity
+[14:51:12] [4] spawn_model exit=0
+[33m[WARN] [1782629479.570751824]: WARNING: package://spencer_tracking_rviz_plugin/media/animated_walking_man.mesh is an older format ([MeshSerializer_v1.41]); you should upgrade it as soon as possible using the OgreMeshUpgrade tool.[0m
+[33m[WARN] [1782629479.576302585]: Can't assign material male_base_lambert1 to SubEntity of mesh_person_visual0 because this Material does not exist. Have you forgotten to define it in a .material script?[0m
+[33m[WARN] [1782629479.688985468]: Can't assign material male_base_lambert1 to SubEntity of mesh_person_visual1 because this Material does not exist. Have you forgotten to define it in a .material script?[0m
+[33m[WARN] [1782629479.690112446]: Can't assign material male_base_lambert1 to SubEntity of mesh_person_visual2 because this Material does not exist. Have you forgotten to define it in a .material script?[0m
+[14:51:22] [8] generating move_base launch file
+[14:51:22] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 apf_controller/APFController
@@ -44,13 +48,13 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1782629044.594776064]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1782629044.596963231]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1782629485.033215019]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1782629485.036780120]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260628 14:44:05.040813 41848 path_planner_factory.cpp:133] Using path planner: astar_prove
-[33m[WARN] [1782629045.055201268]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-I20260628 14:44:05.140117 41848 apf_controller.cpp:77] APF controller initialized!
-[14:44:06] [8] move_base 启动后状态:
+I20260628 14:51:25.528848 43859 path_planner_factory.cpp:133] Using path planner: astar_prove
+[33m[WARN] [1782629485.549664075]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260628 14:51:25.661887 43859 apf_controller.cpp:77] APF controller initialized!
+[14:51:26] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -111,27 +115,45 @@ I20260628 14:44:05.140117 41848 apf_controller.cpp:77] APF controller initialize
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-[0m[INFO] [1782629044.598345223]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1782629044.608445450]: Requesting the map...[0m
-[0m[INFO] [1782629044.812480321]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1782629044.912253084]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1782629044.918328747]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782629044.922706442]:     Subscribed to Topics: scan scan_real[0m
-[0m[INFO] [1782629044.966123213]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1782629044.973254330]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782629045.056854915]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1782629045.060164099]:     Subscribed to Topics: [0m
-[0m[INFO] [1782629045.070408170]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1782629045.136574973]: Created local_planner apf_controller/APFController[0m
-[0m[INFO] [1782629045.643520912]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782629045.655303619]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1782629045.702822493]: odom received![0m
-... logging to /home/lcy/.ros/log/c36d78ac-72b2-11f1-94f3-48b02df90897/roslaunch-ubuntu-41824.log
+[33m[WARN] [1782629489.992965992]: The /scan_fixed observation buffer has not been updated for 0.81 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782629495.992911090]: The /scan_fixed observation buffer has not been updated for 0.83 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782629497.992920178]: The /scan_fixed observation buffer has not been updated for 0.81 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782629499.992928380]: The /scan_fixed observation buffer has not been updated for 0.82 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782629501.992916878]: The /scan_fixed observation buffer has not been updated for 0.82 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782629507.992919002]: The /scan_fixed observation buffer has not been updated for 0.82 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782629509.992930320]: The /scan_fixed observation buffer has not been updated for 0.82 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782629513.992917365]: The /scan_fixed observation buffer has not been updated for 0.82 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782629515.992932997]: The /scan_fixed observation buffer has not been updated for 0.82 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782629517.992920413]: The /scan_fixed observation buffer has not been updated for 0.82 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782629519.992934943]: The /scan_fixed observation buffer has not been updated for 0.82 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782629526.992927173]: The /scan_fixed observation buffer has not been updated for 0.80 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782629528.992926637]: The /scan_fixed observation buffer has not been updated for 0.81 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782629530.992911484]: The /scan_fixed observation buffer has not been updated for 0.82 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782629532.992962678]: The /scan_fixed observation buffer has not been updated for 0.81 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782629534.992913301]: The /scan_fixed observation buffer has not been updated for 0.82 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782629536.992911038]: The /scan_fixed observation buffer has not been updated for 0.82 seconds, and it should be updated every 0.80 seconds.[0m
+[33m[WARN] [1782629547.992921123]: The /scan_fixed observation buffer has not been updated for 0.81 seconds, and it should be updated every 0.80 seconds.[0m
+[0m[INFO] [1782629485.038403433]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1782629485.059011964]: Requesting the map...[0m
+[0m[INFO] [1782629485.263477353]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1782629485.363281669]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1782629485.375791201]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782629485.385604716]:     Subscribed to Topics: scan scan_real[0m
+[0m[INFO] [1782629485.445182976]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1782629485.452223415]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782629485.553239896]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1782629485.563177478]:     Subscribed to Topics: [0m
+[0m[INFO] [1782629485.587418696]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1782629485.655467998]: Created local_planner apf_controller/APFController[0m
+[0m[INFO] [1782629486.151930429]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782629486.164631648]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1782629486.219263742]: odom received![0m
+... logging to /home/lcy/.ros/log/c36d78ac-72b2-11f1-94f3-48b02df90897/roslaunch-ubuntu-43834.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:41003/[0m
+[1mstarted roslaunch server http://ubuntu:36953/[0m
 
 SUMMARY
 ========
@@ -219,7 +241,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [41848][0m
+[1mprocess[move_base-1]: started with pid [43859][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
