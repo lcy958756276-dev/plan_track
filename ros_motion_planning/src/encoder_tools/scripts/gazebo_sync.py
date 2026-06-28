@@ -40,11 +40,11 @@ class GazeboSync:
         # ── 周期性清理 costmap 噪声累积 ──
         # 10 秒清一次，清除累积噪声，同时给规划器充足时间避开真正障碍物
         self.clear_costmap_srv = None
-        rospy.Timer(rospy.Duration(10.0), self.clear_costmap_timer)
+        rospy.Timer(rospy.Duration(0.6), self.clear_costmap_timer)
 
         # ── 主循环（5Hz）：不断尝试服务 + 同步位置 ──
         # 注意：10Hz 太频繁，set_model_state 容易超时（returned no response）
-        rospy.Timer(rospy.Duration(0.2), self.main_timer)
+        rospy.Timer(rospy.Duration(0.6), self.main_timer)
 
         rospy.loginfo("gazebo_sync 已启动")
         rospy.loginfo("  持续尝试连接 /gz_debug/set_model_state ...")
