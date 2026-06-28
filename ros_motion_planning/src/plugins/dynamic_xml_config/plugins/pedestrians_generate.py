@@ -178,7 +178,60 @@ class PedGenerator(XMLGenerator):
 
             human_num = len(self.ped_cfg["pedestrians"]["ped_property"])
             for i in range(human_num):
-                world.append(createHuman(self.ped_cfg, i))
+                obj = self.ped_cfg["pedestrians"]["ped_property"][i]
+                # type: "human" (default) or "box"
+                if obj.get("type", "human") == "box":
+                    world.append(createBox(self.ped_cfg, i))
+                else:
+                    world.append(createHuman(self.ped_cfg, i))
 
             with open(path, "wb+") as f:
                 tree.write(f, encoding="utf-8", xml_declaration=True)
+
+        def createBox(config, index):
+            """
+            Create a moving box model element in the world file.
+
+            Parameters
+            ----------
+            config: dict
+                configure data structure.
+            index: int
+                box index
+
+            Return
+            ----------
+            model: ET.Element
+                box model element ptr
+            """
+            obj = config["pedestrians"]["ped_property"][index]
+            size = obj.get("size", 0.4)
+            color = obj.get("color", "1 0 0 1")
+
+            model = PedGenerator.createElement("model", props={"name": obj["name"]})
+            model.append(PedGenerator.createElement("static", text="false"))
+            model.append(PedGenerator.createElement("pose", text=obj["pose"]))
+
+            link = PedGenerator.createElement("link", props={"name": "link"})
+
+            # visual
+            visual = PedGenerator.createElement("visual", props={"name": "visual"})
+            visual_geo = PedGenerator.createElement("geometry")
+            visual_geo.append(PedGenerator.createElement("box", props={"size": "%s %s %s" % (size, size, size)}))
+            visual.append(visual_geo)
+            visual_mat = PedGenerator.createElement("material")
+            visual_mat.append(PedGenerator.createElement("ambient", text=color))
+            visual.append(visual_mat)
+            link.append(visual)
+
+            # collision
+            collision = PedGenerator.createElement("collision", props={"name": "collision"})
+            col_geo = PedGenerator.createElement("geometry")
+            col_geo.append(PedGenerator.createElement("box", props={"size": "%s %s %s" % (size, size, size)}))
+            collision.append(col_geo)
+            link.append(collision)
+
+            model.append(link)
+
+            PedGenerator.indent(model)
+            return model
