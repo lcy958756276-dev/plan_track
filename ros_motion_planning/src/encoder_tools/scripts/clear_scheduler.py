@@ -40,9 +40,16 @@ class ClearScheduler:
 
         # ── 订阅器 ──
         rospy.Subscriber("/goal_rotated", PoseStamped, self.goal_cb, queue_size=10)
-        rospy.Subscriber(
-            "/move_base/GlobalPlanner/plan", Path, self.plan_cb, queue_size=10
-        )
+        # PathPlanner 插件自己发 plan（topic 名跟插件 loaded name，实际需要用户自查）
+        # 常见备选：/move_base/GlobalPlanner/plan, /move_base/PathPlanner/plan,
+        # /move_base/path_planner/PathPlanner/plan
+        # 全订阅，谁有数据算谁
+        for topic in [
+            "/move_base/GlobalPlanner/plan",
+            "/move_base/PathPlanner/plan",
+            "/move_base/path_planner/PathPlanner/plan",
+        ]:
+            rospy.Subscriber(topic, Path, self.plan_cb, queue_size=10)
 
         # ── Action client（用于 cancel goal）──
         self.move_client = actionlib.SimpleActionClient(
@@ -64,10 +71,20 @@ class ClearScheduler:
     # ── /goal_rotated 回调 ──
     def goal_cb(self, msg):
         if self.goal_from_self:
-            # 自己发的 goal，不覆盖 last_goal（last_goal 记录的是"用户 goal"）
             return
         self.last_goal = msg
-        rospy.loginfo("clear_scheduler: 📥 记录新 goal")
+        self.plan_count = 0
+        # 15s 后如仍无 plan 则诊断
+        rospy.Timer(rospy.Duration(15.0), self._diag_timer, oneshot=True)
+
+    def _diag_timer(self, event):
+        """收 goal 后 15s 仍无 plan 则打印诊断"""
+        if self.plan_count == 0:
+            rospy.logwarn(
+                "clear_scheduler: ⚠️ 收到 goal 已 15s 但未收到任何 plan！\n"
+                "  运行以下命令确认 plan topic 名称:\n"
+                "    rostopic list | grep -i plan"
+            )
 
     # ── /move_base/GlobalPlanner/plan 回调 ──
     def plan_cb(self, msg):
