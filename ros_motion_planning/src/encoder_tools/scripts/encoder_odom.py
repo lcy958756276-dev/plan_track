@@ -23,7 +23,7 @@ class EncoderOdometry:
     def __init__(self):
         # 物理参数
         wheel_radius = rospy.get_param("~wheel_radius", 0.1065)
-        wheel_base   = rospy.get_param("~wheel_base", 0.25)
+        wheel_base   = rospy.get_param("~wheel_base", 0.8)
 
         # 初始位置偏移（让机器人初始位置落在 my_map_two 空闲区）
         initial_x = rospy.get_param("~initial_x", 0.0)

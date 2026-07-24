@@ -8,6 +8,8 @@
 #   - run_debug.sh: 设置 /tmp/.use_encoder_odom 标志位，Gazebo 跳过 odom TF
 #   - stop_debug.sh: 清理此标志位
 
+#我的启动文件是run_debug.sh，但是现在有点问题是当我将system_config.pb文件内的max_linear_velocity: 0.05    # m / s的速度改为0.1之后，他就容易不跟随路线的约束，之前分析可能是第一个是apf这个controller预测头较长，第二个是可能线速限制度上去了但是角速度限制还没上去
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 WORKSPACE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 LOG_DIR="$WORKSPACE_DIR/log"
