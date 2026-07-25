@@ -20,6 +20,7 @@ class PreRotate:
         self.stop_before_rotate = 1.0                    # 新 goal 后先停稳，再按路径方向旋转
         self.plan_goal_tolerance = 0.3                   # 防止 make_plan 返回上一条旧路径
         self.make_plan_service = "/move_base/PathPlanner/make_plan"
+        self.resume_clear_delay = 2.0                    # goal 转发给 move_base 后再恢复 clear
 
         self.x = 0.0
         self.y = 0.0
@@ -28,6 +29,7 @@ class PreRotate:
         self.goal = None
         self.target_yaw = None
         self.make_plan = None
+        self.resume_clear_timer = None
         self.move_client = actionlib.SimpleActionClient("move_base", MoveBaseAction)
 
         self.goal_pub = rospy.Publisher("/goal_rotated", PoseStamped, queue_size=1)
@@ -70,16 +72,17 @@ class PreRotate:
             self.yaw * 180 / math.pi,
         )
         self._set_clear_paused(True, "new goal, wait for one-shot plan")
+        self._cancel_resume_clear_timer()
         self._cancel_move_base()
         self._stop_robot()
         rospy.sleep(self.stop_before_rotate)
         self._stop_robot()
 
         target_yaw = self._get_initial_path_yaw(msg)
-        self._set_clear_paused(False, "one-shot plan finished")
         if target_yaw is None:
             rospy.logerr("pre_rotate: no valid global path heading, keep robot stopped")
             self._stop_robot()
+            self._schedule_clear_resume("no valid plan")
             return
 
         err = self._norm(target_yaw - self.yaw)
@@ -94,7 +97,7 @@ class PreRotate:
             )
         else:
             rospy.loginfo("pre_rotate: already aligned with path, send goal to move_base")
-            self.goal_pub.publish(msg)
+            self._publish_goal_and_resume_clear(msg)
 
     def _check_rotation(self):
         if self.target_yaw is None:
@@ -108,7 +111,7 @@ class PreRotate:
             rospy.sleep(0.1)
             self._stop_robot()
             rospy.loginfo("pre_rotate: aligned, send goal to move_base")
-            self.goal_pub.publish(self.goal)
+            self._publish_goal_and_resume_clear(self.goal)
             self.rotating = False
             self.goal = None
             self.target_yaw = None
@@ -135,6 +138,33 @@ class PreRotate:
         msg.data = paused
         self.clear_pause_pub.publish(msg)
         rospy.loginfo("pre_rotate: clear_scheduler pause=%s (%s)", paused, reason)
+
+    def _publish_goal_and_resume_clear(self, goal):
+        self._set_clear_paused(True, "send goal to move_base, protect initial move_base plan")
+        self.goal_pub.publish(goal)
+        self._schedule_clear_resume("move_base initial plan should be finished")
+
+    def _schedule_clear_resume(self, reason):
+        self._cancel_resume_clear_timer()
+        self.resume_clear_timer = rospy.Timer(
+            rospy.Duration(self.resume_clear_delay),
+            lambda event: self._resume_clear_timer_cb(reason),
+            oneshot=True,
+        )
+        rospy.loginfo(
+            "pre_rotate: clear_scheduler will resume in %.1fs (%s)",
+            self.resume_clear_delay,
+            reason,
+        )
+
+    def _resume_clear_timer_cb(self, reason):
+        self.resume_clear_timer = None
+        self._set_clear_paused(False, reason)
+
+    def _cancel_resume_clear_timer(self):
+        if self.resume_clear_timer is not None:
+            self.resume_clear_timer.shutdown()
+            self.resume_clear_timer = None
 
     def _get_initial_path_yaw(self, goal):
         """先请求一次全局路径，用路径开头方向作为预旋转方向。"""
