@@ -12,11 +12,11 @@ from tf.transformations import euler_from_quaternion
 
 class PreRotate:
     def __init__(self):
-        self.angle_threshold = math.radians(5.0)
         self.alignment_tol = math.radians(3.0)
         self.max_angular = 0.45                         # rad/s，慢一点更稳
         self.plan_heading_dist = 0.35                    # 沿全局路径取多远的点来决定初始朝向
         self.plan_retry_timeout = 3.0                    # 等待全局规划结果的最长时间
+        self.stop_before_rotate = 1.0                    # 新 goal 后先停稳，再按路径方向旋转
 
         self.x = 0.0
         self.y = 0.0
@@ -47,6 +47,11 @@ class PreRotate:
             self._check_rotation()
 
     def goal_cb(self, msg):
+        self._cancel_move_base()
+        self._stop_robot()
+        rospy.sleep(self.stop_before_rotate)
+        self._stop_robot()
+
         target_yaw = self._get_initial_path_yaw(msg)
         if target_yaw is None:
             rospy.logwarn("pre_rotate: no valid global path heading, send goal without pre-rotation")
@@ -55,9 +60,7 @@ class PreRotate:
 
         err = self._norm(target_yaw - self.yaw)
 
-        if abs(err) > self.angle_threshold:
-            self._cancel_move_base()
-            self._stop_robot()
+        if abs(err) > self.alignment_tol:
             self.rotating = True
             self.goal = msg
             self.target_yaw = target_yaw
@@ -66,6 +69,7 @@ class PreRotate:
                 err * 180 / math.pi,
             )
         else:
+            rospy.loginfo("pre_rotate: already aligned with path, send goal to move_base")
             self.goal_pub.publish(msg)
 
     def _check_rotation(self):
