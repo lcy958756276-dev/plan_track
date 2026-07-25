@@ -2,9 +2,11 @@
 import rospy
 import math
 import copy
+import actionlib
 from geometry_msgs.msg import Twist, PoseStamped
 from nav_msgs.msg import Odometry
 from nav_msgs.srv import GetPlan
+from move_base_msgs.msg import MoveBaseAction
 from tf.transformations import euler_from_quaternion
 
 
@@ -15,18 +17,15 @@ class PreRotate:
         self.max_angular = 0.45                         # rad/s，慢一点更稳
         self.plan_heading_dist = 0.15                    # 沿全局路径取多远的点来决定初始朝向
         self.plan_retry_timeout = 3.0                    # 等待全局规划结果的最长时间
-        self.moving_linear_threshold = 0.01              # 行驶中收到新 goal 时直接重规划
-        self.moving_angular_threshold = 0.05
 
         self.x = 0.0
         self.y = 0.0
         self.yaw = 0.0
-        self.linear_vel = 0.0
-        self.angular_vel = 0.0
         self.rotating = False
         self.goal = None
         self.target_yaw = None
         self.make_plan = None
+        self.move_client = actionlib.SimpleActionClient("move_base", MoveBaseAction)
 
         self.goal_pub = rospy.Publisher("/goal_rotated", PoseStamped, queue_size=1)
         self.cmd_pub = rospy.Publisher("/cmd_vel", Twist, queue_size=1)
@@ -42,29 +41,12 @@ class PreRotate:
         self.y = msg.pose.pose.position.y
         q = msg.pose.pose.orientation
         _, _, self.yaw = euler_from_quaternion([q.x, q.y, q.z, q.w])
-        self.linear_vel = abs(msg.twist.twist.linear.x)
-        self.angular_vel = abs(msg.twist.twist.angular.z)
 
     def _timer_cb(self, event):
         if self.rotating and self.goal is not None:
             self._check_rotation()
 
     def goal_cb(self, msg):
-        if self._is_moving():
-            if self.rotating:
-                self.cmd_pub.publish(Twist())
-                self.rotating = False
-                self.goal = None
-                self.target_yaw = None
-            rospy.loginfo("pre_rotate: robot is moving, forward new goal directly")
-            self.goal_pub.publish(msg)
-            return
-
-        if self.rotating:
-            self.goal = msg
-            self.target_yaw = self._get_initial_path_yaw(msg)
-            return
-
         target_yaw = self._get_initial_path_yaw(msg)
         if target_yaw is None:
             rospy.logwarn("pre_rotate: no valid global path heading, send goal without pre-rotation")
@@ -74,6 +56,8 @@ class PreRotate:
         err = self._norm(target_yaw - self.yaw)
 
         if abs(err) > self.angle_threshold:
+            self._cancel_move_base()
+            self._stop_robot()
             self.rotating = True
             self.goal = msg
             self.target_yaw = target_yaw
@@ -84,12 +68,6 @@ class PreRotate:
         else:
             self.goal_pub.publish(msg)
 
-    def _is_moving(self):
-        return (
-            self.linear_vel > self.moving_linear_threshold
-            or self.angular_vel > self.moving_angular_threshold
-        )
-
     def _check_rotation(self):
         if self.target_yaw is None:
             return
@@ -98,9 +76,9 @@ class PreRotate:
 
         if abs(err) < self.alignment_tol:
             # 先停稳再转发 goal
-            self.cmd_pub.publish(Twist())
+            self._stop_robot()
             rospy.sleep(0.1)
-            self.cmd_pub.publish(Twist())
+            self._stop_robot()
             rospy.loginfo("pre_rotate: aligned, send goal to move_base")
             self.goal_pub.publish(self.goal)
             self.rotating = False
@@ -110,6 +88,19 @@ class PreRotate:
             twist = Twist()
             twist.angular.z = self.max_angular if err > 0 else -self.max_angular
             self.cmd_pub.publish(twist)
+
+    def _cancel_move_base(self):
+        try:
+            if self.move_client.wait_for_server(timeout=rospy.Duration(0.2)):
+                self.move_client.cancel_all_goals()
+                rospy.loginfo("pre_rotate: canceled current move_base goal")
+            else:
+                rospy.logwarn_throttle(2.0, "pre_rotate: move_base action server not ready")
+        except Exception as e:
+            rospy.logwarn_throttle(2.0, "pre_rotate: cancel move_base failed: %s", e)
+
+    def _stop_robot(self):
+        self.cmd_pub.publish(Twist())
 
     def _get_initial_path_yaw(self, goal):
         """先请求一次全局路径，用路径开头方向作为预旋转方向。"""
