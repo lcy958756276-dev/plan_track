@@ -92,7 +92,8 @@ private:
 
   double _distanceToPlan(const geometry_msgs::PoseStamped& robot_pose,
                          const std::vector<geometry_msgs::PoseStamped>& plan,
-                         double* path_heading) const;
+                         double* path_heading,
+                         double* signed_cross_track_error = nullptr) const;
 
   bool _poseInCollision(double x, double y, double radius) const;
 

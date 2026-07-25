@@ -199,8 +199,15 @@ bool MPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
       robot_pose_map.pose.position.y + vt * std::sin(theta) * kVelocityLagTime;
 
   double path_heading = theta;
-  double path_dist = _distanceToPlan(robot_pose_map, prune_plan, &path_heading);
+  double signed_cross_track_error = 0.0;
+  double path_dist =
+      _distanceToPlan(robot_pose_map, prune_plan, &path_heading,
+                      &signed_cross_track_error);
   double path_heading_error = normalizeAngle(path_heading - theta);
+  const double cross_track_heading_error =
+      -std::atan2(2.8 * signed_cross_track_error, std::max(std::fabs(vt), 0.04));
+  const double tracking_heading_error =
+      normalizeAngle(path_heading_error + cross_track_heading_error);
   const double target_heading =
       std::atan2(lookahead_pt.y() - robot_pose_map.pose.position.y,
                  lookahead_pt.x() - robot_pose_map.pose.position.x);
@@ -241,21 +248,29 @@ bool MPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
 
     if (path_dist > 0.12) {
       if (path_dist > 0.20 || std::fabs(target_heading_error) > 0.55) {
+        const double recovery_heading_error =
+            normalizeAngle(target_heading_error + cross_track_heading_error);
         u_v = 0.0;
-        u_w = angularRegularization(wt, target_heading_error / control_dt_);
+        u_w = angularRegularization(wt, recovery_heading_error / control_dt_);
         reset_control_error = true;
         R_WARN << "MPC path recovery: dist=" << path_dist
+               << " m, signed_cte=" << signed_cross_track_error
                << " m, target_heading_error="
                << target_heading_error * 180.0 / M_PI
+               << " deg, recovery_heading_error="
+               << recovery_heading_error * 180.0 / M_PI
                << " deg, rotate in place to recover";
       } else {
         const double slow_ratio = clamp((0.24 - path_dist) / 0.12, 0.35, 1.0);
-        const double corrective_w = 2.0 * path_heading_error;
+        const double corrective_w = 2.2 * tracking_heading_error;
         u_v *= slow_ratio;
         u_w = angularRegularization(wt, u_w + corrective_w);
         R_WARN << "MPC path correction: dist=" << path_dist
+               << " m, signed_cte=" << signed_cross_track_error
                << " m, slow_ratio=" << slow_ratio
-               << ", heading_error=" << path_heading_error * 180.0 / M_PI << " deg";
+               << ", heading_error=" << path_heading_error * 180.0 / M_PI
+               << " deg, tracking_heading_error="
+               << tracking_heading_error * 180.0 / M_PI << " deg";
       }
     }
 
@@ -502,13 +517,17 @@ Eigen::Vector2d MPCController::_mpcControl(Eigen::Vector3d s, Eigen::Vector3d s_
 double MPCController::_distanceToPlan(
     const geometry_msgs::PoseStamped& robot_pose,
     const std::vector<geometry_msgs::PoseStamped>& plan,
-    double* path_heading) const {
+    double* path_heading,
+    double* signed_cross_track_error) const {
   if (plan.empty()) {
     return std::numeric_limits<double>::infinity();
   }
   if (plan.size() == 1) {
     if (path_heading) {
       *path_heading = tf2::getYaw(plan.front().pose.orientation);
+    }
+    if (signed_cross_track_error) {
+      *signed_cross_track_error = 0.0;
     }
     return std::hypot(robot_pose.pose.position.x - plan.front().pose.position.x,
                       robot_pose.pose.position.y - plan.front().pose.position.y);
@@ -518,6 +537,7 @@ double MPCController::_distanceToPlan(
   const double ry = robot_pose.pose.position.y;
   double best_dist = std::numeric_limits<double>::infinity();
   double best_heading = tf2::getYaw(plan.front().pose.orientation);
+  double best_signed_dist = 0.0;
 
   for (auto it = plan.begin(); it != plan.end() - 1; ++it) {
     const double ax = it->pose.position.x;
@@ -539,11 +559,16 @@ double MPCController::_distanceToPlan(
     if (dist < best_dist) {
       best_dist = dist;
       best_heading = std::atan2(vy, vx);
+      const double len = std::sqrt(len2);
+      best_signed_dist = (vx * (ry - py) - vy * (rx - px)) / len;
     }
   }
 
   if (path_heading) {
     *path_heading = best_heading;
+  }
+  if (signed_cross_track_error) {
+    *signed_cross_track_error = best_signed_dist;
   }
   return best_dist;
 }
