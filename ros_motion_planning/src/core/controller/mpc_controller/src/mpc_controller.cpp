@@ -220,18 +220,36 @@ bool MPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
     Eigen::Vector2d u = _mpcControl(s, s_d, u_r, du_p_);
     double u_v = linearRegularization(vt, u[0]);
     double u_w = angularRegularization(wt, u[1]);
+    bool reset_control_error = false;
 
     if (path_dist > 0.12) {
-      const double slow_ratio = clamp((0.35 - path_dist) / 0.23, 0.25, 1.0);
-      const double corrective_w = 1.2 * path_heading_error;
-      u_v *= slow_ratio;
-      u_w = angularRegularization(wt, u_w + corrective_w);
-      R_WARN << "MPC path correction: dist=" << path_dist
-             << " m, slow_ratio=" << slow_ratio
-             << ", heading_error=" << path_heading_error * 180.0 / M_PI << " deg";
+      const double target_heading =
+          std::atan2(lookahead_pt.y() - robot_pose_map.pose.position.y,
+                     lookahead_pt.x() - robot_pose_map.pose.position.x);
+      const double target_heading_error = normalizeAngle(target_heading - theta);
+
+      if (path_dist > 0.20 || std::fabs(target_heading_error) > 0.55) {
+        u_v = 0.0;
+        u_w = angularRegularization(wt, target_heading_error / control_dt_);
+        reset_control_error = true;
+        R_WARN << "MPC path recovery: dist=" << path_dist
+               << " m, target_heading_error="
+               << target_heading_error * 180.0 / M_PI
+               << " deg, rotate in place to recover";
+      } else {
+        const double slow_ratio = clamp((0.24 - path_dist) / 0.12, 0.35, 1.0);
+        const double corrective_w = 2.0 * path_heading_error;
+        u_v *= slow_ratio;
+        u_w = angularRegularization(wt, u_w + corrective_w);
+        R_WARN << "MPC path correction: dist=" << path_dist
+               << " m, slow_ratio=" << slow_ratio
+               << ", heading_error=" << path_heading_error * 180.0 / M_PI << " deg";
+      }
     }
 
-    du_p_ = Eigen::Vector2d(u_v - u_r[0], normalizeAngle(u_w - u_r[1]));
+    du_p_ = reset_control_error
+                ? Eigen::Vector2d(0, 0)
+                : Eigen::Vector2d(u_v - u_r[0], normalizeAngle(u_w - u_r[1]));
     cmd_vel.linear.x = u_v;
     cmd_vel.angular.z = u_w;
   }
