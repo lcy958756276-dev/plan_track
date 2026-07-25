@@ -1,19 +1,19 @@
-=== 启动时间: 2026年 07月 25日 星期六 17:21:34 CST ===
-[17:21:34] [1] main_generate.py start
-[17:21:35] [1] main_generate.py done
-[17:21:35] [2] use_encoder_odom flag set
-[17:21:35] [3] loading robot_description
-[17:21:35] [3] robot_description loaded
-[33m[WARN] [1784971295.676555766]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
-[17:21:38] [4] starting gzserver
-[17:21:44] [4] spawn_model start
-[INFO] [1784971305.812703]: Loading model XML from ros parameter robot_description
-[INFO] [1784971305.819782]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1784971305.824707]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1784971306.402201]: Spawn status: SpawnModel: Successfully spawned entity
-[17:21:47] [4] spawn_model exit=0
-[17:21:58] [8] generating move_base launch file
-[17:21:58] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 07月 25日 星期六 17:24:59 CST ===
+[17:24:59] [1] main_generate.py start
+[17:24:59] [1] main_generate.py done
+[17:24:59] [2] use_encoder_odom flag set
+[17:24:59] [3] loading robot_description
+[17:25:00] [3] robot_description loaded
+[33m[WARN] [1784971500.577203396]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[17:25:03] [4] starting gzserver
+[17:25:09] [4] spawn_model start
+[INFO] [1784971510.683635]: Loading model XML from ros parameter robot_description
+[INFO] [1784971510.692624]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1784971510.698261]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1784971511.170506]: Spawn status: SpawnModel: Successfully spawned entity
+[17:25:11] [4] spawn_model exit=0
+[17:25:23] [8] generating move_base launch file
+[17:25:23] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 mpc_controller/MPCController
@@ -44,14 +44,14 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1784971320.684382931]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1784971320.686314309]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1784971525.409123101]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1784971525.411425493]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260725 17:22:01.137833 41124 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
-I20260725 17:22:01.149245 41124 path_planner_factory.cpp:133] Using path planner: astar_prove
-[33m[WARN] [1784971321.178267365]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-I20260725 17:22:01.348313 41124 mpc_controller.cpp:97] MPC Controller initialized!
-[17:22:02] [8] move_base 启动后状态:
+I20260725 17:25:25.861307 43087 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
+I20260725 17:25:25.868036 43087 path_planner_factory.cpp:133] Using path planner: astar_prove
+[33m[WARN] [1784971525.887805970]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260725 17:25:26.044649 43087 mpc_controller.cpp:97] MPC Controller initialized!
+[17:25:26] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -100,8 +100,6 @@ I20260725 17:22:01.348313 41124 mpc_controller.cpp:97] MPC Controller initialize
 /move_base/status
 /move_base_simple/goal
   [诊断] rosservice list | grep move_base:
-I20260725 17:22:03.716485 41124 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(0.0394106, -1.15421)
-I20260725 17:22:03.724073 41124 path_planner_node.cpp:302] PathPlanner make_plan response: poses=8 end=(0.0394106, -1.15421) end_goal_dist=0
 /move_base/PathPlanner/make_plan
 /move_base/clear_costmaps
 /move_base/get_loggers
@@ -116,276 +114,370 @@ I20260725 17:22:03.724073 41124 path_planner_node.cpp:302] PathPlanner make_plan
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-[33m[WARN] [1784971326.111723997]: The scan_real observation buffer has not been updated for 5.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971326.321792726]: The /scan_real observation buffer has not been updated for 5.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971326.611694357]: The scan_real observation buffer has not been updated for 5.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971326.821785231]: The /scan_real observation buffer has not been updated for 5.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971327.111685901]: The scan_real observation buffer has not been updated for 6.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971327.321791110]: The /scan_real observation buffer has not been updated for 6.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971327.611714115]: The scan_real observation buffer has not been updated for 6.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971327.821790651]: The /scan_real observation buffer has not been updated for 6.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971328.111707191]: The scan_real observation buffer has not been updated for 7.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971328.321786030]: The /scan_real observation buffer has not been updated for 7.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971328.611683208]: The scan_real observation buffer has not been updated for 7.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971328.821832256]: The /scan_real observation buffer has not been updated for 7.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971329.111706041]: The scan_real observation buffer has not been updated for 8.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971329.321772814]: The /scan_real observation buffer has not been updated for 8.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971329.611692454]: The scan_real observation buffer has not been updated for 8.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971329.821798108]: The /scan_real observation buffer has not been updated for 8.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971330.111696627]: The scan_real observation buffer has not been updated for 9.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971330.321782790]: The /scan_real observation buffer has not been updated for 9.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971330.611696476]: The scan_real observation buffer has not been updated for 9.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971330.821797936]: The /scan_real observation buffer has not been updated for 9.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971331.111701605]: The scan_real observation buffer has not been updated for 10.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971331.321794264]: The /scan_real observation buffer has not been updated for 10.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971331.611695691]: The scan_real observation buffer has not been updated for 10.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971331.821794173]: The /scan_real observation buffer has not been updated for 10.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971332.111688912]: The scan_real observation buffer has not been updated for 11.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971332.245140753]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971332.321794081]: The /scan_real observation buffer has not been updated for 11.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971332.345270971]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971332.445262658]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971332.545264425]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971332.611688626]: The scan_real observation buffer has not been updated for 11.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971332.645272176]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971332.745268631]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971332.821821284]: The /scan_real observation buffer has not been updated for 11.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971332.845231260]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971332.945252676]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971333.045259338]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971333.111689331]: The scan_real observation buffer has not been updated for 12.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971333.145265137]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971333.245259191]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971333.321800931]: The /scan_real observation buffer has not been updated for 12.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971333.345255965]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971333.445287683]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971333.611698930]: The scan_real observation buffer has not been updated for 12.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971333.821791649]: The /scan_real observation buffer has not been updated for 12.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971334.111695951]: The scan_real observation buffer has not been updated for 13.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971334.321799709]: The /scan_real observation buffer has not been updated for 13.07 seconds, and it should be updated every 5.00 seconds.[0m
-I20260725 17:22:14.515059 41124 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0.0463512, -0.826703) goal=(-3.3897, -1.7888)
-W20260725 17:22:14.520485 41124 path_planner_node.cpp:215] Path heading change 149.495 deg > 90 deg, accepting new plan for pre-rotation
-I20260725 17:22:14.521874 41124 path_planner_node.cpp:302] PathPlanner make_plan response: poses=69 end=(-3.3897, -1.7888) end_goal_dist=0
-[33m[WARN] [1784971334.611714954]: The scan_real observation buffer has not been updated for 13.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971334.822333189]: The /scan_real observation buffer has not been updated for 13.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971335.111672962]: The scan_real observation buffer has not been updated for 14.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971335.321791951]: The /scan_real observation buffer has not been updated for 14.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971335.611712026]: The scan_real observation buffer has not been updated for 14.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971335.821799782]: The /scan_real observation buffer has not been updated for 14.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971336.111687727]: The scan_real observation buffer has not been updated for 15.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971336.321773370]: The /scan_real observation buffer has not been updated for 15.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971336.611692354]: The scan_real observation buffer has not been updated for 15.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971336.821804077]: The /scan_real observation buffer has not been updated for 15.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971337.111705045]: The scan_real observation buffer has not been updated for 16.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971337.321794365]: The /scan_real observation buffer has not been updated for 16.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971337.611705124]: The scan_real observation buffer has not been updated for 16.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971337.821772108]: The /scan_real observation buffer has not been updated for 16.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971338.111687314]: The scan_real observation buffer has not been updated for 17.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971338.321791897]: The /scan_real observation buffer has not been updated for 17.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971338.549580070]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971338.611697853]: The scan_real observation buffer has not been updated for 17.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971338.649726988]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971338.749733710]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971338.821796229]: The /scan_real observation buffer has not been updated for 17.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971338.849715600]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971338.949737747]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971339.049743381]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971339.111702312]: The scan_real observation buffer has not been updated for 18.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971339.149733654]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971339.249714103]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971339.321777645]: The /scan_real observation buffer has not been updated for 18.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971339.349728313]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971339.449726811]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971339.549891456]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971339.611712112]: The scan_real observation buffer has not been updated for 18.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971339.649713021]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971339.749724447]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971339.821783413]: The /scan_real observation buffer has not been updated for 18.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971339.849714336]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971339.949722530]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971340.049713795]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971340.111718039]: The scan_real observation buffer has not been updated for 19.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971340.149703652]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971340.249736645]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971340.321785658]: The /scan_real observation buffer has not been updated for 19.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971340.349708613]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971340.449744071]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971340.550746849]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971340.611700858]: The scan_real observation buffer has not been updated for 19.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971340.649727560]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971340.749721321]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971340.821797918]: The /scan_real observation buffer has not been updated for 19.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971340.849718569]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971340.949732459]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971341.049680490]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971341.111701725]: The scan_real observation buffer has not been updated for 20.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971341.149718699]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971341.249713802]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971341.321794432]: The /scan_real observation buffer has not been updated for 20.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971341.349718315]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971341.449717899]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971341.549731595]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971341.611709726]: The scan_real observation buffer has not been updated for 20.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971341.649722411]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971341.749727243]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971341.821805280]: The /scan_real observation buffer has not been updated for 20.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971341.850120885]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971341.949714539]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971342.049990513]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971342.111695517]: The scan_real observation buffer has not been updated for 21.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971342.149719978]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971342.249709513]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971342.321786077]: The /scan_real observation buffer has not been updated for 21.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971342.349767882]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971342.449796106]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971342.549792649]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971342.611735738]: The scan_real observation buffer has not been updated for 21.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971342.649724550]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971342.749733030]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971342.821788090]: The /scan_real observation buffer has not been updated for 21.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971342.849782598]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971342.949723012]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971343.049825414]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971343.111735478]: The scan_real observation buffer has not been updated for 22.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971343.149731074]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971343.249730976]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971343.321784468]: The /scan_real observation buffer has not been updated for 22.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971343.349715422]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971343.449715965]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971343.549731452]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971343.611694957]: The scan_real observation buffer has not been updated for 22.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971343.649703482]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971343.749750233]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971343.821806317]: The /scan_real observation buffer has not been updated for 22.57 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971343.849752824]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971343.949728054]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971344.049737940]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971344.111709893]: The scan_real observation buffer has not been updated for 23.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971344.149721362]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971344.249717167]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971344.321785827]: The /scan_real observation buffer has not been updated for 23.07 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971344.349741294]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971344.449716139]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971344.549726409]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-I20260725 17:22:24.649744 41133 mpc_controller.cpp:116] Got new plan
-I20260725 17:22:25.449667 41133 mpc_controller.cpp:116] Got new plan
-I20260725 17:22:27.449671 41133 mpc_controller.cpp:116] Got new plan
-I20260725 17:22:29.449671 41133 mpc_controller.cpp:116] Got new plan
-[33m[WARN] [1784971349.611759180]: The scan_real observation buffer has not been updated for 5.01 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971349.821787425]: The /scan_real observation buffer has not been updated for 5.24 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971349.849713802]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971349.949721220]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971350.049717566]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971350.111696364]: The scan_real observation buffer has not been updated for 5.51 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971350.149715959]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971350.249723025]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971350.321788737]: The /scan_real observation buffer has not been updated for 5.74 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971350.349716842]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971350.449732004]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971350.549725309]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971350.611689611]: The scan_real observation buffer has not been updated for 6.01 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971350.649733718]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971350.749748208]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971350.821774495]: The /scan_real observation buffer has not been updated for 6.24 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971350.849718313]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971350.949746403]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971351.049717627]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971351.111692105]: The scan_real observation buffer has not been updated for 6.51 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971351.149728884]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971351.249747629]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971351.321775356]: The /scan_real observation buffer has not been updated for 6.74 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971351.349697573]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-I20260725 17:22:31.449679 41133 mpc_controller.cpp:116] Got new plan
-I20260725 17:22:32.249676 41133 mpc_controller.cpp:116] Got new plan
-I20260725 17:22:34.249688 41133 mpc_controller.cpp:116] Got new plan
-I20260725 17:22:36.249686 41133 mpc_controller.cpp:116] Got new plan
-[33m[WARN] [1784971356.611695124]: The scan_real observation buffer has not been updated for 5.22 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971356.821793727]: The /scan_real observation buffer has not been updated for 5.45 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971356.849686950]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971356.949716988]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971357.049719409]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971357.111701052]: The scan_real observation buffer has not been updated for 5.72 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971357.149733797]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971357.249724762]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971357.321790470]: The /scan_real observation buffer has not been updated for 5.95 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971357.349721742]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971357.449720322]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971357.549737175]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971357.611813092]: The scan_real observation buffer has not been updated for 6.22 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971357.649716458]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971357.749717951]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971357.821797099]: The /scan_real observation buffer has not been updated for 6.45 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971357.849716275]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971357.949729447]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971358.049731163]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971358.111697190]: The scan_real observation buffer has not been updated for 6.72 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971358.149733199]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-I20260725 17:22:38.249972 41133 mpc_controller.cpp:116] Got new plan
-I20260725 17:22:39.049701 41133 mpc_controller.cpp:116] Got new plan
-I20260725 17:22:41.049679 41133 mpc_controller.cpp:116] Got new plan
-I20260725 17:22:43.049747 41133 mpc_controller.cpp:116] Got new plan
-[33m[WARN] [1784971363.321833516]: The /scan_real observation buffer has not been updated for 5.15 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971363.349715249]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971363.449751618]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971363.549735570]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971363.611706042]: The scan_real observation buffer has not been updated for 5.41 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971363.649748962]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971363.749716305]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971363.821796283]: The /scan_real observation buffer has not been updated for 5.65 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971363.849746722]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971363.949714225]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971364.050061929]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971364.111696585]: The scan_real observation buffer has not been updated for 5.91 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971364.149719408]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971364.249718431]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971364.321792776]: The /scan_real observation buffer has not been updated for 6.15 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971364.349726734]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971364.449723773]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971364.549765422]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971364.611716821]: The scan_real observation buffer has not been updated for 6.41 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971364.649713532]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971364.749720683]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971364.821815157]: The /scan_real observation buffer has not been updated for 6.65 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971364.849823453]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971364.949791467]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-I20260725 17:22:45.049680 41133 mpc_controller.cpp:116] Got new plan
-I20260725 17:22:45.849664 41133 mpc_controller.cpp:116] Got new plan
-I20260725 17:22:47.849663 41133 mpc_controller.cpp:116] Got new plan
-I20260725 17:22:49.849669 41133 mpc_controller.cpp:116] Got new plan
-[33m[WARN] [1784971370.111694602]: The scan_real observation buffer has not been updated for 5.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971370.321786368]: The /scan_real observation buffer has not been updated for 5.32 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971370.349712101]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971370.449710032]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971370.549715803]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971370.611691073]: The scan_real observation buffer has not been updated for 5.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971370.649728230]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971370.749675984]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971370.821794327]: The /scan_real observation buffer has not been updated for 5.82 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784971370.850281322]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971370.950167378]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971371.049785139]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
-[33m[WARN] [1784971371.111734872]: The scan_real observation buffer has not been updated for 6.08 seconds, and it should be updated every 5.00 seconds.[0m
-[0m[INFO] [1784971320.687440418]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1784971320.697544870]: Requesting the map...[0m
-[0m[INFO] [1784971320.900946238]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1784971321.000734057]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1784971321.006958953]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1784971321.011940777]:     Subscribed to Topics: scan scan_real[0m
-[0m[INFO] [1784971321.062812743]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1784971321.069557813]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1784971321.181852801]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1784971321.191408279]:     Subscribed to Topics: scan scan_real[0m
-[0m[INFO] [1784971321.267134549]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1784971321.344563775]: Created local_planner mpc_controller/MPCController[0m
-[0m[INFO] [1784971321.838335019]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1784971321.846630977]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1784971321.922156666]: odom received![0m
-... logging to /home/lcy/.ros/log/b7a487ee-87fd-11f1-80f8-48b02df90897/roslaunch-ubuntu-41065.log
+I20260725 17:25:30.792621 43087 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(0.0188809, -1.21962)
+W20260725 17:25:30.794301 43087 path_planner_node.cpp:215] Path heading change 90.2771 deg > 90 deg, accepting new plan for pre-rotation
+I20260725 17:25:30.796276 43087 path_planner_node.cpp:302] PathPlanner make_plan response: poses=9 end=(0.0188809, -1.21962) end_goal_dist=0
+[33m[WARN] [1784971530.832639606]: The scan_real observation buffer has not been updated for 5.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971531.023082944]: The /scan_real observation buffer has not been updated for 5.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971531.332609445]: The scan_real observation buffer has not been updated for 5.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971531.523059439]: The /scan_real observation buffer has not been updated for 5.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971531.832627828]: The scan_real observation buffer has not been updated for 6.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971532.023064286]: The /scan_real observation buffer has not been updated for 6.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971532.332628226]: The scan_real observation buffer has not been updated for 6.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971532.523076618]: The /scan_real observation buffer has not been updated for 6.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971532.832634894]: The scan_real observation buffer has not been updated for 7.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971533.023065942]: The /scan_real observation buffer has not been updated for 7.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971533.332633497]: The scan_real observation buffer has not been updated for 7.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971533.523053280]: The /scan_real observation buffer has not been updated for 7.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971533.832635427]: The scan_real observation buffer has not been updated for 8.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971534.023059306]: The /scan_real observation buffer has not been updated for 8.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971534.332630123]: The scan_real observation buffer has not been updated for 8.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971534.523067793]: The /scan_real observation buffer has not been updated for 8.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971534.832634450]: The scan_real observation buffer has not been updated for 9.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971535.023061656]: The /scan_real observation buffer has not been updated for 9.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971535.332622071]: The scan_real observation buffer has not been updated for 9.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971535.523060317]: The /scan_real observation buffer has not been updated for 9.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971535.832612284]: The scan_real observation buffer has not been updated for 10.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971536.023061185]: The /scan_real observation buffer has not been updated for 10.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971536.332642560]: The scan_real observation buffer has not been updated for 10.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971536.523066756]: The /scan_real observation buffer has not been updated for 10.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971536.832634594]: The scan_real observation buffer has not been updated for 11.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971537.023059686]: The /scan_real observation buffer has not been updated for 11.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971537.332623458]: The scan_real observation buffer has not been updated for 11.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971537.523064741]: The /scan_real observation buffer has not been updated for 11.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971537.832629794]: The scan_real observation buffer has not been updated for 12.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971538.023065765]: The /scan_real observation buffer has not been updated for 12.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971538.332616479]: The scan_real observation buffer has not been updated for 12.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971538.523061762]: The /scan_real observation buffer has not been updated for 12.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971538.832628957]: The scan_real observation buffer has not been updated for 13.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971539.023065055]: The /scan_real observation buffer has not been updated for 13.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971539.332627544]: The scan_real observation buffer has not been updated for 13.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971539.391178283]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971539.491301555]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971539.523061017]: The /scan_real observation buffer has not been updated for 13.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971539.591291800]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971539.691293918]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971539.791322084]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971539.832709172]: The scan_real observation buffer has not been updated for 14.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971539.891290280]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971539.991291982]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971540.023055348]: The /scan_real observation buffer has not been updated for 14.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971540.091292466]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971540.191275511]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971540.291301340]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971540.332615851]: The scan_real observation buffer has not been updated for 14.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971540.391293761]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971540.491314566]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971540.523062124]: The /scan_real observation buffer has not been updated for 14.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971540.591297419]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971540.691345617]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971540.791304436]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971540.832636547]: The scan_real observation buffer has not been updated for 15.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971540.891275064]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971540.991300350]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971541.023060836]: The /scan_real observation buffer has not been updated for 15.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971541.091303842]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971541.191289126]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971541.291308043]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971541.332639450]: The scan_real observation buffer has not been updated for 15.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971541.391303087]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971541.491300211]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971541.523057049]: The /scan_real observation buffer has not been updated for 15.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971541.591296824]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971541.691286556]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971541.791291616]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971541.832621167]: The scan_real observation buffer has not been updated for 16.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971541.891293444]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971541.991292233]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971542.023052046]: The /scan_real observation buffer has not been updated for 16.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971542.091296877]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971542.191307761]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971542.291299412]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971542.332630243]: The scan_real observation buffer has not been updated for 16.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971542.391303640]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971542.491296284]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971542.523053409]: The /scan_real observation buffer has not been updated for 16.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971542.591303552]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971542.691284131]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971542.791269062]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971542.832641910]: The scan_real observation buffer has not been updated for 17.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971542.891297291]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971542.991292558]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971543.023059700]: The /scan_real observation buffer has not been updated for 17.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971543.091260081]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971543.191324822]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971543.291425916]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971543.332639079]: The scan_real observation buffer has not been updated for 17.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971543.391304092]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971543.491314655]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971543.523048228]: The /scan_real observation buffer has not been updated for 17.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971543.591319523]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971543.691296582]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971543.791306089]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971543.832624599]: The scan_real observation buffer has not been updated for 18.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971543.891317165]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971543.991298447]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971544.023059573]: The /scan_real observation buffer has not been updated for 18.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971544.091297202]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971544.191299637]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971544.291304824]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971544.332686888]: The scan_real observation buffer has not been updated for 18.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971544.391339772]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971544.491311134]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971544.523061315]: The /scan_real observation buffer has not been updated for 18.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971544.591311553]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971544.691310883]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971544.791294694]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971544.832638228]: The scan_real observation buffer has not been updated for 19.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971544.891303337]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971544.991294027]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971545.023070737]: The /scan_real observation buffer has not been updated for 19.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971545.091298638]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971545.191718906]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971545.291302834]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971545.332722083]: The scan_real observation buffer has not been updated for 19.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971545.391297268]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+I20260725 17:25:45.491312 43097 mpc_controller.cpp:116] Got new plan
+I20260725 17:25:46.291261 43097 mpc_controller.cpp:116] Got new plan
+I20260725 17:25:48.291258 43097 mpc_controller.cpp:116] Got new plan
+I20260725 17:25:50.291244 43097 mpc_controller.cpp:116] Got new plan
+[33m[WARN] [1784971550.523104080]: The /scan_real observation buffer has not been updated for 5.11 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971550.591288618]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971550.691287242]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971550.791872184]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971550.832621559]: The scan_real observation buffer has not been updated for 5.41 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971550.891290665]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971550.991298217]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971551.023046061]: The /scan_real observation buffer has not been updated for 5.61 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971551.091308009]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971551.191296296]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971551.291300647]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971551.332623508]: The scan_real observation buffer has not been updated for 5.91 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971551.391316455]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971551.491290790]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971551.523123660]: The /scan_real observation buffer has not been updated for 6.11 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971551.591291237]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971551.691306469]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971551.791286659]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971551.832619728]: The scan_real observation buffer has not been updated for 6.41 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971551.891289955]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971551.991321923]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971552.023359182]: The /scan_real observation buffer has not been updated for 6.61 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971552.091301505]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971552.191297536]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+I20260725 17:25:52.291245 43097 mpc_controller.cpp:116] Got new plan
+I20260725 17:25:53.038693 43097 mpc_controller.cpp:116] Got new plan
+I20260725 17:25:53.850512 43087 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0.0354516, -0.993369) goal=(-3.29095, -1.72147)
+W20260725 17:25:53.855898 43087 path_planner_node.cpp:215] Path heading change 160.095 deg > 90 deg, accepting new plan for pre-rotation
+I20260725 17:25:53.857425 43087 path_planner_node.cpp:302] PathPlanner make_plan response: poses=68 end=(-3.29095, -1.72147) end_goal_dist=0
+I20260725 17:25:55.038697 43097 mpc_controller.cpp:116] Got new plan
+I20260725 17:25:56.538715 43097 mpc_controller.cpp:145] GOAL Reached!
+[33m[WARN] [1784971557.332620949]: The scan_real observation buffer has not been updated for 5.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971557.523049445]: The /scan_real observation buffer has not been updated for 5.31 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971557.832640131]: The scan_real observation buffer has not been updated for 5.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971558.023065971]: The /scan_real observation buffer has not been updated for 5.81 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971558.333228734]: The scan_real observation buffer has not been updated for 6.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971558.523058910]: The /scan_real observation buffer has not been updated for 6.31 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971558.832635226]: The scan_real observation buffer has not been updated for 6.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971559.023082922]: The /scan_real observation buffer has not been updated for 6.81 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971559.332635652]: The scan_real observation buffer has not been updated for 7.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971559.523065394]: The /scan_real observation buffer has not been updated for 7.31 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971559.832623244]: The scan_real observation buffer has not been updated for 7.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971559.961889102]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971560.023071355]: The /scan_real observation buffer has not been updated for 7.81 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971560.062011628]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971560.162028295]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971560.262026850]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971560.332619731]: The scan_real observation buffer has not been updated for 8.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971560.362031517]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971560.462031032]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971560.523058145]: The /scan_real observation buffer has not been updated for 8.31 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971560.562027059]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971560.662040814]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971560.762033257]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971560.832627130]: The scan_real observation buffer has not been updated for 8.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971560.862034404]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971560.962027966]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971561.023090152]: The /scan_real observation buffer has not been updated for 8.81 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971561.062077722]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971561.162029907]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971561.262058926]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971561.332642143]: The scan_real observation buffer has not been updated for 9.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971561.362026248]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971561.462027202]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971561.523069036]: The /scan_real observation buffer has not been updated for 9.31 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971561.562031581]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971561.662021655]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971561.762030258]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971561.832626915]: The scan_real observation buffer has not been updated for 9.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971561.862034444]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971561.962099368]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971562.023115312]: The /scan_real observation buffer has not been updated for 9.81 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971562.062040545]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971562.162027418]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971562.262028852]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971562.332647237]: The scan_real observation buffer has not been updated for 10.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971562.362016974]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971562.462033096]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971562.523283350]: The /scan_real observation buffer has not been updated for 10.31 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971562.562022306]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971562.662039484]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971562.762047798]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971562.832620774]: The scan_real observation buffer has not been updated for 10.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971562.862040528]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971562.962021833]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971563.023047154]: The /scan_real observation buffer has not been updated for 10.81 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971563.062033251]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971563.162022524]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971563.262026582]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971563.332625286]: The scan_real observation buffer has not been updated for 11.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971563.362016879]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971563.462030217]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971563.523063665]: The /scan_real observation buffer has not been updated for 11.31 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971563.562024162]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971563.662040380]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971563.762064598]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971563.832631013]: The scan_real observation buffer has not been updated for 11.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971563.862038543]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971563.962034088]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971564.023046352]: The /scan_real observation buffer has not been updated for 11.81 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971564.062035393]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971564.162027034]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971564.262031571]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971564.332635971]: The scan_real observation buffer has not been updated for 12.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971564.362032652]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971564.462037765]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971564.523071053]: The /scan_real observation buffer has not been updated for 12.31 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971564.562033278]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971564.662093784]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971564.762024943]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971564.832636863]: The scan_real observation buffer has not been updated for 12.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971564.862029320]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971564.962025857]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971565.023064393]: The /scan_real observation buffer has not been updated for 12.81 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971565.062019002]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971565.162134901]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971565.262039659]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971565.332633594]: The scan_real observation buffer has not been updated for 13.10 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971565.362029155]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971565.462013755]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971565.523048291]: The /scan_real observation buffer has not been updated for 13.31 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971565.562020628]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971565.662032460]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971565.762014756]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971565.832616596]: The scan_real observation buffer has not been updated for 13.60 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971565.862017949]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971565.962028886]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+I20260725 17:26:06.061990 43097 mpc_controller.cpp:116] Got new plan
+I20260725 17:26:06.861972 43097 mpc_controller.cpp:116] Got new plan
+I20260725 17:26:08.861974 43097 mpc_controller.cpp:116] Got new plan
+I20260725 17:26:10.861991 43097 mpc_controller.cpp:116] Got new plan
+[33m[WARN] [1784971571.023048698]: The /scan_real observation buffer has not been updated for 5.04 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971571.062025674]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971571.162054112]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971571.262026933]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971571.332641667]: The scan_real observation buffer has not been updated for 5.33 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971571.362012171]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971571.462021696]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971571.523062503]: The /scan_real observation buffer has not been updated for 5.54 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971571.562017974]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971571.662026700]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971571.762018785]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971571.832638799]: The scan_real observation buffer has not been updated for 5.83 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971571.862020375]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971571.962013644]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971572.023049298]: The /scan_real observation buffer has not been updated for 6.04 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971572.062020257]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971572.162018166]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971572.262028012]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971572.332622137]: The scan_real observation buffer has not been updated for 6.33 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971572.362013217]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971572.462035862]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971572.523061372]: The /scan_real observation buffer has not been updated for 6.54 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971572.562021291]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971572.662033856]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971572.762021333]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+I20260725 17:26:12.861969 43097 mpc_controller.cpp:116] Got new plan
+I20260725 17:26:13.661986 43097 mpc_controller.cpp:116] Got new plan
+I20260725 17:26:15.661978 43097 mpc_controller.cpp:116] Got new plan
+I20260725 17:26:17.661991 43097 mpc_controller.cpp:116] Got new plan
+[33m[WARN] [1784971577.832614461]: The scan_real observation buffer has not been updated for 5.02 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971578.023214207]: The /scan_real observation buffer has not been updated for 5.23 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971578.062127244]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971578.162027452]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971578.262038319]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971578.332627674]: The scan_real observation buffer has not been updated for 5.52 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971578.362470219]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971578.462037971]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971578.523044406]: The /scan_real observation buffer has not been updated for 5.73 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971578.562027141]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971578.662024439]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971578.762030250]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971578.832625525]: The scan_real observation buffer has not been updated for 6.02 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971578.862024092]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971578.962032622]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971579.023061458]: The /scan_real observation buffer has not been updated for 6.23 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971579.062015136]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971579.162018226]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971579.262022724]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971579.332632591]: The scan_real observation buffer has not been updated for 6.52 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971579.362180857]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971579.462028583]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971579.523047851]: The /scan_real observation buffer has not been updated for 6.73 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971579.562039417]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+I20260725 17:26:19.661976 43097 mpc_controller.cpp:116] Got new plan
+I20260725 17:26:20.462013 43097 mpc_controller.cpp:116] Got new plan
+I20260725 17:26:22.461974 43097 mpc_controller.cpp:116] Got new plan
+I20260725 17:26:24.462026 43097 mpc_controller.cpp:116] Got new plan
+[33m[WARN] [1784971584.832624638]: The scan_real observation buffer has not been updated for 5.23 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971585.023056790]: The /scan_real observation buffer has not been updated for 5.44 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971585.062197255]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971585.162205846]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971585.262026497]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971585.332631562]: The scan_real observation buffer has not been updated for 5.73 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971585.362020944]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971585.462037631]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971585.523079297]: The /scan_real observation buffer has not been updated for 5.94 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971585.562018094]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971585.662033981]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971585.762074509]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971585.832609972]: The scan_real observation buffer has not been updated for 6.23 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971585.862033179]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971585.962030314]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971586.023066796]: The /scan_real observation buffer has not been updated for 6.44 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971586.062034361]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971586.162024455]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971586.262021173]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971586.332622174]: The scan_real observation buffer has not been updated for 6.73 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971586.362020228]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+I20260725 17:26:26.461979 43097 mpc_controller.cpp:116] Got new plan
+I20260725 17:26:27.262006 43097 mpc_controller.cpp:116] Got new plan
+I20260725 17:26:29.261987 43097 mpc_controller.cpp:116] Got new plan
+I20260725 17:26:31.261988 43097 mpc_controller.cpp:116] Got new plan
+[33m[WARN] [1784971591.523052143]: The /scan_real observation buffer has not been updated for 5.13 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971591.562061308]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971591.662045288]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[0m[INFO] [1784971525.412631251]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1784971525.423530141]: Requesting the map...[0m
+[0m[INFO] [1784971525.627358868]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1784971525.727129435]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1784971525.733408660]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1784971525.737481112]:     Subscribed to Topics: scan scan_real[0m
+[0m[INFO] [1784971525.779507003]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1784971525.785693106]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1784971525.890781275]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1784971525.897142135]:     Subscribed to Topics: scan scan_real[0m
+[0m[INFO] [1784971525.949915041]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1784971526.041088245]: Created local_planner mpc_controller/MPCController[0m
+[0m[INFO] [1784971526.534684053]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1784971526.542437234]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1784971526.625368125]: odom received![0m
+... logging to /home/lcy/.ros/log/b7a487ee-87fd-11f1-80f8-48b02df90897/roslaunch-ubuntu-43063.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:36531/[0m
+[1mstarted roslaunch server http://ubuntu:45679/[0m
 
 SUMMARY
 ========
@@ -498,7 +590,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [41124][0m
+[1mprocess[move_base-1]: started with pid [43087][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
