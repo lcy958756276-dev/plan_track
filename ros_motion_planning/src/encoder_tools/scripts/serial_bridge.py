@@ -82,7 +82,7 @@ class SerialBridge:
         rospy.loginfo(f"[bridge] wheel_base={self.wheel_base:.4f}, wheel_radius={self.wheel_radius:.4f}")
 
     # ── 写入: /cmd_vel → 左右轮速度 → 串口 ──
-    # 注意: 确保两个轮子都有正速度，避免单轮停转产生摩擦力
+    # 只在单轮速度接近 0 时补一点死区速度，避免静摩擦；不压缩上层给出的角速度。
     def cmd_vel_cb(self, msg):
         self.cmd_count += 1
         v = msg.linear.x
@@ -92,19 +92,21 @@ class SerialBridge:
         v_left  = v - w * half_base
         v_right = v + w * half_base
 
-        # 防单轮停转: 如果任一轮速过低，降低 ω 来保证两轮都正转
-        # 注意: 仅当车在运动时 (v > min_speed) 才生效，
-        #       到达终点 v≈0 时直接两轮归零，不干预
+        # 防单轮停转: 轮速接近 0 时补到 min_speed，不改变上层的转向意图。
         min_speed = rospy.get_param("~min_wheel_speed", 0.01)
-        if v > min_speed and (v_left < min_speed or v_right < min_speed):
-            # 根据当前 v 算出最大允许的 ω (保证两轮都 ≥ min_speed)
-            max_w = (v - min_speed) / half_base
-            if abs(w) > max_w:
-                w = max_w * (1.0 if w >= 0 else -1.0)
-                v_left  = v - w * half_base
-                v_right = v + w * half_base
+        if abs(v) > min_speed or abs(w) > 1e-3:
+            original_left = v_left
+            original_right = v_right
+
+            if 0.0 <= abs(v_left) < min_speed:
+                v_left = min_speed * self._wheel_deadband_sign(original_left, -w)
+            if 0.0 <= abs(v_right) < min_speed:
+                v_right = min_speed * self._wheel_deadband_sign(original_right, w)
+
+            if v_left != original_left or v_right != original_right:
                 rospy.loginfo_throttle(1.0,
-                    f"[bridge] ω 已被限制: {msg.angular.z:.3f} → {w:.3f} (防单轮停转)")
+                    f"[bridge] 单轮死区补偿: l {original_left:.3f}->{v_left:.3f}, "
+                    f"r {original_right:.3f}->{v_right:.3f}, 保留输入 v={v:.3f} ω={w:.3f}")
 
         cmd_str = f"l:{v_left:.3f},r:{v_right:.3f}\r\n"
         try:
@@ -115,6 +117,17 @@ class SerialBridge:
         rospy.loginfo_throttle(1.0,
             f"[bridge] cmd #{self.cmd_count}: v={v:.3f} ω={w:.3f} → "
             f"l={v_left:.3f} r={v_right:.3f}  [串口发送] {cmd_str.strip()}")
+
+    def _wheel_deadband_sign(self, speed, turn_preference):
+        if speed > 0:
+            return 1.0
+        if speed < 0:
+            return -1.0
+        if turn_preference > 0:
+            return 1.0
+        if turn_preference < 0:
+            return -1.0
+        return 1.0
 
     # ── 读取: 串口 → tick 解析 → /wheel_ticks ──
     def run(self):
