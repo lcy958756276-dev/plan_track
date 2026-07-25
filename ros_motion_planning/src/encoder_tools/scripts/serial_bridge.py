@@ -20,6 +20,7 @@ MCU 预期输出格式 (可配置):
 import re
 import threading
 import os
+import time
 import rospy
 import serial
 import termios
@@ -37,6 +38,8 @@ class SerialBridge:
         self.wheel_base   = rospy.get_param("~wheel_base", 0.45)
         self.cmd_timeout = rospy.get_param("~cmd_timeout", 0.3)
         self.zero_repeat_period = rospy.get_param("~zero_repeat_period", 0.2)
+        self.stop_burst_count = rospy.get_param("~stop_burst_count", 3)
+        self.stop_burst_gap = rospy.get_param("~stop_burst_gap", 0.02)
 
         # ── 打开串口（只开一次） ──
         self.ser = serial.Serial(port=port, baudrate=baud, timeout=0.1)
@@ -149,19 +152,34 @@ class SerialBridge:
         try:
             with self.write_lock:
                 if self.ser and self.ser.is_open:
-                    fd = self.ser.fileno()
-                    os.write(fd, cmd_bytes)
-                    termios.tcdrain(fd)
                     if abs(v_left) < 1e-4 and abs(v_right) < 1e-4:
+                        stop_packets = [
+                            b"l:0.000,r:0.000\r\n",
+                            b"l:0,r:0\r\n",
+                            b"r:0.000,l:0.000\r\n",
+                            b"V 0.000 0.000\r\n",
+                        ]
+                        for _ in range(max(1, self.stop_burst_count)):
+                            for packet in stop_packets:
+                                self._write_serial_bytes(packet)
+                            time.sleep(self.stop_burst_gap)
                         rospy.loginfo_throttle(
                             1.0,
-                            f"[bridge] 零速度实际发送字节: {cmd_bytes!r}, len={len(cmd_bytes)}"
+                            "[bridge] 零速度兼容发送字节: "
+                            + ", ".join(repr(packet) for packet in stop_packets)
                         )
+                    else:
+                        self._write_serial_bytes(cmd_bytes)
         except serial.SerialException as e:
             rospy.logerr_throttle(3.0, f"[bridge] 串口写入失败: {e}")
         except OSError as e:
             rospy.logerr_throttle(3.0, f"[bridge] 串口底层写入失败: {e}")
         return cmd_str
+
+    def _write_serial_bytes(self, data):
+        fd = self.ser.fileno()
+        os.write(fd, data)
+        termios.tcdrain(fd)
 
     def _wheel_deadband_sign(self, speed, turn_preference):
         if speed > 0:
