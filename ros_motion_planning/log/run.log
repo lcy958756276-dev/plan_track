@@ -1,19 +1,19 @@
-=== 启动时间: 2026年 07月 25日 星期六 17:13:30 CST ===
-[17:13:30] [1] main_generate.py start
-[17:13:31] [1] main_generate.py done
-[17:13:31] [2] use_encoder_odom flag set
-[17:13:31] [3] loading robot_description
-[17:13:31] [3] robot_description loaded
-[33m[WARN] [1784970811.673123164]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
-[17:13:34] [4] starting gzserver
-[17:13:40] [4] spawn_model start
-[INFO] [1784970821.777078]: Loading model XML from ros parameter robot_description
-[INFO] [1784970821.785828]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1784970821.792057]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1784970822.369591]: Spawn status: SpawnModel: Successfully spawned entity
-[17:13:43] [4] spawn_model exit=0
-[17:13:54] [8] generating move_base launch file
-[17:13:54] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 07月 25日 星期六 17:21:34 CST ===
+[17:21:34] [1] main_generate.py start
+[17:21:35] [1] main_generate.py done
+[17:21:35] [2] use_encoder_odom flag set
+[17:21:35] [3] loading robot_description
+[17:21:35] [3] robot_description loaded
+[33m[WARN] [1784971295.676555766]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[17:21:38] [4] starting gzserver
+[17:21:44] [4] spawn_model start
+[INFO] [1784971305.812703]: Loading model XML from ros parameter robot_description
+[INFO] [1784971305.819782]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1784971305.824707]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1784971306.402201]: Spawn status: SpawnModel: Successfully spawned entity
+[17:21:47] [4] spawn_model exit=0
+[17:21:58] [8] generating move_base launch file
+[17:21:58] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 mpc_controller/MPCController
@@ -44,14 +44,14 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1784970836.554757662]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1784970836.557054440]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1784971320.684382931]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1784971320.686314309]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260725 17:13:57.025749 36554 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
-I20260725 17:13:57.034029 36554 path_planner_factory.cpp:133] Using path planner: astar_prove
-[33m[WARN] [1784970837.067280290]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-I20260725 17:13:57.201936 36554 mpc_controller.cpp:97] MPC Controller initialized!
-[17:13:58] [8] move_base 启动后状态:
+I20260725 17:22:01.137833 41124 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
+I20260725 17:22:01.149245 41124 path_planner_factory.cpp:133] Using path planner: astar_prove
+[33m[WARN] [1784971321.178267365]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260725 17:22:01.348313 41124 mpc_controller.cpp:97] MPC Controller initialized!
+[17:22:02] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -100,6 +100,8 @@ I20260725 17:13:57.201936 36554 mpc_controller.cpp:97] MPC Controller initialize
 /move_base/status
 /move_base_simple/goal
   [诊断] rosservice list | grep move_base:
+I20260725 17:22:03.716485 41124 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(0.0394106, -1.15421)
+I20260725 17:22:03.724073 41124 path_planner_node.cpp:302] PathPlanner make_plan response: poses=8 end=(0.0394106, -1.15421) end_goal_dist=0
 /move_base/PathPlanner/make_plan
 /move_base/clear_costmaps
 /move_base/get_loggers
@@ -114,362 +116,276 @@ I20260725 17:13:57.201936 36554 mpc_controller.cpp:97] MPC Controller initialize
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-[33m[WARN] [1784970842.005501853]: The scan_real observation buffer has not been updated for 5.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970842.505487220]: The scan_real observation buffer has not been updated for 5.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970843.005490059]: The scan_real observation buffer has not been updated for 6.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970843.505482713]: The scan_real observation buffer has not been updated for 6.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970844.005489542]: The scan_real observation buffer has not been updated for 7.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970844.505483658]: The scan_real observation buffer has not been updated for 7.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970845.005480461]: The scan_real observation buffer has not been updated for 8.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970845.505466567]: The scan_real observation buffer has not been updated for 8.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970846.005494593]: The scan_real observation buffer has not been updated for 9.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260725 17:14:06.051811 36554 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(0.0171415, -1.02069)
-I20260725 17:14:06.055866 36554 path_planner_node.cpp:302] PathPlanner make_plan response: poses=5 end=(0.0171415, -1.02069) end_goal_dist=0
-[33m[WARN] [1784970846.505490001]: The scan_real observation buffer has not been updated for 9.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970847.005482593]: The scan_real observation buffer has not been updated for 10.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970847.505463654]: The scan_real observation buffer has not been updated for 10.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970848.005500878]: The scan_real observation buffer has not been updated for 11.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970848.505480809]: The scan_real observation buffer has not been updated for 11.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970849.005487974]: The scan_real observation buffer has not been updated for 12.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970849.505472216]: The scan_real observation buffer has not been updated for 12.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970850.005491595]: The scan_real observation buffer has not been updated for 13.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970850.505478547]: The scan_real observation buffer has not been updated for 13.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970851.005487453]: The scan_real observation buffer has not been updated for 14.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970851.505490300]: The scan_real observation buffer has not been updated for 14.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970852.005489659]: The scan_real observation buffer has not been updated for 15.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970852.505480208]: The scan_real observation buffer has not been updated for 15.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970853.005485541]: The scan_real observation buffer has not been updated for 16.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970853.505483569]: The scan_real observation buffer has not been updated for 16.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970854.005547838]: The scan_real observation buffer has not been updated for 17.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260725 17:14:14.118216 36564 mpc_controller.cpp:116] Got new plan
-I20260725 17:14:14.218132 36564 mpc_controller.cpp:145] GOAL Reached!
-[33m[WARN] [1784970854.505525471]: The scan_real observation buffer has not been updated for 17.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970855.005481312]: The scan_real observation buffer has not been updated for 18.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970855.505476120]: The scan_real observation buffer has not been updated for 18.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970856.005488144]: The scan_real observation buffer has not been updated for 19.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970856.505463390]: The scan_real observation buffer has not been updated for 19.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970857.005531215]: The scan_real observation buffer has not been updated for 20.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260725 17:14:17.204644 36554 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0.0964826, -0.848306) goal=(-3.4149, -1.79614)
-W20260725 17:14:17.210389 36554 path_planner_node.cpp:215] Path heading change 152.864 deg > 90 deg, accepting new plan for pre-rotation
-I20260725 17:14:17.211715 36554 path_planner_node.cpp:302] PathPlanner make_plan response: poses=71 end=(-3.4149, -1.79614) end_goal_dist=0
-[33m[WARN] [1784970857.505486930]: The scan_real observation buffer has not been updated for 20.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970858.005489239]: The scan_real observation buffer has not been updated for 21.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970858.505493523]: The scan_real observation buffer has not been updated for 21.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970859.005506414]: The scan_real observation buffer has not been updated for 22.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970859.505493952]: The scan_real observation buffer has not been updated for 22.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970860.005510162]: The scan_real observation buffer has not been updated for 23.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970860.505476857]: The scan_real observation buffer has not been updated for 23.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970861.005502466]: The scan_real observation buffer has not been updated for 24.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970861.505487520]: The scan_real observation buffer has not been updated for 24.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970862.005482654]: The scan_real observation buffer has not been updated for 25.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260725 17:14:22.401093 36564 mpc_controller.cpp:116] Got new plan
-[33m[WARN] [1784970862.505484467]: The scan_real observation buffer has not been updated for 25.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970863.005469960]: The scan_real observation buffer has not been updated for 26.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970863.505471763]: The scan_real observation buffer has not been updated for 26.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970864.005477727]: The scan_real observation buffer has not been updated for 27.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260725 17:14:24.401089 36564 mpc_controller.cpp:116] Got new plan
-[33m[WARN] [1784970864.505479169]: The scan_real observation buffer has not been updated for 27.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970865.005479139]: The scan_real observation buffer has not been updated for 28.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970865.505460955]: The scan_real observation buffer has not been updated for 28.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970866.005491508]: The scan_real observation buffer has not been updated for 29.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260725 17:14:26.401093 36564 mpc_controller.cpp:116] Got new plan
-[33m[WARN] [1784970866.505467970]: The scan_real observation buffer has not been updated for 29.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970867.005498674]: The scan_real observation buffer has not been updated for 30.08 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970867.505541977]: The scan_real observation buffer has not been updated for 30.58 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970868.005783590]: The scan_real observation buffer has not been updated for 31.08 seconds, and it should be updated every 5.00 seconds.[0m
-I20260725 17:14:28.401094 36564 mpc_controller.cpp:116] Got new plan
-I20260725 17:14:29.201083 36564 mpc_controller.cpp:116] Got new plan
-I20260725 17:14:31.201087 36564 mpc_controller.cpp:116] Got new plan
-I20260725 17:14:33.201083 36564 mpc_controller.cpp:116] Got new plan
-[33m[WARN] [1784970873.505476967]: The scan_real observation buffer has not been updated for 5.15 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970874.005461428]: The scan_real observation buffer has not been updated for 5.65 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970874.505541850]: The scan_real observation buffer has not been updated for 6.15 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970875.005471772]: The scan_real observation buffer has not been updated for 6.65 seconds, and it should be updated every 5.00 seconds.[0m
-I20260725 17:14:35.201097 36564 mpc_controller.cpp:116] Got new plan
-I20260725 17:14:36.001099 36564 mpc_controller.cpp:116] Got new plan
-I20260725 17:14:38.001091 36564 mpc_controller.cpp:116] Got new plan
-I20260725 17:14:40.001091 36564 mpc_controller.cpp:116] Got new plan
-[33m[WARN] [1784970880.505478841]: The scan_real observation buffer has not been updated for 5.36 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970881.005487462]: The scan_real observation buffer has not been updated for 5.86 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970881.505537994]: The scan_real observation buffer has not been updated for 6.36 seconds, and it should be updated every 5.00 seconds.[0m
-I20260725 17:14:42.001086 36564 mpc_controller.cpp:116] Got new plan
-I20260725 17:14:42.801090 36564 mpc_controller.cpp:116] Got new plan
-I20260725 17:14:44.801086 36564 mpc_controller.cpp:116] Got new plan
-I20260725 17:14:46.801080 36564 mpc_controller.cpp:116] Got new plan
-[33m[WARN] [1784970887.005481337]: The scan_real observation buffer has not been updated for 5.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970887.505516550]: The scan_real observation buffer has not been updated for 5.56 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970888.005481745]: The scan_real observation buffer has not been updated for 6.06 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970888.505499189]: The scan_real observation buffer has not been updated for 6.56 seconds, and it should be updated every 5.00 seconds.[0m
-I20260725 17:14:48.801088 36564 mpc_controller.cpp:116] Got new plan
-I20260725 17:14:49.601056 36564 mpc_controller.cpp:116] Got new plan
-I20260725 17:14:51.601095 36564 mpc_controller.cpp:116] Got new plan
-I20260725 17:14:53.601099 36564 mpc_controller.cpp:116] Got new plan
-[33m[WARN] [1784970894.005480298]: The scan_real observation buffer has not been updated for 5.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970894.505482167]: The scan_real observation buffer has not been updated for 5.76 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970895.005525030]: The scan_real observation buffer has not been updated for 6.26 seconds, and it should be updated every 5.00 seconds.[0m
-E20260725 17:14:55.534085 36565 path_planner_node.cpp:277] Failed to get a path.
-[33m[WARN] [1784970895.534383206]: The scan_real observation buffer has not been updated for 6.79 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970896.005475661]: The scan_real observation buffer has not been updated for 7.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970896.505473352]: The scan_real observation buffer has not been updated for 7.76 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970897.005474211]: The scan_real observation buffer has not been updated for 8.26 seconds, and it should be updated every 5.00 seconds.[0m
-E20260725 17:14:57.534786 36565 path_planner_node.cpp:277] Failed to get a path.
-[33m[WARN] [1784970897.535188715]: The scan_real observation buffer has not been updated for 8.79 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970898.005481256]: The scan_real observation buffer has not been updated for 9.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970898.505489010]: The scan_real observation buffer has not been updated for 9.76 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970899.005484700]: The scan_real observation buffer has not been updated for 10.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970899.505492925]: The scan_real observation buffer has not been updated for 10.76 seconds, and it should be updated every 5.00 seconds.[0m
-E20260725 17:14:59.555222 36565 path_planner_node.cpp:277] Failed to get a path.
-[33m[WARN] [1784970900.005478717]: The scan_real observation buffer has not been updated for 11.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970900.505478965]: The scan_real observation buffer has not been updated for 11.76 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970901.005486477]: The scan_real observation buffer has not been updated for 12.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970901.505475899]: The scan_real observation buffer has not been updated for 12.76 seconds, and it should be updated every 5.00 seconds.[0m
-E20260725 17:15:01.540755 36565 path_planner_node.cpp:277] Failed to get a path.
-[33m[WARN] [1784970902.005499147]: The scan_real observation buffer has not been updated for 13.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970902.505488241]: The scan_real observation buffer has not been updated for 13.76 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970903.005482807]: The scan_real observation buffer has not been updated for 14.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970903.505470388]: The scan_real observation buffer has not been updated for 14.76 seconds, and it should be updated every 5.00 seconds.[0m
-E20260725 17:15:03.541889 36565 path_planner_node.cpp:277] Failed to get a path.
-[33m[WARN] [1784970904.005464433]: The scan_real observation buffer has not been updated for 15.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970904.505592745]: The scan_real observation buffer has not been updated for 15.76 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970905.005493243]: The scan_real observation buffer has not been updated for 16.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970905.505486086]: The scan_real observation buffer has not been updated for 16.76 seconds, and it should be updated every 5.00 seconds.[0m
-E20260725 17:15:05.546954 36565 path_planner_node.cpp:277] Failed to get a path.
-[33m[WARN] [1784970906.005488146]: The scan_real observation buffer has not been updated for 17.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970906.505473845]: The scan_real observation buffer has not been updated for 17.76 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970907.005486104]: The scan_real observation buffer has not been updated for 18.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970907.505464786]: The scan_real observation buffer has not been updated for 18.76 seconds, and it should be updated every 5.00 seconds.[0m
-E20260725 17:15:07.538997 36565 path_planner_node.cpp:277] Failed to get a path.
-[33m[WARN] [1784970908.005474060]: The scan_real observation buffer has not been updated for 19.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970908.505521855]: The scan_real observation buffer has not been updated for 19.76 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970909.005492016]: The scan_real observation buffer has not been updated for 20.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970909.505476568]: The scan_real observation buffer has not been updated for 20.76 seconds, and it should be updated every 5.00 seconds.[0m
-E20260725 17:15:09.548553 36565 path_planner_node.cpp:277] Failed to get a path.
-[33m[WARN] [1784970910.005456257]: The scan_real observation buffer has not been updated for 21.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970910.505533155]: The scan_real observation buffer has not been updated for 21.76 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970911.005486754]: The scan_real observation buffer has not been updated for 22.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970911.505461081]: The scan_real observation buffer has not been updated for 22.76 seconds, and it should be updated every 5.00 seconds.[0m
-E20260725 17:15:11.546903 36565 path_planner_node.cpp:277] Failed to get a path.
-[33m[WARN] [1784970912.005488625]: The scan_real observation buffer has not been updated for 23.26 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:12.415243 36564 mpc_controller.cpp:229] MPC path correction: dist=0.122125 m, slow_ratio=0.99076, heading_error=-5.37592 deg
-[33m[WARN] [1784970912.505484576]: The scan_real observation buffer has not been updated for 23.76 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:12.513545 36564 mpc_controller.cpp:229] MPC path correction: dist=0.122125 m, slow_ratio=0.99076, heading_error=-5.37592 deg
-W20260725 17:15:12.612591 36564 mpc_controller.cpp:229] MPC path correction: dist=0.121289 m, slow_ratio=0.994398, heading_error=-5.04065 deg
-W20260725 17:15:12.712755 36564 mpc_controller.cpp:229] MPC path correction: dist=0.121704 m, slow_ratio=0.992593, heading_error=-4.66094 deg
-W20260725 17:15:12.813350 36564 mpc_controller.cpp:229] MPC path correction: dist=0.121704 m, slow_ratio=0.992593, heading_error=-4.66094 deg
-W20260725 17:15:12.914042 36564 mpc_controller.cpp:229] MPC path correction: dist=0.122634 m, slow_ratio=0.988546, heading_error=-4.24611 deg
-[33m[WARN] [1784970913.005474862]: The scan_real observation buffer has not been updated for 24.26 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:13.013145 36564 mpc_controller.cpp:229] MPC path correction: dist=0.12346 m, slow_ratio=0.984959, heading_error=-3.78437 deg
-W20260725 17:15:13.112985 36564 mpc_controller.cpp:229] MPC path correction: dist=0.12346 m, slow_ratio=0.984959, heading_error=-3.78437 deg
-W20260725 17:15:13.212770 36564 mpc_controller.cpp:229] MPC path correction: dist=0.127887 m, slow_ratio=0.965709, heading_error=-2.47268 deg
-W20260725 17:15:13.319545 36564 mpc_controller.cpp:229] MPC path correction: dist=0.1261 m, slow_ratio=0.97348, heading_error=-1.95003 deg
-W20260725 17:15:13.417387 36564 mpc_controller.cpp:229] MPC path correction: dist=0.1261 m, slow_ratio=0.97348, heading_error=-1.95003 deg
-[33m[WARN] [1784970913.505486133]: The scan_real observation buffer has not been updated for 24.76 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:13.517577 36564 mpc_controller.cpp:229] MPC path correction: dist=0.125401 m, slow_ratio=0.976515, heading_error=-1.40625 deg
-E20260725 17:15:13.540470 36565 path_planner_node.cpp:277] Failed to get a path.
-W20260725 17:15:13.615775 36564 mpc_controller.cpp:229] MPC path correction: dist=0.125509 m, slow_ratio=0.976049, heading_error=-0.81254 deg
-W20260725 17:15:13.719599 36564 mpc_controller.cpp:229] MPC path correction: dist=0.125509 m, slow_ratio=0.976049, heading_error=-0.81254 deg
-W20260725 17:15:13.823559 36564 mpc_controller.cpp:229] MPC path correction: dist=0.125549 m, slow_ratio=0.975875, heading_error=-0.188925 deg
-W20260725 17:15:13.919646 36564 mpc_controller.cpp:229] MPC path correction: dist=0.125451 m, slow_ratio=0.976298, heading_error=0.456913 deg
-[33m[WARN] [1784970914.005480475]: The scan_real observation buffer has not been updated for 25.26 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:14.022094 36564 mpc_controller.cpp:229] MPC path correction: dist=0.125451 m, slow_ratio=0.976298, heading_error=0.456913 deg
-W20260725 17:15:14.121160 36564 mpc_controller.cpp:229] MPC path correction: dist=0.127743 m, slow_ratio=0.966334, heading_error=0.561231 deg
-W20260725 17:15:14.213985 36564 mpc_controller.cpp:229] MPC path correction: dist=0.125809 m, slow_ratio=0.974744, heading_error=0.372747 deg
-W20260725 17:15:14.312626 36564 mpc_controller.cpp:229] MPC path correction: dist=0.125809 m, slow_ratio=0.974744, heading_error=0.372747 deg
-W20260725 17:15:14.412904 36564 mpc_controller.cpp:229] MPC path correction: dist=0.125166 m, slow_ratio=0.977538, heading_error=0.163412 deg
-[33m[WARN] [1784970914.505537722]: The scan_real observation buffer has not been updated for 25.76 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:14.512943 36564 mpc_controller.cpp:229] MPC path correction: dist=0.125179 m, slow_ratio=0.977482, heading_error=-0.0585435 deg
-W20260725 17:15:14.613150 36564 mpc_controller.cpp:229] MPC path correction: dist=0.125179 m, slow_ratio=0.977482, heading_error=-0.0585435 deg
-W20260725 17:15:14.719239 36564 mpc_controller.cpp:229] MPC path correction: dist=0.125213 m, slow_ratio=0.977335, heading_error=-0.155392 deg
-W20260725 17:15:14.812826 36564 mpc_controller.cpp:229] MPC path correction: dist=0.129132 m, slow_ratio=0.960294, heading_error=-1.27714 deg
-W20260725 17:15:14.915055 36564 mpc_controller.cpp:229] MPC path correction: dist=0.129132 m, slow_ratio=0.960294, heading_error=-1.27714 deg
-[33m[WARN] [1784970915.005489590]: The scan_real observation buffer has not been updated for 26.26 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:15.015550 36564 mpc_controller.cpp:229] MPC path correction: dist=0.126469 m, slow_ratio=0.971873, heading_error=-0.67904 deg
-W20260725 17:15:15.123996 36564 mpc_controller.cpp:229] MPC path correction: dist=0.124814 m, slow_ratio=0.979069, heading_error=-0.0930114 deg
-W20260725 17:15:15.215590 36564 mpc_controller.cpp:229] MPC path correction: dist=0.124814 m, slow_ratio=0.979069, heading_error=-0.0930114 deg
-W20260725 17:15:15.316860 36564 mpc_controller.cpp:229] MPC path correction: dist=0.124187 m, slow_ratio=0.981795, heading_error=0.511399 deg
-W20260725 17:15:15.413939 36564 mpc_controller.cpp:229] MPC path correction: dist=0.123948 m, slow_ratio=0.982835, heading_error=1.13008 deg
-[33m[WARN] [1784970915.505452650]: The scan_real observation buffer has not been updated for 26.76 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:15.515748 36564 mpc_controller.cpp:229] MPC path correction: dist=0.123948 m, slow_ratio=0.982835, heading_error=1.13008 deg
-E20260725 17:15:15.541646 36565 path_planner_node.cpp:277] Failed to get a path.
-W20260725 17:15:15.612754 36564 mpc_controller.cpp:229] MPC path correction: dist=0.123574 m, slow_ratio=0.984462, heading_error=1.79375 deg
-W20260725 17:15:15.718662 36564 mpc_controller.cpp:229] MPC path correction: dist=0.12684 m, slow_ratio=0.970262, heading_error=-1.21802 deg
-W20260725 17:15:15.814106 36564 mpc_controller.cpp:229] MPC path correction: dist=0.12684 m, slow_ratio=0.970262, heading_error=-1.21802 deg
-W20260725 17:15:15.915032 36564 mpc_controller.cpp:229] MPC path correction: dist=0.123821 m, slow_ratio=0.983388, heading_error=-0.513191 deg
-[33m[WARN] [1784970916.005455839]: The scan_real observation buffer has not been updated for 27.26 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:16.013921 36564 mpc_controller.cpp:229] MPC path correction: dist=0.121784 m, slow_ratio=0.992245, heading_error=0.220167 deg
-W20260725 17:15:16.116310 36564 mpc_controller.cpp:229] MPC path correction: dist=0.121784 m, slow_ratio=0.992245, heading_error=0.220167 deg
-W20260725 17:15:16.215411 36564 mpc_controller.cpp:229] MPC path correction: dist=0.120716 m, slow_ratio=0.996888, heading_error=0.978492 deg
-W20260725 17:15:16.313663 36564 mpc_controller.cpp:229] MPC path correction: dist=0.120312 m, slow_ratio=0.998643, heading_error=1.76425 deg
-W20260725 17:15:16.412979 36564 mpc_controller.cpp:229] MPC path correction: dist=0.120312 m, slow_ratio=0.998643, heading_error=1.76425 deg
-[33m[WARN] [1784970916.505478572]: The scan_real observation buffer has not been updated for 27.76 seconds, and it should be updated every 5.00 seconds.[0m
-I20260725 17:15:16.601051 36564 mpc_controller.cpp:145] GOAL Reached!
-[33m[WARN] [1784970917.005508730]: The scan_real observation buffer has not been updated for 28.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970917.505479228]: The scan_real observation buffer has not been updated for 28.76 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970918.005493697]: The scan_real observation buffer has not been updated for 29.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970918.505499836]: The scan_real observation buffer has not been updated for 29.76 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970919.005498199]: The scan_real observation buffer has not been updated for 30.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970919.505504554]: The scan_real observation buffer has not been updated for 30.76 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970920.005481308]: The scan_real observation buffer has not been updated for 31.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970920.505490119]: The scan_real observation buffer has not been updated for 31.76 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970921.005501201]: The scan_real observation buffer has not been updated for 32.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970921.505482258]: The scan_real observation buffer has not been updated for 32.76 seconds, and it should be updated every 5.00 seconds.[0m
-I20260725 17:15:21.569619 36554 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-3.29387, -1.82319) goal=(-1.88313, -2.74269)
-I20260725 17:15:21.572481 36554 path_planner_node.cpp:302] PathPlanner make_plan response: poses=35 end=(-1.88313, -2.74269) end_goal_dist=0
-I20260725 17:15:22.417699 36564 mpc_controller.cpp:116] Got new plan
-I20260725 17:15:22.417873 36564 mpc_controller.cpp:145] GOAL Reached!
-[33m[WARN] [1784970927.005492008]: The scan_real observation buffer has not been updated for 5.40 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970927.505489399]: The scan_real observation buffer has not been updated for 5.90 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970928.005476517]: The scan_real observation buffer has not been updated for 6.40 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970928.505490540]: The scan_real observation buffer has not been updated for 6.90 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970929.005492499]: The scan_real observation buffer has not been updated for 7.40 seconds, and it should be updated every 5.00 seconds.[0m
-I20260725 17:15:29.305231 36564 mpc_controller.cpp:116] Got new plan
-[33m[WARN] [1784970929.505467856]: The scan_real observation buffer has not been updated for 7.90 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970930.005477007]: The scan_real observation buffer has not been updated for 8.40 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970930.505489477]: The scan_real observation buffer has not been updated for 8.90 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970931.005464922]: The scan_real observation buffer has not been updated for 9.40 seconds, and it should be updated every 5.00 seconds.[0m
-I20260725 17:15:31.305229 36564 mpc_controller.cpp:116] Got new plan
-[33m[WARN] [1784970931.505485033]: The scan_real observation buffer has not been updated for 9.90 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970932.005545976]: The scan_real observation buffer has not been updated for 10.40 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970932.505468027]: The scan_real observation buffer has not been updated for 10.90 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970933.005482593]: The scan_real observation buffer has not been updated for 11.40 seconds, and it should be updated every 5.00 seconds.[0m
-I20260725 17:15:33.305226 36564 mpc_controller.cpp:116] Got new plan
-[33m[WARN] [1784970933.506271029]: The scan_real observation buffer has not been updated for 11.90 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970934.005466074]: The scan_real observation buffer has not been updated for 12.40 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970934.505562898]: The scan_real observation buffer has not been updated for 12.90 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970935.005465315]: The scan_real observation buffer has not been updated for 13.40 seconds, and it should be updated every 5.00 seconds.[0m
-I20260725 17:15:35.305205 36564 mpc_controller.cpp:116] Got new plan
-W20260725 17:15:36.012238 36565 path_planner_node.cpp:215] Path heading change 139.089 deg > 90 deg, accepting new plan for pre-rotation
-I20260725 17:15:36.105211 36564 mpc_controller.cpp:116] Got new plan
-W20260725 17:15:38.011786 36565 path_planner_node.cpp:215] Path heading change 147.673 deg > 90 deg, accepting new plan for pre-rotation
-I20260725 17:15:38.105216 36564 mpc_controller.cpp:116] Got new plan
-I20260725 17:15:40.105223 36564 mpc_controller.cpp:116] Got new plan
-[33m[WARN] [1784970940.505457437]: The scan_real observation buffer has not been updated for 5.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970941.005450848]: The scan_real observation buffer has not been updated for 5.76 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970941.505466748]: The scan_real observation buffer has not been updated for 6.26 seconds, and it should be updated every 5.00 seconds.[0m
-[33m[WARN] [1784970942.005470167]: The scan_real observation buffer has not been updated for 6.76 seconds, and it should be updated every 5.00 seconds.[0m
-I20260725 17:15:42.105196 36564 mpc_controller.cpp:116] Got new plan
-I20260725 17:15:42.905220 36564 mpc_controller.cpp:116] Got new plan
-W20260725 17:15:44.220249 36564 mpc_controller.cpp:229] MPC path correction: dist=0.12156 m, slow_ratio=0.993218, heading_error=-128.524 deg
-W20260725 17:15:44.318821 36564 mpc_controller.cpp:229] MPC path correction: dist=0.12156 m, slow_ratio=0.993218, heading_error=-128.524 deg
-W20260725 17:15:44.418509 36564 mpc_controller.cpp:229] MPC path correction: dist=0.13195 m, slow_ratio=0.948042, heading_error=-127.851 deg
-W20260725 17:15:44.517962 36564 mpc_controller.cpp:229] MPC path correction: dist=0.142354 m, slow_ratio=0.902811, heading_error=-127.133 deg
-W20260725 17:15:44.618788 36564 mpc_controller.cpp:229] MPC path correction: dist=0.142354 m, slow_ratio=0.902811, heading_error=-127.133 deg
-W20260725 17:15:44.718468 36564 mpc_controller.cpp:229] MPC path correction: dist=0.152741 m, slow_ratio=0.857648, heading_error=-126.43 deg
-E20260725 17:15:44.805676 36565 path_planner_node.cpp:277] Failed to get a path.
-W20260725 17:15:44.820108 36564 mpc_controller.cpp:229] MPC path correction: dist=0.162976 m, slow_ratio=0.813146, heading_error=-125.713 deg
-W20260725 17:15:44.920794 36564 mpc_controller.cpp:229] MPC path correction: dist=0.162976 m, slow_ratio=0.813146, heading_error=-125.713 deg
-W20260725 17:15:45.024899 36564 mpc_controller.cpp:229] MPC path correction: dist=0.172986 m, slow_ratio=0.769628, heading_error=-125.003 deg
-W20260725 17:15:45.122690 36564 mpc_controller.cpp:229] MPC path correction: dist=0.183005 m, slow_ratio=0.726064, heading_error=-124.284 deg
-W20260725 17:15:45.218645 36564 mpc_controller.cpp:229] MPC path correction: dist=0.183005 m, slow_ratio=0.726064, heading_error=-124.284 deg
-W20260725 17:15:45.320766 36564 mpc_controller.cpp:229] MPC path correction: dist=0.192703 m, slow_ratio=0.683901, heading_error=-123.561 deg
-W20260725 17:15:45.423054 36564 mpc_controller.cpp:229] MPC path correction: dist=0.202268 m, slow_ratio=0.642314, heading_error=-122.848 deg
-W20260725 17:15:45.518746 36564 mpc_controller.cpp:229] MPC path correction: dist=0.202268 m, slow_ratio=0.642314, heading_error=-122.848 deg
-W20260725 17:15:45.618577 36564 mpc_controller.cpp:229] MPC path correction: dist=0.207968 m, slow_ratio=0.617529, heading_error=-32.1592 deg
-W20260725 17:15:45.722826 36564 mpc_controller.cpp:229] MPC path correction: dist=0.212856 m, slow_ratio=0.596279, heading_error=-31.4849 deg
-W20260725 17:15:45.818423 36564 mpc_controller.cpp:229] MPC path correction: dist=0.212856 m, slow_ratio=0.596279, heading_error=-31.4849 deg
-W20260725 17:15:45.918514 36564 mpc_controller.cpp:229] MPC path correction: dist=0.220418 m, slow_ratio=0.563398, heading_error=-30.8302 deg
-W20260725 17:15:46.020870 36564 mpc_controller.cpp:229] MPC path correction: dist=0.223805 m, slow_ratio=0.548675, heading_error=-30.1625 deg
-W20260725 17:15:46.120154 36564 mpc_controller.cpp:229] MPC path correction: dist=0.223805 m, slow_ratio=0.548675, heading_error=-30.1625 deg
-W20260725 17:15:46.219458 36564 mpc_controller.cpp:229] MPC path correction: dist=0.22735 m, slow_ratio=0.533262, heading_error=-29.5224 deg
-W20260725 17:15:46.322784 36564 mpc_controller.cpp:229] MPC path correction: dist=0.231057 m, slow_ratio=0.517143, heading_error=-28.8765 deg
-W20260725 17:15:46.419389 36564 mpc_controller.cpp:229] MPC path correction: dist=0.231057 m, slow_ratio=0.517143, heading_error=-28.8765 deg
-W20260725 17:15:46.521072 36564 mpc_controller.cpp:229] MPC path correction: dist=0.234851 m, slow_ratio=0.500647, heading_error=-28.2502 deg
-W20260725 17:15:46.620800 36564 mpc_controller.cpp:229] MPC path correction: dist=0.23872 m, slow_ratio=0.483827, heading_error=-27.6192 deg
-W20260725 17:15:46.718750 36564 mpc_controller.cpp:229] MPC path correction: dist=0.23872 m, slow_ratio=0.483827, heading_error=-27.6192 deg
-E20260725 17:15:46.807509 36565 path_planner_node.cpp:277] Failed to get a path.
-W20260725 17:15:46.817317 36564 mpc_controller.cpp:229] MPC path correction: dist=0.242451 m, slow_ratio=0.467602, heading_error=-27.0095 deg
-W20260725 17:15:46.920164 36564 mpc_controller.cpp:229] MPC path correction: dist=0.246059 m, slow_ratio=0.451917, heading_error=-26.4131 deg
-W20260725 17:15:47.017117 36564 mpc_controller.cpp:229] MPC path correction: dist=0.246059 m, slow_ratio=0.451917, heading_error=-26.4131 deg
-W20260725 17:15:47.120378 36564 mpc_controller.cpp:229] MPC path correction: dist=0.249497 m, slow_ratio=0.436971, heading_error=-25.8254 deg
-W20260725 17:15:47.217197 36564 mpc_controller.cpp:229] MPC path correction: dist=0.252773 m, slow_ratio=0.422725, heading_error=-25.2783 deg
-W20260725 17:15:47.318571 36564 mpc_controller.cpp:229] MPC path correction: dist=0.252773 m, slow_ratio=0.422725, heading_error=-25.2783 deg
-W20260725 17:15:47.421276 36564 mpc_controller.cpp:229] MPC path correction: dist=0.257966 m, slow_ratio=0.40015, heading_error=-24.7195 deg
-[33m[WARN] [1784970947.505543454]: The scan_real observation buffer has not been updated for 5.46 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:47.528033 36564 mpc_controller.cpp:229] MPC path correction: dist=0.260255 m, slow_ratio=0.390196, heading_error=-24.1883 deg
-W20260725 17:15:47.620179 36564 mpc_controller.cpp:229] MPC path correction: dist=0.260255 m, slow_ratio=0.390196, heading_error=-24.1883 deg
-W20260725 17:15:47.734820 36564 mpc_controller.cpp:229] MPC path correction: dist=0.262608 m, slow_ratio=0.379966, heading_error=-23.6599 deg
-W20260725 17:15:47.824939 36564 mpc_controller.cpp:229] MPC path correction: dist=0.265022 m, slow_ratio=0.369468, heading_error=-23.1491 deg
-W20260725 17:15:47.924901 36564 mpc_controller.cpp:229] MPC path correction: dist=0.265022 m, slow_ratio=0.369468, heading_error=-23.1491 deg
-[33m[WARN] [1784970948.005527240]: The scan_real observation buffer has not been updated for 5.96 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:48.022624 36564 mpc_controller.cpp:229] MPC path correction: dist=0.267493 m, slow_ratio=0.358728, heading_error=-22.6582 deg
-W20260725 17:15:48.120546 36564 mpc_controller.cpp:229] MPC path correction: dist=0.269944 m, slow_ratio=0.34807, heading_error=-22.2009 deg
-W20260725 17:15:48.216616 36564 mpc_controller.cpp:229] MPC path correction: dist=0.269944 m, slow_ratio=0.34807, heading_error=-22.2009 deg
-W20260725 17:15:48.318790 36564 mpc_controller.cpp:229] MPC path correction: dist=0.272421 m, slow_ratio=0.337301, heading_error=-21.7144 deg
-W20260725 17:15:48.421727 36564 mpc_controller.cpp:229] MPC path correction: dist=0.274781 m, slow_ratio=0.327039, heading_error=-21.2565 deg
-[33m[WARN] [1784970948.505485961]: The scan_real observation buffer has not been updated for 6.46 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:48.517563 36564 mpc_controller.cpp:229] MPC path correction: dist=0.274781 m, slow_ratio=0.327039, heading_error=-21.2565 deg
-W20260725 17:15:48.616815 36564 mpc_controller.cpp:229] MPC path correction: dist=0.277045 m, slow_ratio=0.317195, heading_error=-20.8187 deg
-W20260725 17:15:48.719753 36564 mpc_controller.cpp:229] MPC path correction: dist=0.279196 m, slow_ratio=0.307845, heading_error=-20.4003 deg
-E20260725 17:15:48.807614 36565 path_planner_node.cpp:277] Failed to get a path.
-W20260725 17:15:48.820830 36564 mpc_controller.cpp:229] MPC path correction: dist=0.279196 m, slow_ratio=0.307845, heading_error=-20.4003 deg
-W20260725 17:15:48.919062 36564 mpc_controller.cpp:229] MPC path correction: dist=0.281247 m, slow_ratio=0.298928, heading_error=-19.9778 deg
-[33m[WARN] [1784970949.005654001]: The scan_real observation buffer has not been updated for 6.96 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:49.019531 36564 mpc_controller.cpp:229] MPC path correction: dist=0.285385 m, slow_ratio=0.280935, heading_error=-16.9478 deg
-W20260725 17:15:49.123685 36564 mpc_controller.cpp:229] MPC path correction: dist=0.285385 m, slow_ratio=0.280935, heading_error=-16.9478 deg
-W20260725 17:15:49.218035 36564 mpc_controller.cpp:229] MPC path correction: dist=0.28667 m, slow_ratio=0.275346, heading_error=-16.5752 deg
-W20260725 17:15:49.321056 36564 mpc_controller.cpp:229] MPC path correction: dist=0.288012 m, slow_ratio=0.269512, heading_error=-16.2114 deg
-W20260725 17:15:49.419384 36564 mpc_controller.cpp:229] MPC path correction: dist=0.288012 m, slow_ratio=0.269512, heading_error=-16.2114 deg
-[33m[WARN] [1784970949.507036052]: The scan_real observation buffer has not been updated for 7.46 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:49.518483 36564 mpc_controller.cpp:229] MPC path correction: dist=0.289349 m, slow_ratio=0.263699, heading_error=-15.854 deg
-W20260725 17:15:49.616724 36564 mpc_controller.cpp:229] MPC path correction: dist=0.290703 m, slow_ratio=0.257812, heading_error=-15.5055 deg
-W20260725 17:15:49.718077 36564 mpc_controller.cpp:229] MPC path correction: dist=0.290703 m, slow_ratio=0.257812, heading_error=-15.5055 deg
-W20260725 17:15:49.817844 36564 mpc_controller.cpp:229] MPC path correction: dist=0.292051 m, slow_ratio=0.251951, heading_error=-15.1645 deg
-W20260725 17:15:49.919641 36564 mpc_controller.cpp:229] MPC path correction: dist=0.293356 m, slow_ratio=0.25, heading_error=-14.8676 deg
-[33m[WARN] [1784970950.005469536]: The scan_real observation buffer has not been updated for 7.96 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:50.017431 36564 mpc_controller.cpp:229] MPC path correction: dist=0.293356 m, slow_ratio=0.25, heading_error=-14.8676 deg
-W20260725 17:15:50.118058 36564 mpc_controller.cpp:229] MPC path correction: dist=0.294607 m, slow_ratio=0.25, heading_error=-14.5713 deg
-W20260725 17:15:50.217430 36564 mpc_controller.cpp:229] MPC path correction: dist=0.295794 m, slow_ratio=0.25, heading_error=-14.2715 deg
-W20260725 17:15:50.318954 36564 mpc_controller.cpp:229] MPC path correction: dist=0.295794 m, slow_ratio=0.25, heading_error=-14.2715 deg
-W20260725 17:15:50.417889 36564 mpc_controller.cpp:229] MPC path correction: dist=0.296913 m, slow_ratio=0.25, heading_error=-13.9963 deg
-[33m[WARN] [1784970950.505482706]: The scan_real observation buffer has not been updated for 8.46 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:50.517767 36564 mpc_controller.cpp:229] MPC path correction: dist=0.298005 m, slow_ratio=0.25, heading_error=-13.7422 deg
-W20260725 17:15:50.616964 36564 mpc_controller.cpp:229] MPC path correction: dist=0.298005 m, slow_ratio=0.25, heading_error=-13.7422 deg
-W20260725 17:15:50.717936 36564 mpc_controller.cpp:229] MPC path correction: dist=0.299053 m, slow_ratio=0.25, heading_error=-13.4942 deg
-E20260725 17:15:50.807731 36565 path_planner_node.cpp:277] Failed to get a path.
-W20260725 17:15:50.817380 36564 mpc_controller.cpp:229] MPC path correction: dist=0.301668 m, slow_ratio=0.25, heading_error=-10.4239 deg
-W20260725 17:15:50.919883 36564 mpc_controller.cpp:229] MPC path correction: dist=0.301668 m, slow_ratio=0.25, heading_error=-10.4239 deg
-[33m[WARN] [1784970951.005484421]: The scan_real observation buffer has not been updated for 8.96 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:51.017343 36564 mpc_controller.cpp:229] MPC path correction: dist=0.30194 m, slow_ratio=0.25, heading_error=-9.42251 deg
-W20260725 17:15:51.155316 36564 mpc_controller.cpp:229] MPC path correction: dist=0.30219 m, slow_ratio=0.25, heading_error=-8.38351 deg
-W20260725 17:15:51.223289 36564 mpc_controller.cpp:229] MPC path correction: dist=0.30219 m, slow_ratio=0.25, heading_error=-8.38351 deg
-W20260725 17:15:51.334657 36564 mpc_controller.cpp:229] MPC path correction: dist=0.302413 m, slow_ratio=0.25, heading_error=-7.94015 deg
-W20260725 17:15:51.418010 36564 mpc_controller.cpp:229] MPC path correction: dist=0.30266 m, slow_ratio=0.25, heading_error=-8.40711 deg
-[33m[WARN] [1784970951.505505583]: The scan_real observation buffer has not been updated for 9.46 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:51.521477 36564 mpc_controller.cpp:229] MPC path correction: dist=0.30266 m, slow_ratio=0.25, heading_error=-8.40711 deg
-W20260725 17:15:51.621495 36564 mpc_controller.cpp:229] MPC path correction: dist=0.30296 m, slow_ratio=0.25, heading_error=-8.93881 deg
-W20260725 17:15:51.717494 36564 mpc_controller.cpp:229] MPC path correction: dist=0.303155 m, slow_ratio=0.25, heading_error=-9.30234 deg
-W20260725 17:15:51.817528 36564 mpc_controller.cpp:229] MPC path correction: dist=0.303155 m, slow_ratio=0.25, heading_error=-9.30234 deg
-W20260725 17:15:51.922695 36564 mpc_controller.cpp:229] MPC path correction: dist=0.303356 m, slow_ratio=0.25, heading_error=-9.57779 deg
-[33m[WARN] [1784970952.006284593]: The scan_real observation buffer has not been updated for 9.96 seconds, and it should be updated every 5.00 seconds.[0m
-W20260725 17:15:52.026257 36564 mpc_controller.cpp:229] MPC path correction: dist=0.303573 m, slow_ratio=0.25, heading_error=-9.80386 deg
-W20260725 17:15:52.121364 36564 mpc_controller.cpp:229] MPC path correction: dist=0.303573 m, slow_ratio=0.25, heading_error=-9.80386 deg
-W20260725 17:15:52.223176 36564 mpc_controller.cpp:229] MPC path correction: dist=0.303808 m, slow_ratio=0.25, heading_error=-10.0006 deg
-W20260725 17:15:52.335525 36564 mpc_controller.cpp:229] MPC path correction: dist=0.304038 m, slow_ratio=0.25, heading_error=-10.1874 deg
-W20260725 17:15:52.443373 36564 mpc_controller.cpp:229] MPC path correction: dist=0.304038 m, slow_ratio=0.25, heading_error=-10.1874 deg
-W20260725 17:15:52.655982 36564 mpc_controller.cpp:229] MPC path correction: dist=0.304038 m, slow_ratio=0.25, heading_error=-10.1874 deg
-W20260725 17:15:52.678272 36564 mpc_controller.cpp:229] MPC path correction: dist=0.304038 m, slow_ratio=0.25, heading_error=-10.1874 deg
-W20260725 17:15:52.728783 36564 mpc_controller.cpp:229] MPC path correction: dist=0.304038 m, slow_ratio=0.25, heading_error=-10.1874 deg
-[0m[INFO] [1784970836.559073673]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1784970836.569784064]: Requesting the map...[0m
-[0m[INFO] [1784970836.775311897]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1784970836.875106646]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1784970836.881357566]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1784970836.886673769]:     Subscribed to Topics: scan scan_real[0m
-[0m[INFO] [1784970836.945590376]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1784970836.957686924]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1784970837.070824371]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1784970837.077089852]:     Subscribed to Topics: [0m
-[0m[INFO] [1784970837.109654126]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1784970837.197093726]: Created local_planner mpc_controller/MPCController[0m
-[0m[INFO] [1784970837.690953507]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1784970837.699423506]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1784970837.776147275]: odom received![0m
-... logging to /home/lcy/.ros/log/b7a487ee-87fd-11f1-80f8-48b02df90897/roslaunch-ubuntu-36531.log
+[33m[WARN] [1784971326.111723997]: The scan_real observation buffer has not been updated for 5.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971326.321792726]: The /scan_real observation buffer has not been updated for 5.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971326.611694357]: The scan_real observation buffer has not been updated for 5.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971326.821785231]: The /scan_real observation buffer has not been updated for 5.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971327.111685901]: The scan_real observation buffer has not been updated for 6.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971327.321791110]: The /scan_real observation buffer has not been updated for 6.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971327.611714115]: The scan_real observation buffer has not been updated for 6.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971327.821790651]: The /scan_real observation buffer has not been updated for 6.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971328.111707191]: The scan_real observation buffer has not been updated for 7.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971328.321786030]: The /scan_real observation buffer has not been updated for 7.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971328.611683208]: The scan_real observation buffer has not been updated for 7.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971328.821832256]: The /scan_real observation buffer has not been updated for 7.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971329.111706041]: The scan_real observation buffer has not been updated for 8.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971329.321772814]: The /scan_real observation buffer has not been updated for 8.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971329.611692454]: The scan_real observation buffer has not been updated for 8.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971329.821798108]: The /scan_real observation buffer has not been updated for 8.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971330.111696627]: The scan_real observation buffer has not been updated for 9.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971330.321782790]: The /scan_real observation buffer has not been updated for 9.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971330.611696476]: The scan_real observation buffer has not been updated for 9.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971330.821797936]: The /scan_real observation buffer has not been updated for 9.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971331.111701605]: The scan_real observation buffer has not been updated for 10.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971331.321794264]: The /scan_real observation buffer has not been updated for 10.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971331.611695691]: The scan_real observation buffer has not been updated for 10.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971331.821794173]: The /scan_real observation buffer has not been updated for 10.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971332.111688912]: The scan_real observation buffer has not been updated for 11.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971332.245140753]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971332.321794081]: The /scan_real observation buffer has not been updated for 11.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971332.345270971]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971332.445262658]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971332.545264425]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971332.611688626]: The scan_real observation buffer has not been updated for 11.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971332.645272176]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971332.745268631]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971332.821821284]: The /scan_real observation buffer has not been updated for 11.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971332.845231260]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971332.945252676]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971333.045259338]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971333.111689331]: The scan_real observation buffer has not been updated for 12.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971333.145265137]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971333.245259191]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971333.321800931]: The /scan_real observation buffer has not been updated for 12.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971333.345255965]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971333.445287683]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971333.611698930]: The scan_real observation buffer has not been updated for 12.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971333.821791649]: The /scan_real observation buffer has not been updated for 12.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971334.111695951]: The scan_real observation buffer has not been updated for 13.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971334.321799709]: The /scan_real observation buffer has not been updated for 13.07 seconds, and it should be updated every 5.00 seconds.[0m
+I20260725 17:22:14.515059 41124 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0.0463512, -0.826703) goal=(-3.3897, -1.7888)
+W20260725 17:22:14.520485 41124 path_planner_node.cpp:215] Path heading change 149.495 deg > 90 deg, accepting new plan for pre-rotation
+I20260725 17:22:14.521874 41124 path_planner_node.cpp:302] PathPlanner make_plan response: poses=69 end=(-3.3897, -1.7888) end_goal_dist=0
+[33m[WARN] [1784971334.611714954]: The scan_real observation buffer has not been updated for 13.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971334.822333189]: The /scan_real observation buffer has not been updated for 13.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971335.111672962]: The scan_real observation buffer has not been updated for 14.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971335.321791951]: The /scan_real observation buffer has not been updated for 14.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971335.611712026]: The scan_real observation buffer has not been updated for 14.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971335.821799782]: The /scan_real observation buffer has not been updated for 14.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971336.111687727]: The scan_real observation buffer has not been updated for 15.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971336.321773370]: The /scan_real observation buffer has not been updated for 15.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971336.611692354]: The scan_real observation buffer has not been updated for 15.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971336.821804077]: The /scan_real observation buffer has not been updated for 15.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971337.111705045]: The scan_real observation buffer has not been updated for 16.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971337.321794365]: The /scan_real observation buffer has not been updated for 16.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971337.611705124]: The scan_real observation buffer has not been updated for 16.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971337.821772108]: The /scan_real observation buffer has not been updated for 16.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971338.111687314]: The scan_real observation buffer has not been updated for 17.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971338.321791897]: The /scan_real observation buffer has not been updated for 17.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971338.549580070]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971338.611697853]: The scan_real observation buffer has not been updated for 17.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971338.649726988]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971338.749733710]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971338.821796229]: The /scan_real observation buffer has not been updated for 17.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971338.849715600]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971338.949737747]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971339.049743381]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971339.111702312]: The scan_real observation buffer has not been updated for 18.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971339.149733654]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971339.249714103]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971339.321777645]: The /scan_real observation buffer has not been updated for 18.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971339.349728313]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971339.449726811]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971339.549891456]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971339.611712112]: The scan_real observation buffer has not been updated for 18.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971339.649713021]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971339.749724447]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971339.821783413]: The /scan_real observation buffer has not been updated for 18.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971339.849714336]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971339.949722530]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971340.049713795]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971340.111718039]: The scan_real observation buffer has not been updated for 19.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971340.149703652]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971340.249736645]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971340.321785658]: The /scan_real observation buffer has not been updated for 19.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971340.349708613]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971340.449744071]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971340.550746849]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971340.611700858]: The scan_real observation buffer has not been updated for 19.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971340.649727560]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971340.749721321]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971340.821797918]: The /scan_real observation buffer has not been updated for 19.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971340.849718569]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971340.949732459]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971341.049680490]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971341.111701725]: The scan_real observation buffer has not been updated for 20.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971341.149718699]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971341.249713802]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971341.321794432]: The /scan_real observation buffer has not been updated for 20.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971341.349718315]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971341.449717899]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971341.549731595]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971341.611709726]: The scan_real observation buffer has not been updated for 20.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971341.649722411]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971341.749727243]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971341.821805280]: The /scan_real observation buffer has not been updated for 20.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971341.850120885]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971341.949714539]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971342.049990513]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971342.111695517]: The scan_real observation buffer has not been updated for 21.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971342.149719978]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971342.249709513]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971342.321786077]: The /scan_real observation buffer has not been updated for 21.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971342.349767882]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971342.449796106]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971342.549792649]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971342.611735738]: The scan_real observation buffer has not been updated for 21.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971342.649724550]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971342.749733030]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971342.821788090]: The /scan_real observation buffer has not been updated for 21.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971342.849782598]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971342.949723012]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971343.049825414]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971343.111735478]: The scan_real observation buffer has not been updated for 22.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971343.149731074]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971343.249730976]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971343.321784468]: The /scan_real observation buffer has not been updated for 22.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971343.349715422]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971343.449715965]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971343.549731452]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971343.611694957]: The scan_real observation buffer has not been updated for 22.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971343.649703482]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971343.749750233]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971343.821806317]: The /scan_real observation buffer has not been updated for 22.57 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971343.849752824]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971343.949728054]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971344.049737940]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971344.111709893]: The scan_real observation buffer has not been updated for 23.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971344.149721362]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971344.249717167]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971344.321785827]: The /scan_real observation buffer has not been updated for 23.07 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971344.349741294]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971344.449716139]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971344.549726409]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+I20260725 17:22:24.649744 41133 mpc_controller.cpp:116] Got new plan
+I20260725 17:22:25.449667 41133 mpc_controller.cpp:116] Got new plan
+I20260725 17:22:27.449671 41133 mpc_controller.cpp:116] Got new plan
+I20260725 17:22:29.449671 41133 mpc_controller.cpp:116] Got new plan
+[33m[WARN] [1784971349.611759180]: The scan_real observation buffer has not been updated for 5.01 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971349.821787425]: The /scan_real observation buffer has not been updated for 5.24 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971349.849713802]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971349.949721220]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971350.049717566]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971350.111696364]: The scan_real observation buffer has not been updated for 5.51 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971350.149715959]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971350.249723025]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971350.321788737]: The /scan_real observation buffer has not been updated for 5.74 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971350.349716842]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971350.449732004]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971350.549725309]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971350.611689611]: The scan_real observation buffer has not been updated for 6.01 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971350.649733718]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971350.749748208]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971350.821774495]: The /scan_real observation buffer has not been updated for 6.24 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971350.849718313]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971350.949746403]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971351.049717627]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971351.111692105]: The scan_real observation buffer has not been updated for 6.51 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971351.149728884]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971351.249747629]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971351.321775356]: The /scan_real observation buffer has not been updated for 6.74 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971351.349697573]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+I20260725 17:22:31.449679 41133 mpc_controller.cpp:116] Got new plan
+I20260725 17:22:32.249676 41133 mpc_controller.cpp:116] Got new plan
+I20260725 17:22:34.249688 41133 mpc_controller.cpp:116] Got new plan
+I20260725 17:22:36.249686 41133 mpc_controller.cpp:116] Got new plan
+[33m[WARN] [1784971356.611695124]: The scan_real observation buffer has not been updated for 5.22 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971356.821793727]: The /scan_real observation buffer has not been updated for 5.45 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971356.849686950]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971356.949716988]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971357.049719409]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971357.111701052]: The scan_real observation buffer has not been updated for 5.72 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971357.149733797]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971357.249724762]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971357.321790470]: The /scan_real observation buffer has not been updated for 5.95 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971357.349721742]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971357.449720322]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971357.549737175]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971357.611813092]: The scan_real observation buffer has not been updated for 6.22 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971357.649716458]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971357.749717951]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971357.821797099]: The /scan_real observation buffer has not been updated for 6.45 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971357.849716275]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971357.949729447]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971358.049731163]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971358.111697190]: The scan_real observation buffer has not been updated for 6.72 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971358.149733199]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+I20260725 17:22:38.249972 41133 mpc_controller.cpp:116] Got new plan
+I20260725 17:22:39.049701 41133 mpc_controller.cpp:116] Got new plan
+I20260725 17:22:41.049679 41133 mpc_controller.cpp:116] Got new plan
+I20260725 17:22:43.049747 41133 mpc_controller.cpp:116] Got new plan
+[33m[WARN] [1784971363.321833516]: The /scan_real observation buffer has not been updated for 5.15 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971363.349715249]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971363.449751618]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971363.549735570]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971363.611706042]: The scan_real observation buffer has not been updated for 5.41 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971363.649748962]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971363.749716305]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971363.821796283]: The /scan_real observation buffer has not been updated for 5.65 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971363.849746722]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971363.949714225]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971364.050061929]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971364.111696585]: The scan_real observation buffer has not been updated for 5.91 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971364.149719408]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971364.249718431]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971364.321792776]: The /scan_real observation buffer has not been updated for 6.15 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971364.349726734]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971364.449723773]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971364.549765422]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971364.611716821]: The scan_real observation buffer has not been updated for 6.41 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971364.649713532]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971364.749720683]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971364.821815157]: The /scan_real observation buffer has not been updated for 6.65 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971364.849823453]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971364.949791467]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+I20260725 17:22:45.049680 41133 mpc_controller.cpp:116] Got new plan
+I20260725 17:22:45.849664 41133 mpc_controller.cpp:116] Got new plan
+I20260725 17:22:47.849663 41133 mpc_controller.cpp:116] Got new plan
+I20260725 17:22:49.849669 41133 mpc_controller.cpp:116] Got new plan
+[33m[WARN] [1784971370.111694602]: The scan_real observation buffer has not been updated for 5.08 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971370.321786368]: The /scan_real observation buffer has not been updated for 5.32 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971370.349712101]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971370.449710032]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971370.549715803]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971370.611691073]: The scan_real observation buffer has not been updated for 5.58 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971370.649728230]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971370.749675984]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971370.821794327]: The /scan_real observation buffer has not been updated for 5.82 seconds, and it should be updated every 5.00 seconds.[0m
+[33m[WARN] [1784971370.850281322]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971370.950167378]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971371.049785139]: [/move_base]:Sensor data is out of date, we're not going to allow commanding of the base for safety[0m
+[33m[WARN] [1784971371.111734872]: The scan_real observation buffer has not been updated for 6.08 seconds, and it should be updated every 5.00 seconds.[0m
+[0m[INFO] [1784971320.687440418]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1784971320.697544870]: Requesting the map...[0m
+[0m[INFO] [1784971320.900946238]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1784971321.000734057]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1784971321.006958953]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1784971321.011940777]:     Subscribed to Topics: scan scan_real[0m
+[0m[INFO] [1784971321.062812743]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1784971321.069557813]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1784971321.181852801]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1784971321.191408279]:     Subscribed to Topics: scan scan_real[0m
+[0m[INFO] [1784971321.267134549]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1784971321.344563775]: Created local_planner mpc_controller/MPCController[0m
+[0m[INFO] [1784971321.838335019]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1784971321.846630977]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1784971321.922156666]: odom received![0m
+... logging to /home/lcy/.ros/log/b7a487ee-87fd-11f1-80f8-48b02df90897/roslaunch-ubuntu-41065.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:36777/[0m
+[1mstarted roslaunch server http://ubuntu:36531/[0m
 
 SUMMARY
 ========
@@ -533,6 +449,31 @@ PARAMETERS
  * /move_base/local_costmap/inflation_layer/cost_scaling_factor: 10.0
  * /move_base/local_costmap/inflation_layer/enabled: True
  * /move_base/local_costmap/inflation_layer/inflation_radius: 0.2
+ * /move_base/local_costmap/obstacle_layer/observation_sources: scan scan_real
+ * /move_base/local_costmap/obstacle_layer/scan/clearing: True
+ * /move_base/local_costmap/obstacle_layer/scan/data_type: LaserScan
+ * /move_base/local_costmap/obstacle_layer/scan/expected_update_rate: 0.8
+ * /move_base/local_costmap/obstacle_layer/scan/inf_is_valid: True
+ * /move_base/local_costmap/obstacle_layer/scan/marking: True
+ * /move_base/local_costmap/obstacle_layer/scan/max_obstacle_height: 0.8
+ * /move_base/local_costmap/obstacle_layer/scan/min_obstacle_height: 0.0
+ * /move_base/local_costmap/obstacle_layer/scan/observation_persistence: 0.0
+ * /move_base/local_costmap/obstacle_layer/scan/obstacle_range: 2.0
+ * /move_base/local_costmap/obstacle_layer/scan/raytrace_range: 3.0
+ * /move_base/local_costmap/obstacle_layer/scan/sensor_frame: base_scan
+ * /move_base/local_costmap/obstacle_layer/scan/topic: /scan_fixed
+ * /move_base/local_costmap/obstacle_layer/scan_real/clearing: True
+ * /move_base/local_costmap/obstacle_layer/scan_real/data_type: LaserScan
+ * /move_base/local_costmap/obstacle_layer/scan_real/expected_update_rate: 5.0
+ * /move_base/local_costmap/obstacle_layer/scan_real/inf_is_valid: True
+ * /move_base/local_costmap/obstacle_layer/scan_real/marking: True
+ * /move_base/local_costmap/obstacle_layer/scan_real/max_obstacle_height: 0.8
+ * /move_base/local_costmap/obstacle_layer/scan_real/min_obstacle_height: 0.0
+ * /move_base/local_costmap/obstacle_layer/scan_real/observation_persistence: 0.0
+ * /move_base/local_costmap/obstacle_layer/scan_real/obstacle_range: 3.0
+ * /move_base/local_costmap/obstacle_layer/scan_real/raytrace_range: 3.0
+ * /move_base/local_costmap/obstacle_layer/scan_real/sensor_frame: base_scan
+ * /move_base/local_costmap/obstacle_layer/scan_real/topic: /scan_real
  * /move_base/local_costmap/plugins: [{'name': 'obstac...
  * /move_base/local_costmap/publish_frequency: 1.0
  * /move_base/local_costmap/resolution: 0.05
@@ -557,7 +498,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [36554][0m
+[1mprocess[move_base-1]: started with pid [41124][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
