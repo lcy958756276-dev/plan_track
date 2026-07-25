@@ -18,6 +18,7 @@ MCU 预期输出格式 (可配置):
 """
 
 import re
+import threading
 import rospy
 import serial
 import termios
@@ -33,9 +34,12 @@ class SerialBridge:
         # ── 物理参数（差速模型用） ──
         self.wheel_radius = rospy.get_param("~wheel_radius", 0.1065)
         self.wheel_base   = rospy.get_param("~wheel_base", 0.45)
+        self.cmd_timeout = rospy.get_param("~cmd_timeout", 0.3)
+        self.zero_repeat_period = rospy.get_param("~zero_repeat_period", 0.2)
 
         # ── 打开串口（只开一次） ──
         self.ser = serial.Serial(port=port, baudrate=baud, timeout=0.1)
+        self.write_lock = threading.Lock()
 
         fd = self.ser.fileno()
         tty = termios.tcgetattr(fd)
@@ -71,6 +75,10 @@ class SerialBridge:
         # ── 统计 ──
         self.tick_count = 0
         self.cmd_count = 0
+        self.last_cmd_time = rospy.Time.now()
+        self.last_zero_send_time = rospy.Time(0)
+        self.last_sent_zero = True
+        rospy.Timer(rospy.Duration(0.1), self.cmd_timeout_cb)
 
         # ── 斜率检查（防 MCU 数据乱码导致位置跳变） ──
         self.last_ltick = None
@@ -85,6 +93,7 @@ class SerialBridge:
     # 只在单轮速度接近 0 时补一点死区速度，避免静摩擦；不压缩上层给出的角速度。
     def cmd_vel_cb(self, msg):
         self.cmd_count += 1
+        self.last_cmd_time = rospy.Time.now()
         v = msg.linear.x
         w = msg.angular.z
 
@@ -108,15 +117,39 @@ class SerialBridge:
                     f"[bridge] 单轮死区补偿: l {original_left:.3f}->{v_left:.3f}, "
                     f"r {original_right:.3f}->{v_right:.3f}, 保留输入 v={v:.3f} ω={w:.3f}")
 
-        cmd_str = f"l:{v_left:.3f},r:{v_right:.3f}\r\n"
-        try:
-            self.ser.write(cmd_str.encode("utf-8"))
-        except serial.SerialException as e:
-            rospy.logerr_throttle(3.0, f"[bridge] 串口写入失败: {e}")
+        cmd_str = self._write_wheel_command(v_left, v_right)
+        self.last_sent_zero = abs(v) < 1e-4 and abs(w) < 1e-4
+        if self.last_sent_zero:
+            self.last_zero_send_time = self.last_cmd_time
 
         rospy.loginfo_throttle(1.0,
             f"[bridge] cmd #{self.cmd_count}: v={v:.3f} ω={w:.3f} → "
             f"l={v_left:.3f} r={v_right:.3f}  [串口发送] {cmd_str.strip()}")
+
+    def cmd_timeout_cb(self, event):
+        now = rospy.Time.now()
+        if (now - self.last_cmd_time).to_sec() <= self.cmd_timeout:
+            return
+        if self.last_sent_zero and (now - self.last_zero_send_time).to_sec() < self.zero_repeat_period:
+            return
+
+        cmd_str = self._write_wheel_command(0.0, 0.0)
+        self.last_sent_zero = True
+        self.last_zero_send_time = now
+        rospy.loginfo_throttle(
+            1.0,
+            f"[bridge] cmd_vel 超时 {self.cmd_timeout:.2f}s，主动发送零速度  [串口发送] {cmd_str.strip()}",
+        )
+
+    def _write_wheel_command(self, v_left, v_right):
+        cmd_str = f"l:{v_left:.3f},r:{v_right:.3f}\r\n"
+        try:
+            with self.write_lock:
+                if self.ser and self.ser.is_open:
+                    self.ser.write(cmd_str.encode("utf-8"))
+        except serial.SerialException as e:
+            rospy.logerr_throttle(3.0, f"[bridge] 串口写入失败: {e}")
+        return cmd_str
 
     def _wheel_deadband_sign(self, speed, turn_preference):
         if speed > 0:
@@ -226,7 +259,8 @@ class SerialBridge:
 
     def shutdown(self):
         if self.ser and self.ser.is_open:
-            self.ser.write(b"l:0.000,r:0.000\r\n")
+            with self.write_lock:
+                self.ser.write(b"l:0.000,r:0.000\r\n")
             self.ser.close()
         rospy.loginfo("[bridge] 串口已关闭")
 
