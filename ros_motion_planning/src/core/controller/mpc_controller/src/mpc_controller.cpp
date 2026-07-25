@@ -15,9 +15,14 @@
  * ********************************************************
  */
 #include <osqp/osqp.h>
+#include <algorithm>
+#include <array>
+#include <limits>
+#include <utility>
 #include <unsupported/Eigen/KroneckerProduct>
 #include <unsupported/Eigen/MatrixFunctions>
 #include <pluginlib/class_list_macros.h>
+#include <costmap_2d/cost_values.h>
 
 #include "common/util/log.h"
 #include "common/util/visualizer.h"
@@ -166,6 +171,12 @@ bool MPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
 
   // transform global plan to robot frame
   std::vector<geometry_msgs::PoseStamped> prune_plan = prune(robot_pose_map);
+  if (prune_plan.empty()) {
+    R_WARN << "MPC prune plan is empty, stop robot";
+    cmd_vel.linear.x = 0.0;
+    cmd_vel.angular.z = 0.0;
+    return false;
+  }
 
   // calculate look-ahead distance
   double vt = std::hypot(base_odom.twist.twist.linear.x, base_odom.twist.twist.linear.y);
@@ -180,6 +191,11 @@ bool MPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
 
   // current angle
   double theta = tf2::getYaw(robot_pose_map.pose.orientation);  // [-pi, pi]
+
+  double path_heading = theta;
+  double path_dist = _distanceToPlan(robot_pose_map, prune_plan, &path_heading);
+  double path_heading_error = normalizeAngle(path_heading - theta);
+
   // calculate commands
   if (shouldRotateToGoal(robot_pose_map, global_plan_.back())) {
     du_p_ = Eigen::Vector2d(0, 0);
@@ -204,9 +220,27 @@ bool MPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
     Eigen::Vector2d u = _mpcControl(s, s_d, u_r, du_p_);
     double u_v = linearRegularization(vt, u[0]);
     double u_w = angularRegularization(wt, u[1]);
+
+    if (path_dist > 0.12) {
+      const double slow_ratio = clamp((0.35 - path_dist) / 0.23, 0.25, 1.0);
+      const double corrective_w = 1.2 * path_heading_error;
+      u_v *= slow_ratio;
+      u_w = angularRegularization(wt, u_w + corrective_w);
+      R_WARN << "MPC path correction: dist=" << path_dist
+             << " m, slow_ratio=" << slow_ratio
+             << ", heading_error=" << path_heading_error * 180.0 / M_PI << " deg";
+    }
+
     du_p_ = Eigen::Vector2d(u_v - u_r[0], normalizeAngle(u_w - u_r[1]));
     cmd_vel.linear.x = u_v;
     cmd_vel.angular.z = u_w;
+  }
+
+  if (_commandHitsObstacle(robot_pose_odom, cmd_vel)) {
+    R_WARN << "MPC predicted near-lethal obstacle ahead, stop robot";
+    cmd_vel.linear.x = 0.0;
+    cmd_vel.angular.z = 0.0;
+    du_p_ = Eigen::Vector2d(0, 0);
   }
 
   // publish lookahead pose
@@ -425,6 +459,107 @@ Eigen::Vector2d MPCController::_mpcControl(Eigen::Vector3d s, Eigen::Vector3d s_
   c_free(settings);
 
   return u;
+}
+
+double MPCController::_distanceToPlan(
+    const geometry_msgs::PoseStamped& robot_pose,
+    const std::vector<geometry_msgs::PoseStamped>& plan,
+    double* path_heading) const {
+  if (plan.empty()) {
+    return std::numeric_limits<double>::infinity();
+  }
+  if (plan.size() == 1) {
+    if (path_heading) {
+      *path_heading = tf2::getYaw(plan.front().pose.orientation);
+    }
+    return std::hypot(robot_pose.pose.position.x - plan.front().pose.position.x,
+                      robot_pose.pose.position.y - plan.front().pose.position.y);
+  }
+
+  const double rx = robot_pose.pose.position.x;
+  const double ry = robot_pose.pose.position.y;
+  double best_dist = std::numeric_limits<double>::infinity();
+  double best_heading = tf2::getYaw(plan.front().pose.orientation);
+
+  for (auto it = plan.begin(); it != plan.end() - 1; ++it) {
+    const double ax = it->pose.position.x;
+    const double ay = it->pose.position.y;
+    const double bx = (it + 1)->pose.position.x;
+    const double by = (it + 1)->pose.position.y;
+    const double vx = bx - ax;
+    const double vy = by - ay;
+    const double len2 = vx * vx + vy * vy;
+    if (len2 < 1e-6) {
+      continue;
+    }
+
+    const double raw_t = ((rx - ax) * vx + (ry - ay) * vy) / len2;
+    const double t = std::max(0.0, std::min(1.0, raw_t));
+    const double px = ax + t * vx;
+    const double py = ay + t * vy;
+    const double dist = std::hypot(rx - px, ry - py);
+    if (dist < best_dist) {
+      best_dist = dist;
+      best_heading = std::atan2(vy, vx);
+    }
+  }
+
+  if (path_heading) {
+    *path_heading = best_heading;
+  }
+  return best_dist;
+}
+
+bool MPCController::_poseInCollision(double x, double y, double radius) const {
+  if (costmap_ros_ == nullptr || costmap_ros_->getCostmap() == nullptr) {
+    return false;
+  }
+
+  auto* costmap = costmap_ros_->getCostmap();
+  const std::array<std::pair<double, double>, 9> samples = {
+      std::make_pair(0.0, 0.0),       std::make_pair(radius, 0.0),
+      std::make_pair(-radius, 0.0),   std::make_pair(0.0, radius),
+      std::make_pair(0.0, -radius),   std::make_pair(0.707 * radius, 0.707 * radius),
+      std::make_pair(0.707 * radius, -0.707 * radius),
+      std::make_pair(-0.707 * radius, 0.707 * radius),
+      std::make_pair(-0.707 * radius, -0.707 * radius),
+  };
+
+  for (const auto& sample : samples) {
+    unsigned int mx = 0;
+    unsigned int my = 0;
+    if (!costmap->worldToMap(x + sample.first, y + sample.second, mx, my)) {
+      return true;
+    }
+    const unsigned char cost = costmap->getCost(mx, my);
+    if (cost >= costmap_2d::LETHAL_OBSTACLE) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool MPCController::_commandHitsObstacle(
+    const geometry_msgs::PoseStamped& robot_pose,
+    const geometry_msgs::Twist& cmd_vel) const {
+  constexpr double kBodyRadius = 0.16;
+  constexpr double kPredictTime = 0.6;
+  constexpr double kStep = 0.1;
+
+  double x = robot_pose.pose.position.x;
+  double y = robot_pose.pose.position.y;
+  double yaw = tf2::getYaw(robot_pose.pose.orientation);
+
+  for (double t = 0.0; t <= kPredictTime; t += kStep) {
+    if (_poseInCollision(x, y, kBodyRadius)) {
+      return true;
+    }
+
+    x += cmd_vel.linear.x * std::cos(yaw) * kStep;
+    y += cmd_vel.linear.x * std::sin(yaw) * kStep;
+    yaw = normalizeAngle(yaw + cmd_vel.angular.z * kStep);
+  }
+  return false;
 }
 
 }  // namespace rmp

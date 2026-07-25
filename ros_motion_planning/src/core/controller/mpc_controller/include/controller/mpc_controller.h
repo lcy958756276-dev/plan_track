@@ -90,6 +90,15 @@ private:
   Eigen::Vector2d _mpcControl(Eigen::Vector3d s, Eigen::Vector3d s_d, Eigen::Vector2d u_r,
                               Eigen::Vector2d du_p);
 
+  double _distanceToPlan(const geometry_msgs::PoseStamped& robot_pose,
+                         const std::vector<geometry_msgs::PoseStamped>& plan,
+                         double* path_heading) const;
+
+  bool _poseInCollision(double x, double y, double radius) const;
+
+  bool _commandHitsObstacle(const geometry_msgs::PoseStamped& robot_pose,
+                            const geometry_msgs::Twist& cmd_vel) const;
+
 private:
   pb::controller::MPCController mpc_config_;
   bool initialized_;     // initialized flag
