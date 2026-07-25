@@ -15,6 +15,7 @@
  * ********************************************************
  */
 #include <angles/angles.h>
+#include <cmath>
 #include <tf2/utils.h>
 #include <pluginlib/class_list_macros.h>
 
@@ -68,6 +69,7 @@ void PathPlannerNode::initialize(std::string name) {
 
     // initialize ROS node
     ros::NodeHandle private_nh("~/" + name);
+    R_INFO << "PathPlannerNode pre_rotate-compatible build: accept large heading changes";
 
     // costmap frame ID
     frame_id_ = costmap_ros_->getGlobalFrameID();
@@ -285,9 +287,24 @@ bool PathPlannerNode::makePlan(const geometry_msgs::PoseStamped& start,
  */
 bool PathPlannerNode::makePlanService(nav_msgs::GetPlan::Request& req,
                                       nav_msgs::GetPlan::Response& resp) {
+  R_INFO << "PathPlanner make_plan request: start=(" << req.start.pose.position.x << ", "
+         << req.start.pose.position.y << ") goal=(" << req.goal.pose.position.x << ", "
+         << req.goal.pose.position.y << ")";
+
   makePlan(req.start, req.goal, resp.plan.poses);
   resp.plan.header.stamp = ros::Time::now();
   resp.plan.header.frame_id = frame_id_;
+
+  if (!resp.plan.poses.empty()) {
+    const auto& end = resp.plan.poses.back().pose.position;
+    const double dx = end.x - req.goal.pose.position.x;
+    const double dy = end.y - req.goal.pose.position.y;
+    R_INFO << "PathPlanner make_plan response: poses=" << resp.plan.poses.size()
+           << " end=(" << end.x << ", " << end.y << ")"
+           << " end_goal_dist=" << std::sqrt(dx * dx + dy * dy);
+  } else {
+    R_WARN << "PathPlanner make_plan response: empty plan";
+  }
 
   return true;
 }
