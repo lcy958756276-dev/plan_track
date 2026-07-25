@@ -82,10 +82,10 @@ controller {
     map_frame: "map"
     goal_dist_tolerance: 0.2
     rotate_tolerance: 6.28
-    max_linear_velocity: 0.1    # m / s
+    max_linear_velocity: 0.08    # m / s
     min_linear_velocity: 0.0
-    max_linear_velocity_increment: 0.05
-    max_angular_velocity: 2.2   # rad / s
+    max_linear_velocity_increment: 0.01
+    max_angular_velocity: 1.5   # rad / s
     min_angular_velocity: 0.0
     max_angular_velocity_increment: 0.8
 
@@ -131,20 +131,20 @@ controller {
     }
 
     mpc_controller {
-        lookahead_time: 1.0
-        min_lookahead_dist: 0.3
-        max_lookahead_dist: 0.9
-        predict_time_domain: 12
+        lookahead_time: 2.5
+        min_lookahead_dist: 0.35
+        max_lookahead_dist: 0.8
+        predict_time_domain: 16
         control_time_domain: 8
-        Q_matrix_x: 1.0
-        Q_matrix_y: 1.0
-        Q_matrix_theta: 1.0
-        R_matrix_v: 1.0
-        R_matrix_w: 1.0
-        delta_linear_velocity_min: -0.2
-        delta_linear_velocity_max: 0.2
-        delta_angular_velocity_min: -0.2
-        delta_angular_velocity_max: 3.14
+        Q_matrix_x: 2.0
+        Q_matrix_y: 4.0
+        Q_matrix_theta: 5.0
+        R_matrix_v: 0.4
+        R_matrix_w: 0.2
+        delta_linear_velocity_min: -0.08
+        delta_linear_velocity_max: 0.04
+        delta_angular_velocity_min: -1.0
+        delta_angular_velocity_max: 1.0
     }
 
     apf_controller {
