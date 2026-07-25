@@ -1,19 +1,19 @@
-=== 启动时间: 2026年 07月 25日 星期六 17:56:43 CST ===
-[17:56:43] [1] main_generate.py start
-[17:56:44] [1] main_generate.py done
-[17:56:44] [2] use_encoder_odom flag set
-[17:56:44] [3] loading robot_description
-[17:56:44] [3] robot_description loaded
-[33m[WARN] [1784973404.755969174]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
-[17:56:47] [4] starting gzserver
-[17:56:53] [4] spawn_model start
-[INFO] [1784973414.860406]: Loading model XML from ros parameter robot_description
-[INFO] [1784973414.870597]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1784973414.875787]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1784973415.440518]: Spawn status: SpawnModel: Successfully spawned entity
-[17:56:56] [4] spawn_model exit=0
-[17:57:07] [8] generating move_base launch file
-[17:57:07] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 07月 25日 星期六 18:04:08 CST ===
+[18:04:08] [1] main_generate.py start
+[18:04:09] [1] main_generate.py done
+[18:04:09] [2] use_encoder_odom flag set
+[18:04:09] [3] loading robot_description
+[18:04:09] [3] robot_description loaded
+[33m[WARN] [1784973850.010273792]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[18:04:12] [4] starting gzserver
+[18:04:19] [4] spawn_model start
+[INFO] [1784973860.121034]: Loading model XML from ros parameter robot_description
+[INFO] [1784973860.129925]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1784973860.136165]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1784973860.741794]: Spawn status: SpawnModel: Successfully spawned entity
+[18:04:21] [4] spawn_model exit=0
+[18:04:32] [8] generating move_base launch file
+[18:04:32] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 mpc_controller/MPCController
@@ -44,18 +44,17 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1784973429.589312940]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1784973429.591549453]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1784973875.010036212]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1784973875.014270153]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260725 17:57:10.013437 53007 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
-I20260725 17:57:10.018908 53007 path_planner_factory.cpp:133] Using path planner: astar_prove
-[33m[WARN] [1784973430.034965395]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-I20260725 17:57:10.183066 53007 mpc_controller.cpp:97] MPC Controller initialized!
-[17:57:11] [8] move_base 启动后状态:
+I20260725 18:04:35.444067 55392 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
+I20260725 18:04:35.450825 55392 path_planner_factory.cpp:133] Using path planner: astar_prove
+[33m[WARN] [1784973875.481567002]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260725 18:04:35.630489 55392 mpc_controller.cpp:97] MPC Controller initialized!
+[18:04:36] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
-/move_base/GlobalPlanner/plan
 /move_base/PathPlanner/expand
 /move_base/PathPlanner/expand_updates
 /move_base/PathPlanner/key_points
@@ -94,7 +93,6 @@ I20260725 17:57:10.183066 53007 mpc_controller.cpp:97] MPC Controller initialize
 /move_base/local_costmap/parameter_updates
 /move_base/parameter_descriptions
 /move_base/parameter_updates
-/move_base/path_planner/PathPlanner/plan
 /move_base/recovery_status
 /move_base/result
 /move_base/status
@@ -114,103 +112,131 @@ I20260725 17:57:10.183066 53007 mpc_controller.cpp:97] MPC Controller initialize
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-I20260725 17:57:14.024240 53007 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(0.0211545, -1.11445)
-I20260725 17:57:14.028028 53007 path_planner_node.cpp:302] PathPlanner make_plan response: poses=7 end=(0.0211545, -1.11445) end_goal_dist=0
-I20260725 17:57:22.852391 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:24.852317 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:26.047894 53007 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0.0837509, -0.8775) goal=(-3.29444, -1.6556)
-W20260725 17:57:26.053172 53007 path_planner_node.cpp:215] Path heading change 166.021 deg > 90 deg, accepting new plan for pre-rotation
-I20260725 17:57:26.054652 53007 path_planner_node.cpp:302] PathPlanner make_plan response: poses=68 end=(-3.29444, -1.6556) end_goal_dist=0
-I20260725 17:57:30.156503 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:32.156509 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:34.156491 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:36.156536 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:36.956506 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:38.956496 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:40.956506 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:42.956501 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:43.756477 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:45.756562 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:47.756501 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:49.756500 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:50.556522 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:52.556500 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:54.556507 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:56.556499 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:57.356508 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:57:59.356498 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:58:01.356511 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:58:03.356485 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:58:04.156503 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:58:06.156507 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:58:08.156503 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:58:10.156488 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:58:10.956521 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:58:12.956497 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:58:14.956496 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:58:16.956509 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:58:17.756505 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:58:19.756460 53017 mpc_controller.cpp:116] Got new plan
-W20260725 17:58:21.168412 53017 mpc_controller.cpp:235] MPC path recovery: dist=0.122422 m, target_heading_error=-38.2231 deg, rotate in place to recover
-W20260725 17:58:21.271499 53017 mpc_controller.cpp:235] MPC path recovery: dist=0.135656 m, target_heading_error=-38.9469 deg, rotate in place to recover
-W20260725 17:58:21.369654 53017 mpc_controller.cpp:235] MPC path recovery: dist=0.135656 m, target_heading_error=-38.9469 deg, rotate in place to recover
-W20260725 17:58:21.472147 53017 mpc_controller.cpp:235] MPC path recovery: dist=0.140216 m, target_heading_error=-38.3036 deg, rotate in place to recover
-W20260725 17:58:21.571480 53017 mpc_controller.cpp:235] MPC path recovery: dist=0.14442 m, target_heading_error=-37.4634 deg, rotate in place to recover
-W20260725 17:58:21.668789 53017 mpc_controller.cpp:235] MPC path recovery: dist=0.14442 m, target_heading_error=-37.4634 deg, rotate in place to recover
-I20260725 17:58:21.756510 53017 mpc_controller.cpp:116] Got new plan
-W20260725 17:58:23.069723 53017 mpc_controller.cpp:235] MPC path recovery: dist=0.125814 m, target_heading_error=-33.4335 deg, rotate in place to recover
-W20260725 17:58:23.169461 53017 mpc_controller.cpp:235] MPC path recovery: dist=0.125814 m, target_heading_error=-33.4335 deg, rotate in place to recover
-W20260725 17:58:23.268087 53017 mpc_controller.cpp:235] MPC path recovery: dist=0.136156 m, target_heading_error=-33.027 deg, rotate in place to recover
-W20260725 17:58:23.368561 53017 mpc_controller.cpp:235] MPC path recovery: dist=0.142977 m, target_heading_error=-31.6581 deg, rotate in place to recover
-W20260725 17:58:23.468279 53017 mpc_controller.cpp:235] MPC path recovery: dist=0.142977 m, target_heading_error=-31.6581 deg, rotate in place to recover
-W20260725 17:58:23.568228 53017 mpc_controller.cpp:244] MPC path correction: dist=0.149818 m, slow_ratio=0.751519, heading_error=-83.9041 deg
-E20260725 17:58:23.657145 53018 path_planner_node.cpp:277] Failed to get a path.
-W20260725 17:58:23.668416 53017 mpc_controller.cpp:244] MPC path correction: dist=0.156268 m, slow_ratio=0.69777, heading_error=-82.3035 deg
-W20260725 17:58:23.768270 53017 mpc_controller.cpp:244] MPC path correction: dist=0.156268 m, slow_ratio=0.69777, heading_error=-82.3035 deg
-W20260725 17:58:23.869684 53017 mpc_controller.cpp:244] MPC path correction: dist=0.161029 m, slow_ratio=0.658096, heading_error=-35.6908 deg
-W20260725 17:58:23.968209 53017 mpc_controller.cpp:244] MPC path correction: dist=0.166805 m, slow_ratio=0.60996, heading_error=-34.0686 deg
-W20260725 17:58:24.068305 53017 mpc_controller.cpp:244] MPC path correction: dist=0.166805 m, slow_ratio=0.60996, heading_error=-34.0686 deg
-W20260725 17:58:24.167980 53017 mpc_controller.cpp:244] MPC path correction: dist=0.169775 m, slow_ratio=0.585207, heading_error=-32.4065 deg
-W20260725 17:58:24.268043 53017 mpc_controller.cpp:244] MPC path correction: dist=0.172747 m, slow_ratio=0.560441, heading_error=-30.7222 deg
-W20260725 17:58:24.370127 53017 mpc_controller.cpp:244] MPC path correction: dist=0.172747 m, slow_ratio=0.560441, heading_error=-30.7222 deg
-W20260725 17:58:24.468080 53017 mpc_controller.cpp:244] MPC path correction: dist=0.175554 m, slow_ratio=0.537051, heading_error=-28.9803 deg
-W20260725 17:58:24.569940 53017 mpc_controller.cpp:244] MPC path correction: dist=0.178152 m, slow_ratio=0.515401, heading_error=-27.1674 deg
-W20260725 17:58:24.668126 53017 mpc_controller.cpp:244] MPC path correction: dist=0.178152 m, slow_ratio=0.515401, heading_error=-27.1674 deg
-W20260725 17:58:24.768612 53017 mpc_controller.cpp:244] MPC path correction: dist=0.180413 m, slow_ratio=0.496557, heading_error=-25.2716 deg
-W20260725 17:58:24.868058 53017 mpc_controller.cpp:244] MPC path correction: dist=0.18199 m, slow_ratio=0.483418, heading_error=16.3179 deg
-W20260725 17:58:24.968166 53017 mpc_controller.cpp:244] MPC path correction: dist=0.18199 m, slow_ratio=0.483418, heading_error=16.3179 deg
-W20260725 17:58:25.068754 53017 mpc_controller.cpp:244] MPC path correction: dist=0.182891 m, slow_ratio=0.475912, heading_error=19.4346 deg
-W20260725 17:58:25.169166 53017 mpc_controller.cpp:244] MPC path correction: dist=0.180823 m, slow_ratio=0.493139, heading_error=18.9515 deg
-W20260725 17:58:25.268157 53017 mpc_controller.cpp:244] MPC path correction: dist=0.180823 m, slow_ratio=0.493139, heading_error=18.9515 deg
-W20260725 17:58:25.368243 53017 mpc_controller.cpp:244] MPC path correction: dist=0.178657 m, slow_ratio=0.511191, heading_error=18.177 deg
-W20260725 17:58:25.468355 53017 mpc_controller.cpp:244] MPC path correction: dist=0.176582 m, slow_ratio=0.528483, heading_error=17.3528 deg
-W20260725 17:58:25.568188 53017 mpc_controller.cpp:244] MPC path correction: dist=0.176582 m, slow_ratio=0.528483, heading_error=17.3528 deg
-W20260725 17:58:25.668339 53017 mpc_controller.cpp:244] MPC path correction: dist=0.174812 m, slow_ratio=0.543234, heading_error=16.5588 deg
-I20260725 17:58:25.756860 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:58:26.556500 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:58:28.556499 53017 mpc_controller.cpp:116] Got new plan
-I20260725 17:58:28.556674 53017 mpc_controller.cpp:145] GOAL Reached!
-[0m[INFO] [1784973429.593132667]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1784973429.604343998]: Requesting the map...[0m
-[0m[INFO] [1784973429.809251036]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1784973429.909041087]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1784973429.915787457]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1784973429.921034617]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1784973429.946112941]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1784973429.953417248]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1784973430.037334552]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1784973430.043647630]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1784973430.086861422]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1784973430.179106102]: Created local_planner mpc_controller/MPCController[0m
-[0m[INFO] [1784973430.670615079]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1784973430.678958360]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1784973430.751060826]: odom received![0m
-... logging to /home/lcy/.ros/log/b7a487ee-87fd-11f1-80f8-48b02df90897/roslaunch-ubuntu-52985.log
+I20260725 18:04:38.251004 55392 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(-0.0163199, -1.15646)
+W20260725 18:04:38.252827 55392 path_planner_node.cpp:215] Path heading change 94.3987 deg > 90 deg, accepting new plan for pre-rotation
+I20260725 18:04:38.254969 55392 path_planner_node.cpp:302] PathPlanner make_plan response: poses=8 end=(-0.0163199, -1.15646) end_goal_dist=0
+I20260725 18:04:46.676772 55401 mpc_controller.cpp:116] Got new plan
+I20260725 18:04:52.028227 55392 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0.0462993, -0.859003) goal=(-3.35882, -1.78886)
+W20260725 18:04:52.034058 55392 path_planner_node.cpp:215] Path heading change 164.765 deg > 90 deg, accepting new plan for pre-rotation
+I20260725 18:04:52.035856 55392 path_planner_node.cpp:302] PathPlanner make_plan response: poses=69 end=(-3.35882, -1.78886) end_goal_dist=0
+I20260725 18:04:57.782845 55401 mpc_controller.cpp:116] Got new plan
+W20260725 18:05:44.894522 55401 mpc_controller.cpp:244] MPC path correction: dist=0.120108 m, slow_ratio=0.999097, heading_error=-12.9386 deg
+W20260725 18:05:45.006018 55401 mpc_controller.cpp:244] MPC path correction: dist=0.121744 m, slow_ratio=0.985464, heading_error=-13.5282 deg
+W20260725 18:05:45.094496 55401 mpc_controller.cpp:244] MPC path correction: dist=0.121744 m, slow_ratio=0.985464, heading_error=-13.5282 deg
+W20260725 18:05:45.194483 55401 mpc_controller.cpp:244] MPC path correction: dist=0.124276 m, slow_ratio=0.964365, heading_error=-13.4162 deg
+W20260725 18:05:45.294482 55401 mpc_controller.cpp:244] MPC path correction: dist=0.125964 m, slow_ratio=0.950297, heading_error=-12.2708 deg
+W20260725 18:05:45.394433 55401 mpc_controller.cpp:244] MPC path correction: dist=0.125964 m, slow_ratio=0.950297, heading_error=-12.2708 deg
+W20260725 18:05:45.494495 55401 mpc_controller.cpp:244] MPC path correction: dist=0.127533 m, slow_ratio=0.937223, heading_error=-11.1009 deg
+W20260725 18:05:45.594748 55401 mpc_controller.cpp:244] MPC path correction: dist=0.128875 m, slow_ratio=0.92604, heading_error=-9.99252 deg
+W20260725 18:05:45.694295 55401 mpc_controller.cpp:244] MPC path correction: dist=0.128875 m, slow_ratio=0.92604, heading_error=-9.99252 deg
+W20260725 18:05:45.794493 55401 mpc_controller.cpp:244] MPC path correction: dist=0.131801 m, slow_ratio=0.901655, heading_error=-9.46416 deg
+W20260725 18:05:45.895157 55401 mpc_controller.cpp:244] MPC path correction: dist=0.132043 m, slow_ratio=0.899643, heading_error=-9.10283 deg
+W20260725 18:05:46.017242 55401 mpc_controller.cpp:244] MPC path correction: dist=0.132043 m, slow_ratio=0.899643, heading_error=-9.10283 deg
+W20260725 18:05:46.098199 55401 mpc_controller.cpp:244] MPC path correction: dist=0.133494 m, slow_ratio=0.887549, heading_error=-9.29049 deg
+W20260725 18:05:46.197192 55401 mpc_controller.cpp:244] MPC path correction: dist=0.135666 m, slow_ratio=0.869451, heading_error=-9.52946 deg
+W20260725 18:05:46.297267 55401 mpc_controller.cpp:244] MPC path correction: dist=0.135666 m, slow_ratio=0.869451, heading_error=-9.52946 deg
+W20260725 18:05:46.396759 55401 mpc_controller.cpp:244] MPC path correction: dist=0.137807 m, slow_ratio=0.851611, heading_error=-9.70367 deg
+W20260725 18:05:46.494721 55401 mpc_controller.cpp:244] MPC path correction: dist=0.141206 m, slow_ratio=0.82328, heading_error=-9.53027 deg
+W20260725 18:05:46.597000 55401 mpc_controller.cpp:244] MPC path correction: dist=0.141206 m, slow_ratio=0.82328, heading_error=-9.53027 deg
+W20260725 18:05:46.694725 55401 mpc_controller.cpp:244] MPC path correction: dist=0.142192 m, slow_ratio=0.815065, heading_error=-9.58459 deg
+W20260725 18:05:46.795114 55401 mpc_controller.cpp:244] MPC path correction: dist=0.144071 m, slow_ratio=0.799407, heading_error=-9.65537 deg
+W20260725 18:05:46.895696 55401 mpc_controller.cpp:244] MPC path correction: dist=0.144071 m, slow_ratio=0.799407, heading_error=-9.65537 deg
+W20260725 18:05:47.000314 55401 mpc_controller.cpp:244] MPC path correction: dist=0.146087 m, slow_ratio=0.782609, heading_error=-9.71299 deg
+W20260725 18:05:47.095088 55401 mpc_controller.cpp:244] MPC path correction: dist=0.150649 m, slow_ratio=0.744589, heading_error=0.877555 deg
+W20260725 18:05:47.196251 55401 mpc_controller.cpp:244] MPC path correction: dist=0.150649 m, slow_ratio=0.744589, heading_error=0.877555 deg
+W20260725 18:05:47.295782 55401 mpc_controller.cpp:244] MPC path correction: dist=0.150546 m, slow_ratio=0.745449, heading_error=0.566159 deg
+W20260725 18:05:47.394488 55401 mpc_controller.cpp:244] MPC path correction: dist=0.150627 m, slow_ratio=0.744778, heading_error=-0.577638 deg
+W20260725 18:05:47.494594 55401 mpc_controller.cpp:244] MPC path correction: dist=0.150627 m, slow_ratio=0.744778, heading_error=-0.577638 deg
+W20260725 18:05:47.594974 55401 mpc_controller.cpp:244] MPC path correction: dist=0.150884 m, slow_ratio=0.742634, heading_error=-1.77027 deg
+W20260725 18:05:47.694640 55401 mpc_controller.cpp:244] MPC path correction: dist=0.15411 m, slow_ratio=0.715748, heading_error=-0.825164 deg
+W20260725 18:05:47.794824 55401 mpc_controller.cpp:244] MPC path correction: dist=0.15411 m, slow_ratio=0.715748, heading_error=-0.825164 deg
+W20260725 18:05:47.894996 55401 mpc_controller.cpp:244] MPC path correction: dist=0.153382 m, slow_ratio=0.72182, heading_error=-1.87156 deg
+W20260725 18:05:48.001524 55401 mpc_controller.cpp:244] MPC path correction: dist=0.153053 m, slow_ratio=0.724555, heading_error=-2.4864 deg
+W20260725 18:05:48.095652 55401 mpc_controller.cpp:244] MPC path correction: dist=0.153053 m, slow_ratio=0.724555, heading_error=-2.4864 deg
+W20260725 18:05:48.194868 55401 mpc_controller.cpp:244] MPC path correction: dist=0.153418 m, slow_ratio=0.72152, heading_error=-2.65979 deg
+W20260725 18:05:48.295666 55401 mpc_controller.cpp:244] MPC path correction: dist=0.153967 m, slow_ratio=0.716944, heading_error=-2.71933 deg
+W20260725 18:05:48.395547 55401 mpc_controller.cpp:244] MPC path correction: dist=0.153967 m, slow_ratio=0.716944, heading_error=-2.71933 deg
+W20260725 18:05:48.494879 55401 mpc_controller.cpp:244] MPC path correction: dist=0.154517 m, slow_ratio=0.712362, heading_error=-2.76405 deg
+W20260725 18:05:48.594856 55401 mpc_controller.cpp:244] MPC path correction: dist=0.157515 m, slow_ratio=0.687372, heading_error=-1.03395 deg
+W20260725 18:05:48.695823 55401 mpc_controller.cpp:244] MPC path correction: dist=0.157515 m, slow_ratio=0.687372, heading_error=-1.03395 deg
+W20260725 18:05:48.794631 55401 mpc_controller.cpp:244] MPC path correction: dist=0.15665 m, slow_ratio=0.694584, heading_error=-1.55139 deg
+W20260725 18:05:48.898692 55401 mpc_controller.cpp:244] MPC path correction: dist=0.156553 m, slow_ratio=0.695389, heading_error=-2.64334 deg
+W20260725 18:05:49.004458 55401 mpc_controller.cpp:244] MPC path correction: dist=0.156553 m, slow_ratio=0.695389, heading_error=-2.64334 deg
+W20260725 18:05:49.096011 55401 mpc_controller.cpp:244] MPC path correction: dist=0.156963 m, slow_ratio=0.691975, heading_error=-3.52512 deg
+W20260725 18:05:49.195827 55401 mpc_controller.cpp:244] MPC path correction: dist=0.157665 m, slow_ratio=0.686123, heading_error=-3.77808 deg
+W20260725 18:05:49.294759 55401 mpc_controller.cpp:244] MPC path correction: dist=0.157665 m, slow_ratio=0.686123, heading_error=-3.77808 deg
+W20260725 18:05:49.394534 55401 mpc_controller.cpp:244] MPC path correction: dist=0.158382 m, slow_ratio=0.680149, heading_error=-3.88398 deg
+W20260725 18:05:49.494671 55401 mpc_controller.cpp:244] MPC path correction: dist=0.162561 m, slow_ratio=0.645324, heading_error=-2.87177 deg
+W20260725 18:05:49.594437 55401 mpc_controller.cpp:244] MPC path correction: dist=0.162561 m, slow_ratio=0.645324, heading_error=-2.87177 deg
+W20260725 18:05:49.694404 55401 mpc_controller.cpp:244] MPC path correction: dist=0.161627 m, slow_ratio=0.653108, heading_error=-3.26849 deg
+W20260725 18:05:49.794507 55401 mpc_controller.cpp:244] MPC path correction: dist=0.161456 m, slow_ratio=0.654531, heading_error=-4.70667 deg
+W20260725 18:05:49.895350 55401 mpc_controller.cpp:244] MPC path correction: dist=0.161456 m, slow_ratio=0.654531, heading_error=-4.70667 deg
+W20260725 18:05:50.005362 55401 mpc_controller.cpp:244] MPC path correction: dist=0.16174 m, slow_ratio=0.652166, heading_error=-6.28313 deg
+W20260725 18:05:50.099275 55401 mpc_controller.cpp:235] MPC path recovery: dist=0.162404 m, target_heading_error=-32.7848 deg, rotate in place to recover
+W20260725 18:05:50.196461 55401 mpc_controller.cpp:235] MPC path recovery: dist=0.162404 m, target_heading_error=-32.7848 deg, rotate in place to recover
+W20260725 18:05:50.298892 55401 mpc_controller.cpp:235] MPC path recovery: dist=0.163321 m, target_heading_error=-33.4841 deg, rotate in place to recover
+W20260725 18:05:50.394438 55401 mpc_controller.cpp:235] MPC path recovery: dist=0.164208 m, target_heading_error=-32.2906 deg, rotate in place to recover
+W20260725 18:05:50.495170 55401 mpc_controller.cpp:235] MPC path recovery: dist=0.164208 m, target_heading_error=-32.2906 deg, rotate in place to recover
+W20260725 18:05:50.594522 55401 mpc_controller.cpp:244] MPC path correction: dist=0.164956 m, slow_ratio=0.625365, heading_error=-6.84364 deg
+W20260725 18:05:50.697165 55401 mpc_controller.cpp:244] MPC path correction: dist=0.165537 m, slow_ratio=0.620525, heading_error=-5.54154 deg
+W20260725 18:05:50.794536 55401 mpc_controller.cpp:244] MPC path correction: dist=0.165537 m, slow_ratio=0.620525, heading_error=-5.54154 deg
+W20260725 18:05:50.894657 55401 mpc_controller.cpp:244] MPC path correction: dist=0.166218 m, slow_ratio=0.614853, heading_error=-6.54706 deg
+W20260725 18:05:51.000635 55401 mpc_controller.cpp:244] MPC path correction: dist=0.166218 m, slow_ratio=0.614853, heading_error=-6.54706 deg
+W20260725 18:05:51.094412 55401 mpc_controller.cpp:244] MPC path correction: dist=0.166218 m, slow_ratio=0.614853, heading_error=-6.54706 deg
+W20260725 18:05:51.195902 55401 mpc_controller.cpp:235] MPC path recovery: dist=0.170013 m, target_heading_error=-31.7394 deg, rotate in place to recover
+W20260725 18:05:51.295943 55401 mpc_controller.cpp:244] MPC path correction: dist=0.169718 m, slow_ratio=0.585683, heading_error=-5.12904 deg
+W20260725 18:05:51.395325 55401 mpc_controller.cpp:244] MPC path correction: dist=0.169718 m, slow_ratio=0.585683, heading_error=-5.12904 deg
+W20260725 18:05:51.496526 55401 mpc_controller.cpp:244] MPC path correction: dist=0.169555 m, slow_ratio=0.587038, heading_error=-3.81294 deg
+W20260725 18:05:51.598603 55401 mpc_controller.cpp:244] MPC path correction: dist=0.169443 m, slow_ratio=0.587978, heading_error=-2.26502 deg
+W20260725 18:05:51.705461 55401 mpc_controller.cpp:244] MPC path correction: dist=0.169443 m, slow_ratio=0.587978, heading_error=-2.26502 deg
+W20260725 18:05:51.800082 55401 mpc_controller.cpp:244] MPC path correction: dist=0.169396 m, slow_ratio=0.588367, heading_error=-0.644386 deg
+W20260725 18:05:51.902231 55401 mpc_controller.cpp:244] MPC path correction: dist=0.169277 m, slow_ratio=0.589358, heading_error=1.06267 deg
+W20260725 18:05:52.098531 55401 mpc_controller.cpp:244] MPC path correction: dist=0.168963 m, slow_ratio=0.591974, heading_error=2.80072 deg
+[33m[WARN] [1784973952.099034511]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1163 seconds[0m
+W20260725 18:05:52.163759 55401 mpc_controller.cpp:244] MPC path correction: dist=0.168963 m, slow_ratio=0.591974, heading_error=2.80072 deg
+W20260725 18:05:52.216859 55401 mpc_controller.cpp:244] MPC path correction: dist=0.168463 m, slow_ratio=0.596141, heading_error=4.56073 deg
+W20260725 18:05:52.300455 55401 mpc_controller.cpp:244] MPC path correction: dist=0.168463 m, slow_ratio=0.596141, heading_error=4.56073 deg
+W20260725 18:05:52.400978 55401 mpc_controller.cpp:244] MPC path correction: dist=0.167763 m, slow_ratio=0.601975, heading_error=6.3018 deg
+W20260725 18:05:52.497430 55401 mpc_controller.cpp:244] MPC path correction: dist=0.166876 m, slow_ratio=0.60937, heading_error=8.04754 deg
+W20260725 18:05:52.595764 55401 mpc_controller.cpp:244] MPC path correction: dist=0.166876 m, slow_ratio=0.60937, heading_error=8.04754 deg
+W20260725 18:05:52.695211 55401 mpc_controller.cpp:244] MPC path correction: dist=0.168866 m, slow_ratio=0.592786, heading_error=10.1296 deg
+W20260725 18:05:52.794456 55401 mpc_controller.cpp:244] MPC path correction: dist=0.166554 m, slow_ratio=0.612046, heading_error=11.886 deg
+W20260725 18:05:52.894332 55401 mpc_controller.cpp:244] MPC path correction: dist=0.166554 m, slow_ratio=0.612046, heading_error=11.886 deg
+W20260725 18:05:53.002199 55401 mpc_controller.cpp:244] MPC path correction: dist=0.164235 m, slow_ratio=0.631374, heading_error=13.6296 deg
+W20260725 18:05:53.099249 55401 mpc_controller.cpp:244] MPC path correction: dist=0.161911 m, slow_ratio=0.650745, heading_error=15.3509 deg
+W20260725 18:05:53.194977 55401 mpc_controller.cpp:244] MPC path correction: dist=0.161911 m, slow_ratio=0.650745, heading_error=15.3509 deg
+W20260725 18:05:53.296365 55401 mpc_controller.cpp:244] MPC path correction: dist=0.159664 m, slow_ratio=0.66947, heading_error=17.0352 deg
+W20260725 18:05:53.394343 55401 mpc_controller.cpp:244] MPC path correction: dist=0.157485 m, slow_ratio=0.687622, heading_error=18.6967 deg
+W20260725 18:05:53.494446 55401 mpc_controller.cpp:244] MPC path correction: dist=0.157485 m, slow_ratio=0.687622, heading_error=18.6967 deg
+W20260725 18:05:53.594592 55401 mpc_controller.cpp:244] MPC path correction: dist=0.155292 m, slow_ratio=0.705903, heading_error=20.2372 deg
+W20260725 18:05:53.694643 55401 mpc_controller.cpp:244] MPC path correction: dist=0.152394 m, slow_ratio=0.730048, heading_error=21.3497 deg
+W20260725 18:05:53.798296 55401 mpc_controller.cpp:244] MPC path correction: dist=0.152394 m, slow_ratio=0.730048, heading_error=21.3497 deg
+W20260725 18:05:53.917197 55401 mpc_controller.cpp:244] MPC path correction: dist=0.14914 m, slow_ratio=0.757166, heading_error=22.1358 deg
+W20260725 18:05:54.006423 55401 mpc_controller.cpp:244] MPC path correction: dist=0.14914 m, slow_ratio=0.757166, heading_error=22.1358 deg
+W20260725 18:05:54.191823 55401 mpc_controller.cpp:244] MPC path correction: dist=0.14914 m, slow_ratio=0.757166, heading_error=22.1358 deg
+W20260725 18:05:54.220188 55401 mpc_controller.cpp:244] MPC path correction: dist=0.14914 m, slow_ratio=0.757166, heading_error=22.1358 deg
+W20260725 18:05:54.297832 55401 mpc_controller.cpp:244] MPC path correction: dist=0.14914 m, slow_ratio=0.757166, heading_error=22.1358 deg
+[0m[INFO] [1784973875.016569897]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1784973875.032796138]: Requesting the map...[0m
+[0m[INFO] [1784973875.236958786]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1784973875.336756463]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1784973875.341857244]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1784973875.345664741]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1784973875.375708358]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1784973875.382128791]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1784973875.485077563]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1784973875.494462783]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1784973875.554903081]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1784973875.627127994]: Created local_planner mpc_controller/MPCController[0m
+[0m[INFO] [1784973876.119132823]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1784973876.126658376]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1784973876.180271157]: odom received![0m
+... logging to /home/lcy/.ros/log/b7a487ee-87fd-11f1-80f8-48b02df90897/roslaunch-ubuntu-55368.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:35917/[0m
+[1mstarted roslaunch server http://ubuntu:41873/[0m
 
 SUMMARY
 ========
@@ -286,7 +312,7 @@ PARAMETERS
  * /move_base/local_costmap/width: 3
  * /move_base/oscillation_distance: 0.2
  * /move_base/oscillation_timeout: 10.0
- * /move_base/planner_frequency: 0.5
+ * /move_base/planner_frequency: 0.0
  * /move_base/planner_patience: 5.0
  * /move_base/recovery_behavior_enabled: False
  * /move_base/shutdown_costmaps: False
@@ -299,7 +325,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [53007][0m
+[1mprocess[move_base-1]: started with pid [55392][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
