@@ -1,23 +1,31 @@
-=== 启动时间: 2026年 07月 25日 星期六 19:11:35 CST ===
-[19:11:35] [1] main_generate.py start
-[19:11:36] [1] main_generate.py done
-[19:11:36] [2] use_encoder_odom flag set
-[19:11:36] [3] loading robot_description
-[19:11:36] [3] robot_description loaded
-[33m[WARN] [1784977897.327890537]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
-[19:11:39] [4] starting gzserver
-[19:11:46] [4] spawn_model start
-[INFO] [1784977907.538892, 0.000000]: Loading model XML from ros parameter robot_description
-[INFO] [1784977907.547706, 0.000000]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1784977907.554398, 0.000000]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1784977908.161060, 330.208000]: Spawn status: SpawnModel: Successfully spawned entity
-[19:11:48] [4] spawn_model exit=0
-[19:12:00] [8] generating move_base launch file
-[19:12:00] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 07月 25日 星期六 19:55:59 CST ===
+[19:55:59] [1] main_generate.py start
+[19:55:59] [1] main_generate.py done
+[19:55:59] [2] use_encoder_odom flag set
+[19:55:59] [3] loading robot_description
+[19:56:00] [3] robot_description loaded
+[33m[WARN] [1784980560.451367601]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[19:56:03] [4] starting gzserver
+[19:56:09] [4] spawn_model start
+[INFO] [1784980570.537639]: Loading model XML from ros parameter robot_description
+[INFO] [1784980570.545366]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1784980570.550513]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1784980571.174607]: Spawn status: SpawnModel: Successfully spawned entity
+[19:56:11] [4] spawn_model exit=0
+[19:56:23] [8] generating move_base launch file
+[19:56:23] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
-  [诊断] base_global_planner 参数未设置
-  [诊断] base_local_planner 参数未设置
-  [诊断] global_costmap/plugins 参数未设置
+path_planner/PathPlanner
+apf_controller/APFController
+- name: static_map
+  type: costmap_2d::StaticLayer
+- name: obstacle_layer
+  type: costmap_2d::ObstacleLayer
+- name: voronoi_layer
+  type: costmap_2d::VoronoiLayer
+- name: inflation_layer
+  type: costmap_2d::InflationLayer
+
   [诊断] rospack plugins nav_core:
 path_planner /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/path_planner_plugin.xml
 mpc_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/mpc_controller/mpc_controller_plugin.xml
@@ -36,14 +44,14 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1784977922.610250818]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1784977922.613846335]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1784980585.373470567]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1784980585.376721098]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260725 19:12:03.085526  7434 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
-I20260725 19:12:03.093223  7434 path_planner_factory.cpp:137] Using path planner: astar_polyline
-[33m[WARN] [1784977923.107622612]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-I20260725 19:12:03.291263  7434 apf_controller.cpp:77] APF controller initialized!
-[19:12:03] [8] move_base 启动后状态:
+I20260725 19:56:25.799091 28427 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
+I20260725 19:56:25.803416 28427 path_planner_factory.cpp:137] Using path planner: astar_polyline
+[33m[WARN] [1784980585.815270219]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260725 19:56:25.926690 28427 apf_controller.cpp:77] APF controller initialized!
+[19:56:26] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -104,38 +112,40 @@ I20260725 19:12:03.291263  7434 apf_controller.cpp:77] APF controller initialize
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-I20260725 19:12:06.187961  7434 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(0.0719272, -1.10992)
-I20260725 19:12:06.189993  7434 astar_polyline_planner.cpp:46] AStarPolyline: base poses=7, polyline vertices=2, dense poses=7
-I20260725 19:12:06.192160  7434 path_planner_node.cpp:302] PathPlanner make_plan response: poses=7 end=(0.0719272, -1.10992) end_goal_dist=0
-I20260725 19:12:13.460582  7445 astar_polyline_planner.cpp:46] AStarPolyline: base poses=7, polyline vertices=2, dense poses=7
-I20260725 19:12:13.560312  7444 apf_controller.cpp:97] Got new plan
-I20260725 19:12:18.157320  7434 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0.0158739, -0.817006) goal=(-3.33387, -1.74717)
-I20260725 19:12:18.162843  7434 astar_polyline_planner.cpp:46] AStarPolyline: base poses=68, polyline vertices=10, dense poses=68
-W20260725 19:12:18.163041  7434 path_planner_node.cpp:215] Path heading change 149.209 deg > 90 deg, accepting new plan for pre-rotation
-I20260725 19:12:18.164348  7434 path_planner_node.cpp:302] PathPlanner make_plan response: poses=68 end=(-3.33387, -1.74717) end_goal_dist=0
-I20260725 19:12:24.877453  7445 astar_polyline_planner.cpp:46] AStarPolyline: base poses=68, polyline vertices=2, dense poses=68
-I20260725 19:12:24.965248  7444 apf_controller.cpp:97] Got new plan
-[0m[INFO] [1784977922.615788145]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1784977922.632038422]: Requesting the map...[0m
-[0m[INFO] [1784977922.836545547]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1784977922.936263268]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1784977922.942585960]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1784977922.947449702]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1784977922.970270198]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1784977922.979255327]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1784977923.110359095]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1784977923.120956664]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1784977923.204112125]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1784977923.287033948]: Created local_planner apf_controller/APFController[0m
-[0m[INFO] [1784977923.782486020]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1784977923.790151423]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1784977923.860263526]: odom received![0m
-... logging to /home/lcy/.ros/log/971c9a68-8819-11f1-913e-48b02df90897/roslaunch-ubuntu-7369.log
+I20260725 19:56:42.686025 28427 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(-3.59244, -1.9287)
+I20260725 19:56:42.695964 28427 astar_polyline_planner.cpp:46] AStarPolyline: base poses=72, polyline vertices=11, dense poses=72
+W20260725 19:56:42.696275 28427 path_planner_node.cpp:215] Path heading change 152.506 deg > 90 deg, accepting new plan for pre-rotation
+I20260725 19:56:42.698752 28427 path_planner_node.cpp:302] PathPlanner make_plan response: poses=72 end=(-3.59244, -1.9287) end_goal_dist=0
+I20260725 19:56:56.045008 28437 astar_polyline_planner.cpp:46] AStarPolyline: base poses=74, polyline vertices=8, dense poses=74
+I20260725 19:56:56.138875 28436 apf_controller.cpp:97] Got new plan
+I20260725 19:57:45.738778 28436 apf_controller.cpp:126] GOAL Reached!
+I20260725 19:57:55.904594 28427 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-3.50157, -1.94072) goal=(-2.31473, -0.0398796)
+I20260725 19:57:55.906744 28427 astar_polyline_planner.cpp:46] AStarPolyline: base poses=42, polyline vertices=9, dense poses=42
+I20260725 19:57:55.908107 28427 path_planner_node.cpp:302] PathPlanner make_plan response: poses=42 end=(-2.31473, -0.0398796) end_goal_dist=0
+I20260725 19:58:09.676517 28437 astar_polyline_planner.cpp:46] AStarPolyline: base poses=58, polyline vertices=17, dense poses=58
+I20260725 19:58:09.771035 28436 apf_controller.cpp:97] Got new plan
+I20260725 19:58:49.171025 28436 apf_controller.cpp:126] GOAL Reached!
+[0m[INFO] [1784980585.378226909]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1784980585.389990838]: Requesting the map...[0m
+[0m[INFO] [1784980585.593886671]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1784980585.693678203]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1784980585.699463276]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1784980585.704237253]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1784980585.732998598]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1784980585.739853526]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1784980585.816978743]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1784980585.820733814]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1784980585.843617691]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1784980585.924133167]: Created local_planner apf_controller/APFController[0m
+[0m[INFO] [1784980586.415804843]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1784980586.423037732]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1784980586.467153551]: odom received![0m
+... logging to /home/lcy/.ros/log/971c9a68-8819-11f1-913e-48b02df90897/roslaunch-ubuntu-28402.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:37963/[0m
+[1mstarted roslaunch server http://ubuntu:46545/[0m
 
 SUMMARY
 ========
@@ -224,7 +234,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [7434][0m
+[1mprocess[move_base-1]: started with pid [28427][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
