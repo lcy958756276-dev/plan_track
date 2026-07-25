@@ -36,11 +36,15 @@ static constexpr double kInflationRadiusM = 3.0;
 static constexpr double kApproachSlowdownDist = 0.9;
 static constexpr double kApproachMinLinearVelocity = 0.04;
 static constexpr double kApproachDecelIncrement = 0.12;
+static constexpr double kGoalStopLinearVelocity = 0.02;
+static constexpr double kGoalStopAngularVelocity = 0.05;
+static constexpr int kGoalStopConfirmCycles = 5;
 
 /**
  * @brief Construct a new APFController object
  */
-APFController::APFController() : initialized_(false), tf_(nullptr), goal_reached_(false) {
+APFController::APFController()
+  : initialized_(false), goal_reached_(false), tf_(nullptr), goal_stop_count_(0) {
 }
 
 /**
@@ -113,6 +117,7 @@ bool APFController::setPlan(
     goal_y_ = global_plan_.back().pose.position.y;
     goal_theta_ = getYawAngle(global_plan_.back());
     goal_reached_ = false;
+    goal_stop_count_ = 0;
   }
 
   return true;
@@ -215,18 +220,23 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
 
   // position reached
   if (shouldRotateToGoal(robot_pose_map, global_plan_.back())) {
-    e_theta = normalizeAngle(goal_theta_ - theta);
+    cmd_vel.linear.x = 0.0;
+    cmd_vel.angular.z = 0.0;
 
-    // orientation reached
-    if (!shouldRotateToPath(std::fabs(e_theta))) {
-      cmd_vel.linear.x = 0.0;
-      cmd_vel.angular.z = 0.0;
-      goal_reached_ = true;
+    if (vt < kGoalStopLinearVelocity && std::fabs(wt) < kGoalStopAngularVelocity) {
+      ++goal_stop_count_;
+      if (goal_stop_count_ >= kGoalStopConfirmCycles) {
+        goal_reached_ = true;
+      }
+    } else {
+      goal_stop_count_ = 0;
     }
-    // orientation not reached
-    else {
-      cmd_vel.linear.x = 0.0;
-      cmd_vel.angular.z = angularRegularization(wt, e_theta / control_dt_);
+
+    if (!goal_reached_) {
+      R_INFO_EVERY(10) << "APF goal stop hold: goal_dist=" << goal_dist
+                       << " m, vt=" << vt << " m/s, wt=" << wt
+                       << " rad/s, confirm=" << goal_stop_count_ << "/"
+                       << kGoalStopConfirmCycles;
     }
   }
   // large angle, turn first
