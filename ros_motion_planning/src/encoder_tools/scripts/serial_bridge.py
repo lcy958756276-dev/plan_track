@@ -36,7 +36,6 @@ class SerialBridge:
         self.wheel_base   = rospy.get_param("~wheel_base", 0.45)
         self.cmd_timeout = rospy.get_param("~cmd_timeout", 0.3)
         self.zero_repeat_period = rospy.get_param("~zero_repeat_period", 0.2)
-        self.zero_burst_count = rospy.get_param("~zero_burst_count", 5)
 
         # ── 打开串口（只开一次） ──
         self.ser = serial.Serial(port=port, baudrate=baud, timeout=0.1)
@@ -118,11 +117,8 @@ class SerialBridge:
                     f"[bridge] 单轮死区补偿: l {original_left:.3f}->{v_left:.3f}, "
                     f"r {original_right:.3f}->{v_right:.3f}, 保留输入 v={v:.3f} ω={w:.3f}")
 
+        cmd_str = self._write_wheel_command(v_left, v_right)
         self.last_sent_zero = abs(v) < 1e-4 and abs(w) < 1e-4
-        if self.last_sent_zero:
-            cmd_str = self._write_zero_command()
-        else:
-            cmd_str = self._write_wheel_command(v_left, v_right)
         if self.last_sent_zero:
             self.last_zero_send_time = self.last_cmd_time
 
@@ -137,7 +133,7 @@ class SerialBridge:
         if self.last_sent_zero and (now - self.last_zero_send_time).to_sec() < self.zero_repeat_period:
             return
 
-        cmd_str = self._write_zero_command()
+        cmd_str = self._write_wheel_command(0.0, 0.0)
         self.last_sent_zero = True
         self.last_zero_send_time = now
         rospy.loginfo_throttle(
@@ -151,17 +147,6 @@ class SerialBridge:
             with self.write_lock:
                 if self.ser and self.ser.is_open:
                     self.ser.write(cmd_str.encode("utf-8"))
-        except serial.SerialException as e:
-            rospy.logerr_throttle(3.0, f"[bridge] 串口写入失败: {e}")
-        return cmd_str
-
-    def _write_zero_command(self):
-        cmd_str = "l:0.000,r:0.000\r\n"
-        try:
-            with self.write_lock:
-                if self.ser and self.ser.is_open:
-                    self.ser.write(cmd_str.encode("utf-8") * self.zero_burst_count)
-                    self.ser.flush()
         except serial.SerialException as e:
             rospy.logerr_throttle(3.0, f"[bridge] 串口写入失败: {e}")
         return cmd_str
@@ -275,8 +260,7 @@ class SerialBridge:
     def shutdown(self):
         if self.ser and self.ser.is_open:
             with self.write_lock:
-                self.ser.write(b"l:0.000,r:0.000\r\n" * self.zero_burst_count)
-                self.ser.flush()
+                self.ser.write(b"l:0.000,r:0.000\r\n")
             self.ser.close()
         rospy.loginfo("[bridge] 串口已关闭")
 

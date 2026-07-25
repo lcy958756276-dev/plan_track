@@ -115,8 +115,6 @@ private:
   bool initialized_;     // initialized flag
   bool goal_reached_;    // goal reached flag
   tf2_ros::Buffer* tf_;  // transform buffer
-  int goal_stop_count_;
-  bool goal_stop_latched_;
 
   std::deque<common::geometry::Vec2d> hist_nf_;  // historical net forces
 

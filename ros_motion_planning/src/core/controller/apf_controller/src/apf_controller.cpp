@@ -34,21 +34,15 @@ namespace rmp::controller {
 static constexpr double kLargeAngleRad = M_PI_2;
 static constexpr double kInflationRadiusM = 3.0;
 static constexpr double kApproachSlowdownDist = 0.9;
+static constexpr double kApproachForceSlowdownDist = 0.5;
 static constexpr double kApproachMinLinearVelocity = 0.04;
 static constexpr double kApproachDecelIncrement = 0.12;
-static constexpr double kGoalStopLinearVelocity = 0.02;
-static constexpr double kGoalStopAngularVelocity = 0.05;
-static constexpr int kGoalStopConfirmCycles = 5;
 
 /**
  * @brief Construct a new APFController object
  */
 APFController::APFController()
-  : initialized_(false),
-    goal_reached_(false),
-    tf_(nullptr),
-    goal_stop_count_(0),
-    goal_stop_latched_(false) {
+  : initialized_(false), goal_reached_(false), tf_(nullptr) {
 }
 
 /**
@@ -121,8 +115,6 @@ bool APFController::setPlan(
     goal_y_ = global_plan_.back().pose.position.y;
     goal_theta_ = getYawAngle(global_plan_.back());
     goal_reached_ = false;
-    goal_stop_count_ = 0;
-    goal_stop_latched_ = false;
   }
 
   return true;
@@ -224,25 +216,19 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
   double e_theta = normalizeAngle(theta_d - theta);
 
   // position reached
-  if (goal_stop_latched_ || shouldRotateToGoal(robot_pose_map, global_plan_.back())) {
-    goal_stop_latched_ = true;
-    cmd_vel.linear.x = 0.0;
-    cmd_vel.angular.z = 0.0;
+  if (shouldRotateToGoal(robot_pose_map, global_plan_.back())) {
+    e_theta = normalizeAngle(goal_theta_ - theta);
 
-    if (vt < kGoalStopLinearVelocity && std::fabs(wt) < kGoalStopAngularVelocity) {
-      ++goal_stop_count_;
-      if (goal_stop_count_ >= kGoalStopConfirmCycles) {
-        goal_reached_ = true;
-      }
-    } else {
-      goal_stop_count_ = 0;
+    // orientation reached
+    if (!shouldRotateToPath(std::fabs(e_theta))) {
+      cmd_vel.linear.x = 0.0;
+      cmd_vel.angular.z = 0.0;
+      goal_reached_ = true;
     }
-
-    if (!goal_reached_) {
-      R_INFO_EVERY(10) << "APF goal stop hold: goal_dist=" << goal_dist
-                       << " m, vt=" << vt << " m/s, wt=" << wt
-                       << " rad/s, confirm=" << goal_stop_count_ << "/"
-                       << kGoalStopConfirmCycles;
+    // orientation not reached
+    else {
+      cmd_vel.linear.x = 0.0;
+      cmd_vel.angular.z = angularRegularization(wt, e_theta / control_dt_);
     }
   }
   // large angle, turn first
@@ -299,11 +285,16 @@ double APFController::getApproachLinearSpeedLimit(double goal_dist) const {
     return 0.0;
   }
 
+  if (goal_dist <= kApproachForceSlowdownDist) {
+    return kApproachMinLinearVelocity;
+  }
+
   const double slow_range =
-      std::max(kApproachSlowdownDist - config_.goal_dist_tolerance(), 1e-3);
+      std::max(kApproachSlowdownDist - kApproachForceSlowdownDist, 1e-3);
   const double ratio =
-      clamp((goal_dist - config_.goal_dist_tolerance()) / slow_range, 0.0, 1.0);
-  return std::max(kApproachMinLinearVelocity, config_.max_linear_velocity() * ratio);
+      clamp((goal_dist - kApproachForceSlowdownDist) / slow_range, 0.0, 1.0);
+  return kApproachMinLinearVelocity +
+         (config_.max_linear_velocity() - kApproachMinLinearVelocity) * ratio;
 }
 
 /**
