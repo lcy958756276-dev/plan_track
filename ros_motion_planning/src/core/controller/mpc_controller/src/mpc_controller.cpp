@@ -191,10 +191,28 @@ bool MPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
 
   // current angle
   double theta = tf2::getYaw(robot_pose_map.pose.orientation);  // [-pi, pi]
+  constexpr double kVelocityLagTime = 0.35;
+  const double lag_theta = normalizeAngle(theta + wt * kVelocityLagTime);
+  const double lag_x =
+      robot_pose_map.pose.position.x + vt * std::cos(theta) * kVelocityLagTime;
+  const double lag_y =
+      robot_pose_map.pose.position.y + vt * std::sin(theta) * kVelocityLagTime;
 
   double path_heading = theta;
   double path_dist = _distanceToPlan(robot_pose_map, prune_plan, &path_heading);
   double path_heading_error = normalizeAngle(path_heading - theta);
+  const double target_heading =
+      std::atan2(lookahead_pt.y() - robot_pose_map.pose.position.y,
+                 lookahead_pt.x() - robot_pose_map.pose.position.x);
+  const double target_heading_error = normalizeAngle(target_heading - theta);
+  const double heading_ratio =
+      clamp(1.0 - std::fabs(target_heading_error) / 0.9, 0.25, 1.0);
+  const double path_ratio =
+      path_dist > 0.08 ? clamp((0.24 - path_dist) / 0.16, 0.25, 1.0) : 1.0;
+  const double curvature_ratio =
+      std::fabs(kappa) > 1e-3 ? clamp(0.8 / std::fabs(kappa), 0.25, 1.0) : 1.0;
+  const double speed_ratio = std::min({heading_ratio, path_ratio, curvature_ratio});
+  const double speed_limit = config_.max_linear_velocity() * speed_ratio;
 
   // calculate commands
   if (shouldRotateToGoal(robot_pose_map, global_plan_.back())) {
@@ -212,22 +230,16 @@ bool MPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
       cmd_vel.angular.z = angularRegularization(wt, e_theta / control_dt_);
     }
   } else {
-    Eigen::Vector3d s(robot_pose_map.pose.position.x, robot_pose_map.pose.position.y,
-                      theta);  // current state
+    Eigen::Vector3d s(lag_x, lag_y, lag_theta);  // latency-compensated state
     Eigen::Vector3d s_d(lookahead_pt.x(), lookahead_pt.y(),
                         lookahead_pt.theta());            // desired state
-    Eigen::Vector2d u_r(vt, normalizeAngle(vt * kappa));  // refered input
+    Eigen::Vector2d u_r(speed_limit, normalizeAngle(speed_limit * kappa));
     Eigen::Vector2d u = _mpcControl(s, s_d, u_r, du_p_);
     double u_v = linearRegularization(vt, u[0]);
     double u_w = angularRegularization(wt, u[1]);
     bool reset_control_error = false;
 
     if (path_dist > 0.12) {
-      const double target_heading =
-          std::atan2(lookahead_pt.y() - robot_pose_map.pose.position.y,
-                     lookahead_pt.x() - robot_pose_map.pose.position.x);
-      const double target_heading_error = normalizeAngle(target_heading - theta);
-
       if (path_dist > 0.20 || std::fabs(target_heading_error) > 0.55) {
         u_v = 0.0;
         u_w = angularRegularization(wt, target_heading_error / control_dt_);
@@ -245,6 +257,14 @@ bool MPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
                << " m, slow_ratio=" << slow_ratio
                << ", heading_error=" << path_heading_error * 180.0 / M_PI << " deg";
       }
+    }
+
+    if (std::fabs(u_v) > speed_limit) {
+      R_WARN << "MPC turn speed limit: v=" << u_v << " -> "
+             << std::copysign(speed_limit, u_v)
+             << ", heading_error=" << target_heading_error * 180.0 / M_PI
+             << " deg, path_dist=" << path_dist << " m, kappa=" << kappa;
+      u_v = std::copysign(speed_limit, u_v);
     }
 
     du_p_ = reset_control_error
