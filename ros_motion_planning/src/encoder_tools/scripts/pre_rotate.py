@@ -17,6 +17,7 @@ class PreRotate:
         self.plan_heading_dist = 0.35                    # 沿全局路径取多远的点来决定初始朝向
         self.plan_retry_timeout = 3.0                    # 等待全局规划结果的最长时间
         self.stop_before_rotate = 1.0                    # 新 goal 后先停稳，再按路径方向旋转
+        self.plan_goal_tolerance = 0.3                   # 防止 make_plan 返回上一条旧路径
 
         self.x = 0.0
         self.y = 0.0
@@ -112,6 +113,13 @@ class PreRotate:
         while not rospy.is_shutdown() and rospy.Time.now().to_sec() < deadline:
             path = self._make_plan(goal)
             if path and path.poses:
+                if not self._path_reaches_goal(path, goal):
+                    rospy.logwarn_throttle(
+                        1.0,
+                        "pre_rotate: make_plan path endpoint is far from new goal, retry",
+                    )
+                    rospy.sleep(0.1)
+                    continue
                 yaw = self._yaw_from_plan(path)
                 if yaw is not None:
                     rospy.loginfo("pre_rotate: use global path heading %.1fdeg", yaw * 180 / math.pi)
@@ -147,6 +155,12 @@ class PreRotate:
             self.make_plan = None
             rospy.logwarn_throttle(2.0, "pre_rotate: make_plan failed: %s", e)
         return None
+
+    def _path_reaches_goal(self, path, goal):
+        end = path.poses[-1].pose.position
+        goal_pos = goal.pose.position
+        dist = math.hypot(end.x - goal_pos.x, end.y - goal_pos.y)
+        return dist <= self.plan_goal_tolerance
 
     def _yaw_from_plan(self, path):
         if len(path.poses) < 2:

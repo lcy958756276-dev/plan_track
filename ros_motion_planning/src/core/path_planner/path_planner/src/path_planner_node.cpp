@@ -183,7 +183,8 @@ bool PathPlannerNode::makePlan(const geometry_msgs::PoseStamped& start,
       plan[0].pose.orientation = start.pose.orientation;
 
       // ── 航向安全检查 ──
-      // 新路径第一个有效点与当前车头偏角 > 90° 时，沿用上一次规划
+      // 大角度的新路径交给 pre_rotate 先原地对准，不能继续沿用旧路径，
+      // 否则新 goal 的预旋转会拿到旧路径方向。
       if (!plan.empty()) {
         double start_x = start.pose.position.x;
         double start_y = start.pose.position.y;
@@ -209,19 +210,10 @@ bool PathPlannerNode::makePlan(const geometry_msgs::PoseStamped& start,
               std::abs(angles::shortest_angular_distance(start_yaw, target_yaw));
 
           if (diff > M_PI_2) {
-            if (!last_accepted_plan_.empty()) {
-              R_WARN << "Path heading change " << diff * 180.0 / M_PI
-                     << " deg > 90 deg, keeping previous plan ("
-                     << last_accepted_plan_.size() << " poses)";
-              plan = last_accepted_plan_;
-            } else {
-              R_WARN << "Path heading change " << diff * 180.0 / M_PI
-                     << " deg > 90 deg, no previous plan to fallback, accepting";
-              last_accepted_plan_ = plan;
-            }
-          } else {
-            last_accepted_plan_ = plan;
+            R_WARN << "Path heading change " << diff * 180.0 / M_PI
+                   << " deg > 90 deg, accepting new plan for pre-rotation";
           }
+          last_accepted_plan_ = plan;
         } else {
           // 路径太短（终点在附近），不做检查
           last_accepted_plan_ = plan;

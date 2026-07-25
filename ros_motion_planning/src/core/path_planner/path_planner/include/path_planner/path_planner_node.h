@@ -113,8 +113,8 @@ protected:
   ros::Publisher particles_pub_;            // evolutionary particles publisher
   ros::ServiceServer make_plan_srv_;        // planning service
 
-  // ── 航向安全检查（防止路径左右跳变） ──
-  std::vector<geometry_msgs::PoseStamped> last_accepted_plan_;  // 上一次通过航向检查的路径
+  // ── 航向安全检查记录 ──
+  std::vector<geometry_msgs::PoseStamped> last_accepted_plan_;  // 上一次接受的路径
 };
 }  // namespace rmp
 #endif
