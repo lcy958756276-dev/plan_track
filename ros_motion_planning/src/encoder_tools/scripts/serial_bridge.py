@@ -25,7 +25,7 @@ import rospy
 import serial
 import termios
 from std_msgs.msg import Int64MultiArray
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Twist, PoseStamped
 
 
 class SerialBridge:
@@ -45,11 +45,10 @@ class SerialBridge:
         self.stop_brake_duration = rospy.get_param("~stop_brake_duration", 0.4)
         self.pre_stop_brake_enabled = rospy.get_param("~pre_stop_brake_enabled", True)
         self.pre_stop_linear_threshold = rospy.get_param("~pre_stop_linear_threshold", 0.045)
-        self.pre_stop_right_threshold = rospy.get_param("~pre_stop_right_threshold", 0.02)
+        self.pre_stop_angular_threshold = rospy.get_param("~pre_stop_angular_threshold", 0.25)
+        self.pre_stop_right_threshold = rospy.get_param("~pre_stop_right_threshold", 0.09)
         self.pre_stop_brake_cooldown = rospy.get_param("~pre_stop_brake_cooldown", 2.0)
         self.terminal_stop_hold_duration = rospy.get_param("~terminal_stop_hold_duration", 1.2)
-        self.terminal_stop_release_linear = rospy.get_param("~terminal_stop_release_linear", 0.08)
-        self.terminal_stop_release_angular = rospy.get_param("~terminal_stop_release_angular", 0.3)
 
         # ── 打开串口（只开一次） ──
         self.ser = serial.Serial(port=port, baudrate=baud, timeout=0.1)
@@ -77,6 +76,8 @@ class SerialBridge:
 
         # ── 订阅 cmd_vel ──
         rospy.Subscriber("/cmd_vel", Twist, self.cmd_vel_cb, queue_size=1)
+        rospy.Subscriber("/move_base_simple/goal", PoseStamped, self.goal_cb, queue_size=1)
+        rospy.Subscriber("/goal_rotated", PoseStamped, self.goal_cb, queue_size=1)
 
         # ── 解析模式 ──
         # 模式1: ltick:123 rtick:456（read_uart 原格式）
@@ -95,6 +96,7 @@ class SerialBridge:
         self.last_pre_stop_brake_time = rospy.Time(0)
         self.terminal_stop_hold_until = rospy.Time(0)
         self.terminal_stop_latched = False
+        self.goal_count = 0
         rospy.Timer(rospy.Duration(0.1), self.cmd_timeout_cb)
 
         # ── 斜率检查（防 MCU 数据乱码导致位置跳变） ──
@@ -138,27 +140,13 @@ class SerialBridge:
         is_zero_cmd = abs(v) < 1e-4 and abs(w) < 1e-4
 
         if self.terminal_stop_latched:
-            can_release = (
-                not self._in_terminal_stop_hold()
-                and not is_zero_cmd
-                and (
-                    abs(v) >= self.terminal_stop_release_linear
-                    or abs(w) >= self.terminal_stop_release_angular
-                )
-            )
-            if can_release:
-                self.terminal_stop_latched = False
-                rospy.loginfo(
-                    f"[bridge] 终点停车锁存释放: 收到新运动命令 v={v:.3f} ω={w:.3f}"
-                )
-            else:
-                cmd_str = self._write_wheel_command(0.0, 0.0)
-                self.last_sent_zero = True
-                self.last_zero_send_time = self.last_cmd_time
-                rospy.loginfo_throttle(0.5,
-                    f"[bridge] 终点停车锁存中，拦截上层残余命令 v={v:.3f} ω={w:.3f}  "
-                    f"[串口发送] {cmd_str.strip()}")
-                return
+            cmd_str = self._write_wheel_command(0.0, 0.0)
+            self.last_sent_zero = True
+            self.last_zero_send_time = self.last_cmd_time
+            rospy.loginfo_throttle(0.5,
+                f"[bridge] 终点停车锁存中，只发送零速度，拦截上层命令 v={v:.3f} ω={w:.3f}  "
+                f"[串口发送] {cmd_str.strip()}")
+            return
 
         if self._in_terminal_stop_hold():
             cmd_str = self._write_wheel_command(0.0, 0.0)
@@ -170,7 +158,13 @@ class SerialBridge:
             return
 
         should_brake = is_zero_cmd and not self.last_sent_zero
-        should_pre_brake = self._should_pre_stop_brake(v, v_right, is_zero_cmd)
+        should_pre_brake = self._should_pre_stop_brake(v, w, v_right, is_zero_cmd)
+        if should_brake:
+            self.terminal_stop_latched = True
+            self.terminal_stop_hold_until = (
+                self.last_cmd_time + rospy.Duration(self.terminal_stop_hold_duration)
+            )
+
         if should_pre_brake:
             self.terminal_stop_hold_until = (
                 self.last_cmd_time + rospy.Duration(self.terminal_stop_hold_duration)
@@ -199,12 +193,30 @@ class SerialBridge:
             f"[bridge] cmd #{self.cmd_count}: v={v:.3f} ω={w:.3f} → "
             f"l={v_left:.3f} r={v_right:.3f}  [串口发送] {cmd_str.strip()}")
 
-    def _should_pre_stop_brake(self, v, v_right, is_zero_cmd):
+    def goal_cb(self, msg):
+        self.goal_count += 1
+        if self.terminal_stop_latched:
+            rospy.loginfo(
+                f"[bridge] 收到新 goal #{self.goal_count}，解除终点停车锁存，允许重新接收速度命令"
+            )
+        else:
+            rospy.loginfo_throttle(
+                1.0,
+                f"[bridge] 收到新 goal #{self.goal_count}，当前未锁存"
+            )
+        self.terminal_stop_latched = False
+        self.terminal_stop_hold_until = rospy.Time(0)
+        self.last_sent_zero = True
+        self.last_zero_send_time = rospy.Time.now()
+
+    def _should_pre_stop_brake(self, v, w, v_right, is_zero_cmd):
         if not self.pre_stop_brake_enabled or is_zero_cmd:
             return False
         if self.last_sent_zero:
             return False
         if v <= 0.0 or v > self.pre_stop_linear_threshold:
+            return False
+        if abs(w) > self.pre_stop_angular_threshold:
             return False
         if not (0.0 <= v_right <= self.pre_stop_right_threshold):
             return False
