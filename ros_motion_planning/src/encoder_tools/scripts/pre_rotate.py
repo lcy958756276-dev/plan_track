@@ -3,6 +3,7 @@ import rospy
 import math
 import copy
 import actionlib
+from std_msgs.msg import Bool
 from geometry_msgs.msg import Twist, PoseStamped
 from nav_msgs.msg import Odometry
 from nav_msgs.srv import GetPlan
@@ -31,12 +32,16 @@ class PreRotate:
 
         self.goal_pub = rospy.Publisher("/goal_rotated", PoseStamped, queue_size=1)
         self.cmd_pub = rospy.Publisher("/cmd_vel", Twist, queue_size=1)
+        self.clear_pause_pub = rospy.Publisher(
+            "/clear_scheduler/pause", Bool, queue_size=1, latch=True
+        )
 
         rospy.loginfo(
             "pre_rotate: debug build, make_plan_service=%s plan_goal_tolerance=%.3fm",
             self.make_plan_service,
             self.plan_goal_tolerance,
         )
+        self._set_clear_paused(False, "startup")
 
         rospy.Subscriber("/move_base_simple/goal", PoseStamped, self.goal_cb)
         rospy.Subscriber("/odom", Odometry, self.odom_cb)
@@ -64,12 +69,14 @@ class PreRotate:
             self.y,
             self.yaw * 180 / math.pi,
         )
+        self._set_clear_paused(True, "new goal, wait for one-shot plan")
         self._cancel_move_base()
         self._stop_robot()
         rospy.sleep(self.stop_before_rotate)
         self._stop_robot()
 
         target_yaw = self._get_initial_path_yaw(msg)
+        self._set_clear_paused(False, "one-shot plan finished")
         if target_yaw is None:
             rospy.logerr("pre_rotate: no valid global path heading, keep robot stopped")
             self._stop_robot()
@@ -122,6 +129,12 @@ class PreRotate:
 
     def _stop_robot(self):
         self.cmd_pub.publish(Twist())
+
+    def _set_clear_paused(self, paused, reason):
+        msg = Bool()
+        msg.data = paused
+        self.clear_pause_pub.publish(msg)
+        rospy.loginfo("pre_rotate: clear_scheduler pause=%s (%s)", paused, reason)
 
     def _get_initial_path_yaw(self, goal):
         """先请求一次全局路径，用路径开头方向作为预旋转方向。"""
