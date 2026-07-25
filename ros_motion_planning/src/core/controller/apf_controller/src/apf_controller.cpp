@@ -35,6 +35,7 @@ static constexpr double kLargeAngleRad = M_PI_2;
 static constexpr double kInflationRadiusM = 3.0;
 static constexpr double kApproachSlowdownDist = 0.9;
 static constexpr double kApproachForceSlowdownDist = 0.5;
+static constexpr double kApproachStopBufferDist = 0.35;
 static constexpr double kApproachMinLinearVelocity = 0.04;
 static constexpr double kApproachMinAngularVelocity = 0.15;
 static constexpr double kApproachDecelIncrement = 0.12;
@@ -204,7 +205,12 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
   new_v /= new_v.length();
   new_v *= config_.max_linear_velocity();
   double desired_linear_velocity = new_v.length();
-  bool approach_slowdown = goal_dist < kApproachSlowdownDist;
+  const double force_slowdown_dist =
+      std::max(kApproachForceSlowdownDist,
+               config_.goal_dist_tolerance() + kApproachStopBufferDist);
+  const double slowdown_start_dist =
+      std::max(kApproachSlowdownDist, force_slowdown_dist + 0.4);
+  bool approach_slowdown = goal_dist < slowdown_start_dist;
   double approach_angular_limit = config_.max_angular_velocity();
   if (approach_slowdown) {
     const double approach_limit = getApproachLinearSpeedLimit(goal_dist);
@@ -213,7 +219,9 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
     R_INFO_EVERY(10) << "APF approach speed limit: goal_dist=" << goal_dist
                      << " m, desired_v=" << desired_linear_velocity
                      << " m/s, angular_limit=" << approach_angular_limit
-                     << " rad/s, vt=" << vt << " m/s, wt=" << wt
+                     << " rad/s, force_slowdown_dist=" << force_slowdown_dist
+                     << " m, slowdown_start_dist=" << slowdown_start_dist
+                     << " m, vt=" << vt << " m/s, wt=" << wt
                      << " rad/s";
   }
 
@@ -301,27 +309,39 @@ double APFController::getApproachLinearSpeedLimit(double goal_dist) const {
     return 0.0;
   }
 
-  if (goal_dist <= kApproachForceSlowdownDist) {
+  const double force_slowdown_dist =
+      std::max(kApproachForceSlowdownDist,
+               config_.goal_dist_tolerance() + kApproachStopBufferDist);
+  const double slowdown_start_dist =
+      std::max(kApproachSlowdownDist, force_slowdown_dist + 0.4);
+
+  if (goal_dist <= force_slowdown_dist) {
     return kApproachMinLinearVelocity;
   }
 
   const double slow_range =
-      std::max(kApproachSlowdownDist - kApproachForceSlowdownDist, 1e-3);
+      std::max(slowdown_start_dist - force_slowdown_dist, 1e-3);
   const double ratio =
-      clamp((goal_dist - kApproachForceSlowdownDist) / slow_range, 0.0, 1.0);
+      clamp((goal_dist - force_slowdown_dist) / slow_range, 0.0, 1.0);
   return kApproachMinLinearVelocity +
          (config_.max_linear_velocity() - kApproachMinLinearVelocity) * ratio;
 }
 
 double APFController::getApproachAngularSpeedLimit(double goal_dist) const {
-  if (goal_dist <= kApproachForceSlowdownDist) {
+  const double force_slowdown_dist =
+      std::max(kApproachForceSlowdownDist,
+               config_.goal_dist_tolerance() + kApproachStopBufferDist);
+  const double slowdown_start_dist =
+      std::max(kApproachSlowdownDist, force_slowdown_dist + 0.4);
+
+  if (goal_dist <= force_slowdown_dist) {
     return kApproachMinAngularVelocity;
   }
 
   const double slow_range =
-      std::max(kApproachSlowdownDist - kApproachForceSlowdownDist, 1e-3);
+      std::max(slowdown_start_dist - force_slowdown_dist, 1e-3);
   const double ratio =
-      clamp((goal_dist - kApproachForceSlowdownDist) / slow_range, 0.0, 1.0);
+      clamp((goal_dist - force_slowdown_dist) / slow_range, 0.0, 1.0);
   return kApproachMinAngularVelocity +
          (config_.max_angular_velocity() - kApproachMinAngularVelocity) * ratio;
 }
