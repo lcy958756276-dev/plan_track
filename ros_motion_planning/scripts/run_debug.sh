@@ -196,6 +196,16 @@ echo "  PID=$PID_ODOM → log/encoder_odom.log"
 
 sleep 1
 
+# ── 6.5 启动实际速度记录器 ──
+echo "[6.5/8] 启动 velocity_plotter.py (记录 /odom 实际线速度/角速度)..."
+rosrun encoder_tools velocity_plotter.py \
+    _output_dir:="$LOG_DIR" \
+    > "$LOG_DIR/velocity_plotter.log" 2>&1 &
+PID_VEL_PLOT=$!
+echo "  PID=$PID_VEL_PLOT → log/velocity_plotter.log"
+
+sleep 1
+
 # ── 7. 启动 Gazebo 同步桥接 ──
 echo "[7/8] 启动 gazebo_sync.py (里程计→Gazebo 同步 + LaserScan 时间戳修复)..."
 rosrun encoder_tools gazebo_sync.py \
@@ -307,6 +317,7 @@ echo "$PID_GZCLIENT" > "$LOG_DIR/.pid_gzclient"
 echo "$PID_RVIZ"     > "$LOG_DIR/.pid_rviz"
 echo "$PID_READ"     > "$LOG_DIR/.pid_read"
 echo "$PID_ODOM"     > "$LOG_DIR/.pid_odom"
+echo "$PID_VEL_PLOT" > "$LOG_DIR/.pid_velocity_plotter"
 echo "$PID_SYNC"     > "$LOG_DIR/.pid_sync"
 echo "$PID_PREROT"     > "$LOG_DIR/.pid_prerot"
 echo "$PID_CLEAR_SCHED" > "$LOG_DIR/.pid_clear_sched"
