@@ -14,6 +14,9 @@
  *
  * ********************************************************
  */
+#include <algorithm>
+#include <cmath>
+
 #include <pluginlib/class_list_macros.h>
 
 #include "common/util/log.h"
@@ -30,6 +33,9 @@ using namespace rmp::common::geometry;
 namespace rmp::controller {
 static constexpr double kLargeAngleRad = M_PI_2;
 static constexpr double kInflationRadiusM = 3.0;
+static constexpr double kApproachSlowdownDist = 0.9;
+static constexpr double kApproachMinLinearVelocity = 0.04;
+static constexpr double kApproachDecelIncrement = 0.12;
 
 /**
  * @brief Construct a new APFController object
@@ -166,6 +172,9 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
 
   // current angle
   double theta = tf2::getYaw(robot_pose_map.pose.orientation);  // [-pi, pi]
+  const double goal_dist =
+      std::hypot(robot_pose_map.pose.position.x - global_plan_.back().pose.position.x,
+                 robot_pose_map.pose.position.y - global_plan_.back().pose.position.y);
 
   // calculate forces
   Vec2d curr_pt(robot_pose_odom.pose.position.x, robot_pose_odom.pose.position.y);
@@ -191,6 +200,14 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
   new_v += net_force;
   new_v /= new_v.length();
   new_v *= config_.max_linear_velocity();
+  double desired_linear_velocity = new_v.length();
+  if (goal_dist < kApproachSlowdownDist) {
+    const double approach_limit = getApproachLinearSpeedLimit(goal_dist);
+    desired_linear_velocity = std::min(desired_linear_velocity, approach_limit);
+    R_INFO_EVERY(10) << "APF approach speed limit: goal_dist=" << goal_dist
+                     << " m, desired_v=" << desired_linear_velocity
+                     << " m/s, vt=" << vt << " m/s";
+  }
 
   // set the desired angle and the angle error
   double theta_d = new_v.angle();  // [-pi, pi]
@@ -219,7 +236,8 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
   }
   // posistion not reached
   else {
-    cmd_vel.linear.x = linearRegularization(vt, new_v.length());
+    cmd_vel.linear.x = regularizeApproachLinearVelocity(
+        vt, desired_linear_velocity, kApproachDecelIncrement);
     cmd_vel.angular.z = angularRegularization(wt, e_theta / control_dt_);
   }
 
@@ -237,6 +255,39 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
   // publishPotentialMap(curr_pt, Vec2d(lookahead_pt.x(), lookahead_pt.y()));
 
   return true;
+}
+
+double APFController::regularizeApproachLinearVelocity(double v_in, double v_desired,
+                                                       double decel_increment) const {
+  double v_inc = v_desired - v_in;
+  const double max_inc =
+      v_inc < 0.0 ? std::max(decel_increment, config_.max_linear_velocity_increment()) :
+                    config_.max_linear_velocity_increment();
+
+  if (std::fabs(v_inc) > max_inc) {
+    v_inc = std::copysign(max_inc, v_inc);
+  }
+
+  double v_cmd = v_in + v_inc;
+  if (std::fabs(v_cmd) > config_.max_linear_velocity()) {
+    v_cmd = std::copysign(config_.max_linear_velocity(), v_cmd);
+  } else if (std::fabs(v_cmd) < config_.min_linear_velocity()) {
+    v_cmd = std::copysign(config_.min_linear_velocity(), v_cmd);
+  }
+
+  return v_cmd;
+}
+
+double APFController::getApproachLinearSpeedLimit(double goal_dist) const {
+  if (goal_dist <= config_.goal_dist_tolerance()) {
+    return 0.0;
+  }
+
+  const double slow_range =
+      std::max(kApproachSlowdownDist - config_.goal_dist_tolerance(), 1e-3);
+  const double ratio =
+      clamp((goal_dist - config_.goal_dist_tolerance()) / slow_range, 0.0, 1.0);
+  return std::max(kApproachMinLinearVelocity, config_.max_linear_velocity() * ratio);
 }
 
 /**

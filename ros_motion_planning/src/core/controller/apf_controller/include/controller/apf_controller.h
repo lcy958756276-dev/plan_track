@@ -106,6 +106,11 @@ public:
                            const common::geometry::Vec2d& target_pt);
 
 private:
+  double regularizeApproachLinearVelocity(double v_in, double v_desired,
+                                          double decel_increment) const;
+  double getApproachLinearSpeedLimit(double goal_dist) const;
+
+private:
   pb::controller::APFController apf_config_;
   bool initialized_;     // initialized flag
   bool goal_reached_;    // goal reached flag
