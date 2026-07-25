@@ -43,6 +43,10 @@ class SerialBridge:
         self.stop_brake_enabled = rospy.get_param("~stop_brake_enabled", True)
         self.stop_brake_right_speed = rospy.get_param("~stop_brake_right_speed", -0.08)
         self.stop_brake_duration = rospy.get_param("~stop_brake_duration", 0.4)
+        self.pre_stop_brake_enabled = rospy.get_param("~pre_stop_brake_enabled", True)
+        self.pre_stop_linear_threshold = rospy.get_param("~pre_stop_linear_threshold", 0.045)
+        self.pre_stop_right_threshold = rospy.get_param("~pre_stop_right_threshold", 0.02)
+        self.pre_stop_brake_cooldown = rospy.get_param("~pre_stop_brake_cooldown", 2.0)
 
         # ── 打开串口（只开一次） ──
         self.ser = serial.Serial(port=port, baudrate=baud, timeout=0.1)
@@ -85,6 +89,7 @@ class SerialBridge:
         self.last_cmd_time = rospy.Time.now()
         self.last_zero_send_time = rospy.Time(0)
         self.last_sent_zero = True
+        self.last_pre_stop_brake_time = rospy.Time(0)
         rospy.Timer(rospy.Duration(0.1), self.cmd_timeout_cb)
 
         # ── 斜率检查（防 MCU 数据乱码导致位置跳变） ──
@@ -127,6 +132,10 @@ class SerialBridge:
 
         is_zero_cmd = abs(v) < 1e-4 and abs(w) < 1e-4
         should_brake = is_zero_cmd and not self.last_sent_zero
+        should_pre_brake = self._should_pre_stop_brake(v, v_right, is_zero_cmd)
+        if should_pre_brake:
+            self._send_right_brake("终点低速段提前右轮刹车")
+            self.last_pre_stop_brake_time = self.last_cmd_time
         cmd_str = self._write_wheel_command(v_left, v_right, brake_right=should_brake)
         self.last_sent_zero = is_zero_cmd
         if self.last_sent_zero:
@@ -135,6 +144,18 @@ class SerialBridge:
         rospy.loginfo_throttle(1.0,
             f"[bridge] cmd #{self.cmd_count}: v={v:.3f} ω={w:.3f} → "
             f"l={v_left:.3f} r={v_right:.3f}  [串口发送] {cmd_str.strip()}")
+
+    def _should_pre_stop_brake(self, v, v_right, is_zero_cmd):
+        if not self.pre_stop_brake_enabled or is_zero_cmd:
+            return False
+        if self.last_sent_zero:
+            return False
+        if v <= 0.0 or v > self.pre_stop_linear_threshold:
+            return False
+        if not (0.0 <= v_right <= self.pre_stop_right_threshold):
+            return False
+        now = rospy.Time.now()
+        return (now - self.last_pre_stop_brake_time).to_sec() >= self.pre_stop_brake_cooldown
 
     def cmd_timeout_cb(self, event):
         now = rospy.Time.now()
@@ -161,15 +182,7 @@ class SerialBridge:
                 if self.ser and self.ser.is_open:
                     if abs(v_left) < 1e-4 and abs(v_right) < 1e-4:
                         if self.stop_brake_enabled and brake_right:
-                            brake_packet = (
-                                f"l:0.000,r:{self.stop_brake_right_speed:.3f}\r\n"
-                            ).encode("utf-8")
-                            self._write_serial_bytes(brake_packet)
-                            rospy.loginfo(
-                                f"[bridge] 停车前右轮反向刹车: {brake_packet!r}, "
-                                f"duration={self.stop_brake_duration:.2f}s"
-                            )
-                            time.sleep(max(0.0, self.stop_brake_duration))
+                            self._send_right_brake("停车前右轮反向刹车")
 
                         stop_packets = [
                             b"l:0.000,r:0.000\r\n",
@@ -198,6 +211,19 @@ class SerialBridge:
         fd = self.ser.fileno()
         os.write(fd, data)
         termios.tcdrain(fd)
+
+    def _send_right_brake(self, reason):
+        if not (self.ser and self.ser.is_open):
+            return
+        brake_packet = (
+            f"l:0.000,r:{self.stop_brake_right_speed:.3f}\r\n"
+        ).encode("utf-8")
+        self._write_serial_bytes(brake_packet)
+        rospy.loginfo(
+            f"[bridge] {reason}: {brake_packet!r}, "
+            f"duration={self.stop_brake_duration:.2f}s"
+        )
+        time.sleep(max(0.0, self.stop_brake_duration))
 
     def _wheel_deadband_sign(self, speed, turn_preference):
         if speed > 0:
