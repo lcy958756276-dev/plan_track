@@ -18,6 +18,7 @@ class PreRotate:
         self.plan_retry_timeout = 3.0                    # 等待全局规划结果的最长时间
         self.stop_before_rotate = 1.0                    # 新 goal 后先停稳，再按路径方向旋转
         self.plan_goal_tolerance = 0.3                   # 防止 make_plan 返回上一条旧路径
+        self.make_plan_service = "/move_base/PathPlanner/make_plan"
 
         self.x = 0.0
         self.y = 0.0
@@ -55,8 +56,8 @@ class PreRotate:
 
         target_yaw = self._get_initial_path_yaw(msg)
         if target_yaw is None:
-            rospy.logwarn("pre_rotate: no valid global path heading, send goal without pre-rotation")
-            self.goal_pub.publish(msg)
+            rospy.logerr("pre_rotate: no valid global path heading, keep robot stopped")
+            self._stop_robot()
             return
 
         err = self._norm(target_yaw - self.yaw)
@@ -132,8 +133,8 @@ class PreRotate:
     def _make_plan(self, goal):
         try:
             if self.make_plan is None:
-                rospy.wait_for_service("/move_base/make_plan", timeout=1.0)
-                self.make_plan = rospy.ServiceProxy("/move_base/make_plan", GetPlan)
+                rospy.wait_for_service(self.make_plan_service, timeout=1.0)
+                self.make_plan = rospy.ServiceProxy(self.make_plan_service, GetPlan)
 
             start = PoseStamped()
             start.header.stamp = rospy.Time.now()
