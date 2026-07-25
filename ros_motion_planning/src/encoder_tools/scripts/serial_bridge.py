@@ -40,6 +40,9 @@ class SerialBridge:
         self.zero_repeat_period = rospy.get_param("~zero_repeat_period", 0.2)
         self.stop_burst_count = rospy.get_param("~stop_burst_count", 3)
         self.stop_burst_gap = rospy.get_param("~stop_burst_gap", 0.02)
+        self.stop_brake_enabled = rospy.get_param("~stop_brake_enabled", True)
+        self.stop_brake_right_speed = rospy.get_param("~stop_brake_right_speed", -0.01)
+        self.stop_brake_duration = rospy.get_param("~stop_brake_duration", 0.2)
 
         # ── 打开串口（只开一次） ──
         self.ser = serial.Serial(port=port, baudrate=baud, timeout=0.1)
@@ -122,8 +125,10 @@ class SerialBridge:
                     f"[bridge] 单轮死区补偿: l {original_left:.3f}->{v_left:.3f}, "
                     f"r {original_right:.3f}->{v_right:.3f}, 保留输入 v={v:.3f} ω={w:.3f}")
 
-        cmd_str = self._write_wheel_command(v_left, v_right)
-        self.last_sent_zero = abs(v) < 1e-4 and abs(w) < 1e-4
+        is_zero_cmd = abs(v) < 1e-4 and abs(w) < 1e-4
+        should_brake = is_zero_cmd and not self.last_sent_zero
+        cmd_str = self._write_wheel_command(v_left, v_right, brake_right=should_brake)
+        self.last_sent_zero = is_zero_cmd
         if self.last_sent_zero:
             self.last_zero_send_time = self.last_cmd_time
 
@@ -138,7 +143,9 @@ class SerialBridge:
         if self.last_sent_zero and (now - self.last_zero_send_time).to_sec() < self.zero_repeat_period:
             return
 
-        cmd_str = self._write_wheel_command(0.0, 0.0)
+        cmd_str = self._write_wheel_command(
+            0.0, 0.0, brake_right=not self.last_sent_zero
+        )
         self.last_sent_zero = True
         self.last_zero_send_time = now
         rospy.loginfo_throttle(
@@ -146,13 +153,24 @@ class SerialBridge:
             f"[bridge] cmd_vel 超时 {self.cmd_timeout:.2f}s，主动发送零速度  [串口发送] {cmd_str.strip()}",
         )
 
-    def _write_wheel_command(self, v_left, v_right):
+    def _write_wheel_command(self, v_left, v_right, brake_right=False):
         cmd_str = f"l:{v_left:.3f},r:{v_right:.3f}\r\n"
         cmd_bytes = cmd_str.encode("utf-8")
         try:
             with self.write_lock:
                 if self.ser and self.ser.is_open:
                     if abs(v_left) < 1e-4 and abs(v_right) < 1e-4:
+                        if self.stop_brake_enabled and brake_right:
+                            brake_packet = (
+                                f"l:0.000,r:{self.stop_brake_right_speed:.3f}\r\n"
+                            ).encode("utf-8")
+                            self._write_serial_bytes(brake_packet)
+                            rospy.loginfo(
+                                f"[bridge] 停车前右轮反向刹车: {brake_packet!r}, "
+                                f"duration={self.stop_brake_duration:.2f}s"
+                            )
+                            time.sleep(max(0.0, self.stop_brake_duration))
+
                         stop_packets = [
                             b"l:0.000,r:0.000\r\n",
                             b"l:0,r:0\r\n",
