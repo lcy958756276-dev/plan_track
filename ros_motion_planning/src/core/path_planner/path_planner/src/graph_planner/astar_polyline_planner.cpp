@@ -33,7 +33,11 @@ bool AStarPolylinePathPlanner::plan(const Point3d& start, const Point3d& goal,
   _assignSegmentHeadings(&polyline);
 
   Points3d dense_path;
-  const double sample_step = std::max(costmap_->getResolution(), 0.05);
+  const double polyline_length = _pathLength(polyline);
+  double sample_step = std::max(costmap_->getResolution(), 0.05);
+  if (base_path.size() > 1 && polyline_length > 1e-6) {
+    sample_step = polyline_length / (base_path.size() - 1);
+  }
   if (!PathPlanner::resample(polyline, &dense_path, sample_step)) {
     dense_path = polyline;
   }
@@ -69,6 +73,15 @@ Points3d AStarPolylinePathPlanner::_polylineShortcut(const Points3d& path) const
   }
 
   return result;
+}
+
+double AStarPolylinePathPlanner::_pathLength(const Points3d& path) const {
+  double length = 0.0;
+  for (size_t i = 1; i < path.size(); ++i) {
+    length += std::hypot(path[i].x() - path[i - 1].x(),
+                         path[i].y() - path[i - 1].y());
+  }
+  return length;
 }
 
 bool AStarPolylinePathPlanner::_lineFreeOfInflation(const Point3d& a,

@@ -31,6 +31,7 @@ private:
   bool _worldPointFree(double wx, double wy) const;
   common::geometry::Points3d _polylineShortcut(
       const common::geometry::Points3d& path) const;
+  double _pathLength(const common::geometry::Points3d& path) const;
   void _assignSegmentHeadings(common::geometry::Points3d* path) const;
 
 private:
