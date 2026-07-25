@@ -19,6 +19,7 @@ MCU 预期输出格式 (可配置):
 
 import re
 import threading
+import os
 import rospy
 import serial
 import termios
@@ -85,6 +86,7 @@ class SerialBridge:
         self.last_rtick = None
         self.delta_hist_ltick = []
         self.delta_hist_rtick = []
+        self.last_stop_warn_time = rospy.Time(0)
 
         rospy.loginfo("[bridge] serial_bridge 已启动 (读+写合并)")
         rospy.loginfo(f"[bridge] wheel_base={self.wheel_base:.4f}, wheel_radius={self.wheel_radius:.4f}")
@@ -143,12 +145,22 @@ class SerialBridge:
 
     def _write_wheel_command(self, v_left, v_right):
         cmd_str = f"l:{v_left:.3f},r:{v_right:.3f}\r\n"
+        cmd_bytes = cmd_str.encode("utf-8")
         try:
             with self.write_lock:
                 if self.ser and self.ser.is_open:
-                    self.ser.write(cmd_str.encode("utf-8"))
+                    fd = self.ser.fileno()
+                    os.write(fd, cmd_bytes)
+                    termios.tcdrain(fd)
+                    if abs(v_left) < 1e-4 and abs(v_right) < 1e-4:
+                        rospy.loginfo_throttle(
+                            1.0,
+                            f"[bridge] 零速度实际发送字节: {cmd_bytes!r}, len={len(cmd_bytes)}"
+                        )
         except serial.SerialException as e:
             rospy.logerr_throttle(3.0, f"[bridge] 串口写入失败: {e}")
+        except OSError as e:
+            rospy.logerr_throttle(3.0, f"[bridge] 串口底层写入失败: {e}")
         return cmd_str
 
     def _wheel_deadband_sign(self, speed, turn_preference):
@@ -242,6 +254,8 @@ class SerialBridge:
 
     def _publish_tick(self, ltick, rtick, raw_line):
         self.tick_count += 1
+        prev_ltick = self.last_ltick
+        prev_rtick = self.last_rtick
 
         # 斜率检查：过滤异常跳变
         if not self._check_sanity(ltick, rtick):
@@ -257,10 +271,21 @@ class SerialBridge:
         self.tick_pub.publish(msg)
         rospy.loginfo_throttle(1.0, f"[bridge] tick #{self.tick_count}: ltick={ltick}, rtick={rtick}")
 
+        if self.last_sent_zero:
+            now = rospy.Time.now()
+            if (now - self.last_cmd_time).to_sec() > 0.5 and (now - self.last_stop_warn_time).to_sec() > 1.0:
+                delta_l = 0 if prev_ltick is None else ltick - prev_ltick
+                delta_r = 0 if prev_rtick is None else rtick - prev_rtick
+                rospy.logwarn(
+                    f"[bridge] 已持续发送零速度，但编码器仍在变化: "
+                    f"Δl={delta_l}, Δr={delta_r}，"
+                    f"若右轮仍转，多半是底层右轮停机执行/驱动问题"
+                )
+                self.last_stop_warn_time = now
+
     def shutdown(self):
         if self.ser and self.ser.is_open:
-            with self.write_lock:
-                self.ser.write(b"l:0.000,r:0.000\r\n")
+            self._write_wheel_command(0.0, 0.0)
             self.ser.close()
         rospy.loginfo("[bridge] 串口已关闭")
 
