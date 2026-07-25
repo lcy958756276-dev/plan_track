@@ -15,10 +15,14 @@ class PreRotate:
         self.max_angular = 0.45                         # rad/s，慢一点更稳
         self.plan_heading_dist = 0.15                    # 沿全局路径取多远的点来决定初始朝向
         self.plan_retry_timeout = 3.0                    # 等待全局规划结果的最长时间
+        self.moving_linear_threshold = 0.01              # 行驶中收到新 goal 时直接重规划
+        self.moving_angular_threshold = 0.05
 
         self.x = 0.0
         self.y = 0.0
         self.yaw = 0.0
+        self.linear_vel = 0.0
+        self.angular_vel = 0.0
         self.rotating = False
         self.goal = None
         self.target_yaw = None
@@ -38,12 +42,24 @@ class PreRotate:
         self.y = msg.pose.pose.position.y
         q = msg.pose.pose.orientation
         _, _, self.yaw = euler_from_quaternion([q.x, q.y, q.z, q.w])
+        self.linear_vel = abs(msg.twist.twist.linear.x)
+        self.angular_vel = abs(msg.twist.twist.angular.z)
 
     def _timer_cb(self, event):
         if self.rotating and self.goal is not None:
             self._check_rotation()
 
     def goal_cb(self, msg):
+        if self._is_moving():
+            if self.rotating:
+                self.cmd_pub.publish(Twist())
+                self.rotating = False
+                self.goal = None
+                self.target_yaw = None
+            rospy.loginfo("pre_rotate: robot is moving, forward new goal directly")
+            self.goal_pub.publish(msg)
+            return
+
         if self.rotating:
             self.goal = msg
             self.target_yaw = self._get_initial_path_yaw(msg)
@@ -67,6 +83,12 @@ class PreRotate:
             )
         else:
             self.goal_pub.publish(msg)
+
+    def _is_moving(self):
+        return (
+            self.linear_vel > self.moving_linear_threshold
+            or self.angular_vel > self.moving_angular_threshold
+        )
 
     def _check_rotation(self):
         if self.target_yaw is None:
