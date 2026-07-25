@@ -1,19 +1,19 @@
-=== 启动时间: 2026年 07月 25日 星期六 20:14:02 CST ===
-[20:14:02] [1] main_generate.py start
-[20:14:03] [1] main_generate.py done
-[20:14:03] [2] use_encoder_odom flag set
-[20:14:03] [3] loading robot_description
-[20:14:03] [3] robot_description loaded
-[33m[WARN] [1784981644.104177254]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
-[20:14:06] [4] starting gzserver
-[20:14:13] [4] spawn_model start
-[INFO] [1784981654.234064]: Loading model XML from ros parameter robot_description
-[INFO] [1784981654.244995]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1784981654.251553]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1784981654.869156]: Spawn status: SpawnModel: Successfully spawned entity
-[20:14:15] [4] spawn_model exit=0
-[20:14:27] [8] generating move_base launch file
-[20:14:27] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 07月 25日 星期六 20:31:41 CST ===
+[20:31:41] [1] main_generate.py start
+[20:31:41] [1] main_generate.py done
+[20:31:41] [2] use_encoder_odom flag set
+[20:31:41] [3] loading robot_description
+[20:31:42] [3] robot_description loaded
+[33m[WARN] [1784982702.516058413]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[20:31:45] [4] starting gzserver
+[20:31:51] [4] spawn_model start
+[INFO] [1784982712.625328]: Loading model XML from ros parameter robot_description
+[INFO] [1784982712.636650]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1784982712.643068]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1784982713.248756]: Spawn status: SpawnModel: Successfully spawned entity
+[20:31:54] [4] spawn_model exit=0
+[20:32:06] [8] generating move_base launch file
+[20:32:06] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 apf_controller/APFController
@@ -44,14 +44,14 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1784981670.185035408]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1784981670.188312155]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1784982728.494990118]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1784982728.497458334]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260725 20:14:30.621915 37734 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
-I20260725 20:14:30.628127 37734 path_planner_factory.cpp:137] Using path planner: astar_polyline
-[33m[WARN] [1784981670.646132902]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-I20260725 20:14:30.770893 37734 apf_controller.cpp:77] APF controller initialized!
-[20:14:31] [8] move_base 启动后状态:
+I20260725 20:32:08.920461 48862 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
+I20260725 20:32:08.927814 48862 path_planner_factory.cpp:137] Using path planner: astar_polyline
+[33m[WARN] [1784982728.952533280]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260725 20:32:09.106313 48862 apf_controller.cpp:77] APF controller initialized!
+[20:32:09] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -112,125 +112,34 @@ I20260725 20:14:30.770893 37734 apf_controller.cpp:77] APF controller initialize
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-I20260725 20:14:35.815337 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(-3.63735, -2.09436)
-I20260725 20:14:35.825021 37734 astar_polyline_planner.cpp:46] AStarPolyline: base poses=74, polyline vertices=10, dense poses=74
-W20260725 20:14:35.825363 37734 path_planner_node.cpp:215] Path heading change 149.537 deg > 90 deg, accepting new plan for pre-rotation
-I20260725 20:14:35.827598 37734 path_planner_node.cpp:302] PathPlanner make_plan response: poses=74 end=(-3.63735, -2.09436) end_goal_dist=0
-I20260725 20:14:49.063201 37745 astar_polyline_planner.cpp:46] AStarPolyline: base poses=76, polyline vertices=10, dense poses=76
-I20260725 20:14:49.153769 37743 apf_controller.cpp:97] Got new plan
-I20260725 20:15:27.911966 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-3.40682, -1.84313) goal=(-0.501388, -2.2886)
-I20260725 20:15:27.918251 37734 astar_polyline_planner.cpp:46] AStarPolyline: base poses=59, polyline vertices=11, dense poses=59
-I20260725 20:15:27.919862 37734 path_planner_node.cpp:302] PathPlanner make_plan response: poses=59 end=(-0.501388, -2.2886) end_goal_dist=0
-I20260725 20:15:31.772054 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-3.48465, -2.01078) goal=(-1.65592, -2.66366)
-I20260725 20:15:31.773996 37734 astar_polyline_planner.cpp:46] AStarPolyline: base poses=37, polyline vertices=10, dense poses=37
-I20260725 20:15:31.775630 37734 path_planner_node.cpp:302] PathPlanner make_plan response: poses=37 end=(-1.65592, -2.66366) end_goal_dist=0
-I20260725 20:15:35.748960 37745 astar_polyline_planner.cpp:46] AStarPolyline: base poses=37, polyline vertices=4, dense poses=37
-I20260725 20:15:35.844501 37743 apf_controller.cpp:97] Got new plan
-I20260725 20:15:57.929677 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.55936, -3.13733) goal=(-1.24604, -2.11956)
-E20260725 20:15:57.929972 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:57.930042 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:58.039379 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.5508, -3.13553) goal=(-1.24604, -2.11956)
-E20260725 20:15:58.039690 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:58.039743 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:58.148012 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.54229, -3.13355) goal=(-1.24604, -2.11956)
-E20260725 20:15:58.148300 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:58.148346 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:58.256093 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.53378, -3.13138) goal=(-1.24604, -2.11956)
-E20260725 20:15:58.256384 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:58.256428 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:58.364114 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.53378, -3.13138) goal=(-1.24604, -2.11956)
-E20260725 20:15:58.364430 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:58.364475 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:58.471830 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.52537, -3.12903) goal=(-1.24604, -2.11956)
-E20260725 20:15:58.472147 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:58.472204 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:58.580057 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.51699, -3.12649) goal=(-1.24604, -2.11956)
-E20260725 20:15:58.580585 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:58.587622 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:58.695858 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.51699, -3.12649) goal=(-1.24604, -2.11956)
-E20260725 20:15:58.696421 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:58.696499 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:58.804016 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.50873, -3.12379) goal=(-1.24604, -2.11956)
-E20260725 20:15:58.804319 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:58.804370 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:58.911366 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.50049, -3.1209) goal=(-1.24604, -2.11956)
-E20260725 20:15:58.911725 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:58.911768 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:59.019018 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.50049, -3.1209) goal=(-1.24604, -2.11956)
-E20260725 20:15:59.019305 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:59.019352 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:59.126549 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.49233, -3.11783) goal=(-1.24604, -2.11956)
-E20260725 20:15:59.126850 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:59.126953 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:59.235002 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.4842, -3.11457) goal=(-1.24604, -2.11956)
-E20260725 20:15:59.235296 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:59.235345 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:59.343264 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.47611, -3.11111) goal=(-1.24604, -2.11956)
-E20260725 20:15:59.343591 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:59.343638 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:59.451007 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.46813, -3.1075) goal=(-1.24604, -2.11956)
-E20260725 20:15:59.451300 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:59.451346 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:59.559464 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.46813, -3.1075) goal=(-1.24604, -2.11956)
-E20260725 20:15:59.559769 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:59.559827 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:59.667610 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.46023, -3.10371) goal=(-1.24604, -2.11956)
-E20260725 20:15:59.667928 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:59.667975 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:59.776281 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.45243, -3.09976) goal=(-1.24604, -2.11956)
-E20260725 20:15:59.776566 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:59.776620 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:59.884516 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.45243, -3.09976) goal=(-1.24604, -2.11956)
-E20260725 20:15:59.884799 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:59.884847 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:15:59.992976 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.44472, -3.09563) goal=(-1.24604, -2.11956)
-E20260725 20:15:59.993249 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:15:59.993295 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:16:00.100677 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.43712, -3.09135) goal=(-1.24604, -2.11956)
-E20260725 20:16:00.100972 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:16:00.101029 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:16:00.208316 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.43712, -3.09135) goal=(-1.24604, -2.11956)
-E20260725 20:16:00.208587 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:16:00.208642 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:16:00.315631 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.42961, -3.0869) goal=(-1.24604, -2.11956)
-E20260725 20:16:00.315900 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:16:00.315945 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:16:00.425556 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.42216, -3.08227) goal=(-1.24604, -2.11956)
-E20260725 20:16:00.425828 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:16:00.425880 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:16:00.532749 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.41483, -3.07748) goal=(-1.24604, -2.11956)
-E20260725 20:16:00.533025 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:16:00.533069 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:16:00.640844 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.41483, -3.07748) goal=(-1.24604, -2.11956)
-E20260725 20:16:00.641119 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:16:00.641196 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:16:00.748529 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.4076, -3.07253) goal=(-1.24604, -2.11956)
-E20260725 20:16:00.748805 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:16:00.748852 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20260725 20:16:00.857048 37734 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.4005, -3.06744) goal=(-1.24604, -2.11956)
-E20260725 20:16:00.857338 37734 path_planner_node.cpp:277] Failed to get a path.
-W20260725 20:16:00.857395 37734 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-[0m[INFO] [1784981670.189546811]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1784981670.201130550]: Requesting the map...[0m
-[0m[INFO] [1784981670.404936080]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1784981670.504723423]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1784981670.511727436]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1784981670.518591921]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1784981670.551413535]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1784981670.559787091]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1784981670.649209254]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1784981670.655489069]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1784981670.692474772]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1784981670.767166695]: Created local_planner apf_controller/APFController[0m
-[0m[INFO] [1784981671.271718706]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1784981671.280645699]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1784981671.342822633]: odom received![0m
-... logging to /home/lcy/.ros/log/971c9a68-8819-11f1-913e-48b02df90897/roslaunch-ubuntu-37682.log
+I20260725 20:32:14.401046 48862 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(-3.60333, -1.93566)
+I20260725 20:32:14.411221 48862 astar_polyline_planner.cpp:46] AStarPolyline: base poses=73, polyline vertices=10, dense poses=73
+W20260725 20:32:14.411725 48862 path_planner_node.cpp:215] Path heading change 152.499 deg > 90 deg, accepting new plan for pre-rotation
+I20260725 20:32:14.413959 48862 path_planner_node.cpp:302] PathPlanner make_plan response: poses=73 end=(-3.60333, -1.93566) end_goal_dist=0
+I20260725 20:32:27.813769 48872 astar_polyline_planner.cpp:46] AStarPolyline: base poses=75, polyline vertices=7, dense poses=75
+I20260725 20:32:27.906600 48871 apf_controller.cpp:97] Got new plan
+I20260725 20:33:16.906543 48871 apf_controller.cpp:126] GOAL Reached!
+[0m[INFO] [1784982728.499175547]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1784982728.510611251]: Requesting the map...[0m
+[0m[INFO] [1784982728.714383892]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1784982728.814177818]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1784982728.819497208]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1784982728.824274979]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1784982728.851095359]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1784982728.858628459]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1784982728.954594057]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1784982728.959221774]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1784982728.992795771]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1784982729.102236795]: Created local_planner apf_controller/APFController[0m
+[0m[INFO] [1784982729.594655352]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1784982729.602602228]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1784982729.655077668]: odom received![0m
+... logging to /home/lcy/.ros/log/971c9a68-8819-11f1-913e-48b02df90897/roslaunch-ubuntu-48809.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:33407/[0m
+[1mstarted roslaunch server http://ubuntu:45403/[0m
 
 SUMMARY
 ========
@@ -319,7 +228,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [37734][0m
+[1mprocess[move_base-1]: started with pid [48862][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
