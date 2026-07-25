@@ -235,9 +235,9 @@ cat > "$MB_LAUNCH" << MBEOF
 
     <!-- 全局规划器 -->
     <param name="base_global_planner" value="path_planner/PathPlanner"/>
-    <param name="PathPlanner/planner_name" value="astar_prove"/>
+    <param name="PathPlanner/planner_name" value="astar_polyline"/>
 
-    <!-- 局部规划器（MPC = 模型预测控制，跟踪路径） -->
+    <!-- 局部规划器 -->
     <param name="base_local_planner" value="apf_controller/APFController"/>
 
     <!-- 禁用恢复行为（实物车速度低，不会大幅偏离路径） -->
@@ -280,8 +280,8 @@ roslaunch "$MB_LAUNCH" \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_MB=$!
 echo "  move_base PID=$PID_MB (roslaunch)"
-echo "  全局规划器: A* Polyline (折线化全局路径)"
-echo "  局部规划器: MPC (模型预测控制，跟踪全局路径)"
+echo "  全局规划器: A* Polyline (折线化后补密)"
+echo "  局部规划器: APF"
 echo "  RViz 中点击 2D Nav Goal → 全局路径将显示在地图上"
 
 sleep 3

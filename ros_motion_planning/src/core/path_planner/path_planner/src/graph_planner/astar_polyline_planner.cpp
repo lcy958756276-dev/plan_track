@@ -31,10 +31,17 @@ bool AStarPolylinePathPlanner::plan(const Point3d& start, const Point3d& goal,
 
   Points3d polyline = _polylineShortcut(base_path);
   _assignSegmentHeadings(&polyline);
-  *path = polyline;
+
+  Points3d dense_path;
+  const double sample_step = std::max(costmap_->getResolution(), 0.05);
+  if (!PathPlanner::resample(polyline, &dense_path, sample_step)) {
+    dense_path = polyline;
+  }
+  *path = dense_path;
 
   R_INFO << "AStarPolyline: base poses=" << base_path.size()
-         << ", polyline poses=" << path->size();
+         << ", polyline vertices=" << polyline.size()
+         << ", dense poses=" << path->size();
   return !path->empty();
 }
 
