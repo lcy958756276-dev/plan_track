@@ -1,19 +1,19 @@
-=== 启动时间: 2026年 07月 25日 星期六 20:31:41 CST ===
-[20:31:41] [1] main_generate.py start
-[20:31:41] [1] main_generate.py done
-[20:31:41] [2] use_encoder_odom flag set
-[20:31:41] [3] loading robot_description
-[20:31:42] [3] robot_description loaded
-[33m[WARN] [1784982702.516058413]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
-[20:31:45] [4] starting gzserver
-[20:31:51] [4] spawn_model start
-[INFO] [1784982712.625328]: Loading model XML from ros parameter robot_description
-[INFO] [1784982712.636650]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1784982712.643068]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1784982713.248756]: Spawn status: SpawnModel: Successfully spawned entity
-[20:31:54] [4] spawn_model exit=0
-[20:32:06] [8] generating move_base launch file
-[20:32:06] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 07月 25日 星期六 21:15:57 CST ===
+[21:15:57] [1] main_generate.py start
+[21:15:57] [1] main_generate.py done
+[21:15:57] [2] use_encoder_odom flag set
+[21:15:57] [3] loading robot_description
+[21:15:58] [3] robot_description loaded
+[33m[WARN] [1784985358.512694901]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[21:16:01] [4] starting gzserver
+[21:16:07] [4] spawn_model start
+[INFO] [1784985368.588272]: Loading model XML from ros parameter robot_description
+[INFO] [1784985368.595191]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1784985368.599648]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1784985369.043185]: Spawn status: SpawnModel: Successfully spawned entity
+[21:16:09] [4] spawn_model exit=0
+[21:16:21] [8] generating move_base launch file
+[21:16:21] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 apf_controller/APFController
@@ -44,14 +44,14 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1784982728.494990118]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1784982728.497458334]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1784985384.502058100]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1784985384.505611210]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260725 20:32:08.920461 48862 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
-I20260725 20:32:08.927814 48862 path_planner_factory.cpp:137] Using path planner: astar_polyline
-[33m[WARN] [1784982728.952533280]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-I20260725 20:32:09.106313 48862 apf_controller.cpp:77] APF controller initialized!
-[20:32:09] [8] move_base 启动后状态:
+I20260725 21:16:24.953691 56686 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
+I20260725 21:16:24.959131 56686 path_planner_factory.cpp:137] Using path planner: astar_polyline
+[33m[WARN] [1784985384.975923351]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260725 21:16:25.102048 56686 apf_controller.cpp:83] APF controller initialized!
+[21:16:25] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -112,34 +112,52 @@ I20260725 20:32:09.106313 48862 apf_controller.cpp:77] APF controller initialize
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-I20260725 20:32:14.401046 48862 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(-3.60333, -1.93566)
-I20260725 20:32:14.411221 48862 astar_polyline_planner.cpp:46] AStarPolyline: base poses=73, polyline vertices=10, dense poses=73
-W20260725 20:32:14.411725 48862 path_planner_node.cpp:215] Path heading change 152.499 deg > 90 deg, accepting new plan for pre-rotation
-I20260725 20:32:14.413959 48862 path_planner_node.cpp:302] PathPlanner make_plan response: poses=73 end=(-3.60333, -1.93566) end_goal_dist=0
-I20260725 20:32:27.813769 48872 astar_polyline_planner.cpp:46] AStarPolyline: base poses=75, polyline vertices=7, dense poses=75
-I20260725 20:32:27.906600 48871 apf_controller.cpp:97] Got new plan
-I20260725 20:33:16.906543 48871 apf_controller.cpp:126] GOAL Reached!
-[0m[INFO] [1784982728.499175547]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1784982728.510611251]: Requesting the map...[0m
-[0m[INFO] [1784982728.714383892]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1784982728.814177818]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1784982728.819497208]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1784982728.824274979]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1784982728.851095359]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1784982728.858628459]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1784982728.954594057]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1784982728.959221774]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1784982728.992795771]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1784982729.102236795]: Created local_planner apf_controller/APFController[0m
-[0m[INFO] [1784982729.594655352]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1784982729.602602228]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1784982729.655077668]: odom received![0m
-... logging to /home/lcy/.ros/log/971c9a68-8819-11f1-913e-48b02df90897/roslaunch-ubuntu-48809.log
+I20260725 21:16:29.148556 56686 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(-3.50346, -1.94092)
+I20260725 21:16:29.157644 56686 astar_polyline_planner.cpp:46] AStarPolyline: base poses=71, polyline vertices=12, dense poses=71
+W20260725 21:16:29.157934 56686 path_planner_node.cpp:215] Path heading change 152.514 deg > 90 deg, accepting new plan for pre-rotation
+I20260725 21:16:29.160523 56686 path_planner_node.cpp:302] PathPlanner make_plan response: poses=71 end=(-3.50346, -1.94092) end_goal_dist=0
+I20260725 21:16:42.513857 56711 astar_polyline_planner.cpp:46] AStarPolyline: base poses=73, polyline vertices=7, dense poses=73
+I20260725 21:16:42.605731 56702 apf_controller.cpp:103] Got new plan
+I20260725 21:17:12.405921 56702 apf_controller.cpp:207] APF approach speed limit: goal_dist=0.894898 m, desired_v=0.395919 m/s, vt=0.0611695 m/s
+I20260725 21:17:13.405829 56702 apf_controller.cpp:207] APF approach speed limit: goal_dist=0.830717 m, desired_v=0.344573 m/s, vt=0.0717189 m/s
+I20260725 21:17:14.405815 56702 apf_controller.cpp:207] APF approach speed limit: goal_dist=0.748202 m, desired_v=0.278561 m/s, vt=0.0766544 m/s
+I20260725 21:17:15.405804 56702 apf_controller.cpp:207] APF approach speed limit: goal_dist=0.661037 m, desired_v=0.20883 m/s, vt=0.0965537 m/s
+I20260725 21:17:16.405829 56702 apf_controller.cpp:207] APF approach speed limit: goal_dist=0.578444 m, desired_v=0.142755 m/s, vt=0.0901735 m/s
+I20260725 21:17:18.246428 56686 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-3.20963, -1.63254) goal=(-1.59762, -2.70107)
+I20260725 21:17:18.248970 56686 astar_polyline_planner.cpp:46] AStarPolyline: base poses=45, polyline vertices=15, dense poses=45
+W20260725 21:17:18.249120 56686 path_planner_node.cpp:215] Path heading change 108.254 deg > 90 deg, accepting new plan for pre-rotation
+I20260725 21:17:18.250730 56686 path_planner_node.cpp:302] PathPlanner make_plan response: poses=45 end=(-1.59762, -2.70107) end_goal_dist=0
+I20260725 21:17:20.905190 56711 astar_polyline_planner.cpp:46] AStarPolyline: base poses=42, polyline vertices=12, dense poses=42
+I20260725 21:17:21.003566 56702 apf_controller.cpp:103] Got new plan
+I20260725 21:17:36.503705 56702 apf_controller.cpp:207] APF approach speed limit: goal_dist=0.888775 m, desired_v=0.39102 m/s, vt=0.104808 m/s
+I20260725 21:17:37.503783 56702 apf_controller.cpp:207] APF approach speed limit: goal_dist=0.808193 m, desired_v=0.326554 m/s, vt=0.0593351 m/s
+I20260725 21:17:38.503762 56702 apf_controller.cpp:207] APF approach speed limit: goal_dist=0.737093 m, desired_v=0.269674 m/s, vt=0.0878622 m/s
+I20260725 21:17:39.503731 56702 apf_controller.cpp:207] APF approach speed limit: goal_dist=0.675058 m, desired_v=0.220046 m/s, vt=0.0867924 m/s
+I20260725 21:17:40.503742 56702 apf_controller.cpp:207] APF approach speed limit: goal_dist=0.584975 m, desired_v=0.14798 m/s, vt=0.0902315 m/s
+I20260725 21:17:41.503770 56702 apf_controller.cpp:207] APF approach speed limit: goal_dist=0.493821 m, desired_v=0.0750567 m/s, vt=0.0887351 m/s
+I20260725 21:17:42.503747 56702 apf_controller.cpp:207] APF approach speed limit: goal_dist=0.413545 m, desired_v=0.04 m/s, vt=0.0908807 m/s
+I20260725 21:17:42.703581 56702 apf_controller.cpp:132] GOAL Reached!
+[0m[INFO] [1784985384.507138684]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1784985384.523713666]: Requesting the map...[0m
+[0m[INFO] [1784985384.728737393]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1784985384.828518878]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1784985384.835138554]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1784985384.841756693]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1784985384.869140353]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1784985384.876416947]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1784985384.979069055]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1784985384.987070056]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1784985385.023747369]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1784985385.098493752]: Created local_planner apf_controller/APFController[0m
+[0m[INFO] [1784985385.599131574]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1784985385.608868505]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1784985385.669940706]: odom received![0m
+... logging to /home/lcy/.ros/log/971c9a68-8819-11f1-913e-48b02df90897/roslaunch-ubuntu-56634.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:45403/[0m
+[1mstarted roslaunch server http://ubuntu:38611/[0m
 
 SUMMARY
 ========
@@ -228,7 +246,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [48862][0m
+[1mprocess[move_base-1]: started with pid [56686][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
