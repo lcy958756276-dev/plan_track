@@ -1,19 +1,19 @@
-=== 启动时间: 2026年 07月 25日 星期六 22:29:29 CST ===
-[22:29:29] [1] main_generate.py start
-[22:29:30] [1] main_generate.py done
-[22:29:30] [2] use_encoder_odom flag set
-[22:29:30] [3] loading robot_description
-[22:29:30] [3] robot_description loaded
-[33m[WARN] [1784989771.016039288]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
-[22:29:33] [4] starting gzserver
-[22:29:40] [4] spawn_model start
-[INFO] [1784989781.198428]: Loading model XML from ros parameter robot_description
-[INFO] [1784989781.206744]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1784989781.216803]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1784989781.779067]: Spawn status: SpawnModel: Successfully spawned entity
-[22:29:42] [4] spawn_model exit=0
-[22:29:54] [8] generating move_base launch file
-[22:29:54] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 07月 25日 星期六 22:33:30 CST ===
+[22:33:30] [1] main_generate.py start
+[22:33:31] [1] main_generate.py done
+[22:33:31] [2] use_encoder_odom flag set
+[22:33:31] [3] loading robot_description
+[22:33:31] [3] robot_description loaded
+[33m[WARN] [1784990012.143802913]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[22:33:34] [4] starting gzserver
+[22:33:41] [4] spawn_model start
+[INFO] [1784990022.248863]: Loading model XML from ros parameter robot_description
+[INFO] [1784990022.256737]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1784990022.261654]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1784990022.888826]: Spawn status: SpawnModel: Successfully spawned entity
+[22:33:43] [4] spawn_model exit=0
+[22:33:55] [8] generating move_base launch file
+[22:33:55] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 apf_controller/APFController
@@ -44,14 +44,14 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1784989797.147587044]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1784989797.151034096]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1784990038.209447976]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1784990038.211741936]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260725 22:29:57.637650 79243 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
-I20260725 22:29:57.646102 79243 path_planner_factory.cpp:137] Using path planner: astar_polyline
-[33m[WARN] [1784989797.667817828]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-I20260725 22:29:57.811344 79243 apf_controller.cpp:86] APF controller initialized!
-[22:29:58] [8] move_base 启动后状态:
+I20260725 22:33:58.624498 81525 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
+I20260725 22:33:58.629583 81525 path_planner_factory.cpp:137] Using path planner: astar_polyline
+[33m[WARN] [1784990038.666996222]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260725 22:33:58.777474 81525 apf_controller.cpp:86] APF controller initialized!
+[22:33:59] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -112,133 +112,15 @@ I20260725 22:29:57.811344 79243 apf_controller.cpp:86] APF controller initialize
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-I20260725 22:30:00.734527 79243 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(-3.3702, -1.82313)
-I20260725 22:30:00.743450 79243 astar_polyline_planner.cpp:46] AStarPolyline: base poses=69, polyline vertices=10, dense poses=69
-W20260725 22:30:00.743717 79243 path_planner_node.cpp:215] Path heading change 147.327 deg > 90 deg, accepting new plan for pre-rotation
-I20260725 22:30:00.746204 79243 path_planner_node.cpp:302] PathPlanner make_plan response: poses=69 end=(-3.3702, -1.82313) end_goal_dist=0
-I20260725 22:30:13.961134 79254 astar_polyline_planner.cpp:46] AStarPolyline: base poses=71, polyline vertices=9, dense poses=71
-I20260725 22:30:14.053191 79253 apf_controller.cpp:106] Got new plan
-I20260725 22:30:41.853340 79253 apf_controller.cpp:213] APF approach speed limit: goal_dist=0.890666 m, desired_v=0.3916 m/s, angular_limit=1.4685 rad/s, vt=0.114824 m/s, wt=0.000415519 rad/s
-I20260725 22:30:42.853310 79253 apf_controller.cpp:213] APF approach speed limit: goal_dist=0.811381 m, desired_v=0.320243 m/s, angular_limit=1.20091 rad/s, vt=0.0613188 m/s, wt=0.147619 rad/s
-I20260725 22:30:43.853289 79253 apf_controller.cpp:213] APF approach speed limit: goal_dist=0.745293 m, desired_v=0.260764 m/s, angular_limit=0.977864 rad/s, vt=0.0971399 m/s, wt=0.0491551 rad/s
-I20260725 22:30:44.853303 79253 apf_controller.cpp:213] APF approach speed limit: goal_dist=0.680293 m, desired_v=0.202263 m/s, angular_limit=0.758487 rad/s, vt=0.07637 m/s, wt=0.0975824 rad/s
-I20260725 22:30:45.853291 79253 apf_controller.cpp:213] APF approach speed limit: goal_dist=0.6102 m, desired_v=0.13918 m/s, angular_limit=0.521924 rad/s, vt=0.0581491 m/s, wt=0.145373 rad/s
-I20260725 22:30:46.853359 79253 apf_controller.cpp:213] APF approach speed limit: goal_dist=0.5271 m, desired_v=0.0643899 m/s, angular_limit=0.241462 rad/s, vt=0.0810327 m/s, wt=0.0845351 rad/s
-I20260725 22:30:47.853291 79253 apf_controller.cpp:213] APF approach speed limit: goal_dist=0.443272 m, desired_v=0.04 m/s, angular_limit=0.15 rad/s, vt=0.077616 m/s, wt=0.0936211 rad/s
-I20260725 22:30:48.853281 79253 apf_controller.cpp:213] APF approach speed limit: goal_dist=0.370394 m, desired_v=0.04 m/s, angular_limit=0.15 rad/s, vt=0.0858082 m/s, wt=0.0719058 rad/s
-I20260725 22:30:49.853298 79253 apf_controller.cpp:213] APF approach speed limit: goal_dist=0.278829 m, desired_v=0.04 m/s, angular_limit=0.15 rad/s, vt=0.0858377 m/s, wt=0.0684568 rad/s
-I20260725 22:30:50.853109 79253 apf_controller.cpp:135] GOAL Reached!
-[0m[INFO] [1784989797.152293560]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1784989797.166312177]: Requesting the map...[0m
-[0m[INFO] [1784989797.370825466]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1784989797.470628706]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1784989797.478717216]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1784989797.492057348]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1784989797.530340026]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1784989797.539530716]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1784989797.671059626]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1784989797.677434259]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1784989797.749266857]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1784989797.808794300]: Created local_planner apf_controller/APFController[0m
-[0m[INFO] [1784989798.301092588]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1784989798.309717979]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1784989798.359657600]: odom received![0m
-... logging to /home/lcy/.ros/log/971c9a68-8819-11f1-913e-48b02df90897/roslaunch-ubuntu-79220.log
-Checking log directory for disk usage. This may take a while.
-Press Ctrl-C to interrupt
-Done checking log file disk usage. Usage is <1GB.
-]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:37001/[0m
-
-SUMMARY
-========
-
-PARAMETERS
- * /move_base/PathPlanner/planner_name: astar_polyline
- * /move_base/base_global_planner: path_planner/Path...
- * /move_base/base_local_planner: apf_controller/AP...
- * /move_base/conservative_reset_dist: 3.0
- * /move_base/controller_frequency: 10.0
- * /move_base/controller_patience: 15.0
- * /move_base/global_costmap/cost_scaling_factor: 2.0
- * /move_base/global_costmap/footprint: [[-0.1, -0.3], [-...
- * /move_base/global_costmap/footprint_padding: 0.1
- * /move_base/global_costmap/global_frame: map
- * /move_base/global_costmap/inflation_layer/cost_scaling_factor: 2.0
- * /move_base/global_costmap/inflation_layer/enabled: True
- * /move_base/global_costmap/inflation_layer/inflation_radius: 0.2
- * /move_base/global_costmap/inflation_radius: 0.3
- * /move_base/global_costmap/map_type: costmap
- * /move_base/global_costmap/meter_scoring: True
- * /move_base/global_costmap/obstacle_layer/observation_sources: scan
- * /move_base/global_costmap/obstacle_layer/scan/clearing: True
- * /move_base/global_costmap/obstacle_layer/scan/data_type: LaserScan
- * /move_base/global_costmap/obstacle_layer/scan/expected_update_rate: 0.0
- * /move_base/global_costmap/obstacle_layer/scan/inf_is_valid: True
- * /move_base/global_costmap/obstacle_layer/scan/marking: True
- * /move_base/global_costmap/obstacle_layer/scan/max_obstacle_height: 0.8
- * /move_base/global_costmap/obstacle_layer/scan/min_obstacle_height: 0.0
- * /move_base/global_costmap/obstacle_layer/scan/observation_persistence: 0.0
- * /move_base/global_costmap/obstacle_layer/scan/obstacle_range: 2.0
- * /move_base/global_costmap/obstacle_layer/scan/raytrace_range: 12.0
- * /move_base/global_costmap/obstacle_layer/scan/sensor_frame: base_scan
- * /move_base/global_costmap/obstacle_layer/scan/topic: /scan_fixed
- * /move_base/global_costmap/origin_z: 0.0
- * /move_base/global_costmap/plugins: [{'name': 'static...
- * /move_base/global_costmap/publish_frequency: 1.0
- * /move_base/global_costmap/publish_voxel_map: False
- * /move_base/global_costmap/robot_base_frame: base_footprint
- * /move_base/global_costmap/static_map/clear_time: 20
- * /move_base/global_costmap/static_map/enabled: True
- * /move_base/global_costmap/static_map/publish_static_map: True
- * /move_base/global_costmap/transform_tolerance: 0.5
- * /move_base/global_costmap/update_frequency: 2.0
- * /move_base/global_costmap/z_resolution: 1
- * /move_base/global_costmap/z_voxels: 2
- * /move_base/local_costmap/global_frame: odom
- * /move_base/local_costmap/height: 3
- * /move_base/local_costmap/inflation_layer/cost_scaling_factor: 10.0
- * /move_base/local_costmap/inflation_layer/enabled: True
- * /move_base/local_costmap/inflation_layer/inflation_radius: 0.2
- * /move_base/local_costmap/obstacle_layer/observation_sources: scan
- * /move_base/local_costmap/obstacle_layer/scan/clearing: True
- * /move_base/local_costmap/obstacle_layer/scan/data_type: LaserScan
- * /move_base/local_costmap/obstacle_layer/scan/expected_update_rate: 0.0
- * /move_base/local_costmap/obstacle_layer/scan/inf_is_valid: True
- * /move_base/local_costmap/obstacle_layer/scan/marking: True
- * /move_base/local_costmap/obstacle_layer/scan/max_obstacle_height: 0.8
- * /move_base/local_costmap/obstacle_layer/scan/min_obstacle_height: 0.0
- * /move_base/local_costmap/obstacle_layer/scan/observation_persistence: 0.0
- * /move_base/local_costmap/obstacle_layer/scan/obstacle_range: 2.0
- * /move_base/local_costmap/obstacle_layer/scan/raytrace_range: 3.0
- * /move_base/local_costmap/obstacle_layer/scan/sensor_frame: base_scan
- * /move_base/local_costmap/obstacle_layer/scan/topic: /scan_fixed
- * /move_base/local_costmap/plugins: [{'name': 'obstac...
- * /move_base/local_costmap/publish_frequency: 1.0
- * /move_base/local_costmap/resolution: 0.05
- * /move_base/local_costmap/robot_base_frame: base_footprint
- * /move_base/local_costmap/rolling_window: True
- * /move_base/local_costmap/static_map: False
- * /move_base/local_costmap/transform_tolerance: 0.5
- * /move_base/local_costmap/update_frequency: 2.0
- * /move_base/local_costmap/width: 3
- * /move_base/oscillation_distance: 0.2
- * /move_base/oscillation_timeout: 10.0
- * /move_base/planner_frequency: 0.0
- * /move_base/planner_patience: 5.0
- * /move_base/recovery_behavior_enabled: False
- * /move_base/shutdown_costmaps: False
- * /rosdistro: noetic
- * /rosversion: 1.17.0
-
-NODES
-  /
-    move_base (move_base/move_base)
-
-[1mROS_MASTER_URI=http://localhost:11311[0m
-]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [79243][0m
-[move_base-1] killing on exit
-shutting down processing monitor...
-... shutting down processing monitor complete
-[1mdone[0m
+I20260725 22:34:07.215623 81525 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(-3.12696, -1.35499)
+I20260725 22:34:07.221225 81525 astar_polyline_planner.cpp:46] AStarPolyline: base poses=63, polyline vertices=5, dense poses=63
+W20260725 22:34:07.221503 81525 path_planner_node.cpp:215] Path heading change 153.855 deg > 90 deg, accepting new plan for pre-rotation
+I20260725 22:34:07.223943 81525 path_planner_node.cpp:302] PathPlanner make_plan response: poses=63 end=(-3.12696, -1.35499) end_goal_dist=0
+I20260725 22:34:20.999189 81546 astar_polyline_planner.cpp:46] AStarPolyline: base poses=65, polyline vertices=5, dense poses=65
+I20260725 22:34:21.095453 81545 apf_controller.cpp:106] Got new plan
+I20260725 22:34:47.312150 81545 apf_controller.cpp:213] APF approach speed limit: goal_dist=0.884911 m, desired_v=0.193964 m/s, angular_limit=1.44907 rad/s, vt=0.114355 m/s, wt=0.00705251 rad/s
+I20260725 22:34:48.315160 81545 apf_controller.cpp:213] APF approach speed limit: goal_dist=0.769399 m, desired_v=0.147759 m/s, angular_limit=1.05922 rad/s, vt=0.10763 m/s, wt=0.0131961 rad/s
+I20260725 22:34:49.314937 81545 apf_controller.cpp:213] APF approach speed limit: goal_dist=0.670579 m, desired_v=0.108231 m/s, angular_limit=0.725702 rad/s, vt=0.10897 m/s, wt=0.0151524 rad/s
+I20260725 22:34:50.315800 81545 apf_controller.cpp:213] APF approach speed limit: goal_dist=0.556447 m, desired_v=0.062579 m/s, angular_limit=0.34051 rad/s, vt=0.112098 m/s, wt=0.01554 rad/s
+I20260725 22:34:51.319185 81545 apf_controller.cpp:213] APF approach speed limit: goal_dist=0.44327 m, desired_v=0.04 m/s, angular_limit=0.15 rad/s, vt=0.111929 m/s, wt=0.0258926 rad/s
+I20260725 22:34:51.895373 81545 apf_controller.cpp:135] GOAL Reached!
