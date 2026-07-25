@@ -44,7 +44,11 @@ static constexpr int kGoalStopConfirmCycles = 5;
  * @brief Construct a new APFController object
  */
 APFController::APFController()
-  : initialized_(false), goal_reached_(false), tf_(nullptr), goal_stop_count_(0) {
+  : initialized_(false),
+    goal_reached_(false),
+    tf_(nullptr),
+    goal_stop_count_(0),
+    goal_stop_latched_(false) {
 }
 
 /**
@@ -118,6 +122,7 @@ bool APFController::setPlan(
     goal_theta_ = getYawAngle(global_plan_.back());
     goal_reached_ = false;
     goal_stop_count_ = 0;
+    goal_stop_latched_ = false;
   }
 
   return true;
@@ -219,7 +224,8 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
   double e_theta = normalizeAngle(theta_d - theta);
 
   // position reached
-  if (shouldRotateToGoal(robot_pose_map, global_plan_.back())) {
+  if (goal_stop_latched_ || shouldRotateToGoal(robot_pose_map, global_plan_.back())) {
+    goal_stop_latched_ = true;
     cmd_vel.linear.x = 0.0;
     cmd_vel.angular.z = 0.0;
 
