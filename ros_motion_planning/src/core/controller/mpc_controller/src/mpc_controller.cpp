@@ -204,8 +204,9 @@ bool MPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
       _distanceToPlan(robot_pose_map, prune_plan, &path_heading,
                       &signed_cross_track_error);
   double path_heading_error = normalizeAngle(path_heading - theta);
-  const double cross_track_heading_error =
-      -std::atan2(2.8 * signed_cross_track_error, std::max(std::fabs(vt), 0.04));
+  const double cross_track_heading_error = clamp(
+      -std::atan2(0.6 * signed_cross_track_error, std::max(std::fabs(vt), 0.12)),
+      -0.45, 0.45);
   const double tracking_heading_error =
       normalizeAngle(path_heading_error + cross_track_heading_error);
   const double target_heading =
@@ -249,7 +250,7 @@ bool MPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
     if (path_dist > 0.12) {
       if (path_dist > 0.20 || std::fabs(target_heading_error) > 0.55) {
         const double recovery_heading_error =
-            normalizeAngle(target_heading_error + cross_track_heading_error);
+            normalizeAngle(target_heading_error + 0.5 * cross_track_heading_error);
         u_v = 0.0;
         u_w = angularRegularization(wt, recovery_heading_error / control_dt_);
         reset_control_error = true;
@@ -257,18 +258,22 @@ bool MPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
                << " m, signed_cte=" << signed_cross_track_error
                << " m, target_heading_error="
                << target_heading_error * 180.0 / M_PI
+               << " deg, cte_heading_error="
+               << cross_track_heading_error * 180.0 / M_PI
                << " deg, recovery_heading_error="
                << recovery_heading_error * 180.0 / M_PI
                << " deg, rotate in place to recover";
       } else {
         const double slow_ratio = clamp((0.24 - path_dist) / 0.12, 0.35, 1.0);
-        const double corrective_w = 2.2 * tracking_heading_error;
+        const double corrective_w = 0.8 * tracking_heading_error;
         u_v *= slow_ratio;
         u_w = angularRegularization(wt, u_w + corrective_w);
         R_WARN << "MPC path correction: dist=" << path_dist
                << " m, signed_cte=" << signed_cross_track_error
                << " m, slow_ratio=" << slow_ratio
                << ", heading_error=" << path_heading_error * 180.0 / M_PI
+               << " deg, cte_heading_error="
+               << cross_track_heading_error * 180.0 / M_PI
                << " deg, tracking_heading_error="
                << tracking_heading_error * 180.0 / M_PI << " deg";
       }
