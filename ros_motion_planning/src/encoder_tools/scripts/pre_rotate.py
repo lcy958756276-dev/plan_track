@@ -14,6 +14,7 @@ class PreRotate:
         self.alignment_tol = math.radians(3.0)
         self.max_angular = 0.45                         # rad/s，慢一点更稳
         self.plan_heading_dist = 0.15                    # 沿全局路径取多远的点来决定初始朝向
+        self.plan_retry_timeout = 3.0                    # 等待全局规划结果的最长时间
 
         self.x = 0.0
         self.y = 0.0
@@ -50,6 +51,7 @@ class PreRotate:
 
         target_yaw = self._get_initial_path_yaw(msg)
         if target_yaw is None:
+            rospy.logwarn("pre_rotate: no valid global path heading, send goal without pre-rotation")
             self.goal_pub.publish(msg)
             return
 
@@ -89,22 +91,23 @@ class PreRotate:
 
     def _get_initial_path_yaw(self, goal):
         """先请求一次全局路径，用路径开头方向作为预旋转方向。"""
-        path = self._make_plan(goal)
-        if path and path.poses:
-            yaw = self._yaw_from_plan(path)
-            if yaw is not None:
-                rospy.loginfo("pre_rotate: use global path heading %.1fdeg", yaw * 180 / math.pi)
-                return yaw
+        deadline = rospy.Time.now().to_sec() + self.plan_retry_timeout
+        while not rospy.is_shutdown() and rospy.Time.now().to_sec() < deadline:
+            path = self._make_plan(goal)
+            if path and path.poses:
+                yaw = self._yaw_from_plan(path)
+                if yaw is not None:
+                    rospy.loginfo("pre_rotate: use global path heading %.1fdeg", yaw * 180 / math.pi)
+                    return yaw
+            rospy.sleep(0.1)
 
-        yaw = self._yaw_to_goal(goal)
-        if yaw is not None:
-            rospy.logwarn("pre_rotate: make_plan unavailable, fallback to goal heading")
-        return yaw
+        rospy.logwarn("pre_rotate: make_plan did not provide a usable path heading")
+        return None
 
     def _make_plan(self, goal):
         try:
             if self.make_plan is None:
-                rospy.wait_for_service("/move_base/make_plan", timeout=0.5)
+                rospy.wait_for_service("/move_base/make_plan", timeout=1.0)
                 self.make_plan = rospy.ServiceProxy("/move_base/make_plan", GetPlan)
 
             start = PoseStamped()
@@ -129,28 +132,31 @@ class PreRotate:
         return None
 
     def _yaw_from_plan(self, path):
-        for pose in path.poses:
-            dx = pose.pose.position.x - self.x
-            dy = pose.pose.position.y - self.y
-            if math.hypot(dx, dy) >= self.plan_heading_dist:
-                return math.atan2(dy, dx)
+        if len(path.poses) < 2:
+            return None
 
-        if len(path.poses) >= 2:
-            p0 = path.poses[0].pose.position
-            for pose in path.poses[1:]:
-                p1 = pose.pose.position
-                dx = p1.x - p0.x
-                dy = p1.y - p0.y
+        start = path.poses[0].pose.position
+        last = start
+        traveled = 0.0
+
+        for pose in path.poses[1:]:
+            current = pose.pose.position
+            step = math.hypot(current.x - last.x, current.y - last.y)
+            traveled += step
+            if traveled >= self.plan_heading_dist:
+                dx = current.x - start.x
+                dy = current.y - start.y
                 if math.hypot(dx, dy) > 1e-3:
                     return math.atan2(dy, dx)
-        return None
+            last = current
 
-    def _yaw_to_goal(self, goal):
-        dx = goal.pose.position.x - self.x
-        dy = goal.pose.position.y - self.y
-        if math.hypot(dx, dy) < 1e-6:
-            return None
-        return math.atan2(dy, dx)
+        for pose in path.poses[1:]:
+            current = pose.pose.position
+            dx = current.x - start.x
+            dy = current.y - start.y
+            if math.hypot(dx, dy) > 1e-3:
+                return math.atan2(dy, dx)
+        return None
 
     @staticmethod
     def _norm(a):
