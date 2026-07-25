@@ -41,8 +41,8 @@ class SerialBridge:
         self.stop_burst_count = rospy.get_param("~stop_burst_count", 3)
         self.stop_burst_gap = rospy.get_param("~stop_burst_gap", 0.02)
         self.stop_brake_enabled = rospy.get_param("~stop_brake_enabled", True)
-        self.stop_brake_right_speed = rospy.get_param("~stop_brake_right_speed", -0.01)
-        self.stop_brake_duration = rospy.get_param("~stop_brake_duration", 0.2)
+        self.stop_brake_right_speed = rospy.get_param("~stop_brake_right_speed", -0.08)
+        self.stop_brake_duration = rospy.get_param("~stop_brake_duration", 0.4)
 
         # ── 打开串口（只开一次） ──
         self.ser = serial.Serial(port=port, baudrate=baud, timeout=0.1)
