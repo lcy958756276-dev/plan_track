@@ -109,6 +109,7 @@ private:
   double regularizeApproachLinearVelocity(double v_in, double v_desired,
                                           double decel_increment) const;
   double getApproachLinearSpeedLimit(double goal_dist) const;
+  double getApproachAngularSpeedLimit(double goal_dist) const;
 
 private:
   pb::controller::APFController apf_config_;

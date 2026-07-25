@@ -36,6 +36,7 @@ static constexpr double kInflationRadiusM = 3.0;
 static constexpr double kApproachSlowdownDist = 0.9;
 static constexpr double kApproachForceSlowdownDist = 0.5;
 static constexpr double kApproachMinLinearVelocity = 0.04;
+static constexpr double kApproachMinAngularVelocity = 0.15;
 static constexpr double kApproachDecelIncrement = 0.12;
 
 /**
@@ -203,12 +204,17 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
   new_v /= new_v.length();
   new_v *= config_.max_linear_velocity();
   double desired_linear_velocity = new_v.length();
-  if (goal_dist < kApproachSlowdownDist) {
+  bool approach_slowdown = goal_dist < kApproachSlowdownDist;
+  double approach_angular_limit = config_.max_angular_velocity();
+  if (approach_slowdown) {
     const double approach_limit = getApproachLinearSpeedLimit(goal_dist);
+    approach_angular_limit = getApproachAngularSpeedLimit(goal_dist);
     desired_linear_velocity = std::min(desired_linear_velocity, approach_limit);
     R_INFO_EVERY(10) << "APF approach speed limit: goal_dist=" << goal_dist
                      << " m, desired_v=" << desired_linear_velocity
-                     << " m/s, vt=" << vt << " m/s";
+                     << " m/s, angular_limit=" << approach_angular_limit
+                     << " rad/s, vt=" << vt << " m/s, wt=" << wt
+                     << " rad/s";
   }
 
   // set the desired angle and the angle error
@@ -229,18 +235,28 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
     else {
       cmd_vel.linear.x = 0.0;
       cmd_vel.angular.z = angularRegularization(wt, e_theta / control_dt_);
+      if (approach_slowdown &&
+          std::fabs(cmd_vel.angular.z) > approach_angular_limit) {
+        cmd_vel.angular.z = std::copysign(approach_angular_limit, cmd_vel.angular.z);
+      }
     }
   }
   // large angle, turn first
   else if (std::fabs(e_theta) > kLargeAngleRad) {
     cmd_vel.linear.x = 0.0;
     cmd_vel.angular.z = angularRegularization(wt, e_theta / control_dt_);
+    if (approach_slowdown && std::fabs(cmd_vel.angular.z) > approach_angular_limit) {
+      cmd_vel.angular.z = std::copysign(approach_angular_limit, cmd_vel.angular.z);
+    }
   }
   // posistion not reached
   else {
     cmd_vel.linear.x = regularizeApproachLinearVelocity(
         vt, desired_linear_velocity, kApproachDecelIncrement);
     cmd_vel.angular.z = angularRegularization(wt, e_theta / control_dt_);
+    if (approach_slowdown && std::fabs(cmd_vel.angular.z) > approach_angular_limit) {
+      cmd_vel.angular.z = std::copysign(approach_angular_limit, cmd_vel.angular.z);
+    }
   }
 
   // visualization
@@ -295,6 +311,19 @@ double APFController::getApproachLinearSpeedLimit(double goal_dist) const {
       clamp((goal_dist - kApproachForceSlowdownDist) / slow_range, 0.0, 1.0);
   return kApproachMinLinearVelocity +
          (config_.max_linear_velocity() - kApproachMinLinearVelocity) * ratio;
+}
+
+double APFController::getApproachAngularSpeedLimit(double goal_dist) const {
+  if (goal_dist <= kApproachForceSlowdownDist) {
+    return kApproachMinAngularVelocity;
+  }
+
+  const double slow_range =
+      std::max(kApproachSlowdownDist - kApproachForceSlowdownDist, 1e-3);
+  const double ratio =
+      clamp((goal_dist - kApproachForceSlowdownDist) / slow_range, 0.0, 1.0);
+  return kApproachMinAngularVelocity +
+         (config_.max_angular_velocity() - kApproachMinAngularVelocity) * ratio;
 }
 
 /**
