@@ -44,7 +44,10 @@ static constexpr double kApproachDecelIncrement = 0.12;
  * @brief Construct a new APFController object
  */
 APFController::APFController()
-  : initialized_(false), goal_reached_(false), tf_(nullptr) {
+  : initialized_(false),
+    goal_reached_(false),
+    approach_slowdown_active_(false),
+    tf_(nullptr) {
 }
 
 /**
@@ -105,6 +108,7 @@ bool APFController::setPlan(
   }
 
   R_INFO << "Got new plan";
+  approach_slowdown_active_ = false;
 
   // set new plan
   global_plan_.clear();
@@ -265,6 +269,21 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
     if (approach_slowdown && std::fabs(cmd_vel.angular.z) > approach_angular_limit) {
       cmd_vel.angular.z = std::copysign(approach_angular_limit, cmd_vel.angular.z);
     }
+  }
+
+  if (approach_slowdown && !approach_slowdown_active_) {
+    approach_slowdown_active_ = true;
+    R_INFO << "APF_TERMINAL_DECEL_START: stamp=" << ros::Time::now().toSec()
+           << " goal_dist=" << goal_dist
+           << " slowdown_start_dist=" << slowdown_start_dist
+           << " force_slowdown_dist=" << force_slowdown_dist
+           << " current_vt=" << vt
+           << " current_wt=" << wt
+           << " desired_v=" << desired_linear_velocity
+           << " cmd_v=" << cmd_vel.linear.x
+           << " cmd_w=" << cmd_vel.angular.z;
+  } else if (!approach_slowdown && approach_slowdown_active_) {
+    approach_slowdown_active_ = false;
   }
 
   // visualization

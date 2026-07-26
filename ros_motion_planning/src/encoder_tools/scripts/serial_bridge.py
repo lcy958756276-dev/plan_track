@@ -40,7 +40,7 @@ class SerialBridge:
         self.zero_repeat_period = rospy.get_param("~zero_repeat_period", 0.2)
         self.stop_burst_count = rospy.get_param("~stop_burst_count", 3)
         self.stop_burst_gap = rospy.get_param("~stop_burst_gap", 0.02)
-        self.stop_brake_enabled = rospy.get_param("~stop_brake_enabled", True)
+        self.stop_brake_enabled = rospy.get_param("~stop_brake_enabled", False)
         self.stop_brake_right_speed = rospy.get_param("~stop_brake_right_speed", -0.08)
         self.stop_brake_duration = rospy.get_param("~stop_brake_duration", 0.4)
         self.pre_stop_brake_enabled = rospy.get_param("~pre_stop_brake_enabled", True)
@@ -49,6 +49,9 @@ class SerialBridge:
         self.pre_stop_right_threshold = rospy.get_param("~pre_stop_right_threshold", 0.09)
         self.pre_stop_brake_cooldown = rospy.get_param("~pre_stop_brake_cooldown", 2.0)
         self.terminal_stop_hold_duration = rospy.get_param("~terminal_stop_hold_duration", 1.2)
+        self.terminal_decel_log_linear_threshold = rospy.get_param(
+            "~terminal_decel_log_linear_threshold", 0.13
+        )
 
         # ── 打开串口（只开一次） ──
         self.ser = serial.Serial(port=port, baudrate=baud, timeout=0.1)
@@ -96,6 +99,7 @@ class SerialBridge:
         self.last_pre_stop_brake_time = rospy.Time(0)
         self.terminal_stop_hold_until = rospy.Time(0)
         self.terminal_stop_latched = False
+        self.terminal_decel_logged = False
         self.goal_count = 0
         rospy.Timer(rospy.Duration(0.1), self.cmd_timeout_cb)
 
@@ -139,6 +143,13 @@ class SerialBridge:
 
         is_zero_cmd = abs(v) < 1e-4 and abs(w) < 1e-4
 
+        if self._should_log_terminal_decel_send(v, is_zero_cmd):
+            self.terminal_decel_logged = True
+            rospy.loginfo(
+                f"[bridge] TERMINAL_DECEL_SEND_START: stamp={self.last_cmd_time.to_sec():.3f} "
+                f"cmd_v={v:.3f} cmd_w={w:.3f} wheel_l={v_left:.3f} wheel_r={v_right:.3f}"
+            )
+
         if self.terminal_stop_latched:
             cmd_str = self._write_wheel_command(0.0, 0.0)
             self.last_sent_zero = True
@@ -171,20 +182,17 @@ class SerialBridge:
             )
             self.terminal_stop_latched = True
             self.last_pre_stop_brake_time = self.last_cmd_time
-            cmd_str = self._write_wheel_command(
-                0.0, 0.0,
-                brake_right=True,
-                brake_reason="终点低速段提前右轮刹车"
-            )
+            cmd_str = self._write_wheel_command(0.0, 0.0)
             self.last_sent_zero = True
             self.last_zero_send_time = self.last_cmd_time
             rospy.loginfo(
-                f"[bridge] 终点低速段进入停车保持 {self.terminal_stop_hold_duration:.2f}s，"
+                f"[bridge] 终点低速段进入停车保持 stamp={self.last_cmd_time.to_sec():.3f} "
+                f"hold={self.terminal_stop_hold_duration:.2f}s，"
                 f"拦截原命令 v={v:.3f} ω={w:.3f} → l={v_left:.3f} r={v_right:.3f}  "
                 f"[串口发送] {cmd_str.strip()}"
             )
             return
-        cmd_str = self._write_wheel_command(v_left, v_right, brake_right=should_brake)
+        cmd_str = self._write_wheel_command(v_left, v_right, brake_right=False)
         self.last_sent_zero = is_zero_cmd
         if self.last_sent_zero:
             self.last_zero_send_time = self.last_cmd_time
@@ -206,8 +214,14 @@ class SerialBridge:
             )
         self.terminal_stop_latched = False
         self.terminal_stop_hold_until = rospy.Time(0)
+        self.terminal_decel_logged = False
         self.last_sent_zero = True
         self.last_zero_send_time = rospy.Time.now()
+
+    def _should_log_terminal_decel_send(self, v, is_zero_cmd):
+        if self.terminal_decel_logged or is_zero_cmd:
+            return False
+        return 0.0 < abs(v) <= self.terminal_decel_log_linear_threshold
 
     def _should_pre_stop_brake(self, v, w, v_right, is_zero_cmd):
         if not self.pre_stop_brake_enabled or is_zero_cmd:
@@ -233,9 +247,7 @@ class SerialBridge:
         if self.last_sent_zero and (now - self.last_zero_send_time).to_sec() < self.zero_repeat_period:
             return
 
-        cmd_str = self._write_wheel_command(
-            0.0, 0.0, brake_right=not self.last_sent_zero
-        )
+        cmd_str = self._write_wheel_command(0.0, 0.0)
         self.last_sent_zero = True
         self.last_zero_send_time = now
         rospy.loginfo_throttle(

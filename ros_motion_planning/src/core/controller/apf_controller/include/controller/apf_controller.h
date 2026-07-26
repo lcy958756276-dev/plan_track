@@ -115,6 +115,7 @@ private:
   pb::controller::APFController apf_config_;
   bool initialized_;     // initialized flag
   bool goal_reached_;    // goal reached flag
+  bool approach_slowdown_active_;
   tf2_ros::Buffer* tf_;  // transform buffer
 
   std::deque<common::geometry::Vec2d> hist_nf_;  // historical net forces
