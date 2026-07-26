@@ -25,6 +25,7 @@ import rospy
 import serial
 import termios
 from std_msgs.msg import Int64MultiArray
+from std_msgs.msg import Float64MultiArray
 from geometry_msgs.msg import Twist, PoseStamped
 
 
@@ -81,6 +82,7 @@ class SerialBridge:
         rospy.Subscriber("/cmd_vel", Twist, self.cmd_vel_cb, queue_size=1)
         rospy.Subscriber("/move_base_simple/goal", PoseStamped, self.goal_cb, queue_size=1)
         rospy.Subscriber("/goal_rotated", PoseStamped, self.goal_cb, queue_size=1)
+        rospy.Subscriber("/wheel_velocities", Float64MultiArray, self.wheel_vel_cb, queue_size=10)
 
         # ── 解析模式 ──
         # 模式1: ltick:123 rtick:456（read_uart 原格式）
@@ -99,6 +101,11 @@ class SerialBridge:
         self.terminal_stop_hold_until = rospy.Time(0)
         self.terminal_stop_latched = False
         self.terminal_decel_logged = False
+        self.latest_actual_left = None
+        self.latest_actual_right = None
+        self.latest_actual_v = None
+        self.latest_actual_w = None
+        self.latest_actual_stamp = None
         self.goal_count = 0
         rospy.Timer(rospy.Duration(0.1), self.cmd_timeout_cb)
 
@@ -144,9 +151,11 @@ class SerialBridge:
 
         if self._should_log_terminal_decel_send(v, is_zero_cmd):
             self.terminal_decel_logged = True
+            actual = self._format_latest_actual_wheel_speed()
             rospy.loginfo(
                 f"[bridge] TERMINAL_DECEL_SEND_START: stamp={self.last_cmd_time.to_sec():.3f} "
-                f"cmd_v={v:.3f} cmd_w={w:.3f} wheel_l={v_left:.3f} wheel_r={v_right:.3f}"
+                f"cmd_v={v:.3f} cmd_w={w:.3f} wheel_l={v_left:.3f} wheel_r={v_right:.3f} "
+                f"{actual}"
             )
 
         if self.terminal_stop_latched:
@@ -199,6 +208,25 @@ class SerialBridge:
         self.terminal_decel_logged = False
         self.last_sent_zero = True
         self.last_zero_send_time = rospy.Time.now()
+
+    def wheel_vel_cb(self, msg):
+        if len(msg.data) < 4:
+            return
+        self.latest_actual_left = msg.data[0]
+        self.latest_actual_right = msg.data[1]
+        self.latest_actual_v = msg.data[2]
+        self.latest_actual_w = msg.data[3]
+        self.latest_actual_stamp = rospy.Time.now()
+
+    def _format_latest_actual_wheel_speed(self):
+        if self.latest_actual_stamp is None:
+            return "actual_l=NA actual_r=NA actual_v=NA actual_w=NA actual_age=NA"
+        age = (rospy.Time.now() - self.latest_actual_stamp).to_sec()
+        return (
+            f"actual_l={self.latest_actual_left:.3f} actual_r={self.latest_actual_right:.3f} "
+            f"actual_v={self.latest_actual_v:.3f} actual_w={self.latest_actual_w:.3f} "
+            f"actual_age={age:.3f}s"
+        )
 
     def _should_log_terminal_decel_send(self, v, is_zero_cmd):
         if self.terminal_decel_logged or is_zero_cmd:

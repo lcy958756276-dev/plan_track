@@ -305,6 +305,12 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
 
   if (approach_slowdown && !approach_slowdown_active_) {
     approach_slowdown_active_ = true;
+    const double cmd_left = cmd_vel.linear.x - cmd_vel.angular.z * kCommandWheelBaseM / 2.0;
+    const double cmd_right = cmd_vel.linear.x + cmd_vel.angular.z * kCommandWheelBaseM / 2.0;
+    const double actual_left =
+        base_odom.twist.twist.linear.x - base_odom.twist.twist.angular.z * kCommandWheelBaseM / 2.0;
+    const double actual_right =
+        base_odom.twist.twist.linear.x + base_odom.twist.twist.angular.z * kCommandWheelBaseM / 2.0;
     R_INFO << "APF_TERMINAL_DECEL_START: stamp=" << ros::Time::now().toSec()
            << " goal_dist=" << goal_dist
            << " slowdown_start_dist=" << slowdown_start_dist
@@ -313,7 +319,11 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
            << " current_wt=" << wt
            << " desired_v=" << desired_linear_velocity
            << " cmd_v=" << cmd_vel.linear.x
-           << " cmd_w=" << cmd_vel.angular.z;
+           << " cmd_w=" << cmd_vel.angular.z
+           << " cmd_l=" << cmd_left
+           << " cmd_r=" << cmd_right
+           << " odom_actual_l=" << actual_left
+           << " odom_actual_r=" << actual_right;
   } else if (!approach_slowdown && approach_slowdown_active_) {
     approach_slowdown_active_ = false;
   }
