@@ -81,8 +81,8 @@ lsx10/lslidar_msgs/CMakeFiles/lslidar_msgs_generate_messages_cpp: /home/lcy/robo
 
 /home/lcy/robot_graduation/devel/include/lslidar_msgs/LslidarSweep.h: /opt/ros/noetic/lib/gencpp/gen_cpp.py
 /home/lcy/robot_graduation/devel/include/lslidar_msgs/LslidarSweep.h: /home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg
-/home/lcy/robot_graduation/devel/include/lslidar_msgs/LslidarSweep.h: /home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg
 /home/lcy/robot_graduation/devel/include/lslidar_msgs/LslidarSweep.h: /home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg
+/home/lcy/robot_graduation/devel/include/lslidar_msgs/LslidarSweep.h: /home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg
 /home/lcy/robot_graduation/devel/include/lslidar_msgs/LslidarSweep.h: /opt/ros/noetic/share/std_msgs/msg/Header.msg
 /home/lcy/robot_graduation/devel/include/lslidar_msgs/LslidarSweep.h: /opt/ros/noetic/share/gencpp/msg.h.template
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/lcy/robot_graduation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Generating C++ code from lslidar_msgs/LslidarSweep.msg"

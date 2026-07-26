@@ -78,8 +78,8 @@ lsx10/lslidar_msgs/CMakeFiles/lslidar_msgs_generate_messages_nodejs: /home/lcy/r
 
 /home/lcy/robot_graduation/devel/share/gennodejs/ros/lslidar_msgs/msg/LslidarSweep.js: /opt/ros/noetic/lib/gennodejs/gen_nodejs.py
 /home/lcy/robot_graduation/devel/share/gennodejs/ros/lslidar_msgs/msg/LslidarSweep.js: /home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg
-/home/lcy/robot_graduation/devel/share/gennodejs/ros/lslidar_msgs/msg/LslidarSweep.js: /home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg
 /home/lcy/robot_graduation/devel/share/gennodejs/ros/lslidar_msgs/msg/LslidarSweep.js: /home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarScan.msg
+/home/lcy/robot_graduation/devel/share/gennodejs/ros/lslidar_msgs/msg/LslidarSweep.js: /home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarPoint.msg
 /home/lcy/robot_graduation/devel/share/gennodejs/ros/lslidar_msgs/msg/LslidarSweep.js: /opt/ros/noetic/share/std_msgs/msg/Header.msg
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/lcy/robot_graduation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Generating Javascript code from lslidar_msgs/LslidarSweep.msg"
 	cd /home/lcy/robot_graduation/build/lsx10/lslidar_msgs && ../../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg/LslidarSweep.msg -Ilslidar_msgs:/home/lcy/robot_graduation/src/lsx10/lslidar_msgs/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -p lslidar_msgs -o /home/lcy/robot_graduation/devel/share/gennodejs/ros/lslidar_msgs/msg
