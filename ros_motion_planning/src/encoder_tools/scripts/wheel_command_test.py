@@ -32,7 +32,7 @@ class WheelCommandTest:
     def __init__(self):
         self.port = rospy.get_param("~port", "/dev/ttyTHS0")
         self.baud = rospy.get_param("~baud", 57600)
-        self.speed = rospy.get_param("~speed", -0.05)
+        self.speed = rospy.get_param("~speed", -0.1)
         self.step_duration = rospy.get_param("~step_duration", 2.0)
         self.zero_duration = rospy.get_param("~zero_duration", 2.0)
         self.send_period = rospy.get_param("~send_period", 0.1)
