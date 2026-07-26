@@ -26,6 +26,7 @@ import serial
 import termios
 from std_msgs.msg import Int64MultiArray
 from std_msgs.msg import Float64MultiArray
+from std_msgs.msg import Bool
 from geometry_msgs.msg import Twist, PoseStamped
 
 
@@ -52,6 +53,21 @@ class SerialBridge:
         self.terminal_stop_hold_duration = rospy.get_param("~terminal_stop_hold_duration", 1.2)
         self.terminal_decel_log_linear_threshold = rospy.get_param(
             "~terminal_decel_log_linear_threshold", 0.13
+        )
+        self.terminal_reverse_test_enabled = rospy.get_param(
+            "~terminal_reverse_test_enabled", True
+        )
+        self.terminal_reverse_test_speed = rospy.get_param(
+            "~terminal_reverse_test_speed", -0.05
+        )
+        self.terminal_reverse_test_duration = rospy.get_param(
+            "~terminal_reverse_test_duration", 3.0
+        )
+        self.terminal_reverse_test_linear_threshold = rospy.get_param(
+            "~terminal_reverse_test_linear_threshold", 0.045
+        )
+        self.terminal_reverse_test_angular_threshold = rospy.get_param(
+            "~terminal_reverse_test_angular_threshold", 0.10
         )
 
         # ── 打开串口（只开一次） ──
@@ -83,6 +99,7 @@ class SerialBridge:
         rospy.Subscriber("/move_base_simple/goal", PoseStamped, self.goal_cb, queue_size=1)
         rospy.Subscriber("/goal_rotated", PoseStamped, self.goal_cb, queue_size=1)
         rospy.Subscriber("/wheel_velocities", Float64MultiArray, self.wheel_vel_cb, queue_size=10)
+        rospy.Subscriber("/terminal_decel_active", Bool, self.terminal_decel_cb, queue_size=1)
 
         # ── 解析模式 ──
         # 模式1: ltick:123 rtick:456（read_uart 原格式）
@@ -101,6 +118,9 @@ class SerialBridge:
         self.terminal_stop_hold_until = rospy.Time(0)
         self.terminal_stop_latched = False
         self.terminal_decel_logged = False
+        self.terminal_decel_active = False
+        self.terminal_reverse_test_until = rospy.Time(0)
+        self.terminal_reverse_test_completed = False
         self.latest_actual_left = None
         self.latest_actual_right = None
         self.latest_actual_v = None
@@ -158,6 +178,39 @@ class SerialBridge:
                 f"{actual}"
             )
 
+        if self._should_start_terminal_reverse_test():
+            self._start_terminal_reverse_test(
+                "cmd_vel回调检测到终点减速阶段",
+                self.last_cmd_time,
+                v,
+                w,
+                v_left,
+                v_right,
+            )
+
+        if self._in_terminal_reverse_test():
+            cmd_str = self._write_wheel_command(
+                self.terminal_reverse_test_speed,
+                self.terminal_reverse_test_speed,
+            )
+            self.last_sent_zero = False
+            rospy.logwarn_throttle(
+                0.2,
+                f"[bridge] 终点反向测试中，拦截上层命令 v={v:.3f} ω={w:.3f}; "
+                f"[串口发送] {cmd_str.strip()} {self._format_latest_actual_wheel_speed()}"
+            )
+            return
+
+        if self.terminal_reverse_test_completed and not self.terminal_stop_latched:
+            self.terminal_stop_latched = True
+            self.terminal_stop_hold_until = (
+                self.last_cmd_time + rospy.Duration(self.terminal_stop_hold_duration)
+            )
+            rospy.logwarn(
+                f"[bridge] TERMINAL_REVERSE_TEST_DONE: stamp={self.last_cmd_time.to_sec():.3f}, "
+                f"开始锁存双轮零速度，{self._format_latest_actual_wheel_speed()}"
+            )
+
         if self.terminal_stop_latched:
             cmd_str = self._write_wheel_command(0.0, 0.0)
             self.last_sent_zero = True
@@ -206,6 +259,9 @@ class SerialBridge:
         self.terminal_stop_latched = False
         self.terminal_stop_hold_until = rospy.Time(0)
         self.terminal_decel_logged = False
+        self.terminal_decel_active = False
+        self.terminal_reverse_test_until = rospy.Time(0)
+        self.terminal_reverse_test_completed = False
         self.last_sent_zero = True
         self.last_zero_send_time = rospy.Time.now()
 
@@ -217,6 +273,30 @@ class SerialBridge:
         self.latest_actual_v = msg.data[2]
         self.latest_actual_w = msg.data[3]
         self.latest_actual_stamp = rospy.Time.now()
+
+    def terminal_decel_cb(self, msg):
+        self.terminal_decel_active = msg.data
+        if not self.terminal_decel_active:
+            return
+        now = rospy.Time.now()
+        if self._should_start_terminal_reverse_test():
+            self._start_terminal_reverse_test(
+                "收到APF终点减速阶段标志",
+                now,
+                None,
+                None,
+                None,
+                None,
+            )
+            cmd_str = self._write_wheel_command(
+                self.terminal_reverse_test_speed,
+                self.terminal_reverse_test_speed,
+            )
+            self.last_sent_zero = False
+            rospy.logwarn(
+                f"[bridge] 终点反向测试立即发送  [串口发送] {cmd_str.strip()} "
+                f"{self._format_latest_actual_wheel_speed()}"
+            )
 
     def _format_latest_actual_wheel_speed(self):
         if self.latest_actual_stamp is None:
@@ -233,11 +313,71 @@ class SerialBridge:
             return False
         return 0.0 < abs(v) <= self.terminal_decel_log_linear_threshold
 
+    def _start_terminal_reverse_test(self, reason, stamp, v, w, v_left, v_right):
+        self.terminal_reverse_test_until = (
+            stamp + rospy.Duration(self.terminal_reverse_test_duration)
+        )
+        self.terminal_reverse_test_completed = True
+        if v is None:
+            source_cmd = "上层 v=NA ω=NA, 原折算 l=NA r=NA"
+        else:
+            source_cmd = (
+                f"上层 v={v:.3f} ω={w:.3f}, 原折算 l={v_left:.3f} r={v_right:.3f}"
+            )
+        rospy.logwarn(
+            f"[bridge] TERMINAL_REVERSE_TEST_START: stamp={stamp.to_sec():.3f} "
+            f"reason={reason}, {source_cmd}; "
+            f"强制发送 l={self.terminal_reverse_test_speed:.3f},"
+            f"r={self.terminal_reverse_test_speed:.3f}, "
+            f"duration={self.terminal_reverse_test_duration:.2f}s, "
+            f"{self._format_latest_actual_wheel_speed()}"
+        )
+
+    def _should_start_terminal_reverse_test(self):
+        if not self.terminal_reverse_test_enabled:
+            return False
+        if self.terminal_reverse_test_completed or self._in_terminal_reverse_test():
+            return False
+        if self.terminal_stop_latched:
+            return False
+        return self.terminal_decel_active
+
+    def _in_terminal_reverse_test(self):
+        return rospy.Time.now() < self.terminal_reverse_test_until
+
     def _in_terminal_stop_hold(self):
         return rospy.Time.now() < self.terminal_stop_hold_until
 
     def cmd_timeout_cb(self, event):
         now = rospy.Time.now()
+        if self._in_terminal_reverse_test():
+            cmd_str = self._write_wheel_command(
+                self.terminal_reverse_test_speed,
+                self.terminal_reverse_test_speed,
+            )
+            self.last_sent_zero = False
+            rospy.logwarn_throttle(
+                0.2,
+                f"[bridge] 终点反向测试超时续发  [串口发送] {cmd_str.strip()} "
+                f"{self._format_latest_actual_wheel_speed()}",
+            )
+            return
+
+        if self.terminal_reverse_test_completed and not self.terminal_stop_latched:
+            self.terminal_stop_latched = True
+            self.terminal_stop_hold_until = (
+                now + rospy.Duration(self.terminal_stop_hold_duration)
+            )
+            cmd_str = self._write_wheel_command(0.0, 0.0)
+            self.last_sent_zero = True
+            self.last_zero_send_time = now
+            rospy.logwarn(
+                f"[bridge] TERMINAL_REVERSE_TEST_DONE(timeout): stamp={now.to_sec():.3f}, "
+                f"开始锁存双轮零速度  [串口发送] {cmd_str.strip()} "
+                f"{self._format_latest_actual_wheel_speed()}",
+            )
+            return
+
         if (now - self.last_cmd_time).to_sec() <= self.cmd_timeout:
             return
         if self.last_sent_zero and (now - self.last_zero_send_time).to_sec() < self.zero_repeat_period:

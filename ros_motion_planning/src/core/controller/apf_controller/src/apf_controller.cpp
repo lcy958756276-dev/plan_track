@@ -89,6 +89,10 @@ void APFController::initialize(std::string name, tf2_ros::Buffer* tf,
     target_pt_pub_ = nh.advertise<visualization_msgs::Marker>("/target_point", 1);
     current_pose_pub_ = nh.advertise<geometry_msgs::PoseStamped>("/current_pose", 10);
     potential_map_pub_ = nh.advertise<nav_msgs::OccupancyGrid>("/potential_map", 10);
+    terminal_decel_pub_ = nh.advertise<std_msgs::Bool>("/terminal_decel_active", 1, true);
+    std_msgs::Bool terminal_decel_msg;
+    terminal_decel_msg.data = false;
+    terminal_decel_pub_.publish(terminal_decel_msg);
 
     R_INFO << "APF controller initialized!";
   } else {
@@ -112,6 +116,9 @@ bool APFController::setPlan(
 
   R_INFO << "Got new plan";
   approach_slowdown_active_ = false;
+  std_msgs::Bool terminal_decel_msg;
+  terminal_decel_msg.data = false;
+  terminal_decel_pub_.publish(terminal_decel_msg);
 
   // set new plan
   global_plan_.clear();
@@ -305,6 +312,9 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
 
   if (approach_slowdown && !approach_slowdown_active_) {
     approach_slowdown_active_ = true;
+    std_msgs::Bool terminal_decel_msg;
+    terminal_decel_msg.data = true;
+    terminal_decel_pub_.publish(terminal_decel_msg);
     const double cmd_left = cmd_vel.linear.x - cmd_vel.angular.z * kCommandWheelBaseM / 2.0;
     const double cmd_right = cmd_vel.linear.x + cmd_vel.angular.z * kCommandWheelBaseM / 2.0;
     const double actual_left =
@@ -326,6 +336,9 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
            << " odom_actual_r=" << actual_right;
   } else if (!approach_slowdown && approach_slowdown_active_) {
     approach_slowdown_active_ = false;
+    std_msgs::Bool terminal_decel_msg;
+    terminal_decel_msg.data = false;
+    terminal_decel_pub_.publish(terminal_decel_msg);
   }
 
   // visualization

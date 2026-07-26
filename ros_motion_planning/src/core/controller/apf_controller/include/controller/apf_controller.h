@@ -24,6 +24,7 @@
 
 #include <nav_msgs/Odometry.h>
 #include <nav_msgs/OccupancyGrid.h>
+#include <std_msgs/Bool.h>
 #include <tf2/utils.h>
 
 #include "common/geometry/vec2d.h"
@@ -121,6 +122,7 @@ private:
   std::deque<common::geometry::Vec2d> hist_nf_;  // historical net forces
 
   ros::Publisher target_pt_pub_, current_pose_pub_, potential_map_pub_;
+  ros::Publisher terminal_decel_pub_;
 
   // goal parameters
   double goal_x_, goal_y_, goal_theta_;
