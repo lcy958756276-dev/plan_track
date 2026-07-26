@@ -1,19 +1,19 @@
-=== 启动时间: 2026年 07月 26日 星期日 13:55:27 CST ===
-[13:55:27] [1] main_generate.py start
-[13:55:27] [1] main_generate.py done
-[13:55:27] [2] use_encoder_odom flag set
-[13:55:27] [3] loading robot_description
-[13:55:28] [3] robot_description loaded
-[33m[WARN] [1785045328.580446524]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
-[13:55:31] [4] starting gzserver
-[13:55:37] [4] spawn_model start
-[INFO] [1785045338.782663]: Loading model XML from ros parameter robot_description
-[INFO] [1785045338.790699]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1785045338.796064]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1785045339.295135]: Spawn status: SpawnModel: Successfully spawned entity
-[13:55:40] [4] spawn_model exit=0
-[13:55:52] [8] generating move_base launch file
-[13:55:52] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 07月 26日 星期日 14:06:04 CST ===
+[14:06:04] [1] main_generate.py start
+[14:06:04] [1] main_generate.py done
+[14:06:04] [2] use_encoder_odom flag set
+[14:06:04] [3] loading robot_description
+[14:06:05] [3] robot_description loaded
+[33m[WARN] [1785045965.524950722]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[14:06:08] [4] starting gzserver
+[14:06:14] [4] spawn_model start
+[INFO] [1785045975.664623]: Loading model XML from ros parameter robot_description
+[INFO] [1785045975.673510]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1785045975.678879]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1785045976.206940]: Spawn status: SpawnModel: Successfully spawned entity
+[14:06:16] [4] spawn_model exit=0
+[14:06:29] [8] generating move_base launch file
+[14:06:29] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 apf_controller/APFController
@@ -44,14 +44,14 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1785045354.744114125]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1785045354.747269373]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1785045991.446698211]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1785045991.452866879]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260726 13:55:55.215821 40474 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
-I20260726 13:55:55.224294 40474 path_planner_factory.cpp:137] Using path planner: astar_polyline
-[33m[WARN] [1785045355.243063031]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-I20260726 13:55:55.370092 40474 mpc_controller.cpp:97] MPC Controller initialized!
-[13:55:56] [8] move_base 启动后状态:
+I20260726 14:06:32.004026 46217 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
+I20260726 14:06:32.015578 46217 path_planner_factory.cpp:137] Using path planner: astar_polyline
+[33m[WARN] [1785045992.039908383]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260726 14:06:32.173012 46217 apf_controller.cpp:93] APF controller initialized!
+[14:06:32] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -98,6 +98,10 @@ I20260726 13:55:55.370092 40474 mpc_controller.cpp:97] MPC Controller initialize
 /move_base/status
 /move_base_simple/goal
   [诊断] rosservice list | grep move_base:
+I20260726 14:06:34.454524 46217 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(-3.10081, -1.3952)
+I20260726 14:06:34.460206 46217 astar_polyline_planner.cpp:46] AStarPolyline: base poses=63, polyline vertices=9, dense poses=63
+W20260726 14:06:34.460496 46217 path_planner_node.cpp:215] Path heading change 152.752 deg > 90 deg, accepting new plan for pre-rotation
+I20260726 14:06:34.462666 46217 path_planner_node.cpp:302] PathPlanner make_plan response: poses=63 end=(-3.10081, -1.3952) end_goal_dist=0
 /move_base/PathPlanner/make_plan
 /move_base/clear_costmaps
 /move_base/get_loggers
@@ -112,218 +116,44 @@ I20260726 13:55:55.370092 40474 mpc_controller.cpp:97] MPC Controller initialize
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-I20260726 13:55:58.058020 40474 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(-2.94862, -1.25638)
-I20260726 13:55:58.062413 40474 astar_polyline_planner.cpp:46] AStarPolyline: base poses=59, polyline vertices=4, dense poses=59
-W20260726 13:55:58.062668 40474 path_planner_node.cpp:215] Path heading change 153.855 deg > 90 deg, accepting new plan for pre-rotation
-I20260726 13:55:58.065207 40474 path_planner_node.cpp:302] PathPlanner make_plan response: poses=59 end=(-2.94862, -1.25638) end_goal_dist=0
-I20260726 13:56:11.847955 40484 astar_polyline_planner.cpp:46] AStarPolyline: base poses=61, polyline vertices=4, dense poses=61
-I20260726 13:56:11.944420 40482 mpc_controller.cpp:116] Got new plan
-W20260726 13:56:16.657953 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.119626 -> 0.0846754, heading_error=6.79913 deg, path_dist=0.0292616 m, kappa=-1.88957
-W20260726 13:56:16.758098 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.124679 -> 0.0846754, heading_error=6.59535 deg, path_dist=0.0296495 m, kappa=-1.88957
-W20260726 13:56:16.862344 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.124679 -> 0.0846754, heading_error=6.59684 deg, path_dist=0.0337262 m, kappa=-1.88957
-W20260726 13:56:16.958686 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.124679 -> 0.0846754, heading_error=6.59684 deg, path_dist=0.0337262 m, kappa=-1.88957
-W20260726 13:56:17.058895 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.118353 -> 0.0846754, heading_error=6.66878 deg, path_dist=0.0306227 m, kappa=-1.88957
-W20260726 13:56:19.256502 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.165982 -> 0.164704, heading_error=9.10036 deg, path_dist=0.0453322 m, kappa=0
-W20260726 13:56:19.370337 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.165982 -> 0.164704, heading_error=9.10036 deg, path_dist=0.0453322 m, kappa=0
-W20260726 13:56:19.858009 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.16832 -> 0.162845, heading_error=9.5797 deg, path_dist=0.0530999 m, kappa=0
-W20260726 13:56:19.964465 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.16832 -> 0.162845, heading_error=9.5797 deg, path_dist=0.0530999 m, kappa=0
-W20260726 13:56:20.162053 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.184561 -> 0.162339, heading_error=9.71006 deg, path_dist=0.0573682 m, kappa=0
-W20260726 13:56:20.256724 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.184561 -> 0.162339, heading_error=9.71006 deg, path_dist=0.0573682 m, kappa=0
-W20260726 13:56:20.457278 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.174489 -> 0.161968, heading_error=9.80594 deg, path_dist=0.0623792 m, kappa=0
-W20260726 13:56:20.557540 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.174489 -> 0.161968, heading_error=9.80594 deg, path_dist=0.0623792 m, kappa=0
-W20260726 13:56:20.658603 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.162781 -> 0.161848, heading_error=9.83669 deg, path_dist=0.0629168 m, kappa=0
-W20260726 13:56:20.760237 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.175 -> 0.161702, heading_error=9.87432 deg, path_dist=0.0659297 m, kappa=0
-W20260726 13:56:20.858486 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.175 -> 0.161702, heading_error=9.87432 deg, path_dist=0.0659297 m, kappa=0
-W20260726 13:56:21.059865 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.176872 -> 0.161324, heading_error=9.97194 deg, path_dist=0.0639186 m, kappa=0
-W20260726 13:56:21.157730 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.176872 -> 0.161324, heading_error=9.97194 deg, path_dist=0.0639186 m, kappa=0
-W20260726 13:56:21.359579 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.174145 -> 0.160902, heading_error=10.0807 deg, path_dist=0.0636507 m, kappa=0
-W20260726 13:56:21.456947 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.174145 -> 0.160902, heading_error=10.0807 deg, path_dist=0.0636507 m, kappa=0
-W20260726 13:56:21.558288 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.161512 -> 0.160662, heading_error=10.1426 deg, path_dist=0.0635525 m, kappa=0
-W20260726 13:56:21.659984 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.175692 -> 0.160421, heading_error=10.2047 deg, path_dist=0.0642768 m, kappa=0
-W20260726 13:56:21.759179 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.175692 -> 0.160421, heading_error=10.2047 deg, path_dist=0.0642768 m, kappa=0
-W20260726 13:56:21.856897 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.16078 -> 0.160197, heading_error=10.2625 deg, path_dist=0.0634225 m, kappa=0
-W20260726 13:56:21.958453 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.17242 -> 0.159947, heading_error=10.3269 deg, path_dist=0.0633893 m, kappa=0
-W20260726 13:56:22.057328 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.17242 -> 0.159947, heading_error=10.3269 deg, path_dist=0.0633893 m, kappa=0
-W20260726 13:56:22.162035 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.165862 -> 0.159684, heading_error=10.3947 deg, path_dist=0.0638525 m, kappa=0
-W20260726 13:56:22.257844 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.171125 -> 0.159402, heading_error=10.4674 deg, path_dist=0.0633879 m, kappa=0
-W20260726 13:56:22.358150 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.171125 -> 0.159402, heading_error=10.4674 deg, path_dist=0.0633879 m, kappa=0
-W20260726 13:56:22.559513 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.179527 -> 0.158792, heading_error=10.6247 deg, path_dist=0.0637041 m, kappa=0
-W20260726 13:56:22.659822 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.179527 -> 0.158792, heading_error=10.6247 deg, path_dist=0.0637041 m, kappa=0
-W20260726 13:56:22.758117 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.163626 -> 0.15846, heading_error=10.7102 deg, path_dist=0.0635509 m, kappa=0
-W20260726 13:56:22.864924 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.168994 -> 0.158093, heading_error=10.8048 deg, path_dist=0.0669511 m, kappa=0
-W20260726 13:56:22.956544 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.168994 -> 0.158093, heading_error=10.8048 deg, path_dist=0.0669511 m, kappa=0
-W20260726 13:56:23.061401 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.163266 -> 0.157721, heading_error=10.9009 deg, path_dist=0.06385 m, kappa=0
-W20260726 13:56:23.160190 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.174577 -> 0.15736, heading_error=10.994 deg, path_dist=0.0639209 m, kappa=0
-W20260726 13:56:23.256007 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.174577 -> 0.15736, heading_error=10.994 deg, path_dist=0.0639209 m, kappa=0
-W20260726 13:56:23.359838 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.16186 -> 0.156978, heading_error=11.0924 deg, path_dist=0.0666469 m, kappa=0
-W20260726 13:56:23.456866 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.176584 -> 0.156579, heading_error=11.1952 deg, path_dist=0.0642803 m, kappa=0
-W20260726 13:56:23.559675 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.176584 -> 0.156579, heading_error=11.1952 deg, path_dist=0.0642803 m, kappa=0
-W20260726 13:56:23.656358 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.160672 -> 0.156158, heading_error=11.3038 deg, path_dist=0.0644893 m, kappa=0
-W20260726 13:56:23.758705 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.173252 -> 0.155718, heading_error=11.4172 deg, path_dist=0.06664 m, kappa=0
-W20260726 13:56:23.855952 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.173252 -> 0.155718, heading_error=11.4172 deg, path_dist=0.06664 m, kappa=0
-W20260726 13:56:23.959444 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.165701 -> 0.155283, heading_error=11.5295 deg, path_dist=0.0649797 m, kappa=0
-W20260726 13:56:24.057041 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.17123 -> 0.154838, heading_error=11.6441 deg, path_dist=0.065256 m, kappa=0
-W20260726 13:56:24.156778 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.17123 -> 0.154838, heading_error=11.6441 deg, path_dist=0.065256 m, kappa=0
-W20260726 13:56:24.256942 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.162472 -> 0.154371, heading_error=11.7644 deg, path_dist=0.0669397 m, kappa=0
-W20260726 13:56:24.360615 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.174434 -> 0.153869, heading_error=11.8941 deg, path_dist=0.065877 m, kappa=0
-W20260726 13:56:24.455992 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.174434 -> 0.153869, heading_error=11.8941 deg, path_dist=0.065877 m, kappa=0
-W20260726 13:56:24.558601 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.160572 -> 0.153358, heading_error=12.0257 deg, path_dist=0.0662222 m, kappa=0
-W20260726 13:56:24.661424 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.173344 -> 0.152877, heading_error=12.1497 deg, path_dist=0.0675263 m, kappa=0
-W20260726 13:56:24.758534 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.173344 -> 0.152877, heading_error=12.1497 deg, path_dist=0.0675263 m, kappa=0
-W20260726 13:56:24.856106 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.159776 -> 0.152351, heading_error=12.2854 deg, path_dist=0.0669729 m, kappa=0
-W20260726 13:56:24.959585 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.178447 -> 0.151816, heading_error=12.4234 deg, path_dist=0.0673808 m, kappa=0
-W20260726 13:56:25.056016 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.178447 -> 0.151816, heading_error=12.4234 deg, path_dist=0.0673808 m, kappa=0
-W20260726 13:56:25.159766 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.160993 -> 0.15123, heading_error=12.5745 deg, path_dist=0.0683901 m, kappa=0
-W20260726 13:56:25.258003 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.176744 -> 0.150641, heading_error=12.7262 deg, path_dist=0.0682685 m, kappa=0
-W20260726 13:56:25.356324 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.176744 -> 0.150641, heading_error=12.7262 deg, path_dist=0.0682685 m, kappa=0
-W20260726 13:56:25.456058 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.163045 -> 0.150048, heading_error=12.8792 deg, path_dist=0.0728647 m, kappa=0
-W20260726 13:56:25.556314 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.170124 -> 0.149423, heading_error=13.0404 deg, path_dist=0.0695529 m, kappa=0
-W20260726 13:56:25.656446 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.170124 -> 0.149423, heading_error=13.0404 deg, path_dist=0.0695529 m, kappa=0
-W20260726 13:56:25.758483 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.162937 -> 0.148774, heading_error=13.2076 deg, path_dist=0.0697759 m, kappa=0
-W20260726 13:56:25.856447 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.175032 -> 0.148136, heading_error=13.3722 deg, path_dist=0.073617 m, kappa=0
-W20260726 13:56:25.958658 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.175032 -> 0.148136, heading_error=13.3722 deg, path_dist=0.073617 m, kappa=0
-W20260726 13:56:26.061393 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.163058 -> 0.147488, heading_error=13.5392 deg, path_dist=0.0710145 m, kappa=0
-W20260726 13:56:26.157230 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.17541 -> 0.146837, heading_error=13.7072 deg, path_dist=0.0714929 m, kappa=0
-W20260726 13:56:26.256013 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.17541 -> 0.146837, heading_error=13.7072 deg, path_dist=0.0714929 m, kappa=0
-W20260726 13:56:26.357084 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.162781 -> 0.146168, heading_error=13.8797 deg, path_dist=0.0746266 m, kappa=0
-W20260726 13:56:26.460145 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.171662 -> 0.145494, heading_error=14.0534 deg, path_dist=0.0727613 m, kappa=0
-W20260726 13:56:26.559131 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.171662 -> 0.145494, heading_error=14.0534 deg, path_dist=0.0727613 m, kappa=0
-W20260726 13:56:26.657871 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.162829 -> 0.144796, heading_error=14.2332 deg, path_dist=0.0734038 m, kappa=0
-W20260726 13:56:26.758311 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.175129 -> 0.144087, heading_error=14.416 deg, path_dist=0.0759437 m, kappa=0
-W20260726 13:56:26.857883 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.175129 -> 0.144087, heading_error=14.416 deg, path_dist=0.0759437 m, kappa=0
-W20260726 13:56:26.956437 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.161766 -> 0.143379, heading_error=14.5987 deg, path_dist=0.0747828 m, kappa=0
-W20260726 13:56:27.059206 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.176467 -> 0.142631, heading_error=14.7915 deg, path_dist=0.0755029 m, kappa=0
-W20260726 13:56:27.156960 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.176467 -> 0.142631, heading_error=14.7915 deg, path_dist=0.0755029 m, kappa=0
-W20260726 13:56:27.261365 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.163096 -> 0.141879, heading_error=14.9855 deg, path_dist=0.0775657 m, kappa=0
-W20260726 13:56:27.360193 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.170428 -> 0.141107, heading_error=15.1843 deg, path_dist=0.0770073 m, kappa=0
-W20260726 13:56:27.456416 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.170428 -> 0.141107, heading_error=15.1843 deg, path_dist=0.0770073 m, kappa=0
-W20260726 13:56:27.561058 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.162819 -> 0.140337, heading_error=15.3829 deg, path_dist=0.0777915 m, kappa=0
-W20260726 13:56:27.658532 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.17437 -> 0.139556, heading_error=15.5843 deg, path_dist=0.0794905 m, kappa=0
-W20260726 13:56:27.757583 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.17437 -> 0.139556, heading_error=15.5843 deg, path_dist=0.0794905 m, kappa=0
-W20260726 13:56:27.856755 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.163324 -> 0.138771, heading_error=15.7867 deg, path_dist=0.0794196 m, kappa=0
-W20260726 13:56:27.963686 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.164444 -> 0.12444, heading_error=15.9756 deg, path_dist=0.0802542 m, kappa=-1.28576
-W20260726 13:56:28.057250 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.164444 -> 0.12444, heading_error=15.9756 deg, path_dist=0.0802542 m, kappa=-1.28576
-W20260726 13:56:28.162582 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.161266 -> 0.12444, heading_error=16.1493 deg, path_dist=0.0816875 m, kappa=-1.28576
-W20260726 13:56:28.259697 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.164444 -> 0.12444, heading_error=16.3645 deg, path_dist=0.0819601 m, kappa=-1.28576
-W20260726 13:56:28.361704 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.164751 -> 0.12444, heading_error=16.3645 deg, path_dist=0.0819601 m, kappa=-1.28576
-W20260726 13:56:28.460117 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.159225 -> 0.136144, heading_error=16.464 deg, path_dist=0.0866013 m, kappa=-0.438579
-W20260726 13:56:28.561574 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.176041 -> 0.136054, heading_error=16.4872 deg, path_dist=0.0841079 m, kappa=-0.438579
-W20260726 13:56:28.656471 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.176038 -> 0.136054, heading_error=16.4872 deg, path_dist=0.0841079 m, kappa=-0.438579
-W20260726 13:56:28.759995 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.161928 -> 0.135928, heading_error=16.5198 deg, path_dist=0.084696 m, kappa=-0.438579
-W20260726 13:56:28.856557 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.175884 -> 0.135991, heading_error=16.5034 deg, path_dist=0.0886651 m, kappa=0
-W20260726 13:56:28.962538 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.175884 -> 0.135991, heading_error=16.5034 deg, path_dist=0.0886651 m, kappa=0
-W20260726 13:56:29.060503 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.160519 -> 0.136084, heading_error=16.4796 deg, path_dist=0.0867903 m, kappa=0
-W20260726 13:56:29.159716 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.172993 -> 0.136165, heading_error=16.4586 deg, path_dist=0.0876316 m, kappa=0
-W20260726 13:56:29.259326 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.172993 -> 0.136165, heading_error=16.4586 deg, path_dist=0.0876316 m, kappa=0
-W20260726 13:56:29.358762 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.163158 -> 0.136225, heading_error=16.4433 deg, path_dist=0.0910085 m, kappa=0
-W20260726 13:56:29.456868 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.174551 -> 0.136278, heading_error=16.4296 deg, path_dist=0.089749 m, kappa=0
-W20260726 13:56:29.560721 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.174551 -> 0.136278, heading_error=16.4296 deg, path_dist=0.089749 m, kappa=0
-W20260726 13:56:29.664708 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.161519 -> 0.136288, heading_error=16.427 deg, path_dist=0.0907688 m, kappa=0
-W20260726 13:56:29.761744 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.173359 -> 0.136279, heading_error=16.4292 deg, path_dist=0.0936724 m, kappa=0
-W20260726 13:56:29.857828 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.173359 -> 0.136279, heading_error=16.4292 deg, path_dist=0.0936724 m, kappa=0
-W20260726 13:56:29.958855 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.161683 -> 0.136268, heading_error=16.432 deg, path_dist=0.0929733 m, kappa=0
-W20260726 13:56:30.056319 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.172326 -> 0.136255, heading_error=16.4355 deg, path_dist=0.0941057 m, kappa=0
-W20260726 13:56:30.162308 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.172326 -> 0.136255, heading_error=16.4355 deg, path_dist=0.0941057 m, kappa=0
-W20260726 13:56:30.256582 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.163085 -> 0.13622, heading_error=16.4444 deg, path_dist=0.0966375 m, kappa=0
-W20260726 13:56:30.357755 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.173307 -> 0.13618, heading_error=16.4549 deg, path_dist=0.0964452 m, kappa=0
-W20260726 13:56:30.456877 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.173307 -> 0.13618, heading_error=16.4549 deg, path_dist=0.0964452 m, kappa=0
-W20260726 13:56:30.560873 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.162362 -> 0.136107, heading_error=16.4737 deg, path_dist=0.0976503 m, kappa=0
-W20260726 13:56:30.665395 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.174477 -> 0.136015, heading_error=16.4973 deg, path_dist=0.099877 m, kappa=0
-W20260726 13:56:30.757405 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.174477 -> 0.136015, heading_error=16.4973 deg, path_dist=0.099877 m, kappa=0
-W20260726 13:56:30.856336 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.162582 -> 0.135944, heading_error=16.5157 deg, path_dist=0.100131 m, kappa=0
-W20260726 13:56:30.957576 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.174954 -> 0.135848, heading_error=16.5403 deg, path_dist=0.101407 m, kappa=0
-W20260726 13:56:31.057365 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.174954 -> 0.135848, heading_error=16.5403 deg, path_dist=0.101407 m, kappa=0
-W20260726 13:56:31.157414 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.162608 -> 0.135728, heading_error=16.5712 deg, path_dist=0.103378 m, kappa=0
-W20260726 13:56:31.258801 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.170076 -> 0.135575, heading_error=16.6107 deg, path_dist=0.103424 m, kappa=0
-W20260726 13:56:31.359447 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.170076 -> 0.135575, heading_error=16.6107 deg, path_dist=0.103424 m, kappa=0
-W20260726 13:56:31.460325 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.16029 -> 0.13538, heading_error=16.6611 deg, path_dist=0.105617 m, kappa=0
-W20260726 13:56:31.562422 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.175184 -> 0.135198, heading_error=16.7079 deg, path_dist=0.103877 m, kappa=0
-W20260726 13:56:31.656252 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.175184 -> 0.135198, heading_error=16.7079 deg, path_dist=0.103877 m, kappa=0
-W20260726 13:56:31.756578 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.161967 -> 0.135002, heading_error=16.7585 deg, path_dist=0.103728 m, kappa=0
-W20260726 13:56:31.856132 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.174792 -> 0.134805, heading_error=16.8093 deg, path_dist=0.104786 m, kappa=0
-W20260726 13:56:31.956164 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.174792 -> 0.134805, heading_error=16.8093 deg, path_dist=0.104786 m, kappa=0
-W20260726 13:56:32.056567 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.16265 -> 0.134607, heading_error=16.8604 deg, path_dist=0.103497 m, kappa=0
-W20260726 13:56:32.160605 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.174385 -> 0.134397, heading_error=16.9144 deg, path_dist=0.103413 m, kappa=0
-W20260726 13:56:32.257642 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.174385 -> 0.134397, heading_error=16.9144 deg, path_dist=0.103413 m, kappa=0
-W20260726 13:56:32.360208 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.161046 -> 0.134182, heading_error=16.9699 deg, path_dist=0.104183 m, kappa=0
-W20260726 13:56:32.458254 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.173782 -> 0.133954, heading_error=17.0287 deg, path_dist=0.103306 m, kappa=0
-W20260726 13:56:32.557888 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.173782 -> 0.133954, heading_error=17.0287 deg, path_dist=0.103306 m, kappa=0
-W20260726 13:56:32.659449 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.166315 -> 0.133699, heading_error=17.0944 deg, path_dist=0.103285 m, kappa=0
-W20260726 13:56:32.766335 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.170823 -> 0.133411, heading_error=17.1688 deg, path_dist=0.103835 m, kappa=0
-W20260726 13:56:32.859200 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.170823 -> 0.133411, heading_error=17.1688 deg, path_dist=0.103835 m, kappa=0
-W20260726 13:56:32.962025 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.162334 -> 0.133132, heading_error=17.2407 deg, path_dist=0.103309 m, kappa=0
-W20260726 13:56:33.061411 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.172837 -> 0.13285, heading_error=17.3133 deg, path_dist=0.103352 m, kappa=0
-W20260726 13:56:33.159133 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.172837 -> 0.13285, heading_error=17.3133 deg, path_dist=0.103352 m, kappa=0
-W20260726 13:56:33.257390 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.161445 -> 0.132551, heading_error=17.3905 deg, path_dist=0.103739 m, kappa=0
-W20260726 13:56:33.360226 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.172167 -> 0.132259, heading_error=17.4658 deg, path_dist=0.103497 m, kappa=0
-W20260726 13:56:33.458652 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.172167 -> 0.132259, heading_error=17.4658 deg, path_dist=0.103497 m, kappa=0
-W20260726 13:56:33.560220 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.167126 -> 0.131954, heading_error=17.5443 deg, path_dist=0.106208 m, kappa=0
-W20260726 13:56:33.658298 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.170147 -> 0.131643, heading_error=17.6246 deg, path_dist=0.103874 m, kappa=0
-W20260726 13:56:33.759153 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.170147 -> 0.131643, heading_error=17.6246 deg, path_dist=0.103874 m, kappa=0
-W20260726 13:56:33.857867 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.162562 -> 0.13131, heading_error=17.7104 deg, path_dist=0.103857 m, kappa=0
-W20260726 13:56:33.967293 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.17098 -> 0.13097, heading_error=17.7981 deg, path_dist=0.106078 m, kappa=0
-W20260726 13:56:34.057402 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.171159 -> 0.13097, heading_error=17.7981 deg, path_dist=0.106078 m, kappa=0
-W20260726 13:56:34.159631 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.162456 -> 0.130605, heading_error=17.8922 deg, path_dist=0.104238 m, kappa=0
-W20260726 13:56:34.259299 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.170209 -> 0.130199, heading_error=17.9968 deg, path_dist=0.104391 m, kappa=0
-W20260726 13:56:34.358803 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.170209 -> 0.130199, heading_error=17.9968 deg, path_dist=0.104391 m, kappa=0
-W20260726 13:56:34.458673 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.16269 -> 0.129769, heading_error=18.1077 deg, path_dist=0.106209 m, kappa=0
-W20260726 13:56:34.561391 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.169517 -> 0.129348, heading_error=18.2162 deg, path_dist=0.104856 m, kappa=0
-W20260726 13:56:34.661185 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.169517 -> 0.129348, heading_error=18.2162 deg, path_dist=0.104856 m, kappa=0
-W20260726 13:56:34.756830 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.16103 -> 0.1289, heading_error=18.3317 deg, path_dist=0.105118 m, kappa=0
-W20260726 13:56:34.856745 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.168544 -> 0.128443, heading_error=18.4496 deg, path_dist=0.106585 m, kappa=0
-W20260726 13:56:34.959585 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.168543 -> 0.128443, heading_error=18.4496 deg, path_dist=0.106585 m, kappa=0
-W20260726 13:56:35.057358 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.16309 -> 0.127984, heading_error=18.568 deg, path_dist=0.10571 m, kappa=0
-W20260726 13:56:35.159415 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.167586 -> 0.127513, heading_error=18.6894 deg, path_dist=0.106037 m, kappa=0
-W20260726 13:56:35.260968 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.167585 -> 0.127513, heading_error=18.6894 deg, path_dist=0.106037 m, kappa=0
-W20260726 13:56:35.361256 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.161496 -> 0.12702, heading_error=18.8165 deg, path_dist=0.1072 m, kappa=0
-W20260726 13:56:35.460564 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.166513 -> 0.126506, heading_error=18.949 deg, path_dist=0.10675 m, kappa=0
-W20260726 13:56:35.558521 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.166513 -> 0.126506, heading_error=18.949 deg, path_dist=0.10675 m, kappa=0
-W20260726 13:56:35.657269 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.162302 -> 0.125966, heading_error=19.0884 deg, path_dist=0.107138 m, kappa=0
-W20260726 13:56:35.761145 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.16544 -> 0.125433, heading_error=19.2256 deg, path_dist=0.108113 m, kappa=0
-W20260726 13:56:35.856874 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.16544 -> 0.125433, heading_error=19.2256 deg, path_dist=0.108113 m, kappa=0
-W20260726 13:56:35.959227 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.164921 -> 0.124915, heading_error=19.3594 deg, path_dist=0.10797 m, kappa=0
-W20260726 13:56:36.057612 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.16452 -> 0.124514, heading_error=19.4626 deg, path_dist=0.108401 m, kappa=0
-W20260726 13:56:36.158154 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.16452 -> 0.124514, heading_error=19.4626 deg, path_dist=0.108401 m, kappa=0
-W20260726 13:56:36.258678 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.160708 -> 0.124206, heading_error=19.5422 deg, path_dist=0.109248 m, kappa=0
-W20260726 13:56:36.361477 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.163915 -> 0.12391, heading_error=19.6184 deg, path_dist=0.109261 m, kappa=0
-W20260726 13:56:36.457427 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.163915 -> 0.12391, heading_error=19.6184 deg, path_dist=0.109261 m, kappa=0
-W20260726 13:56:36.558635 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.158444 -> 0.123673, heading_error=19.6794 deg, path_dist=0.109687 m, kappa=0
-W20260726 13:56:36.661453 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.163475 -> 0.12347, heading_error=19.7317 deg, path_dist=0.110435 m, kappa=0
-W20260726 13:56:36.757404 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.163475 -> 0.12347, heading_error=19.7317 deg, path_dist=0.110435 m, kappa=0
-W20260726 13:56:36.858165 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.161767 -> 0.1233, heading_error=19.7757 deg, path_dist=0.110513 m, kappa=0
-W20260726 13:56:36.961465 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.163155 -> 0.12315, heading_error=19.8143 deg, path_dist=0.113707 m, kappa=0
-W20260726 13:56:37.056401 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.163155 -> 0.12315, heading_error=19.8143 deg, path_dist=0.113707 m, kappa=0
-W20260726 13:56:37.158802 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.157803 -> 0.123041, heading_error=19.8425 deg, path_dist=0.11159 m, kappa=0
-W20260726 13:56:37.258260 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.16297 -> 0.122965, heading_error=19.8619 deg, path_dist=0.111667 m, kappa=0
-W20260726 13:56:37.356973 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.16297 -> 0.122965, heading_error=19.8619 deg, path_dist=0.111667 m, kappa=0
-W20260726 13:56:37.459635 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.0899753 -> 0.05, heading_error=19.8776 deg, path_dist=0.114776 m, kappa=-4.14911
-W20260726 13:56:37.561635 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.0899823 -> 0.05, heading_error=19.8869 deg, path_dist=0.11266 m, kappa=-4.14911
-W20260726 13:56:37.658721 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.0899823 -> 0.05, heading_error=19.8869 deg, path_dist=0.11266 m, kappa=-4.14911
-W20260726 13:56:37.758018 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.0899737 -> 0.05, heading_error=19.8507 deg, path_dist=0.112673 m, kappa=-4.14911
-W20260726 13:56:37.858315 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.163361 -> 0.123641, heading_error=19.6877 deg, path_dist=0.112946 m, kappa=0
-W20260726 13:56:37.962116 40482 mpc_controller.cpp:283] MPC turn speed limit: v=0.163361 -> 0.123641, heading_error=19.6877 deg, path_dist=0.112946 m, kappa=0
-I20260726 13:56:38.144359 40482 mpc_controller.cpp:145] GOAL Reached!
-[0m[INFO] [1785045354.748510594]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1785045354.769519029]: Requesting the map...[0m
-[0m[INFO] [1785045354.980346845]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1785045355.080132025]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1785045355.086903891]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1785045355.091669212]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1785045355.115907972]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1785045355.124126702]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1785045355.245257169]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1785045355.250787526]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1785045355.294641555]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1785045355.365995615]: Created local_planner mpc_controller/MPCController[0m
-[0m[INFO] [1785045355.849296807]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1785045355.856741766]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1785045355.916032496]: odom received![0m
-... logging to /home/lcy/.ros/log/1947c332-88b0-11f1-ab0a-48b02df90897/roslaunch-ubuntu-40422.log
+I20260726 14:06:48.644124 46227 astar_polyline_planner.cpp:46] AStarPolyline: base poses=65, polyline vertices=4, dense poses=65
+I20260726 14:06:48.740451 46226 apf_controller.cpp:113] Got new plan
+I20260726 14:07:10.140588 46226 apf_controller.cpp:226] APF approach speed limit: goal_dist=1.14776 m, desired_v=0.199106 m/s, angular_limit=1.49189 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.112525 m/s, wt=0.0131717 rad/s
+I20260726 14:07:10.140775 46226 apf_controller.cpp:298] APF approach wheel limit: goal_dist=1.14776 m, wheel_limit=0.179612 m/s, raw_l=0.0470609 raw_r=0.277988 scale=0.646115 cmd_v=0.10501 cmd_w=0.331568
+I20260726 14:07:10.140810 46226 apf_controller.cpp:308] APF_TERMINAL_DECEL_START: stamp=1.78505e+09 goal_dist=1.14776 slowdown_start_dist=1.15 force_slowdown_dist=0.75 current_vt=0.112525 current_wt=0.0131717 desired_v=0.199106 cmd_v=0.10501 cmd_w=0.331568
+I20260726 14:07:11.140602 46226 apf_controller.cpp:226] APF approach speed limit: goal_dist=1.05475 m, desired_v=0.161899 m/s, angular_limit=1.15471 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.10687 m/s, wt=0.0393927 rad/s
+I20260726 14:07:11.140784 46226 apf_controller.cpp:298] APF approach wheel limit: goal_dist=1.05475 m, wheel_limit=0.16349 m/s, raw_l=0.0355066 raw_r=0.278233 scale=0.587599 cmd_v=0.0921766 cmd_w=0.316946
+I20260726 14:07:12.140532 46226 apf_controller.cpp:226] APF approach speed limit: goal_dist=0.954495 m, desired_v=0.121798 m/s, angular_limit=0.791294 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0890378 m/s, wt=0.0552883 rad/s
+I20260726 14:07:12.140728 46226 apf_controller.cpp:298] APF approach wheel limit: goal_dist=0.954495 m, wheel_limit=0.146112 m/s, raw_l=-0.00314195 raw_r=0.246738 scale=0.592177 cmd_v=0.0721259 cmd_w=0.328829
+I20260726 14:07:13.140527 46226 apf_controller.cpp:226] APF approach speed limit: goal_dist=0.877132 m, desired_v=0.0908528 m/s, angular_limit=0.510854 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.102321 m/s, wt=0.0397202 rad/s
+I20260726 14:07:13.540540 46226 apf_controller.cpp:298] APF approach wheel limit: goal_dist=0.84676 m, wheel_limit=0.127438 m/s, raw_l=0.168874 raw_r=-0.0114658 scale=0.754637 cmd_v=0.0593929 cmd_w=-0.302424
+I20260726 14:07:14.140573 46226 apf_controller.cpp:226] APF approach speed limit: goal_dist=0.784518 m, desired_v=0.0538071 m/s, angular_limit=0.175127 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.106369 m/s, wt=0.0281611 rad/s
+I20260726 14:07:15.140538 46226 apf_controller.cpp:226] APF approach speed limit: goal_dist=0.682912 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0930455 m/s, wt=0.0524893 rad/s
+I20260726 14:07:16.140523 46226 apf_controller.cpp:226] APF approach speed limit: goal_dist=0.587463 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0938581 m/s, wt=0.0588878 rad/s
+I20260726 14:07:17.140537 46226 apf_controller.cpp:226] APF approach speed limit: goal_dist=0.509816 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0934608 m/s, wt=0.0648742 rad/s
+I20260726 14:07:18.140535 46226 apf_controller.cpp:226] APF approach speed limit: goal_dist=0.425655 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0859243 m/s, wt=0.0621676 rad/s
+I20260726 14:07:18.640358 46226 apf_controller.cpp:143] GOAL Reached!
+[0m[INFO] [1785045991.455067232]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1785045991.472912490]: Requesting the map...[0m
+[0m[INFO] [1785045991.778927716]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1785045991.878680853]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1785045991.884751120]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1785045991.890314211]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1785045991.914964243]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1785045991.922475843]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1785045992.043012558]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1785045992.049891285]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1785045992.094588788]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1785045992.168304326]: Created local_planner apf_controller/APFController[0m
+[0m[INFO] [1785045992.661693684]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1785045992.668296311]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1785045992.706962523]: odom received![0m
+... logging to /home/lcy/.ros/log/1947c332-88b0-11f1-ab0a-48b02df90897/roslaunch-ubuntu-46166.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:39753/[0m
+[1mstarted roslaunch server http://ubuntu:33133/[0m
 
 SUMMARY
 ========
@@ -331,7 +161,7 @@ SUMMARY
 PARAMETERS
  * /move_base/PathPlanner/planner_name: astar_polyline
  * /move_base/base_global_planner: path_planner/Path...
- * /move_base/base_local_planner: mpc_controller/MP...
+ * /move_base/base_local_planner: apf_controller/AP...
  * /move_base/conservative_reset_dist: 3.0
  * /move_base/controller_frequency: 10.0
  * /move_base/controller_patience: 15.0
@@ -412,7 +242,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [40474][0m
+[1mprocess[move_base-1]: started with pid [46217][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
