@@ -69,6 +69,7 @@ class SerialBridge:
         self.terminal_reverse_test_angular_threshold = rospy.get_param(
             "~terminal_reverse_test_angular_threshold", 0.10
         )
+        self.new_goal_grace_duration = rospy.get_param("~new_goal_grace_duration", 1.5)
 
         # ── 打开串口（只开一次） ──
         self.ser = serial.Serial(port=port, baudrate=baud, timeout=0.1)
@@ -123,6 +124,7 @@ class SerialBridge:
         self.terminal_brake_active = False
         self.terminal_reverse_test_until = rospy.Time(0)
         self.terminal_reverse_test_completed = False
+        self.new_goal_grace_until = rospy.Time(0)
         self.latest_actual_left = None
         self.latest_actual_right = None
         self.latest_actual_v = None
@@ -170,6 +172,14 @@ class SerialBridge:
                     f"r {original_right:.3f}->{v_right:.3f}, 保留输入 v={v:.3f} ω={w:.3f}")
 
         is_zero_cmd = abs(v) < 1e-4 and abs(w) < 1e-4
+        in_new_goal_grace = self._in_new_goal_grace()
+
+        if in_new_goal_grace and self.terminal_stop_latched:
+            rospy.logwarn(
+                f"[bridge] 新goal宽限期内发现旧停车锁存，立即解除，允许命令 v={v:.3f} ω={w:.3f}"
+            )
+            self.terminal_stop_latched = False
+            self.terminal_stop_hold_until = rospy.Time(0)
 
         if self._should_log_terminal_decel_send(v, is_zero_cmd):
             self.terminal_decel_logged = True
@@ -182,7 +192,7 @@ class SerialBridge:
 
         if self._should_start_terminal_reverse_test():
             self._start_terminal_reverse_test(
-                "cmd_vel回调检测到终点减速阶段",
+                "cmd_vel回调检测到终点反刹标志",
                 self.last_cmd_time,
                 v,
                 w,
@@ -231,7 +241,7 @@ class SerialBridge:
                 f"[串口发送] {cmd_str.strip()}")
             return
 
-        should_brake = is_zero_cmd and not self.last_sent_zero
+        should_brake = (not in_new_goal_grace) and is_zero_cmd and not self.last_sent_zero
         if should_brake:
             self.terminal_stop_latched = True
             self.terminal_stop_hold_until = (
@@ -249,14 +259,17 @@ class SerialBridge:
 
     def goal_cb(self, msg):
         self.goal_count += 1
+        now = rospy.Time.now()
+        self.new_goal_grace_until = now + rospy.Duration(self.new_goal_grace_duration)
         if self.terminal_stop_latched:
             rospy.loginfo(
-                f"[bridge] 收到新 goal #{self.goal_count}，解除终点停车锁存，允许重新接收速度命令"
+                f"[bridge] 收到新 goal #{self.goal_count}，解除终点停车锁存，"
+                f"进入{self.new_goal_grace_duration:.1f}s新goal宽限期"
             )
         else:
-            rospy.loginfo_throttle(
-                1.0,
-                f"[bridge] 收到新 goal #{self.goal_count}，当前未锁存"
+            rospy.loginfo(
+                f"[bridge] 收到新 goal #{self.goal_count}，当前未锁存，"
+                f"进入{self.new_goal_grace_duration:.1f}s新goal宽限期"
             )
         self.terminal_stop_latched = False
         self.terminal_stop_hold_until = rospy.Time(0)
@@ -266,7 +279,7 @@ class SerialBridge:
         self.terminal_reverse_test_until = rospy.Time(0)
         self.terminal_reverse_test_completed = False
         self.last_sent_zero = True
-        self.last_zero_send_time = rospy.Time.now()
+        self.last_zero_send_time = now
 
     def wheel_vel_cb(self, msg):
         if len(msg.data) < 4:
@@ -290,6 +303,12 @@ class SerialBridge:
         if not self.terminal_brake_active:
             return
         now = rospy.Time.now()
+        if self._in_new_goal_grace():
+            rospy.logwarn_throttle(
+                0.5,
+                "[bridge] 新goal宽限期内忽略终点反刹标志，避免旧goal停车状态拦截新goal命令"
+            )
+            return
         if self._should_start_terminal_reverse_test():
             self._start_terminal_reverse_test(
                 "收到APF终点反刹标志",
@@ -351,6 +370,8 @@ class SerialBridge:
             return False
         if self.terminal_stop_latched:
             return False
+        if self._in_new_goal_grace():
+            return False
         return self.terminal_brake_active
 
     def _in_terminal_reverse_test(self):
@@ -359,8 +380,19 @@ class SerialBridge:
     def _in_terminal_stop_hold(self):
         return rospy.Time.now() < self.terminal_stop_hold_until
 
+    def _in_new_goal_grace(self):
+        return rospy.Time.now() < self.new_goal_grace_until
+
     def cmd_timeout_cb(self, event):
         now = rospy.Time.now()
+        if self._in_new_goal_grace() and self.terminal_stop_latched:
+            rospy.logwarn_throttle(
+                0.5,
+                "[bridge] 新goal宽限期内解除旧停车锁存，等待新路径/预旋转命令"
+            )
+            self.terminal_stop_latched = False
+            self.terminal_stop_hold_until = rospy.Time(0)
+
         if self._in_terminal_reverse_test():
             cmd_str = self._write_wheel_command(
                 self.terminal_reverse_test_speed,
