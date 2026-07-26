@@ -61,7 +61,7 @@ class SerialBridge:
             "~terminal_reverse_test_speed", -0.10
         )
         self.terminal_reverse_test_duration = rospy.get_param(
-            "~terminal_reverse_test_duration", 3.0
+            "~terminal_reverse_test_duration", 0.5
         )
         self.terminal_reverse_test_linear_threshold = rospy.get_param(
             "~terminal_reverse_test_linear_threshold", 0.045
@@ -100,6 +100,7 @@ class SerialBridge:
         rospy.Subscriber("/goal_rotated", PoseStamped, self.goal_cb, queue_size=1)
         rospy.Subscriber("/wheel_velocities", Float64MultiArray, self.wheel_vel_cb, queue_size=10)
         rospy.Subscriber("/terminal_decel_active", Bool, self.terminal_decel_cb, queue_size=1)
+        rospy.Subscriber("/terminal_brake_active", Bool, self.terminal_brake_cb, queue_size=1)
 
         # ── 解析模式 ──
         # 模式1: ltick:123 rtick:456（read_uart 原格式）
@@ -119,6 +120,7 @@ class SerialBridge:
         self.terminal_stop_latched = False
         self.terminal_decel_logged = False
         self.terminal_decel_active = False
+        self.terminal_brake_active = False
         self.terminal_reverse_test_until = rospy.Time(0)
         self.terminal_reverse_test_completed = False
         self.latest_actual_left = None
@@ -260,6 +262,7 @@ class SerialBridge:
         self.terminal_stop_hold_until = rospy.Time(0)
         self.terminal_decel_logged = False
         self.terminal_decel_active = False
+        self.terminal_brake_active = False
         self.terminal_reverse_test_until = rospy.Time(0)
         self.terminal_reverse_test_completed = False
         self.last_sent_zero = True
@@ -276,12 +279,20 @@ class SerialBridge:
 
     def terminal_decel_cb(self, msg):
         self.terminal_decel_active = msg.data
-        if not self.terminal_decel_active:
+        rospy.loginfo_throttle(
+            1.0,
+            f"[bridge] terminal_decel_active={self.terminal_decel_active} "
+            f"{self._format_latest_actual_wheel_speed()}"
+        )
+
+    def terminal_brake_cb(self, msg):
+        self.terminal_brake_active = msg.data
+        if not self.terminal_brake_active:
             return
         now = rospy.Time.now()
         if self._should_start_terminal_reverse_test():
             self._start_terminal_reverse_test(
-                "收到APF终点减速阶段标志",
+                "收到APF终点反刹标志",
                 now,
                 None,
                 None,
@@ -340,7 +351,7 @@ class SerialBridge:
             return False
         if self.terminal_stop_latched:
             return False
-        return self.terminal_decel_active
+        return self.terminal_brake_active
 
     def _in_terminal_reverse_test(self):
         return rospy.Time.now() < self.terminal_reverse_test_until

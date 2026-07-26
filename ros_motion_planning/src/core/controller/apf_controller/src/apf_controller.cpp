@@ -42,6 +42,7 @@ static constexpr double kApproachDecelIncrement = 0.12;
 static constexpr double kCommandWheelBaseM = 0.45;
 static constexpr double kApproachWheelLimitAtSlowdown = 0.18;
 static constexpr double kApproachWheelLimitNearGoal = 0.05;
+static constexpr double kTerminalBrakeTriggerDist = 0.45;
 
 /**
  * @brief Construct a new APFController object
@@ -50,6 +51,7 @@ APFController::APFController()
   : initialized_(false),
     goal_reached_(false),
     approach_slowdown_active_(false),
+    terminal_brake_active_(false),
     tf_(nullptr) {
 }
 
@@ -90,9 +92,11 @@ void APFController::initialize(std::string name, tf2_ros::Buffer* tf,
     current_pose_pub_ = nh.advertise<geometry_msgs::PoseStamped>("/current_pose", 10);
     potential_map_pub_ = nh.advertise<nav_msgs::OccupancyGrid>("/potential_map", 10);
     terminal_decel_pub_ = nh.advertise<std_msgs::Bool>("/terminal_decel_active", 1, true);
+    terminal_brake_pub_ = nh.advertise<std_msgs::Bool>("/terminal_brake_active", 1, true);
     std_msgs::Bool terminal_decel_msg;
     terminal_decel_msg.data = false;
     terminal_decel_pub_.publish(terminal_decel_msg);
+    terminal_brake_pub_.publish(terminal_decel_msg);
 
     R_INFO << "APF controller initialized!";
   } else {
@@ -116,9 +120,11 @@ bool APFController::setPlan(
 
   R_INFO << "Got new plan";
   approach_slowdown_active_ = false;
+  terminal_brake_active_ = false;
   std_msgs::Bool terminal_decel_msg;
   terminal_decel_msg.data = false;
   terminal_decel_pub_.publish(terminal_decel_msg);
+  terminal_brake_pub_.publish(terminal_decel_msg);
 
   // set new plan
   global_plan_.clear();
@@ -339,6 +345,22 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
     std_msgs::Bool terminal_decel_msg;
     terminal_decel_msg.data = false;
     terminal_decel_pub_.publish(terminal_decel_msg);
+  }
+
+  if (goal_dist <= kTerminalBrakeTriggerDist && !terminal_brake_active_) {
+    terminal_brake_active_ = true;
+    std_msgs::Bool terminal_brake_msg;
+    terminal_brake_msg.data = true;
+    terminal_brake_pub_.publish(terminal_brake_msg);
+    const double cmd_left = cmd_vel.linear.x - cmd_vel.angular.z * kCommandWheelBaseM / 2.0;
+    const double cmd_right = cmd_vel.linear.x + cmd_vel.angular.z * kCommandWheelBaseM / 2.0;
+    R_WARN << "APF_TERMINAL_BRAKE_START: stamp=" << ros::Time::now().toSec()
+           << " goal_dist=" << goal_dist
+           << " brake_trigger_dist=" << kTerminalBrakeTriggerDist
+           << " cmd_v=" << cmd_vel.linear.x
+           << " cmd_w=" << cmd_vel.angular.z
+           << " cmd_l=" << cmd_left
+           << " cmd_r=" << cmd_right;
   }
 
   // visualization

@@ -117,12 +117,14 @@ private:
   bool initialized_;     // initialized flag
   bool goal_reached_;    // goal reached flag
   bool approach_slowdown_active_;
+  bool terminal_brake_active_;
   tf2_ros::Buffer* tf_;  // transform buffer
 
   std::deque<common::geometry::Vec2d> hist_nf_;  // historical net forces
 
   ros::Publisher target_pt_pub_, current_pose_pub_, potential_map_pub_;
   ros::Publisher terminal_decel_pub_;
+  ros::Publisher terminal_brake_pub_;
 
   // goal parameters
   double goal_x_, goal_y_, goal_theta_;
