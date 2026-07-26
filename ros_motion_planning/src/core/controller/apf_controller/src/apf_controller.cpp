@@ -37,7 +37,7 @@ static constexpr double kApproachSlowdownDist = 0.9;
 static constexpr double kApproachForceSlowdownDist = 0.5;
 static constexpr double kApproachStopBufferDist = 0.35;
 static constexpr double kApproachMinLinearVelocity = 0.04;
-static constexpr double kApproachMinAngularVelocity = 0.15;
+static constexpr double kApproachMinAngularVelocity = 0.05;
 static constexpr double kApproachDecelIncrement = 0.12;
 
 /**
