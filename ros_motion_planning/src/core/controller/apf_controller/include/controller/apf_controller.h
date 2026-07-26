@@ -111,6 +111,9 @@ private:
                                           double decel_increment) const;
   double getApproachLinearSpeedLimit(double goal_dist) const;
   double getApproachAngularSpeedLimit(double goal_dist) const;
+  double getCurvatureLinearSpeedLimit(double curvature) const;
+  bool applyWheelSpeedLimit(geometry_msgs::Twist* cmd_vel, double wheel_limit,
+                            const char* reason) const;
 
 private:
   pb::controller::APFController apf_config_;

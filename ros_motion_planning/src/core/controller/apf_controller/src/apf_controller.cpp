@@ -43,6 +43,10 @@ static constexpr double kCommandWheelBaseM = 0.45;
 static constexpr double kApproachWheelLimitAtSlowdown = 0.18;
 static constexpr double kApproachWheelLimitNearGoal = 0.05;
 static constexpr double kTerminalBrakeTriggerDist = 0.45;
+static constexpr double kHardwareWheelSpeedLimit = 0.14;
+static constexpr double kCurveMinLinearVelocity = 0.06;
+static constexpr double kCurveFullSpeedRadius = 1.20;
+static constexpr double kCurveMinSpeedRadius = 0.45;
 
 /**
  * @brief Construct a new APFController object
@@ -231,6 +235,14 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
   const double slowdown_start_dist =
       std::max(kApproachSlowdownDist, force_slowdown_dist + 0.4);
   bool approach_slowdown = goal_dist < slowdown_start_dist;
+  const double curvature_limit = getCurvatureLinearSpeedLimit(kappa);
+  if (curvature_limit < desired_linear_velocity) {
+    desired_linear_velocity = curvature_limit;
+    R_INFO_EVERY(10) << "APF curvature speed limit: kappa=" << kappa
+                     << ", limit_v=" << curvature_limit
+                     << " m/s, lookahead_dist=" << L
+                     << " m, goal_dist=" << goal_dist;
+  }
   double approach_angular_limit = config_.max_angular_velocity();
   if (approach_slowdown) {
     const double approach_limit = getApproachLinearSpeedLimit(goal_dist);
@@ -299,22 +311,10 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
     const double wheel_limit =
         kApproachWheelLimitNearGoal +
         (kApproachWheelLimitAtSlowdown - kApproachWheelLimitNearGoal) * ratio;
-    const double half_base = kCommandWheelBaseM / 2.0;
-    const double left = cmd_vel.linear.x - cmd_vel.angular.z * half_base;
-    const double right = cmd_vel.linear.x + cmd_vel.angular.z * half_base;
-    const double max_wheel = std::max(std::fabs(left), std::fabs(right));
-
-    if (max_wheel > wheel_limit) {
-      const double scale = wheel_limit / std::max(max_wheel, 1e-6);
-      cmd_vel.linear.x *= scale;
-      cmd_vel.angular.z *= scale;
-      R_INFO_EVERY(10) << "APF approach wheel limit: goal_dist=" << goal_dist
-                       << " m, wheel_limit=" << wheel_limit
-                       << " m/s, raw_l=" << left << " raw_r=" << right
-                       << " scale=" << scale << " cmd_v=" << cmd_vel.linear.x
-                       << " cmd_w=" << cmd_vel.angular.z;
-    }
+    applyWheelSpeedLimit(&cmd_vel, wheel_limit, "approach");
   }
+
+  applyWheelSpeedLimit(&cmd_vel, kHardwareWheelSpeedLimit, "hardware");
 
   if (approach_slowdown && !approach_slowdown_active_) {
     approach_slowdown_active_ = true;
@@ -440,6 +440,56 @@ double APFController::getApproachAngularSpeedLimit(double goal_dist) const {
       clamp((goal_dist - force_slowdown_dist) / slow_range, 0.0, 1.0);
   return kApproachMinAngularVelocity +
          (config_.max_angular_velocity() - kApproachMinAngularVelocity) * ratio;
+}
+
+double APFController::getCurvatureLinearSpeedLimit(double curvature) const {
+  const double abs_curvature = std::fabs(curvature);
+  if (abs_curvature < 1e-3) {
+    return config_.max_linear_velocity();
+  }
+
+  const double radius = 1.0 / abs_curvature;
+  if (radius >= kCurveFullSpeedRadius) {
+    return config_.max_linear_velocity();
+  }
+  if (radius <= kCurveMinSpeedRadius) {
+    return kCurveMinLinearVelocity;
+  }
+
+  const double ratio =
+      clamp((radius - kCurveMinSpeedRadius) /
+                std::max(kCurveFullSpeedRadius - kCurveMinSpeedRadius, 1e-3),
+            0.0, 1.0);
+  return kCurveMinLinearVelocity +
+         (config_.max_linear_velocity() - kCurveMinLinearVelocity) * ratio;
+}
+
+bool APFController::applyWheelSpeedLimit(geometry_msgs::Twist* cmd_vel,
+                                         double wheel_limit,
+                                         const char* reason) const {
+  if (cmd_vel == nullptr || wheel_limit <= 0.0) {
+    return false;
+  }
+
+  const double half_base = kCommandWheelBaseM / 2.0;
+  const double left = cmd_vel->linear.x - cmd_vel->angular.z * half_base;
+  const double right = cmd_vel->linear.x + cmd_vel->angular.z * half_base;
+  const double max_wheel = std::max(std::fabs(left), std::fabs(right));
+  if (max_wheel <= wheel_limit) {
+    return false;
+  }
+
+  const double scale = wheel_limit / std::max(max_wheel, 1e-6);
+  cmd_vel->linear.x *= scale;
+  cmd_vel->angular.z *= scale;
+  R_INFO_EVERY(10) << "APF wheel speed limit(" << reason
+                   << "): wheel_limit=" << wheel_limit
+                   << " m/s, raw_l=" << left
+                   << " raw_r=" << right
+                   << " scale=" << scale
+                   << " cmd_v=" << cmd_vel->linear.x
+                   << " cmd_w=" << cmd_vel->angular.z;
+  return true;
 }
 
 /**
