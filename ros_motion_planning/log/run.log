@@ -1,19 +1,19 @@
-=== 启动时间: 2026年 07月 26日 星期日 15:22:45 CST ===
-[15:22:45] [1] main_generate.py start
-[15:22:46] [1] main_generate.py done
-[15:22:46] [2] use_encoder_odom flag set
-[15:22:46] [3] loading robot_description
-[15:22:46] [3] robot_description loaded
-[33m[WARN] [1785050566.854739749]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
-[15:22:49] [4] starting gzserver
-[15:22:55] [4] spawn_model start
-[INFO] [1785050576.993155]: Loading model XML from ros parameter robot_description
-[INFO] [1785050577.001424]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1785050577.007685]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1785050577.602539]: Spawn status: SpawnModel: Successfully spawned entity
-[15:22:58] [4] spawn_model exit=0
-[15:23:10] [8] generating move_base launch file
-[15:23:10] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 07月 26日 星期日 15:41:14 CST ===
+[15:41:14] [1] main_generate.py start
+[15:41:14] [1] main_generate.py done
+[15:41:14] [2] use_encoder_odom flag set
+[15:41:14] [3] loading robot_description
+[15:41:15] [3] robot_description loaded
+[33m[WARN] [1785051675.567759102]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[15:41:18] [4] starting gzserver
+[15:41:24] [4] spawn_model start
+[INFO] [1785051685.700089]: Loading model XML from ros parameter robot_description
+[INFO] [1785051685.708850]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1785051685.714673]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1785051686.300743]: Spawn status: SpawnModel: Successfully spawned entity
+[15:41:27] [4] spawn_model exit=0
+[15:41:39] [8] generating move_base launch file
+[15:41:39] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 apf_controller/APFController
@@ -44,14 +44,14 @@ dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
 global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1785050592.900853871]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1785050592.903016964]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1785051701.731450925]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1785051701.733662646]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260726 15:23:13.432085 91866 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
-I20260726 15:23:13.436375 91866 path_planner_factory.cpp:137] Using path planner: astar_polyline
-[33m[WARN] [1785050593.449463480]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-I20260726 15:23:13.585922 91866 apf_controller.cpp:105] APF controller initialized!
-[15:23:14] [8] move_base 启动后状态:
+I20260726 15:41:42.178781 104586 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
+I20260726 15:41:42.184868 104586 path_planner_factory.cpp:137] Using path planner: astar_polyline
+[33m[WARN] [1785051702.207247089]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260726 15:41:42.372295 104586 apf_controller.cpp:105] APF controller initialized!
+[15:41:43] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -112,291 +112,230 @@ I20260726 15:23:13.585922 91866 apf_controller.cpp:105] APF controller initializ
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-I20260726 15:23:49.168524 91866 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(-3.65043, -2.10112)
-I20260726 15:23:49.178038 91866 astar_polyline_planner.cpp:46] AStarPolyline: base poses=75, polyline vertices=10, dense poses=75
-W20260726 15:23:49.178328 91866 path_planner_node.cpp:215] Path heading change 153.271 deg > 90 deg, accepting new plan for pre-rotation
-I20260726 15:23:49.180598 91866 path_planner_node.cpp:302] PathPlanner make_plan response: poses=75 end=(-3.65043, -2.10112) end_goal_dist=0
-I20260726 15:24:03.000286 91877 astar_polyline_planner.cpp:46] AStarPolyline: base poses=77, polyline vertices=9, dense poses=77
-I20260726 15:24:03.092609 91876 apf_controller.cpp:125] Got new plan
-I20260726 15:24:03.094095 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.210896 raw_r=-0.109479 scale=0.663834 cmd_v=0.0336621 cmd_w=-0.472613
-I20260726 15:24:04.392794 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.00154769 raw_r=0.180611 scale=0.775149 cmd_v=0.0705998 cmd_w=0.308445
-I20260726 15:24:04.492671 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=0, limit_v=0.14 m/s, lookahead_dist=0.25 m, goal_dist=3.912
-I20260726 15:24:05.392685 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.0566105 raw_r=0.183534 scale=0.762802 cmd_v=0.0484087 cmd_w=0.407073
-I20260726 15:24:06.392679 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.0300134 raw_r=0.168578 scale=0.830478 cmd_v=0.0575373 cmd_w=0.366501
-I20260726 15:24:07.692682 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.0432976 raw_r=0.189356 scale=0.739347 cmd_v=0.086006 cmd_w=0.239973
-I20260726 15:24:08.692720 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.086116 raw_r=0.163243 scale=0.85762 cmd_v=0.106927 cmd_w=0.146989
-I20260726 15:24:09.992748 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.151016 raw_r=0.125721 scale=0.927051 cmd_v=0.128275 cmd_w=-0.0521121
-I20260726 15:24:11.392688 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-3.35571, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=3.51655
-I20260726 15:24:12.192687 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.201785 raw_r=0.0782152 scale=0.693808 cmd_v=0.0971332 cmd_w=-0.190519
-I20260726 15:24:13.192696 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.257383 raw_r=0.00554159 scale=0.543937 cmd_v=0.0715071 cmd_w=-0.304413
-I20260726 15:24:14.192687 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.188847 raw_r=0.0645379 scale=0.74134 cmd_v=0.0939223 cmd_w=-0.20479
-I20260726 15:24:15.192723 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.11838 raw_r=0.16162 scale=0.866229 cmd_v=0.121272 cmd_w=0.0832352
-I20260726 15:24:16.192689 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.104939 raw_r=0.175061 scale=0.799722 cmd_v=0.111961 cmd_w=0.124617
-I20260726 15:24:17.192683 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.117227 raw_r=0.162773 scale=0.860094 cmd_v=0.120413 cmd_w=0.0870527
-I20260726 15:24:18.192695 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.139748 raw_r=0.140252 scale=0.998201 cmd_v=0.139748 cmd_w=0.00111911
-I20260726 15:24:19.192682 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.14995 raw_r=0.13005 scale=0.933646 cmd_v=0.13071 cmd_w=-0.041287
-I20260726 15:24:20.192677 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.142591 raw_r=0.137409 scale=0.981832 cmd_v=0.137456 cmd_w=-0.0113047
-I20260726 15:24:21.192688 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.122901 raw_r=0.157099 scale=0.891158 cmd_v=0.124762 cmd_w=0.0677239
-I20260726 15:24:22.192691 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.116785 raw_r=0.163215 scale=0.857762 cmd_v=0.120087 cmd_w=0.0885036
-I20260726 15:24:22.492645 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=0, limit_v=0.14 m/s, lookahead_dist=0.25 m, goal_dist=2.40519
-I20260726 15:24:23.192675 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.119514 raw_r=0.160486 scale=0.872348 cmd_v=0.122129 cmd_w=0.0794278
-I20260726 15:24:24.192677 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.126434 raw_r=0.153566 scale=0.91166 cmd_v=0.127632 cmd_w=0.0549669
-I20260726 15:24:25.192674 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.130196 raw_r=0.149804 scale=0.934557 cmd_v=0.130838 cmd_w=0.0407202
-I20260726 15:24:26.192672 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.127517 raw_r=0.152483 scale=0.918133 cmd_v=0.128539 cmd_w=0.0509392
-I20260726 15:24:27.192683 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.123561 raw_r=0.156439 scale=0.894916 cmd_v=0.125288 cmd_w=0.0653854
-I20260726 15:24:28.192658 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.124021 raw_r=0.155979 scale=0.897556 cmd_v=0.125658 cmd_w=0.0637427
-I20260726 15:24:29.192682 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.125817 raw_r=0.154183 scale=0.908012 cmd_v=0.127122 cmd_w=0.0572367
-I20260726 15:24:30.192667 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.127031 raw_r=0.152969 scale=0.91522 cmd_v=0.128131 cmd_w=0.0527523
-I20260726 15:24:31.192672 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=0, limit_v=0.14 m/s, lookahead_dist=0.25 m, goal_dist=1.47357
-I20260726 15:24:31.192840 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.126842 raw_r=0.153158 scale=0.91409 cmd_v=0.127973 cmd_w=0.0534552
-I20260726 15:24:32.692654 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=1.89878, limit_v=0.0681765 m/s, lookahead_dist=0.25 m, goal_dist=1.32417
-I20260726 15:24:33.192677 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.0927753 raw_r=0.187225 scale=0.747764 cmd_v=0.104687 cmd_w=0.156947
-I20260726 15:24:34.192668 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=2.7012, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.20067
-I20260726 15:24:34.902401 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=1.14202 m, desired_v=0.138005 m/s, angular_limit=1.47107 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0862482 m/s, wt=0.0556989 rad/s
-I20260726 15:24:34.902602 91876 apf_controller.cpp:330] APF_TERMINAL_DECEL_START: stamp=1.78505e+09 goal_dist=1.14202 slowdown_start_dist=1.15 force_slowdown_dist=0.75 current_vt=0.0862482 current_wt=0.0556989 desired_v=0.138005 cmd_v=0.0730049 cmd_w=0.297756 cmd_l=0.00600974 cmd_r=0.14 odom_actual_l=0.0737159 odom_actual_r=0.0987804
-I20260726 15:24:34.992671 91876 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.176833 m/s, raw_l=-0.00493038 raw_r=0.265232 scale=0.666712 cmd_v=0.0867731 cmd_w=0.400268
-I20260726 15:24:35.492676 91876 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.172109 m/s, raw_l=-0.03863 raw_r=0.24775 scale=0.694686 cmd_v=0.0726365 cmd_w=0.442098
-I20260726 15:24:35.792721 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=1.01912, limit_v=0.116666 m/s, lookahead_dist=0.25 m, goal_dist=1.08812
-I20260726 15:24:35.905444 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=1.07986 m, desired_v=0.116666 m/s, angular_limit=1.24575 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0617837 m/s, wt=0.154459 rad/s
-I20260726 15:24:35.992664 91876 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.167843 m/s, raw_l=0.00758818 raw_r=0.215979 scale=0.777125 cmd_v=0.0868699 cmd_w=0.35988
-I20260726 15:24:36.492641 91876 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.159777 m/s, raw_l=-0.0133976 raw_r=0.235063 scale=0.679721 cmd_v=0.0753353 cmd_w=0.375298
-I20260726 15:24:36.911610 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=1.00685 m, desired_v=0.104213 m/s, angular_limit=0.981086 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0606259 m/s, wt=0.151565 rad/s
-I20260726 15:24:36.992710 91876 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.155188 m/s, raw_l=0.016193 raw_r=0.192233 scale=0.80729 cmd_v=0.08413 cmd_w=0.315811
-I20260726 15:24:37.492654 91876 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.148849 m/s, raw_l=-0.00555184 raw_r=0.195692 scale=0.760627 cmd_v=0.0723129 cmd_w=0.340159
-I20260726 15:24:37.911051 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.938306 m, desired_v=0.0870766 m/s, angular_limit=0.732611 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0793404 m/s, wt=0.0744801 rad/s
-I20260726 15:24:38.900785 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.849033 m, desired_v=0.0647582 m/s, angular_limit=0.408994 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0892254 m/s, wt=0.0781055 rad/s
-I20260726 15:24:39.904547 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.755911 m, desired_v=0.0414778 m/s, angular_limit=0.0714284 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.100001 m/s, wt=0.0633973 rad/s
-I20260726 15:24:40.902104 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.677226 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0828492 m/s, wt=0.0673377 rad/s
-I20260726 15:24:41.903074 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.586757 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0916089 m/s, wt=0.0779211 rad/s
-I20260726 15:24:42.912954 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.500911 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0848365 m/s, wt=0.0653029 rad/s
-W20260726 15:24:43.692715 91876 apf_controller.cpp:357] APF_TERMINAL_BRAKE_START: stamp=1.78505e+09 goal_dist=0.44561 brake_trigger_dist=0.45 cmd_v=0.04 cmd_w=-0.05 cmd_l=0.05125 cmd_r=0.02875
-I20260726 15:24:43.901963 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.438986 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0438508 m/s, wt=0.0434833 rad/s
-I20260726 15:24:44.907888 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.436677 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0145547 m/s, wt=0.0363869 rad/s
-I20260726 15:24:45.901404 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.425632 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0125607 m/s, wt=0.0314017 rad/s
-I20260726 15:24:46.905834 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.415288 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0093018 m/s, wt=0.0232545 rad/s
-I20260726 15:24:47.921269 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.407012 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.00783628 m/s, wt=0.0195907 rad/s
-I20260726 15:24:48.092648 91876 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.051031 m/s, raw_l=0.05125 raw_r=0.02875 scale=0.995727 cmd_v=0.0398291 cmd_w=-0.0497863
-I20260726 15:24:48.913731 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.400442 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.00659814 m/s, wt=0.0164953 rad/s
-I20260726 15:24:49.192505 91876 apf_controller.cpp:160] GOAL Reached!
-I20260726 15:24:53.417075 91866 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-3.35099, -1.86016) goal=(-2.34514, -0.0854291)
-I20260726 15:24:53.423736 91866 astar_polyline_planner.cpp:46] AStarPolyline: base poses=40, polyline vertices=13, dense poses=40
-I20260726 15:24:53.425509 91866 path_planner_node.cpp:302] PathPlanner make_plan response: poses=40 end=(-2.34514, -0.0854291) end_goal_dist=0
-I20260726 15:25:07.490046 91877 astar_polyline_planner.cpp:46] AStarPolyline: base poses=56, polyline vertices=13, dense poses=56
-I20260726 15:25:07.583657 91876 apf_controller.cpp:125] Got new plan
-I20260726 15:25:07.584054 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.164862 raw_r=0.164862 scale=0.849194 cmd_v=0 cmd_w=0.622222
-I20260726 15:25:08.583842 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.10863 raw_r=0.233398 scale=0.599835 cmd_v=0.0374199 cmd_w=0.455912
-I20260726 15:25:09.583891 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.102206 raw_r=0.237101 scale=0.590466 cmd_v=0.0398253 cmd_w=0.445221
-I20260726 15:25:10.908836 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.196442 raw_r=0.00323206 scale=0.712678 cmd_v=0.0711517 cmd_w=-0.305992
-I20260726 15:25:11.283850 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=0, limit_v=0.14 m/s, lookahead_dist=0.25 m, goal_dist=2.00579
-I20260726 15:25:11.908071 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.213596 raw_r=0.00108541 scale=0.655444 cmd_v=0.0703557 cmd_w=-0.30953
-I20260726 15:25:12.911041 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.216798 raw_r=-0.0474134 scale=0.645761 cmd_v=0.0546911 cmd_w=-0.37915
-I20260726 15:25:13.983866 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.161112 raw_r=0.0822814 scale=0.868963 cmd_v=0.10575 cmd_w=-0.152223
-I20260726 15:25:14.584218 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=5.19213, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.85982
-I20260726 15:25:15.583866 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=3.58897, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.80753
-I20260726 15:25:16.383893 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.0366247 raw_r=0.226035 scale=0.619372 cmd_v=0.0813422 cmd_w=0.260701
-I20260726 15:25:17.383898 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.038838 raw_r=0.247007 scale=0.566785 cmd_v=0.0589936 cmd_w=0.360028
-I20260726 15:25:18.383844 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.0736274 raw_r=0.177581 scale=0.788371 cmd_v=0.0990228 cmd_w=0.182121
-I20260726 15:25:19.383857 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.107984 raw_r=0.166192 scale=0.842401 cmd_v=0.115483 cmd_w=0.108965
-I20260726 15:25:19.683847 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=0, limit_v=0.14 m/s, lookahead_dist=0.25 m, goal_dist=1.58678
-I20260726 15:25:20.383875 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.133443 raw_r=0.146557 scale=0.955262 cmd_v=0.133737 cmd_w=0.027837
-I20260726 15:25:21.383874 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.146821 raw_r=0.133179 scale=0.953543 cmd_v=0.133496 cmd_w=-0.0289063
-I20260726 15:25:22.983860 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-5.65084, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.43226
-I20260726 15:25:23.483857 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.207977 raw_r=0.0463342 scale=0.673152 cmd_v=0.085595 cmd_w=-0.2418
-I20260726 15:25:24.483850 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.263776 raw_r=0.016224 scale=0.530753 cmd_v=0.0743055 cmd_w=-0.291976
-I20260726 15:25:25.483872 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.265417 raw_r=0.00906132 scale=0.527472 cmd_v=0.0723898 cmd_w=-0.30049
-I20260726 15:25:26.484220 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.25377 raw_r=-0.0272243 scale=0.551681 cmd_v=0.0624904 cmd_w=-0.344487
-I20260726 15:25:27.383833 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-9.13561, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.31003
-I20260726 15:25:27.483837 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.207725 raw_r=-0.0877252 scale=0.673967 cmd_v=0.040438 cmd_w=-0.442498
-I20260726 15:25:28.383841 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-2.21507, limit_v=0.0601551 m/s, lookahead_dist=0.25 m, goal_dist=1.2795
-I20260726 15:25:28.983842 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.153913 raw_r=0.0854255 scale=0.909605 cmd_v=0.108852 cmd_w=-0.138437
-I20260726 15:25:29.983846 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.262912 raw_r=-0.00231871 scale=0.532497 cmd_v=0.0693826 cmd_w=-0.313855
-I20260726 15:25:30.983822 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-3.1725, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.16469
-I20260726 15:25:31.383888 91876 apf_controller.cpp:330] APF_TERMINAL_DECEL_START: stamp=1.78505e+09 goal_dist=1.14249 slowdown_start_dist=1.15 force_slowdown_dist=0.75 current_vt=0.0792352 current_wt=-0.114968 desired_v=0.06 cmd_v=0.06 cmd_w=0.0594274 cmd_l=0.0466288 cmd_r=0.0733712 odom_actual_l=0.105103 odom_actual_r=0.0533675
-I20260726 15:25:32.083860 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=1.10715 m, desired_v=0.129287 m/s, angular_limit=1.34466 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0949506 m/s, wt=-0.0706718 rad/s
-I20260726 15:25:32.583837 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-2.06717, limit_v=0.0636003 m/s, lookahead_dist=0.25 m, goal_dist=1.07122
-I20260726 15:25:33.083843 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=1.04534 m, desired_v=0.0717423 m/s, angular_limit=1.12061 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0746018 m/s, wt=-0.0920202 rad/s
-I20260726 15:25:33.383876 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.147538 raw_r=0.0493577 scale=0.94891 cmd_v=0.093418 cmd_w=-0.207031
-I20260726 15:25:33.583838 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-1.23389, limit_v=0.0984477 m/s, lookahead_dist=0.25 m, goal_dist=1.01844
-I20260726 15:25:33.983831 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.152274 raw_r=0.00602401 scale=0.919396 cmd_v=0.0727692 cmd_w=-0.298803
-I20260726 15:25:34.083863 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.980574 m, desired_v=0.0976435 m/s, angular_limit=0.885831 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0788092 m/s, wt=-0.106946 rad/s
-I20260726 15:25:34.483841 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.1476 raw_r=0.00108313 scale=0.948508 cmd_v=0.0705137 cmd_w=-0.308828
-I20260726 15:25:35.083877 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.926319 m, desired_v=0.0840798 m/s, angular_limit=0.689157 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0718412 m/s, wt=-0.148623 rad/s
-I20260726 15:25:35.084041 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.141229 raw_r=0.010865 scale=0.9913 cmd_v=0.0753852 cmd_w=-0.287177
-I20260726 15:25:35.383864 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-3.62828, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=0.906808
-I20260726 15:25:36.083843 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.858846 m, desired_v=0.06 m/s, angular_limit=0.444565 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0718456 m/s, wt=-0.0922096 rad/s
-I20260726 15:25:36.383970 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-2.62058, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=0.839077
-I20260726 15:25:37.083875 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.792842 m, desired_v=0.0507104 m/s, angular_limit=0.205301 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0620984 m/s, wt=-0.131435 rad/s
-I20260726 15:25:38.083827 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.737851 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0680713 m/s, wt=-0.0981472 rad/s
-I20260726 15:25:39.083845 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.67653 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0569011 m/s, wt=-0.072919 rad/s
-I20260726 15:25:40.083861 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.618438 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0553224 m/s, wt=-0.0662559 rad/s
-I20260726 15:25:41.084015 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.571121 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0563644 m/s, wt=-0.0646716 rad/s
-I20260726 15:25:42.083832 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.518249 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0484484 m/s, wt=-0.0321044 rad/s
-I20260726 15:25:42.908906 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-6.29064, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=0.474773
-I20260726 15:25:43.083854 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.467551 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0485293 m/s, wt=-0.020026 rad/s
-W20260726 15:25:43.583892 91876 apf_controller.cpp:357] APF_TERMINAL_BRAKE_START: stamp=1.78505e+09 goal_dist=0.446366 brake_trigger_dist=0.45 cmd_v=0.04 cmd_w=0.05 cmd_l=0.02875 cmd_r=0.05125
-I20260726 15:25:43.903756 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-6.29064, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=0.442901
-I20260726 15:25:44.083837 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.447274 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.029868 m/s, wt=-0.003397 rad/s
-I20260726 15:25:45.714545 91866 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-2.79357, -0.0232944) goal=(-1.1483, -0.048722)
-I20260726 15:25:45.718044 91866 astar_polyline_planner.cpp:46] AStarPolyline: base poses=62, polyline vertices=22, dense poses=62
-I20260726 15:25:45.719460 91866 path_planner_node.cpp:302] PathPlanner make_plan response: poses=62 end=(-1.1483, -0.048722) end_goal_dist=0
-I20260726 15:25:54.521852 91866 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-2.77931, -0.0231846) goal=(-1.07812, -0.0976639)
-I20260726 15:25:54.525815 91866 astar_polyline_planner.cpp:46] AStarPolyline: base poses=61, polyline vertices=27, dense poses=61
-I20260726 15:25:54.527594 91866 path_planner_node.cpp:302] PathPlanner make_plan response: poses=61 end=(-1.07812, -0.0976639) end_goal_dist=0
-I20260726 15:25:59.524515 91866 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-2.75955, -0.0249967) goal=(-1.13054, -0.110762)
-I20260726 15:25:59.527503 91866 astar_polyline_planner.cpp:46] AStarPolyline: base poses=60, polyline vertices=20, dense poses=60
-I20260726 15:25:59.528784 91866 path_planner_node.cpp:302] PathPlanner make_plan response: poses=60 end=(-1.13054, -0.110762) end_goal_dist=0
-I20260726 15:26:04.691432 91866 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-2.74156, -0.0294026) goal=(-1.13464, -0.0726819)
-I20260726 15:26:04.694404 91866 astar_polyline_planner.cpp:46] AStarPolyline: base poses=60, polyline vertices=23, dense poses=60
-I20260726 15:26:04.695676 91866 path_planner_node.cpp:302] PathPlanner make_plan response: poses=60 end=(-1.13464, -0.0726819) end_goal_dist=0
-I20260726 15:26:07.616300 91866 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-2.73009, -0.0344657) goal=(-1.59403, -1.84917)
-I20260726 15:26:07.617657 91866 astar_polyline_planner.cpp:46] AStarPolyline: base poses=39, polyline vertices=14, dense poses=39
-I20260726 15:26:07.618913 91866 path_planner_node.cpp:302] PathPlanner make_plan response: poses=39 end=(-1.59403, -1.84917) end_goal_dist=0
-I20260726 15:26:08.857838 91877 astar_polyline_planner.cpp:46] AStarPolyline: base poses=39, polyline vertices=13, dense poses=39
-I20260726 15:26:08.956521 91876 apf_controller.cpp:125] Got new plan
-I20260726 15:26:09.056890 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-2.44147, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=2.13674
-I20260726 15:26:09.856699 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.0611627 raw_r=0.181163 scale=0.772786 cmd_v=0.0463672 cmd_w=0.416146
-I20260726 15:26:10.056733 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-2.44147, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=2.12954
-I20260726 15:26:11.056710 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-2.44147, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=2.11198
-I20260726 15:26:11.956697 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.151486 raw_r=0.0520591 scale=0.924176 cmd_v=0.0940559 cmd_w=-0.204196
-I20260726 15:26:13.756186 91866 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-2.6175, -0.102937) goal=(-1.09268, -0.111519)
-I20260726 15:26:13.759121 91866 astar_polyline_planner.cpp:46] AStarPolyline: base poses=57, polyline vertices=19, dense poses=57
-I20260726 15:26:13.760507 91866 path_planner_node.cpp:302] PathPlanner make_plan response: poses=57 end=(-1.09268, -0.111519) end_goal_dist=0
-I20260726 15:26:15.171702 91877 astar_polyline_planner.cpp:46] AStarPolyline: base poses=57, polyline vertices=16, dense poses=57
-I20260726 15:26:15.269042 91876 apf_controller.cpp:125] Got new plan
-I20260726 15:26:16.469241 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.146765 raw_r=0.0689273 scale=0.953904 cmd_v=0.102875 cmd_w=-0.165
-I20260726 15:26:17.469247 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.188153 raw_r=0.0310367 scale=0.744077 cmd_v=0.0815469 cmd_w=-0.259792
-I20260726 15:26:18.469238 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.15627 raw_r=0.0847574 scale=0.895883 cmd_v=0.107966 cmd_w=-0.142372
-I20260726 15:26:19.869239 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-4.96436, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.35034
-I20260726 15:26:20.869237 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-1.8258, limit_v=0.0704219 m/s, lookahead_dist=0.25 m, goal_dist=1.32491
-I20260726 15:26:20.969233 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.142657 raw_r=-0.00181318 scale=0.981375 cmd_v=0.0691103 cmd_w=-0.315065
-I20260726 15:26:21.969234 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.243846 raw_r=0.00221286 scale=0.574132 cmd_v=0.0706352 cmd_w=-0.308288
-I20260726 15:26:22.969262 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.187925 raw_r=0.0684246 scale=0.744976 cmd_v=0.0954873 cmd_w=-0.197834
-I20260726 15:26:23.969218 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.155556 raw_r=0.118675 scale=0.899997 cmd_v=0.123404 cmd_w=-0.0737613
-I20260726 15:26:24.969241 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.126981 raw_r=0.153019 scale=0.914921 cmd_v=0.128089 cmd_w=0.0529381
-I20260726 15:26:25.369416 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=3.4759, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.34844
-I20260726 15:26:26.369238 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=1.11325, limit_v=0.107816 m/s, lookahead_dist=0.25 m, goal_dist=1.37343
-I20260726 15:26:27.369344 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=2.58801, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.40175
-I20260726 15:26:27.469463 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.0424279 raw_r=0.162428 scale=0.861921 cmd_v=0.0517152 cmd_w=0.392377
-I20260726 15:26:28.369660 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=1.46811, limit_v=0.0846556 m/s, lookahead_dist=0.25 m, goal_dist=1.42252
-I20260726 15:26:28.969307 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.0206189 raw_r=0.142381 scale=0.983279 cmd_v=0.059863 cmd_w=0.356165
-I20260726 15:26:29.369233 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=2.18217, limit_v=0.0608809 m/s, lookahead_dist=0.25 m, goal_dist=1.43707
-I20260726 15:26:31.069231 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-6.63264e-05 raw_r=0.26197 scale=0.534412 cmd_v=0.0699823 cmd_w=0.31119
-I20260726 15:26:31.569221 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=12.8232, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.4627
-I20260726 15:26:32.069212 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.087102 raw_r=0.207102 scale=0.675995 cmd_v=0.0405597 cmd_w=0.441957
-I20260726 15:26:33.069212 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.0429463 raw_r=0.250179 scale=0.5596 cmd_v=0.0579836 cmd_w=0.364517
-I20260726 15:26:34.069254 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.046679 raw_r=0.249466 scale=0.561199 cmd_v=0.0569019 cmd_w=0.369325
-I20260726 15:26:35.069240 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.0484405 raw_r=0.249269 scale=0.561642 cmd_v=0.0563969 cmd_w=0.371569
-I20260726 15:26:35.869197 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=0, limit_v=0.14 m/s, lookahead_dist=0.25 m, goal_dist=1.42538
-I20260726 15:26:36.069217 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.0509864 raw_r=0.247985 scale=0.56455 cmd_v=0.0556078 cmd_w=0.375076
-I20260726 15:26:37.069212 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.0535772 raw_r=0.247409 scale=0.565865 cmd_v=0.0548413 cmd_w=0.378483
-I20260726 15:26:38.069216 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.00141931 raw_r=0.190678 scale=0.734222 cmd_v=0.070521 cmd_w=0.308795
-I20260726 15:26:39.469292 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=1.28692, limit_v=0.0948855 m/s, lookahead_dist=0.25 m, goal_dist=1.28609
-I20260726 15:26:40.169232 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.0130783 raw_r=0.251962 scale=0.555639 cmd_v=0.0736334 cmd_w=0.294963
-I20260726 15:26:41.069216 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=4.3364, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.20382
-I20260726 15:26:41.969219 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.0536904 raw_r=0.17369 scale=0.806032 cmd_v=0.0483619 cmd_w=0.40728
-I20260726 15:26:42.069217 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=2.37931, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.1477
-I20260726 15:26:42.069413 91876 apf_controller.cpp:330] APF_TERMINAL_DECEL_START: stamp=1.78505e+09 goal_dist=1.1477 slowdown_start_dist=1.15 force_slowdown_dist=0.75 current_vt=0.051357 current_wt=0.156319 desired_v=0.06 cmd_v=0.052736 cmd_w=0.38784 cmd_l=-0.034528 cmd_r=0.14 odom_actual_l=0.0161852 odom_actual_r=0.0865287
-I20260726 15:26:42.369231 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=1.13409 m, desired_v=0.136023 m/s, angular_limit=1.44233 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0541739 m/s, wt=0.149998 rad/s
-I20260726 15:26:42.669246 91876 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.173754 m/s, raw_l=0.0116575 raw_r=0.24216 scale=0.717518 cmd_v=0.0910592 cmd_w=0.367532
-I20260726 15:26:43.169220 91876 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.169055 m/s, raw_l=-0.038439 raw_r=0.251612 scale=0.671889 cmd_v=0.0716143 cmd_w=0.433071
-I20260726 15:26:43.369382 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=1.07311 m, desired_v=0.120778 m/s, angular_limit=1.22128 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0493493 m/s, wt=0.163858 rad/s
-I20260726 15:26:43.669219 91876 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.164178 m/s, raw_l=0.0361284 raw_r=0.170233 scale=0.964433 cmd_v=0.0995107 cmd_w=0.28741
-I20260726 15:26:44.169394 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.047167 raw_r=0.158984 scale=0.880593 cmd_v=0.0907674 cmd_w=0.218811
-I20260726 15:26:44.369223 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=1.01779 m, desired_v=0.106948 m/s, angular_limit=1.02075 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0756397 m/s, wt=0.0980433 rad/s
-I20260726 15:26:44.669236 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.0225684 raw_r=0.153336 scale=0.91303 cmd_v=0.0803028 cmd_w=0.265321
-I20260726 15:26:45.369239 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.942531 m, desired_v=0.0881328 m/s, angular_limit=0.747925 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.075089 m/s, wt=0.0969376 rad/s
-I20260726 15:26:46.369203 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.858108 m, desired_v=0.067027 m/s, angular_limit=0.441891 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0843078 m/s, wt=0.0742724 rad/s
-I20260726 15:26:47.369225 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.789768 m, desired_v=0.049942 m/s, angular_limit=0.194158 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.046879 m/s, wt=-0.0559136 rad/s
-I20260726 15:26:48.369212 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.703286 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0772959 m/s, wt=0.0580253 rad/s
-I20260726 15:26:49.369210 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.625815 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0693568 m/s, wt=0.0401827 rad/s
-I20260726 15:26:50.369205 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.565305 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.064422 m/s, wt=0.0264899 rad/s
-I20260726 15:26:51.369246 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.500906 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0584334 m/s, wt=0.0170829 rad/s
-W20260726 15:26:52.269264 91876 apf_controller.cpp:357] APF_TERMINAL_BRAKE_START: stamp=1.78505e+09 goal_dist=0.449847 brake_trigger_dist=0.45 cmd_v=0.04 cmd_w=-0.05 cmd_l=0.05125 cmd_r=0.02875
-I20260726 15:26:52.369249 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.441737 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0546425 m/s, wt=0.00663387 rad/s
-I20260726 15:26:53.369220 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.449289 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.00488721 m/s, wt=0.012218 rad/s
-I20260726 15:26:54.369213 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.447978 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0 m/s, wt=0 rad/s
-I20260726 15:26:54.569329 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=0, limit_v=0.14 m/s, lookahead_dist=0.25 m, goal_dist=0.447976
-I20260726 15:26:55.369997 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.447974 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0 m/s, wt=0 rad/s
-I20260726 15:26:56.369256 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.447972 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0 m/s, wt=0 rad/s
-I20260726 15:26:57.369212 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.447957 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0 m/s, wt=0 rad/s
-I20260726 15:26:58.369187 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.447957 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0 m/s, wt=0 rad/s
-I20260726 15:26:59.369206 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.447957 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0 m/s, wt=0 rad/s
-I20260726 15:27:00.369212 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.447957 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0 m/s, wt=0 rad/s
-[31m[ERROR] [1785050820.769133709]: Aborting because the robot appears to be oscillating over and over. Even after executing all recovery behaviors[0m
-I20260726 15:27:01.823892 91866 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.24715, -0.531999) goal=(0.542317, -0.696501)
-I20260726 15:27:01.828020 91866 astar_polyline_planner.cpp:46] AStarPolyline: base poses=37, polyline vertices=10, dense poses=37
-I20260726 15:27:01.830425 91866 path_planner_node.cpp:302] PathPlanner make_plan response: poses=37 end=(0.542317, -0.696501) end_goal_dist=0
-I20260726 15:27:05.986788 91877 astar_polyline_planner.cpp:46] AStarPolyline: base poses=36, polyline vertices=8, dense poses=36
-I20260726 15:27:06.084800 91876 apf_controller.cpp:125] Got new plan
-I20260726 15:27:06.785025 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.151899 raw_r=0.000573813 scale=0.921663 cmd_v=0.0702644 cmd_w=-0.309936
-I20260726 15:27:08.085008 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-5.51329, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.74013
-I20260726 15:27:09.985044 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-2.22978, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.67537
-I20260726 15:27:10.985100 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-3.98881, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.63695
-I20260726 15:27:11.785013 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.168092 raw_r=0.0507499 scale=0.832876 cmd_v=0.0911342 cmd_w=-0.217181
-I20260726 15:27:12.785012 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.195782 raw_r=0.00685071 scale=0.715081 cmd_v=0.0724494 cmd_w=-0.300225
-I20260726 15:27:13.785012 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.205589 raw_r=0.0346643 scale=0.680969 cmd_v=0.0818026 cmd_w=-0.258655
-I20260726 15:27:14.785017 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.149866 raw_r=0.104329 scale=0.934168 cmd_v=0.11873 cmd_w=-0.0945314
-I20260726 15:27:15.785014 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.132456 raw_r=0.147544 scale=0.948869 cmd_v=0.132842 cmd_w=0.0318146
-I20260726 15:27:16.185168 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=0, limit_v=0.14 m/s, lookahead_dist=0.25 m, goal_dist=1.34054
-I20260726 15:27:16.785012 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.138093 raw_r=0.141907 scale=0.986562 cmd_v=0.138119 cmd_w=0.00836158
-I20260726 15:27:18.085062 91876 apf_controller.cpp:241] APF curvature speed limit: kappa=-5.04719, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.17156
-I20260726 15:27:18.385069 91876 apf_controller.cpp:330] APF_TERMINAL_DECEL_START: stamp=1.78505e+09 goal_dist=1.14883 slowdown_start_dist=1.15 force_slowdown_dist=0.75 current_vt=0.0829201 current_wt=-0.0490635 desired_v=0.139707 cmd_v=0.0933319 cmd_w=-0.207414 cmd_l=0.14 cmd_r=0.0466637 odom_actual_l=0.0939593 odom_actual_r=0.0718808
-I20260726 15:27:18.685009 91876 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.175766 m/s, raw_l=0.261451 raw_r=0.00633524 scale=0.67227 cmd_v=0.0900125 cmd_w=-0.381127
-I20260726 15:27:18.985004 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=1.10219 m, desired_v=0.128047 m/s, angular_limit=1.32668 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0781529 m/s, wt=-0.0746294 rad/s
-I20260726 15:27:19.185010 91876 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.169735 m/s, raw_l=0.257326 raw_r=-0.00693485 scale=0.659614 cmd_v=0.0825806 cmd_w=-0.387355
-I20260726 15:27:19.685011 91876 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.163961 m/s, raw_l=0.255744 raw_r=-0.0363916 scale=0.641115 cmd_v=0.0703152 cmd_w=-0.416206
-I20260726 15:27:19.985033 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=1.04023 m, desired_v=0.112557 m/s, angular_limit=1.10208 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0625074 m/s, wt=-0.156268 rad/s
-I20260726 15:27:20.185014 91876 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.159456 m/s, raw_l=0.256001 raw_r=-0.0363198 scale=0.622874 cmd_v=0.0684168 cmd_w=-0.40462
-I20260726 15:27:20.685005 91876 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.154813 m/s, raw_l=0.197965 raw_r=0.0093814 scale=0.782025 cmd_v=0.0810749 cmd_w=-0.327726
-I20260726 15:27:20.985035 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.981809 m, desired_v=0.0979523 m/s, angular_limit=0.890309 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0893019 m/s, wt=-0.0923396 rad/s
-I20260726 15:27:21.285009 91876 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.146356 raw_r=0.0282671 scale=0.956572 cmd_v=0.0835197 cmd_w=-0.251023
-I20260726 15:27:21.985018 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.892582 m, desired_v=0.0756456 m/s, angular_limit=0.566861 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0802907 m/s, wt=-0.0820906 rad/s
-I20260726 15:27:22.985008 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.806795 m, desired_v=0.0541987 m/s, angular_limit=0.255881 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0777349 m/s, wt=-0.03917 rad/s
-I20260726 15:27:23.985080 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.739682 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0725605 m/s, wt=-0.0255881 rad/s
-I20260726 15:27:24.985021 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.670659 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0588978 m/s, wt=-0.0187609 rad/s
-I20260726 15:27:25.985023 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.607252 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0598203 m/s, wt=-0.00704075 rad/s
-I20260726 15:27:26.984995 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.556674 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0563943 m/s, wt=-0.00238516 rad/s
-I20260726 15:27:27.985013 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.501171 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0474751 m/s, wt=0.00499182 rad/s
-I20260726 15:27:28.984992 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.448409 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0486472 m/s, wt=-0.000252582 rad/s
-W20260726 15:27:28.985203 91876 apf_controller.cpp:357] APF_TERMINAL_BRAKE_START: stamp=1.78505e+09 goal_dist=0.448409 brake_trigger_dist=0.45 cmd_v=0.04 cmd_w=-0.0364229 cmd_l=0.0481952 cmd_r=0.0318048
-I20260726 15:27:29.984985 91876 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.455733 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.00150403 m/s, wt=0.00376007 rad/s
-I20260726 15:27:31.594869 91866 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0.151759, -0.463365) goal=(-3.38221, -1.76925)
-I20260726 15:27:31.603354 91866 astar_polyline_planner.cpp:46] AStarPolyline: base poses=72, polyline vertices=8, dense poses=72
-W20260726 15:27:31.603547 91866 path_planner_node.cpp:215] Path heading change 133.835 deg > 90 deg, accepting new plan for pre-rotation
-I20260726 15:27:31.604813 91866 path_planner_node.cpp:302] PathPlanner make_plan response: poses=72 end=(-3.38221, -1.76925) end_goal_dist=0
-I20260726 15:27:37.552888 91866 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0.164996, -0.471117) goal=(-3.34801, -1.72241)
-I20260726 15:27:37.560227 91866 astar_polyline_planner.cpp:46] AStarPolyline: base poses=71, polyline vertices=11, dense poses=71
-W20260726 15:27:37.560417 91866 path_planner_node.cpp:215] Path heading change 136.493 deg > 90 deg, accepting new plan for pre-rotation
-I20260726 15:27:37.562103 91866 path_planner_node.cpp:302] PathPlanner make_plan response: poses=71 end=(-3.34801, -1.72241) end_goal_dist=0
-I20260726 15:27:42.263005 91866 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0.178376, -0.480707) goal=(-3.31858, -1.68026)
-I20260726 15:27:42.271317 91866 astar_polyline_planner.cpp:46] AStarPolyline: base poses=71, polyline vertices=11, dense poses=71
-W20260726 15:27:42.271504 91866 path_planner_node.cpp:215] Path heading change 139.271 deg > 90 deg, accepting new plan for pre-rotation
-I20260726 15:27:42.273593 91866 path_planner_node.cpp:302] PathPlanner make_plan response: poses=71 end=(-3.31858, -1.68026) end_goal_dist=0
-I20260726 15:27:45.874912 91866 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0.188638, -0.489858) goal=(-3.28962, -1.65706)
-I20260726 15:27:45.882490 91866 astar_polyline_planner.cpp:46] AStarPolyline: base poses=70, polyline vertices=13, dense poses=70
-W20260726 15:27:45.882644 91866 path_planner_node.cpp:215] Path heading change 141.665 deg > 90 deg, accepting new plan for pre-rotation
-I20260726 15:27:45.884142 91866 path_planner_node.cpp:302] PathPlanner make_plan response: poses=70 end=(-3.28962, -1.65706) end_goal_dist=0
-[0m[INFO] [1785050592.904108959]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1785050592.915606588]: Requesting the map...[0m
-[0m[INFO] [1785050593.221185573]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1785050593.320908554]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1785050593.327750259]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1785050593.335964094]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1785050593.371014562]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1785050593.378609182]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1785050593.450963357]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1785050593.454328304]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1785050593.494896988]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1785050593.579287397]: Created local_planner apf_controller/APFController[0m
-[0m[INFO] [1785050594.075784199]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1785050594.083086300]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1785050594.141916077]: odom received![0m
-... logging to /home/lcy/.ros/log/1947c332-88b0-11f1-ab0a-48b02df90897/roslaunch-ubuntu-91815.log
+I20260726 15:41:45.225173 104586 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(-3.3754, -1.80951)
+I20260726 15:41:45.238698 104586 astar_polyline_planner.cpp:46] AStarPolyline: base poses=69, polyline vertices=13, dense poses=69
+W20260726 15:41:45.239219 104586 path_planner_node.cpp:215] Path heading change 152.823 deg > 90 deg, accepting new plan for pre-rotation
+I20260726 15:41:45.243574 104586 path_planner_node.cpp:302] PathPlanner make_plan response: poses=69 end=(-3.3754, -1.80951) end_goal_dist=0
+I20260726 15:41:58.551966 104596 astar_polyline_planner.cpp:46] AStarPolyline: base poses=71, polyline vertices=9, dense poses=71
+I20260726 15:41:58.645296 104595 apf_controller.cpp:125] Got new plan
+I20260726 15:41:58.647533 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.211189 raw_r=-0.109921 scale=0.662912 cmd_v=0.0335659 cmd_w=-0.473041
+I20260726 15:41:59.045341 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=0, limit_v=0.14 m/s, lookahead_dist=0.25 m, goal_dist=3.57742
+I20260726 15:41:59.945636 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.0016415 raw_r=0.180742 scale=0.774586 cmd_v=0.0706357 cmd_w=0.308286
+I20260726 15:42:00.945350 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.0566856 raw_r=0.183266 scale=0.763919 cmd_v=0.0483484 cmd_w=0.40734
+I20260726 15:42:01.945341 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.0144288 raw_r=0.154349 scale=0.907038 cmd_v=0.0634563 cmd_w=0.340194
+I20260726 15:42:03.045356 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.0236588 raw_r=0.19969 scale=0.701087 cmd_v=0.0782934 cmd_w=0.274251
+I20260726 15:42:04.045368 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.0775921 raw_r=0.152436 scale=0.918419 cmd_v=0.105631 cmd_w=0.152751
+I20260726 15:42:05.845320 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=-3.88328, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=3.26535
+I20260726 15:42:06.445362 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.195605 raw_r=0.0682958 scale=0.715727 cmd_v=0.0944406 cmd_w=-0.202486
+I20260726 15:42:07.445369 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.251915 raw_r=0.00187284 scale=0.555743 cmd_v=0.0705204 cmd_w=-0.308798
+I20260726 15:42:08.445363 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.20478 raw_r=0.0648574 scale=0.683661 cmd_v=0.0921703 cmd_w=-0.212577
+I20260726 15:42:09.445530 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.14268 raw_r=0.134972 scale=0.981215 cmd_v=0.136218 cmd_w=-0.0168082
+I20260726 15:42:09.845319 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=0, limit_v=0.14 m/s, lookahead_dist=0.25 m, goal_dist=2.93546
+I20260726 15:42:10.445381 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.117727 raw_r=0.162273 scale=0.862743 cmd_v=0.120784 cmd_w=0.0854043
+I20260726 15:42:11.445349 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.122843 raw_r=0.157157 scale=0.890827 cmd_v=0.124716 cmd_w=0.0679299
+I20260726 15:42:12.445433 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.134248 raw_r=0.145752 scale=0.960538 cmd_v=0.134475 cmd_w=0.0245544
+I20260726 15:42:13.445363 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.139443 raw_r=0.140557 scale=0.99604 cmd_v=0.139446 cmd_w=0.00246424
+I20260726 15:42:14.445348 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.135274 raw_r=0.144726 scale=0.967344 cmd_v=0.135428 cmd_w=0.020319
+I20260726 15:42:15.445363 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.123644 raw_r=0.156356 scale=0.895391 cmd_v=0.125355 cmd_w=0.0650898
+I20260726 15:42:16.445328 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.118963 raw_r=0.161037 scale=0.869368 cmd_v=0.121712 cmd_w=0.0812821
+I20260726 15:42:17.445415 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.120716 raw_r=0.159284 scale=0.878931 cmd_v=0.12305 cmd_w=0.0753318
+I20260726 15:42:18.445354 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.125917 raw_r=0.154083 scale=0.908601 cmd_v=0.127204 cmd_w=0.0568708
+I20260726 15:42:19.445369 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=0, limit_v=0.14 m/s, lookahead_dist=0.25 m, goal_dist=1.87371
+I20260726 15:42:19.445544 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.127155 raw_r=0.152845 scale=0.915961 cmd_v=0.128234 cmd_w=0.0522912
+I20260726 15:42:20.445317 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.131645 raw_r=0.148355 scale=0.943684 cmd_v=0.132116 cmd_w=0.0350411
+I20260726 15:42:21.445354 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.127028 raw_r=0.152972 scale=0.915199 cmd_v=0.128128 cmd_w=0.0527649
+I20260726 15:42:22.445367 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.122863 raw_r=0.157137 scale=0.890941 cmd_v=0.124732 cmd_w=0.067859
+I20260726 15:42:23.445384 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.123567 raw_r=0.156433 scale=0.894949 cmd_v=0.125293 cmd_w=0.0653649
+I20260726 15:42:24.445417 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.125346 raw_r=0.154654 scale=0.905244 cmd_v=0.126734 cmd_w=0.0589591
+I20260726 15:42:25.445385 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.125186 raw_r=0.154814 scale=0.904312 cmd_v=0.126604 cmd_w=0.0595393
+I20260726 15:42:26.045377 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=1.14565 m, desired_v=0.138914 m/s, angular_limit=1.48425 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.116531 m/s, wt=-0.000914279 rad/s
+I20260726 15:42:26.045584 104595 apf_controller.cpp:330] APF_TERMINAL_DECEL_START: stamp=1.78505e+09 goal_dist=1.14565 slowdown_start_dist=1.15 force_slowdown_dist=0.75 current_vt=0.116531 current_wt=-0.000914279 desired_v=0.138914 cmd_v=0.126759 cmd_w=0.0588506 cmd_l=0.113517 cmd_r=0.14 odom_actual_l=0.116737 odom_actual_r=0.116326
+I20260726 15:42:26.445369 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.116184 raw_r=0.145564 scale=0.961777 cmd_v=0.125872 cmd_w=0.0627929
+I20260726 15:42:27.045356 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=1.05003 m, desired_v=0.115008 m/s, angular_limit=1.13762 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.120424 m/s, wt=0.00101458 rad/s
+I20260726 15:42:28.045351 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=0.849018, limit_v=0.137635 m/s, lookahead_dist=0.25 m, goal_dist=0.942161
+I20260726 15:42:28.045526 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.942161 m, desired_v=0.0880402 m/s, angular_limit=0.746583 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.108941 m/s, wt=0.00852185 rad/s
+I20260726 15:42:29.045358 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.839912 m, desired_v=0.0624781 m/s, angular_limit=0.375932 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.106922 m/s, wt=0.0245906 rad/s
+I20260726 15:42:29.645357 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=4.95417, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=0.800195
+I20260726 15:42:30.045352 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.776756 m, desired_v=0.046689 m/s, angular_limit=0.14699 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.103732 m/s, wt=0.0319632 rad/s
+I20260726 15:42:31.045354 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.685037 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0877213 m/s, wt=0.0545213 rad/s
+I20260726 15:42:32.045346 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.598281 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0932743 m/s, wt=0.0712963 rad/s
+I20260726 15:42:33.045342 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.526445 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0874636 m/s, wt=0.0763447 rad/s
+I20260726 15:42:34.045332 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.446206 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0747787 m/s, wt=0.0687053 rad/s
+I20260726 15:42:34.145393 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=0.892687, limit_v=0.131489 m/s, lookahead_dist=0.25 m, goal_dist=0.43545
+I20260726 15:42:34.845144 104595 apf_controller.cpp:160] GOAL Reached!
+I20260726 15:42:44.761202 104586 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-3.21706, -1.56024) goal=(-1.65573, -2.67382)
+I20260726 15:42:44.765043 104586 astar_polyline_planner.cpp:46] AStarPolyline: base poses=44, polyline vertices=15, dense poses=44
+W20260726 15:42:44.765224 104586 path_planner_node.cpp:215] Path heading change 105.117 deg > 90 deg, accepting new plan for pre-rotation
+I20260726 15:42:44.766600 104586 path_planner_node.cpp:302] PathPlanner make_plan response: poses=44 end=(-1.65573, -2.67382) end_goal_dist=0
+I20260726 15:42:48.640571 104596 astar_polyline_planner.cpp:46] AStarPolyline: base poses=42, polyline vertices=20, dense poses=42
+I20260726 15:42:48.738174 104595 apf_controller.cpp:125] Got new plan
+I20260726 15:42:49.038342 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=4.185, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.91473
+I20260726 15:42:49.538359 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.0237061 raw_r=0.143706 scale=0.97421 cmd_v=0.0584526 cmd_w=0.362433
+I20260726 15:42:50.038375 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=4.185, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.90357
+I20260726 15:42:51.038365 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=6.85411, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.8929
+I20260726 15:42:52.738564 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.0540094 raw_r=0.174009 scale=0.804554 cmd_v=0.0482732 cmd_w=0.407674
+I20260726 15:42:52.938628 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=3.23736, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.85103
+I20260726 15:42:53.938359 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=3.27012, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.82588
+I20260726 15:42:55.238343 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.0387799 raw_r=0.248739 scale=0.562839 cmd_v=0.0590866 cmd_w=0.359615
+I20260726 15:42:56.238363 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.00301007 raw_r=0.227029 scale=0.61666 cmd_v=0.0690719 cmd_w=0.315236
+I20260726 15:42:56.438349 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=1.06656, limit_v=0.11201 m/s, lookahead_dist=0.25 m, goal_dist=1.74282
+I20260726 15:42:57.238375 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.0664986 raw_r=0.182334 scale=0.767822 cmd_v=0.0955295 cmd_w=0.197646
+I20260726 15:42:58.138387 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=0.84436, limit_v=0.138328 m/s, lookahead_dist=0.25 m, goal_dist=1.65344
+I20260726 15:42:58.238350 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.0330129 raw_r=0.215366 scale=0.650057 cmd_v=0.0807301 cmd_w=0.263422
+I20260726 15:42:59.238354 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.0674602 raw_r=0.179872 scale=0.778333 cmd_v=0.0962532 cmd_w=0.19443
+I20260726 15:43:00.238370 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.103008 raw_r=0.159186 scale=0.879472 cmd_v=0.115296 cmd_w=0.109794
+I20260726 15:43:01.238755 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.0958668 raw_r=0.179242 scale=0.781068 cmd_v=0.107439 cmd_w=0.144714
+I20260726 15:43:02.238471 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.119319 raw_r=0.158918 scale=0.880959 cmd_v=0.122558 cmd_w=0.0775212
+I20260726 15:43:03.238349 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.139285 raw_r=0.140715 scale=0.994919 cmd_v=0.139289 cmd_w=0.00316161
+I20260726 15:43:04.238364 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.136611 raw_r=0.143389 scale=0.976367 cmd_v=0.136691 cmd_w=0.0147048
+I20260726 15:43:04.638376 104595 apf_controller.cpp:330] APF_TERMINAL_DECEL_START: stamp=1.78505e+09 goal_dist=1.14909 slowdown_start_dist=1.15 force_slowdown_dist=0.75 current_vt=0.103765 current_wt=0.019331 desired_v=0.139773 cmd_v=0.139773 cmd_w=-5.87021e-05 cmd_l=0.139786 cmd_r=0.13976 odom_actual_l=0.0994158 odom_actual_r=0.108115
+I20260726 15:43:04.838351 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=1.13448 m, desired_v=0.13612 m/s, angular_limit=1.44374 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.108571 m/s, wt=0.0196118 rad/s
+I20260726 15:43:05.338330 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=0.955892, limit_v=0.123589 m/s, lookahead_dist=0.25 m, goal_dist=1.07576
+I20260726 15:43:05.838352 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=1.03191 m, desired_v=0.110478 m/s, angular_limit=1.07193 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.10545 m/s, wt=0.0160001 rad/s
+I20260726 15:43:06.338337 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=1.15183, limit_v=0.104606 m/s, lookahead_dist=0.25 m, goal_dist=0.988606
+I20260726 15:43:06.838366 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.93383 m, desired_v=0.0859574 m/s, angular_limit=0.716382 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.101082 m/s, wt=0.0393461 rad/s
+I20260726 15:43:07.338347 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.00108491 raw_r=0.151581 scale=0.923601 cmd_v=0.070501 cmd_w=0.308884
+I20260726 15:43:07.838361 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=1.78739, limit_v=0.0716774 m/s, lookahead_dist=0.25 m, goal_dist=0.861123
+I20260726 15:43:07.838531 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.861123 m, desired_v=0.0677808 m/s, angular_limit=0.452821 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0930494 m/s, wt=0.0537902 rad/s
+I20260726 15:43:08.838344 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.779824 m, desired_v=0.0474561 m/s, angular_limit=0.158114 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0805322 m/s, wt=0.0807334 rad/s
+I20260726 15:43:09.838368 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.697328 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0837056 m/s, wt=0.0853236 rad/s
+I20260726 15:43:10.838474 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.627475 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0801906 m/s, wt=0.0855581 rad/s
+I20260726 15:43:11.838366 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.54814 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0747406 m/s, wt=0.0796742 rad/s
+I20260726 15:43:12.338323 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=0, limit_v=0.14 m/s, lookahead_dist=0.25 m, goal_dist=0.516021
+I20260726 15:43:12.838339 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.475079 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0703458 m/s, wt=0.0716219 rad/s
+I20260726 15:43:13.838362 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.417563 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0625863 m/s, wt=0.0619685 rad/s
+I20260726 15:43:14.138171 104595 apf_controller.cpp:160] GOAL Reached!
+I20260726 15:43:17.729444 104586 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-2.00152, -2.7413) goal=(-1.05166, -0.0435422)
+I20260726 15:43:17.734961 104586 astar_polyline_planner.cpp:46] AStarPolyline: base poses=55, polyline vertices=6, dense poses=55
+I20260726 15:43:17.736316 104586 path_planner_node.cpp:302] PathPlanner make_plan response: poses=55 end=(-1.05166, -0.0435422) end_goal_dist=0
+I20260726 15:43:22.539280 104596 astar_polyline_planner.cpp:46] AStarPolyline: base poses=55, polyline vertices=3, dense poses=55
+I20260726 15:43:22.633616 104595 apf_controller.cpp:125] Got new plan
+I20260726 15:43:23.733827 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.0904497 raw_r=0.232471 scale=0.602225 cmd_v=0.0427645 cmd_w=0.432158
+I20260726 15:43:25.033784 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.208413 raw_r=0.00395621 scale=0.671742 cmd_v=0.0713288 cmd_w=-0.305205
+I20260726 15:43:26.033867 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.19593 raw_r=0.0337292 scale=0.714542 cmd_v=0.0820505 cmd_w=-0.257553
+I20260726 15:43:27.033950 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.184587 raw_r=0.0403757 scale=0.75845 cmd_v=0.0853115 cmd_w=-0.24306
+I20260726 15:43:28.533787 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.126861 raw_r=0.146061 scale=0.958503 cmd_v=0.130798 cmd_w=0.0408961
+I20260726 15:43:29.533787 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.120041 raw_r=0.159959 scale=0.875227 cmd_v=0.122532 cmd_w=0.0776365
+I20260726 15:43:30.533787 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.133536 raw_r=0.146464 scale=0.955869 cmd_v=0.133822 cmd_w=0.027459
+I20260726 15:43:31.633792 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=1.00681, limit_v=0.117945 m/s, lookahead_dist=0.25 m, goal_dist=2.23308
+I20260726 15:43:32.133785 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.130002 raw_r=0.149998 scale=0.933347 cmd_v=0.130669 cmd_w=0.0414732
+I20260726 15:43:33.133785 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.0975829 raw_r=0.182417 scale=0.767472 cmd_v=0.107446 cmd_w=0.144684
+I20260726 15:43:34.133790 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.113108 raw_r=0.166892 scale=0.838866 cmd_v=0.117441 cmd_w=0.100261
+I20260726 15:43:35.133791 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.133184 raw_r=0.146816 scale=0.953572 cmd_v=0.1335 cmd_w=0.0288883
+I20260726 15:43:36.133798 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.14169 raw_r=0.13831 scale=0.988073 cmd_v=0.13833 cmd_w=-0.00742097
+I20260726 15:43:37.133803 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.132639 raw_r=0.147361 scale=0.950051 cmd_v=0.133007 cmd_w=0.0310794
+I20260726 15:43:38.133766 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.123847 raw_r=0.156153 scale=0.896558 cmd_v=0.125518 cmd_w=0.0643636
+I20260726 15:43:39.133788 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.121128 raw_r=0.158872 scale=0.881215 cmd_v=0.12337 cmd_w=0.0739106
+I20260726 15:43:40.133803 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.125356 raw_r=0.154644 scale=0.905304 cmd_v=0.126743 cmd_w=0.0589222
+I20260726 15:43:41.133805 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.126664 raw_r=0.153336 scale=0.913027 cmd_v=0.127824 cmd_w=0.0541166
+I20260726 15:43:41.533819 104595 apf_controller.cpp:330] APF_TERMINAL_DECEL_START: stamp=1.78505e+09 goal_dist=1.14016 slowdown_start_dist=1.15 force_slowdown_dist=0.75 current_vt=0.112169 current_wt=-0.000534379 desired_v=0.137541 cmd_v=0.127975 cmd_w=0.0534458 cmd_l=0.115949 cmd_r=0.14 odom_actual_l=0.11229 odom_actual_r=0.112049
+I20260726 15:43:41.733777 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=0, limit_v=0.14 m/s, lookahead_dist=0.25 m, goal_dist=1.12315
+I20260726 15:43:42.233807 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=1.05503 m, desired_v=0.116258 m/s, angular_limit=1.15574 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.111714 m/s, wt=0.00167312 rad/s
+I20260726 15:43:43.233773 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.954791 m, desired_v=0.0911977 m/s, angular_limit=0.792366 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.112739 m/s, wt=0.00930247 rad/s
+I20260726 15:43:44.233873 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.839867 m, desired_v=0.0624668 m/s, angular_limit=0.375768 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.111463 m/s, wt=0.0132632 rad/s
+I20260726 15:43:45.233777 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.726433 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.103128 m/s, wt=0.0261821 rad/s
+I20260726 15:43:46.233780 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.638563 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0964857 m/s, wt=0.020711 rad/s
+I20260726 15:43:47.233773 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.547785 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0806611 m/s, wt=0.0100811 rad/s
+I20260726 15:43:48.233775 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.467526 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0724482 m/s, wt=0.000535953 rad/s
+I20260726 15:43:49.233798 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.405346 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0674524 m/s, wt=-0.00337957 rad/s
+I20260726 15:43:49.433652 104595 apf_controller.cpp:160] GOAL Reached!
+I20260726 15:43:56.590896 104586 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.19086, -0.338217) goal=(-3.25599, -0.0293476)
+I20260726 15:43:56.596827 104586 astar_polyline_planner.cpp:46] AStarPolyline: base poses=66, polyline vertices=22, dense poses=66
+W20260726 15:43:56.597010 104586 path_planner_node.cpp:215] Path heading change 103.583 deg > 90 deg, accepting new plan for pre-rotation
+I20260726 15:43:56.598701 104586 path_planner_node.cpp:302] PathPlanner make_plan response: poses=66 end=(-3.25599, -0.0293476) end_goal_dist=0
+I20260726 15:44:11.896023 104596 astar_polyline_planner.cpp:46] AStarPolyline: base poses=66, polyline vertices=25, dense poses=66
+I20260726 15:44:11.988739 104595 apf_controller.cpp:125] Got new plan
+I20260726 15:44:12.188941 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.0765011 raw_r=0.177979 scale=0.786609 cmd_v=0.0399118 cmd_w=0.444836
+I20260726 15:44:13.288934 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=0, limit_v=0.14 m/s, lookahead_dist=0.25 m, goal_dist=2.04987
+I20260726 15:44:13.488919 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.185397 raw_r=-0.0315778 scale=0.755136 cmd_v=0.0580772 cmd_w=-0.364101
+I20260726 15:44:14.788930 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.174395 raw_r=0.0479645 scale=0.802778 cmd_v=0.0892524 cmd_w=-0.225545
+I20260726 15:44:15.788924 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.185536 raw_r=0.0305259 scale=0.754569 cmd_v=0.0815169 cmd_w=-0.259925
+I20260726 15:44:16.788923 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.145977 raw_r=0.10612 scale=0.959057 cmd_v=0.120888 cmd_w=-0.0849436
+I20260726 15:44:18.388916 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.132736 raw_r=0.147264 scale=0.950676 cmd_v=0.133095 cmd_w=0.0306906
+I20260726 15:44:19.689064 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=-6.88819, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=2.07255
+I20260726 15:44:20.388999 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.157643 raw_r=-0.037643 scale=0.888083 cmd_v=0.053285 cmd_w=-0.3854
+I20260726 15:44:20.688922 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=-1.18753, limit_v=0.101822 m/s, lookahead_dist=0.25 m, goal_dist=2.08465
+I20260726 15:44:21.388922 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.246417 raw_r=-0.0390033 scale=0.568143 cmd_v=0.0589203 cmd_w=-0.360354
+I20260726 15:44:21.688913 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=-1.02925, limit_v=0.115635 m/s, lookahead_dist=0.25 m, goal_dist=2.09187
+I20260726 15:44:22.388952 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.222516 raw_r=0.00883032 scale=0.629169 cmd_v=0.0727779 cmd_w=-0.298765
+I20260726 15:44:23.288910 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=-6.18814, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=2.09031
+I20260726 15:44:23.388938 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.189976 raw_r=-0.0699762 scale=0.736934 cmd_v=0.0442161 cmd_w=-0.425706
+I20260726 15:44:24.388947 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.218735 raw_r=-0.0744704 scale=0.640043 cmd_v=0.0461679 cmd_w=-0.417032
+I20260726 15:44:24.788910 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=-1.77386, limit_v=0.0721325 m/s, lookahead_dist=0.25 m, goal_dist=2.07517
+I20260726 15:44:25.388922 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.172587 raw_r=-0.0525865 scale=0.811187 cmd_v=0.0486712 cmd_w=-0.405906
+I20260726 15:44:25.788916 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=-4.84902, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=2.0552
+I20260726 15:44:26.588907 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.25745 raw_r=-0.0404796 scale=0.543794 cmd_v=0.0589937 cmd_w=-0.360028
+I20260726 15:44:27.588920 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.233671 raw_r=0.0143934 scale=0.599133 cmd_v=0.0743118 cmd_w=-0.291948
+I20260726 15:44:28.388916 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=-2.00717, limit_v=0.0651428 m/s, lookahead_dist=0.25 m, goal_dist=1.97139
+I20260726 15:44:29.388937 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=-3.39461, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.92065
+I20260726 15:44:29.988910 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.209074 raw_r=0.0656816 scale=0.66962 cmd_v=0.0919908 cmd_w=-0.213374
+I20260726 15:44:30.988935 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=-4.12849, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.83212
+I20260726 15:44:31.988926 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=-1.06778, limit_v=0.111896 m/s, lookahead_dist=0.25 m, goal_dist=1.78008
+I20260726 15:44:32.088910 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.208773 raw_r=-0.0738821 scale=0.670584 cmd_v=0.0452279 cmd_w=-0.421209
+I20260726 15:44:32.988925 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=-5.68775, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.72633
+I20260726 15:44:33.188917 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.156828 raw_r=-0.0368282 scale=0.892697 cmd_v=0.0535618 cmd_w=-0.38417
+I20260726 15:44:34.588903 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.254981 raw_r=-0.0478287 scale=0.54906 cmd_v=0.0568696 cmd_w=-0.369468
+I20260726 15:44:35.488922 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=-4.874, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.57694
+I20260726 15:44:35.588886 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.207405 raw_r=-0.0874046 scale=0.675009 cmd_v=0.0405005 cmd_w=-0.44222
+I20260726 15:44:36.788897 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.250519 raw_r=-0.0439174 scale=0.558839 cmd_v=0.0577286 cmd_w=-0.365651
+I20260726 15:44:37.788905 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.22762 raw_r=0.0187947 scale=0.615061 cmd_v=0.07578 cmd_w=-0.285422
+I20260726 15:44:38.788911 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.146251 raw_r=0.0959819 scale=0.957256 cmd_v=0.11594 cmd_w=-0.106935
+I20260726 15:44:40.089035 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.136683 raw_r=0.143317 scale=0.976855 cmd_v=0.13676 cmd_w=0.0144016
+I20260726 15:44:40.688920 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=0, limit_v=0.14 m/s, lookahead_dist=0.25 m, goal_dist=1.2415
+I20260726 15:44:41.088902 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=0.113659 raw_r=0.166341 scale=0.841645 cmd_v=0.11783 cmd_w=0.0985318
+I20260726 15:44:41.988920 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=3.99069, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.15234
+I20260726 15:44:42.088944 104595 apf_controller.cpp:330] APF_TERMINAL_DECEL_START: stamp=1.78505e+09 goal_dist=1.14716 slowdown_start_dist=1.15 force_slowdown_dist=0.75 current_vt=0.053482 current_wt=0.101988 desired_v=0.06 cmd_v=0.0536558 cmd_w=0.383752 cmd_l=-0.0326883 cmd_r=0.14 odom_actual_l=0.0305346 odom_actual_r=0.0764293
+I20260726 15:44:42.788911 104595 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.177219 m/s, raw_l=0.0299976 raw_r=0.207793 scale=0.852861 cmd_v=0.101401 cmd_w=0.336966
+I20260726 15:44:42.888952 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=1.1133 m, desired_v=0.130826 m/s, angular_limit=1.36697 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.104444 m/s, wt=-0.0247648 rad/s
+I20260726 15:44:43.288923 104595 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.172973 m/s, raw_l=0.00852357 raw_r=0.238536 scale=0.725142 cmd_v=0.0895768 cmd_w=0.370649
+I20260726 15:44:43.789080 104595 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.170069 m/s, raw_l=-0.00191644 raw_r=0.235367 scale=0.722572 cmd_v=0.0843423 cmd_w=0.381009
+I20260726 15:44:43.888921 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=1.04881 m, desired_v=0.114701 m/s, angular_limit=1.13317 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0868411 m/s, wt=0.0549854 rad/s
+I20260726 15:44:44.288916 104595 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.168069 m/s, raw_l=-0.0381658 raw_r=0.249408 scale=0.673873 cmd_v=0.0711751 cmd_w=0.43064
+I20260726 15:44:44.788944 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=2.83261, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=1.01536
+I20260726 15:44:44.789105 104595 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.165639 m/s, raw_l=-0.0836789 raw_r=0.203679 scale=0.813234 cmd_v=0.048794 cmd_w=0.519309
+I20260726 15:44:44.888912 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=1.01536 m, desired_v=0.06 m/s, angular_limit=1.01194 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0554291 m/s, wt=0.138573 rad/s
+I20260726 15:44:45.288928 104595 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.163661 m/s, raw_l=-0.0854509 raw_r=0.205451 scale=0.796593 cmd_v=0.0477956 cmd_w=0.514956
+I20260726 15:44:45.788923 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=0.934935, limit_v=0.12609 m/s, lookahead_dist=0.25 m, goal_dist=0.977149
+I20260726 15:44:45.789103 104595 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.161563 m/s, raw_l=-0.0480819 raw_r=0.241657 scale=0.668563 cmd_v=0.0647084 cmd_w=0.430463
+I20260726 15:44:45.888886 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.97038 m, desired_v=0.0950949 m/s, angular_limit=0.848876 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0592514 m/s, wt=0.148129 rad/s
+I20260726 15:44:46.288935 104595 apf_controller.cpp:485] APF wheel speed limit(approach): wheel_limit=0.158624 m/s, raw_l=-0.0758047 raw_r=0.214016 scale=0.741176 cmd_v=0.0512195 cmd_w=0.477352
+I20260726 15:44:46.788944 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=1.86788, limit_v=0.0691057 m/s, lookahead_dist=0.25 m, goal_dist=0.928076
+I20260726 15:44:46.789103 104595 apf_controller.cpp:485] APF wheel speed limit(hardware): wheel_limit=0.14 m/s, raw_l=-0.00892788 raw_r=0.147139 scale=0.951479 cmd_v=0.0657527 cmd_w=0.329988
+I20260726 15:44:46.888963 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.920742 m, desired_v=0.0691057 m/s, angular_limit=0.668941 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0593238 m/s, wt=0.148309 rad/s
+I20260726 15:44:47.788950 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=1.21828, limit_v=0.0995555 m/s, lookahead_dist=0.25 m, goal_dist=0.855909
+I20260726 15:44:47.888893 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.855909 m, desired_v=0.0664773 m/s, angular_limit=0.433921 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0813419 m/s, wt=0.0822569 rad/s
+I20260726 15:44:48.888921 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.788313 m, desired_v=0.0495783 m/s, angular_limit=0.188886 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0768493 m/s, wt=0.0800775 rad/s
+I20260726 15:44:49.888892 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.721004 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.067335 m/s, wt=0.0663684 rad/s
+I20260726 15:44:50.188974 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=3.41604, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=0.70308
+I20260726 15:44:50.888888 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.668397 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0620517 m/s, wt=0.0613257 rad/s
+I20260726 15:44:51.189006 104595 apf_controller.cpp:241] APF curvature speed limit: kappa=2.74008, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=0.651788
+I20260726 15:44:51.888897 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.611489 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0565219 m/s, wt=0.0536569 rad/s
+I20260726 15:44:52.888931 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.558441 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0535736 m/s, wt=0.0538221 rad/s
+I20260726 15:44:53.888892 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.515309 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0502777 m/s, wt=0.0418142 rad/s
+I20260726 15:44:54.888887 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.467014 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0492896 m/s, wt=0.0419209 rad/s
+I20260726 15:44:55.888908 104595 apf_controller.cpp:251] APF approach speed limit: goal_dist=0.420595 m, desired_v=0.04 m/s, angular_limit=0.05 rad/s, force_slowdown_dist=0.75 m, slowdown_start_dist=1.15 m, vt=0.0474349 m/s, wt=0.0359019 rad/s
+I20260726 15:44:56.588706 104595 apf_controller.cpp:160] GOAL Reached!
+[0m[INFO] [1785051701.734869181]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1785051701.744850756]: Requesting the map...[0m
+[0m[INFO] [1785051701.948203260]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1785051702.047983930]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1785051702.054586322]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1785051702.059286923]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1785051702.090068858]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1785051702.098650258]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1785051702.210385687]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1785051702.216571682]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1785051702.277179551]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1785051702.364157435]: Created local_planner apf_controller/APFController[0m
+[0m[INFO] [1785051702.861219126]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1785051702.871469093]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1785051702.934916416]: odom received![0m
+... logging to /home/lcy/.ros/log/1947c332-88b0-11f1-ab0a-48b02df90897/roslaunch-ubuntu-104536.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:35113/[0m
+[1mstarted roslaunch server http://ubuntu:42045/[0m
 
 SUMMARY
 ========
@@ -485,7 +424,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [91866][0m
+[1mprocess[move_base-1]: started with pid [104586][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
