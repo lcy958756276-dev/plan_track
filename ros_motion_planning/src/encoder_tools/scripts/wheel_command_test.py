@@ -7,14 +7,14 @@ wheel_command_test.py
 否则两个节点会抢同一个串口。
 
 默认测试序列:
-  1) l:0.000,r:-0.050
-  2) l:-0.050,r:0.000
-  3) l:-0.050,r:-0.050
+  1) l:0.000,r:-0.100
+  2) l:-0.100,r:0.000
+  3) l:-0.100,r:-0.100
   4) l:0.000,r:0.000
 
 用法:
   rosrun encoder_tools wheel_command_test.py
-  rosrun encoder_tools wheel_command_test.py _port:=/dev/ttyTHS0 _speed:=-0.05 _step_duration:=2.0
+  rosrun encoder_tools wheel_command_test.py _port:=/dev/ttyTHS0 _speed:=-0.10 _step_duration:=2.0
 """
 
 import math

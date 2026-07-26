@@ -58,7 +58,7 @@ class SerialBridge:
             "~terminal_reverse_test_enabled", True
         )
         self.terminal_reverse_test_speed = rospy.get_param(
-            "~terminal_reverse_test_speed", -0.05
+            "~terminal_reverse_test_speed", -0.10
         )
         self.terminal_reverse_test_duration = rospy.get_param(
             "~terminal_reverse_test_duration", 3.0
