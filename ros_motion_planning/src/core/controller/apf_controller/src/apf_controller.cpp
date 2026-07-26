@@ -39,6 +39,9 @@ static constexpr double kApproachStopBufferDist = 0.35;
 static constexpr double kApproachMinLinearVelocity = 0.04;
 static constexpr double kApproachMinAngularVelocity = 0.05;
 static constexpr double kApproachDecelIncrement = 0.12;
+static constexpr double kCommandWheelBaseM = 0.45;
+static constexpr double kApproachWheelLimitAtSlowdown = 0.18;
+static constexpr double kApproachWheelLimitNearGoal = 0.05;
 
 /**
  * @brief Construct a new APFController object
@@ -268,6 +271,35 @@ bool APFController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
     cmd_vel.angular.z = angularRegularization(wt, e_theta / control_dt_);
     if (approach_slowdown && std::fabs(cmd_vel.angular.z) > approach_angular_limit) {
       cmd_vel.angular.z = std::copysign(approach_angular_limit, cmd_vel.angular.z);
+    }
+  }
+
+  if (goal_dist <= config_.goal_dist_tolerance()) {
+    cmd_vel.linear.x = 0.0;
+    cmd_vel.angular.z = 0.0;
+    goal_reached_ = true;
+  } else if (approach_slowdown) {
+    const double stop_dist = config_.goal_dist_tolerance();
+    const double ratio = clamp(
+        (goal_dist - stop_dist) / std::max(slowdown_start_dist - stop_dist, 1e-3),
+        0.0, 1.0);
+    const double wheel_limit =
+        kApproachWheelLimitNearGoal +
+        (kApproachWheelLimitAtSlowdown - kApproachWheelLimitNearGoal) * ratio;
+    const double half_base = kCommandWheelBaseM / 2.0;
+    const double left = cmd_vel.linear.x - cmd_vel.angular.z * half_base;
+    const double right = cmd_vel.linear.x + cmd_vel.angular.z * half_base;
+    const double max_wheel = std::max(std::fabs(left), std::fabs(right));
+
+    if (max_wheel > wheel_limit) {
+      const double scale = wheel_limit / std::max(max_wheel, 1e-6);
+      cmd_vel.linear.x *= scale;
+      cmd_vel.angular.z *= scale;
+      R_INFO_EVERY(10) << "APF approach wheel limit: goal_dist=" << goal_dist
+                       << " m, wheel_limit=" << wheel_limit
+                       << " m/s, raw_l=" << left << " raw_r=" << right
+                       << " scale=" << scale << " cmd_v=" << cmd_vel.linear.x
+                       << " cmd_w=" << cmd_vel.angular.z;
     }
   }
 
