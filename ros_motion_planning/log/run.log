@@ -1,0 +1,286 @@
+=== 启动时间: 2026年 09月 12日 星期六 11:00:46 CST ===
+[11:00:46] [1] main_generate.py start
+[11:00:47] [1] main_generate.py done
+[11:00:47] [2] use_encoder_odom flag set
+[11:00:47] [3] loading robot_description
+[11:00:47] [3] robot_description loaded
+[33m[WARN] [1789182047.797863426]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[11:00:50] [4] starting gzserver
+[11:00:56] [4] spawn_model start
+[INFO] [1789182057.938493, 0.000000]: Loading model XML from ros parameter robot_description
+[INFO] [1789182057.947458, 0.000000]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1789182057.953968, 0.000000]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1789182058.402754, 330.007000]: Spawn status: SpawnModel: Successfully spawned entity
+[11:00:59] [4] spawn_model exit=0
+[11:01:11] [8] generating move_base launch file
+[11:01:11] [8] starting move_base via roslaunch
+  启动 move_base 前检查参数状态:
+  [诊断] base_global_planner 参数未设置
+  [诊断] base_local_planner 参数未设置
+  [诊断] global_costmap/plugins 参数未设置
+  [诊断] rospack plugins nav_core:
+path_planner /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/path_planner_plugin.xml
+lqr_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/lqr_controller/lqr_controller_plugin.xml
+orca_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/orca_controller/orca_controller_plugin.xml
+apf_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/apf_controller/apf_controller_plugin.xml
+dwa_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/dwa_controller/dwa_controller_plugin.xml
+pid_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/pid_controller/pid_controller_plugin.xml
+static_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/static_controller/static_controller_plugin.xml
+move_slow_and_clear /opt/ros/noetic/share/move_slow_and_clear/recovery_plugin.xml
+double_nmpc_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/double_nmpc_controller/double_nmpc_controller_plugin.xml
+base_local_planner /opt/ros/noetic/share/base_local_planner/blp_plugin.xml
+carrot_planner /opt/ros/noetic/share/carrot_planner/bgp_plugin.xml
+dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
+navfn /opt/ros/noetic/share/navfn/bgp_plugin.xml
+mpc_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/mpc_controller/mpc_controller_plugin.xml
+global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
+rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
+rpp_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/rpp_controller/rpp_controller_plugin.xml
+clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
+[33m[WARN] [1789182073.611030720]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1789182073.612913201]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+I20260912 11:01:14.169204  7848 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
+I20260912 11:01:14.175781  7848 path_planner_factory.cpp:137] Using path planner: astar_polyline
+[33m[WARN] [1789182074.191585629]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[11:01:15] [8] move_base 启动后状态:
+  [诊断] 检查 move_base 是否存活:
+  [诊断] move_base 进程存活
+  [诊断] rostopic list | grep move_base:
+/move_base/DoubleNMPCController/dynamic_safe_margin
+/move_base/DoubleNMPCController/tracking_risk
+/move_base/PathPlanner/expand
+/move_base/PathPlanner/expand_updates
+/move_base/PathPlanner/key_points
+/move_base/PathPlanner/particles
+/move_base/PathPlanner/particles_array
+/move_base/PathPlanner/plan
+/move_base/PathPlanner/random_tree
+/move_base/PathPlanner/random_tree_array
+/move_base/PathPlanner/safety_corridor
+/move_base/cancel
+/move_base/current_goal
+/move_base/feedback
+/move_base/global_costmap/costmap
+/move_base/global_costmap/costmap_updates
+/move_base/global_costmap/footprint
+/move_base/global_costmap/inflation_layer/parameter_descriptions
+/move_base/global_costmap/inflation_layer/parameter_updates
+/move_base/global_costmap/obstacle_layer/parameter_descriptions
+/move_base/global_costmap/obstacle_layer/parameter_updates
+/move_base/global_costmap/parameter_descriptions
+/move_base/global_costmap/parameter_updates
+/move_base/global_costmap/static_map/parameter_descriptions
+/move_base/global_costmap/static_map/parameter_updates
+/move_base/global_costmap/voronoi_layer/parameter_descriptions
+/move_base/global_costmap/voronoi_layer/parameter_updates
+/move_base/global_costmap/voronoi_layer/voronoi_grid
+/move_base/goal
+/move_base/local_costmap/costmap
+/move_base/local_costmap/costmap_updates
+/move_base/local_costmap/footprint
+/move_base/local_costmap/inflation_layer/parameter_descriptions
+/move_base/local_costmap/inflation_layer/parameter_updates
+/move_base/local_costmap/obstacle_layer/parameter_descriptions
+/move_base/local_costmap/obstacle_layer/parameter_updates
+/move_base/local_costmap/parameter_descriptions
+/move_base/local_costmap/parameter_updates
+/move_base/parameter_descriptions
+/move_base/parameter_updates
+/move_base/recovery_status
+/move_base/result
+/move_base/status
+/move_base_simple/goal
+  [诊断] rosservice list | grep move_base:
+/move_base/PathPlanner/make_plan
+/move_base/clear_costmaps
+/move_base/get_loggers
+/move_base/global_costmap/inflation_layer/set_parameters
+/move_base/global_costmap/obstacle_layer/set_parameters
+/move_base/global_costmap/set_parameters
+/move_base/global_costmap/static_map/set_parameters
+/move_base/global_costmap/voronoi_layer/set_parameters
+/move_base/local_costmap/inflation_layer/set_parameters
+/move_base/local_costmap/obstacle_layer/set_parameters
+/move_base/local_costmap/set_parameters
+/move_base/make_plan
+/move_base/set_logger_level
+/move_base/set_parameters
+I20260912 11:01:25.049039  7848 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(-3.12504, -1.25879)
+I20260912 11:01:25.053408  7848 astar_polyline_planner.cpp:46] AStarPolyline: base poses=63, polyline vertices=8, dense poses=63
+W20260912 11:01:25.053668  7848 path_planner_node.cpp:215] Path heading change 151.412 deg > 90 deg, accepting new plan for pre-rotation
+I20260912 11:01:25.055701  7848 path_planner_node.cpp:302] PathPlanner make_plan response: poses=63 end=(-3.12504, -1.25879) end_goal_dist=0
+I20260912 11:01:38.161592  7858 astar_polyline_planner.cpp:46] AStarPolyline: base poses=64, polyline vertices=6, dense poses=64
+[0m[INFO] [1789182073.614023022]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1789182073.635304279]: Requesting the map...[0m
+[0m[INFO] [1789182073.939608391]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1789182074.039499309]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1789182074.045187905]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1789182074.049462896]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1789182074.078322846]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1789182074.087089858]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1789182074.194442792]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1789182074.199163330]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1789182074.236221093]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1789182074.319058830]: Created local_planner double_nmpc_controller/DoubleNMPCController[0m
+[0m[INFO] [1789182074.348379528]: DoubleNMPCController initialized: TMPC=0.16s x 3, planner=0.48s x 6 (2.88s horizon), margin=[0.05, 0.1] m. Set ~DoubleNMPCController/max_linear_velocity explicitly before high-speed operation.[0m
+[0m[INFO] [1789182074.811860244]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1789182074.820418258]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1789182074.869168549]: odom received![0m
+[0m[INFO] [1789182098.260035846]: DoubleNMPC: curvature=-0.559  curve_cap=0.400  plan=(0.346, -0.014) track_cap=0.346  cmd=(0.040, -0.264)  risk=0.21  margin=0.060[0m
+[0m[INFO] [1789182098.859342966]: DoubleNMPC: curvature=-0.559  curve_cap=0.400  plan=(0.353, 0.030) track_cap=0.353  cmd=(0.043, -0.044)  risk=0.60  margin=0.064[0m
+[0m[INFO] [1789182099.359345531]: DoubleNMPC: curvature=-0.559  curve_cap=0.400  plan=(0.377, -0.142) track_cap=0.377  cmd=(0.091, -0.139)  risk=0.81  margin=0.068[0m
+[0m[INFO] [1789182099.859480511]: DoubleNMPC: curvature=-0.564  curve_cap=0.400  plan=(0.294, 0.276) track_cap=0.294  cmd=(0.084, 0.041)  risk=0.94  margin=0.070[0m
+[0m[INFO] [1789182100.459356026]: DoubleNMPC: curvature=-0.512  curve_cap=0.400  plan=(0.391, 0.055) track_cap=0.391  cmd=(0.090, 0.098)  risk=0.99  margin=0.075[0m
+[0m[INFO] [1789182101.059364403]: DoubleNMPC: curvature=-0.512  curve_cap=0.400  plan=(0.094, -0.179) track_cap=0.094  cmd=(0.075, 0.129)  risk=0.95  margin=0.074[0m
+[0m[INFO] [1789182101.659345049]: DoubleNMPC: curvature=-0.435  curve_cap=0.400  plan=(0.275, -0.115) track_cap=0.275  cmd=(0.098, 0.142)  risk=0.98  margin=0.075[0m
+[0m[INFO] [1789182102.161746064]: DoubleNMPC: curvature=-0.435  curve_cap=0.400  plan=(0.360, 0.249) track_cap=0.360  cmd=(0.105, 0.160)  risk=1.00  margin=0.071[0m
+[0m[INFO] [1789182102.759479371]: DoubleNMPC: curvature=-0.332  curve_cap=0.400  plan=(0.263, 0.308) track_cap=0.263  cmd=(0.113, 0.184)  risk=1.00  margin=0.065[0m
+[0m[INFO] [1789182103.259507700]: DoubleNMPC: curvature=-0.240  curve_cap=0.400  plan=(0.352, -0.027) track_cap=0.352  cmd=(0.117, 0.200)  risk=1.00  margin=0.060[0m
+[0m[INFO] [1789182103.859338576]: DoubleNMPC: curvature=-0.151  curve_cap=0.400  plan=(0.267, 0.273) track_cap=0.267  cmd=(0.126, 0.219)  risk=1.00  margin=0.060[0m
+[0m[INFO] [1789182104.359350822]: DoubleNMPC: curvature=-0.076  curve_cap=0.400  plan=(0.362, -0.089) track_cap=0.362  cmd=(0.134, 0.232)  risk=1.00  margin=0.060[0m
+[0m[INFO] [1789182104.959322035]: DoubleNMPC: curvature=-0.032  curve_cap=0.400  plan=(0.275, 0.205) track_cap=0.275  cmd=(0.141, 0.247)  risk=1.00  margin=0.060[0m
+[0m[INFO] [1789182105.459343158]: DoubleNMPC: curvature=-0.007  curve_cap=0.400  plan=(0.287, 0.111) track_cap=0.287  cmd=(0.147, 0.255)  risk=1.00  margin=0.060[0m
+[0m[INFO] [1789182105.959349560]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.296, 0.035) track_cap=0.296  cmd=(0.154, 0.050)  risk=1.00  margin=0.060[0m
+[0m[INFO] [1789182106.559380034]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.296, -0.031) track_cap=0.296  cmd=(0.161, -0.188)  risk=1.00  margin=0.060[0m
+[0m[INFO] [1789182107.159313156]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.293, -0.058) track_cap=0.293  cmd=(0.166, -0.204)  risk=1.00  margin=0.060[0m
+[0m[INFO] [1789182107.659374088]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.291, -0.077) track_cap=0.291  cmd=(0.172, -0.216)  risk=1.00  margin=0.060[0m
+[0m[INFO] [1789182108.259507418]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.295, -0.044) track_cap=0.295  cmd=(0.179, -0.186)  risk=1.00  margin=0.062[0m
+[0m[INFO] [1789182108.759512334]: DoubleNMPC: curvature=-0.013  curve_cap=0.400  plan=(0.296, -0.030) track_cap=0.296  cmd=(0.184, -0.238)  risk=1.00  margin=0.067[0m
+[0m[INFO] [1789182109.259529626]: DoubleNMPC: curvature=-0.043  curve_cap=0.400  plan=(0.300, -0.003) track_cap=0.300  cmd=(0.188, -0.154)  risk=1.00  margin=0.065[0m
+[0m[INFO] [1789182109.859386472]: DoubleNMPC: curvature=-0.112  curve_cap=0.400  plan=(0.298, 0.020) track_cap=0.298  cmd=(0.196, -0.078)  risk=1.00  margin=0.067[0m
+[0m[INFO] [1789182110.459326507]: DoubleNMPC: curvature=-0.181  curve_cap=0.400  plan=(0.295, 0.038) track_cap=0.295  cmd=(0.203, -0.010)  risk=0.99  margin=0.068[0m
+[0m[INFO] [1789182110.959346625]: DoubleNMPC: curvature=-0.242  curve_cap=0.400  plan=(0.296, 0.360) track_cap=0.296  cmd=(0.209, 0.041)  risk=0.97  margin=0.071[0m
+[0m[INFO] [1789182111.459412362]: DoubleNMPC: curvature=-0.229  curve_cap=0.400  plan=(0.296, 0.032) track_cap=0.296  cmd=(0.214, -0.133)  risk=0.96  margin=0.072[0m
+[0m[INFO] [1789182111.959539476]: DoubleNMPC: curvature=-0.149  curve_cap=0.400  plan=(0.296, 0.034) track_cap=0.296  cmd=(0.218, -0.175)  risk=0.94  margin=0.074[0m
+[0m[INFO] [1789182112.559370637]: DoubleNMPC: curvature=-0.070  curve_cap=0.400  plan=(0.295, 0.038) track_cap=0.295  cmd=(0.225, -0.126)  risk=0.92  margin=0.073[0m
+[0m[INFO] [1789182113.159328132]: DoubleNMPC: curvature=-0.006  curve_cap=0.400  plan=(0.389, 0.069) track_cap=0.389  cmd=(0.238, -0.043)  risk=0.98  margin=0.073[0m
+[0m[INFO] [1789182113.659344526]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.289, 0.094) track_cap=0.289  cmd=(0.243, -0.080)  risk=0.89  margin=0.068[0m
+[0m[INFO] [1789182114.166092472]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.382, 0.110) track_cap=0.382  cmd=(0.241, 0.076)  risk=0.97  margin=0.063[0m
+[0m[INFO] [1789182114.759502224]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.375, 0.154) track_cap=0.375  cmd=(0.249, 0.048)  risk=0.99  margin=0.060[0m
+[0m[INFO] [1789182115.259502595]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.374, 0.161) track_cap=0.374  cmd=(0.253, 0.054)  risk=1.00  margin=0.060[0m
+[0m[INFO] [1789182115.859344295]: DoubleNMPC: curvature=-0.000  curve_cap=0.400  plan=(0.280, 0.166) track_cap=0.280  cmd=(0.239, 0.119)  risk=0.93  margin=0.065[0m
+[0m[INFO] [1789182116.359372554]: DoubleNMPC: curvature=-0.175  curve_cap=0.400  plan=(0.284, 0.130) track_cap=0.284  cmd=(0.245, 0.052)  risk=0.85  margin=0.066[0m
+[0m[INFO] [1789182116.959345281]: DoubleNMPC: curvature=-0.479  curve_cap=0.400  plan=(0.283, 0.144) track_cap=0.283  cmd=(0.247, -0.019)  risk=0.82  margin=0.070[0m
+[0m[INFO] [1789182117.559360648]: DoubleNMPC: curvature=-1.598  curve_cap=0.400  plan=(0.186, 0.822) track_cap=0.186  cmd=(0.161, 0.029)  risk=0.93  margin=0.069[0m
+[0m[INFO] [1789182118.059367799]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.092, 1.173) track_cap=0.092  cmd=(0.085, -0.015)  risk=0.98  margin=0.069[0m
+[0m[INFO] [1789182118.659347148]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.091, 0.877) track_cap=0.091  cmd=(0.081, 0.166)  risk=1.00  margin=0.065[0m
+[0m[INFO] [1789182119.259536703]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.086, 0.988) track_cap=0.086  cmd=(0.075, 0.228)  risk=1.00  margin=0.069[0m
+[0m[INFO] [1789182119.859339870]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.085, 1.034) track_cap=0.085  cmd=(0.071, 0.239)  risk=1.00  margin=0.067[0m
+... logging to /home/lcy/.ros/log/24180d50-ae56-11f1-b4a1-189341889b90/roslaunch-ubuntu-7793.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/tmp/move_base_debug.launch
+[1mstarted roslaunch server http://ubuntu:41831/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /move_base/DoubleNMPCController/control_period: 0.16
+ * /move_base/DoubleNMPCController/margin_fall_per_cycle: 0.001
+ * /move_base/DoubleNMPCController/margin_rise_per_cycle: 0.0015
+ * /move_base/DoubleNMPCController/max_angular_velocity: 1.5
+ * /move_base/DoubleNMPCController/max_lateral_acceleration: 0.35
+ * /move_base/DoubleNMPCController/max_linear_acceleration: 0.25
+ * /move_base/DoubleNMPCController/max_linear_deceleration: 0.65
+ * /move_base/DoubleNMPCController/max_linear_velocity: 0.4
+ * /move_base/DoubleNMPCController/max_margin: 0.1
+ * /move_base/DoubleNMPCController/min_curve_speed: 0.08
+ * /move_base/DoubleNMPCController/min_margin: 0.05
+ * /move_base/DoubleNMPCController/nominal_margin: 0.06
+ * /move_base/DoubleNMPCController/obstacle_relevance_distance: 0.7
+ * /move_base/DoubleNMPCController/planner_horizon_steps: 6
+ * /move_base/DoubleNMPCController/planner_period: 0.48
+ * /move_base/DoubleNMPCController/risk_ewma_alpha: 0.22
+ * /move_base/DoubleNMPCController/robot_radius: 0.16
+ * /move_base/DoubleNMPCController/tracking_horizon_steps: 3
+ * /move_base/PathPlanner/planner_name: astar_polyline
+ * /move_base/base_global_planner: path_planner/Path...
+ * /move_base/base_local_planner: double_nmpc_contr...
+ * /move_base/conservative_reset_dist: 3.0
+ * /move_base/controller_frequency: 10.0
+ * /move_base/controller_patience: 15.0
+ * /move_base/global_costmap/cost_scaling_factor: 2.0
+ * /move_base/global_costmap/footprint: [[-0.1, -0.3], [-...
+ * /move_base/global_costmap/footprint_padding: 0.1
+ * /move_base/global_costmap/global_frame: map
+ * /move_base/global_costmap/inflation_layer/cost_scaling_factor: 2.0
+ * /move_base/global_costmap/inflation_layer/enabled: True
+ * /move_base/global_costmap/inflation_layer/inflation_radius: 0.2
+ * /move_base/global_costmap/inflation_radius: 0.3
+ * /move_base/global_costmap/map_type: costmap
+ * /move_base/global_costmap/meter_scoring: True
+ * /move_base/global_costmap/obstacle_layer/observation_sources: scan
+ * /move_base/global_costmap/obstacle_layer/scan/clearing: True
+ * /move_base/global_costmap/obstacle_layer/scan/data_type: LaserScan
+ * /move_base/global_costmap/obstacle_layer/scan/expected_update_rate: 0.0
+ * /move_base/global_costmap/obstacle_layer/scan/inf_is_valid: True
+ * /move_base/global_costmap/obstacle_layer/scan/marking: True
+ * /move_base/global_costmap/obstacle_layer/scan/max_obstacle_height: 0.8
+ * /move_base/global_costmap/obstacle_layer/scan/min_obstacle_height: 0.0
+ * /move_base/global_costmap/obstacle_layer/scan/observation_persistence: 0.0
+ * /move_base/global_costmap/obstacle_layer/scan/obstacle_range: 2.0
+ * /move_base/global_costmap/obstacle_layer/scan/raytrace_range: 12.0
+ * /move_base/global_costmap/obstacle_layer/scan/sensor_frame: base_scan
+ * /move_base/global_costmap/obstacle_layer/scan/topic: /scan_fixed
+ * /move_base/global_costmap/origin_z: 0.0
+ * /move_base/global_costmap/plugins: [{'name': 'static...
+ * /move_base/global_costmap/publish_frequency: 1.0
+ * /move_base/global_costmap/publish_voxel_map: False
+ * /move_base/global_costmap/robot_base_frame: base_footprint
+ * /move_base/global_costmap/static_map/clear_time: 20
+ * /move_base/global_costmap/static_map/enabled: True
+ * /move_base/global_costmap/static_map/publish_static_map: True
+ * /move_base/global_costmap/transform_tolerance: 0.5
+ * /move_base/global_costmap/update_frequency: 2.0
+ * /move_base/global_costmap/z_resolution: 1
+ * /move_base/global_costmap/z_voxels: 2
+ * /move_base/local_costmap/global_frame: odom
+ * /move_base/local_costmap/height: 3
+ * /move_base/local_costmap/inflation_layer/cost_scaling_factor: 10.0
+ * /move_base/local_costmap/inflation_layer/enabled: True
+ * /move_base/local_costmap/inflation_layer/inflation_radius: 0.2
+ * /move_base/local_costmap/obstacle_layer/observation_sources: scan
+ * /move_base/local_costmap/obstacle_layer/scan/clearing: True
+ * /move_base/local_costmap/obstacle_layer/scan/data_type: LaserScan
+ * /move_base/local_costmap/obstacle_layer/scan/expected_update_rate: 0.0
+ * /move_base/local_costmap/obstacle_layer/scan/inf_is_valid: True
+ * /move_base/local_costmap/obstacle_layer/scan/marking: True
+ * /move_base/local_costmap/obstacle_layer/scan/max_obstacle_height: 0.8
+ * /move_base/local_costmap/obstacle_layer/scan/min_obstacle_height: 0.0
+ * /move_base/local_costmap/obstacle_layer/scan/observation_persistence: 0.0
+ * /move_base/local_costmap/obstacle_layer/scan/obstacle_range: 2.0
+ * /move_base/local_costmap/obstacle_layer/scan/raytrace_range: 3.0
+ * /move_base/local_costmap/obstacle_layer/scan/sensor_frame: base_scan
+ * /move_base/local_costmap/obstacle_layer/scan/topic: /scan_fixed
+ * /move_base/local_costmap/plugins: [{'name': 'obstac...
+ * /move_base/local_costmap/publish_frequency: 1.0
+ * /move_base/local_costmap/resolution: 0.05
+ * /move_base/local_costmap/robot_base_frame: base_footprint
+ * /move_base/local_costmap/rolling_window: True
+ * /move_base/local_costmap/static_map: False
+ * /move_base/local_costmap/transform_tolerance: 0.5
+ * /move_base/local_costmap/update_frequency: 2.0
+ * /move_base/local_costmap/width: 3
+ * /move_base/oscillation_distance: 0.2
+ * /move_base/oscillation_timeout: 10.0
+ * /move_base/planner_frequency: 0.0
+ * /move_base/planner_patience: 5.0
+ * /move_base/recovery_behavior_enabled: False
+ * /move_base/shutdown_costmaps: False
+ * /rosdistro: noetic
+ * /rosversion: 1.17.0
+
+NODES
+  /
+    move_base (move_base/move_base)
+
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/tmp/move_base_debug.launch http://localhost:11311
+[1mprocess[move_base-1]: started with pid [7848][0m
+[move_base-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m

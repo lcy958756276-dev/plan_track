@@ -1,0 +1,534 @@
+clc; clear; close all;
+%优于ok
+%% ===== 地图+起点 =====
+% all_obs = last_final_problem_JB();
+% hold on;
+% start = [5 5];
+% goal  = [95 95];
+% % ===== 地图+起点 =====
+% all_obs = last_test_obsmap();
+% start = [60 0];
+% goal  = [60 100];
+%% ===== 地图+起点 =====
+all_obs = last_generate_map();
+start = [5 5];
+goal  = [70 95];
+%% ===== 地图+起点 =====
+% all_obs = last_generate_largemap();
+% start = [25 25];
+% goal  = [170 184];
+%% ===== 起点画图 =====
+
+title('APF + 连续逃逸控制器 (Continuous Escape Controller)');
+
+%% ===== 参数 =====
+k_att = 2.0;
+k_rep = 80;
+d0    = 5;
+
+step_max = 4;%3
+step_min = 0.5;
+safe_dist = 0.8;
+
+max_iter = 500;
+
+P = start;
+path = P;
+
+escape_mode = false;
+escape_origin = [0 0];
+
+progress_hist = [];
+stall_win = 6;
+stall_thresh = 0.2;
+
+%% ===== 主循环 =====
+tic;   % 开始计时
+for iter = 1:max_iter
+
+    %% ===== 力计算（APF）=====
+    F_att = k_att * (goal - P);
+    F_rep = [0 0];
+
+    for i = 1:length(all_obs)
+        [d, nearest_pt] = last_distance_to_obs(all_obs{i}, P, d0);
+        if ~isnan(d) && d < d0
+            dir_rep = (P - nearest_pt);
+            if norm(dir_rep) > 1e-9
+                dir_rep = dir_rep / norm(dir_rep);
+                F_rep = F_rep + k_rep*(1/d - 1/d0)*(1/d^2)*dir_rep;
+            end
+        end
+    end
+
+    F = F_att + F_rep;
+
+    %% ===== 停滞检测 =====
+    progress = norm(P - goal);
+    progress_hist = [progress_hist progress];
+
+    stalled = false;
+    if length(progress_hist) > stall_win
+        delta = abs(progress_hist(end) - progress_hist(end-stall_win));
+        if delta < stall_thresh
+            stalled = true;
+        end
+    end
+
+    %% =====================================================
+    %% ⭐ 进入 escape
+    %% =====================================================
+    if (~escape_mode) && (stalled || norm(F) < 0.08)
+
+        escape_mode = true;
+        escape_origin = P;
+
+        fprintf('\n🚨 ENTER ESCAPE MODE at (%.2f, %.2f)\n', P(1), P(2));
+    end
+
+    %% =====================================================
+    %% ⭐ 方向决策（核心改动）
+    %% =====================================================
+    if escape_mode
+
+        dir = escape_controller(P, path, goal, all_obs, ...
+            escape_origin, F, d0, safe_dist);
+
+    else
+        if norm(F) > 1e-9
+            dir = F / norm(F);
+        else
+            dir = (goal - P) / norm(goal - P);
+        end
+    end
+
+    %% =====================================================
+    %% ⭐ 安全步长选择
+    %% =====================================================
+    step = select_safe_step(P, dir, step_min, step_max, ... 
+        all_obs, d0, safe_dist);
+
+    if step < step_min
+        continue;
+    end
+
+    %% =====================================================
+    %% ⭐ 更新位置
+    %% =====================================================
+    P = P + step * dir;
+    
+    path = [path; P];
+
+%     fprintf('Step %d | P=(%.2f, %.2f)\n', iter, P(1), P(2));
+
+    %% =====================================================
+    %% ⭐ escape 退出条件（防回拉）
+    %% =====================================================
+    if escape_mode
+        F_now = compute_force(P, goal, all_obs, d0);
+
+        vec_back = escape_origin - P;
+        if dot(F_now, vec_back) < 0
+            fprintf('✅ ESCAPE EXIT\n');
+            escape_mode = false;
+        end
+    end
+
+    %% ===== 到达 =====
+    if norm(P - goal) < step
+        path = [path; goal];
+        disp('✅ 到达目标');
+        break;
+    end
+
+end
+total_time = toc;  % 结束计时
+
+fprintf('总运行时间: %.4f 秒\n', total_time);
+%% =====================================================
+%% ⭐ 绘制平滑曲线
+%% =====================================================
+plot(path(:,1), path(:,2),'r','LineWidth',2);
+
+path_smooth2 = path;
+
+alpha_smooth = 0.6;
+beta_inertia  = 0.3;
+
+i = 2;
+
+while i < size(path_smooth2,1)-1
+
+    %% =====================================================
+    %% ⭐ 0. 回环检测（融合点）
+    %% =====================================================
+    j = i + 10;  % 间隔防误检
+
+    while j <= size(path_smooth2,1)
+
+        dist_ij = norm(path_smooth2(i,:) - path_smooth2(j,:));
+
+        if dist_ij < 1.5   % ⭐ 回环阈值（可调）
+
+            % ---------- 直线可行性检测 ----------
+            collide = false;
+
+            for t = linspace(0,1,8)
+
+                P_chk = path_smooth2(i,:) + t*(path_smooth2(j,:) - path_smooth2(i,:));
+
+                for k = 1:length(all_obs)
+
+                    [d_chk,~] = last_distance_to_obs(all_obs{k}, P_chk, d0);
+
+                    if ~isnan(d_chk) && d_chk < safe_dist
+                        collide = true;
+                        break;
+                    end
+
+                    [in,on] = inpolygon(P_chk(1), P_chk(2), ...
+                        all_obs{k}(:,1), all_obs{k}(:,2));
+
+                    if in || on
+                        collide = true;
+                        break;
+                    end
+                end
+
+                if collide
+                    break;
+                end
+            end
+
+            % ---------- 若可直连 → 删除中间回环 ----------
+            if ~collide
+                path_smooth2 = [path_smooth2(1:i,:); path_smooth2(j:end,:)];
+                j = i + 10;  % 重新扫描
+                continue;
+            end
+        end
+
+        j = j + 1;
+    end
+
+    %% =====================================================
+    %% ⭐ 1. 惯性平滑
+    %% =====================================================
+    p_prev = path_smooth2(i-1,:);
+    p_curr = path_smooth2(i,:);
+    p_next = path_smooth2(i+1,:);
+
+    p_new = alpha_smooth * (p_prev + p_next)/2 ...
+          + (1 - alpha_smooth) * p_curr;
+
+    %% =====================================================
+    %% ⭐ 2. 防回折
+    %% =====================================================
+    v1 = p_curr - p_prev;
+    v2 = p_next - p_curr;
+
+    if norm(v1) > 1e-6 && norm(v2) > 1e-6
+
+        cos_angle = dot(v1,v2)/(norm(v1)*norm(v2));
+
+        if cos_angle < 0.1
+            p_new = 0.5*p_curr + 0.5*(p_prev + p_next)/2;
+        end
+    end
+
+    %% =====================================================
+    %% ⭐ 3. 碰撞保护
+    %% =====================================================
+    safe = true;
+
+    for jj = 1:length(all_obs)
+
+        [d,~] = last_distance_to_obs(all_obs{jj}, p_new, d0);
+
+        if ~isnan(d) && d < safe_dist
+            safe = false;
+            break;
+        end
+
+        [in,on] = inpolygon(p_new(1), p_new(2), ...
+                           all_obs{jj}(:,1), all_obs{jj}(:,2));
+
+        if in || on
+            safe = false;
+            break;
+        end
+    end
+
+    if safe
+        path_smooth2(i,:) = p_new;
+    end
+
+    i = i + 1;
+end
+
+% plot(path_smooth2(:,1), path_smooth2(:,2), 'b', 'LineWidth', 2);
+
+%% =====================================================
+%% ⭐ Step：路径捷径优化（去尖刺 / 去绕路）
+%% =====================================================
+path_opt = path_smooth2;
+
+i = 1;
+
+while i < size(path_opt,1)-2
+
+    j = i + 2;
+
+    while j <= size(path_opt,1)
+
+        Pi = path_opt(i,:);
+        Pj = path_opt(j,:);
+
+        seg_vec = Pj - Pi;
+        seg_len = norm(seg_vec);
+
+        % =====================================================
+        % ⭐ 自适应采样密度（关键修复）
+        % =====================================================
+        N = max(ceil(seg_len / 0.3), 12);   % ⭐ 越小越严格（0.3~0.6可调）
+
+        collide = false;
+
+        for t = linspace(0,1,N)
+
+            P_chk = Pi + t * seg_vec;
+
+            for k = 1:length(all_obs)
+
+                obs = all_obs{k};
+
+                % ---------- 距离约束 ----------
+                [d_chk,~] = last_distance_to_obs(obs, P_chk, d0);
+                if ~isnan(d_chk) && d_chk < safe_dist
+                    collide = true;
+                    break;
+                end
+
+                % ---------- 多边形内部 ----------
+                [in,on] = inpolygon(P_chk(1), P_chk(2), ...
+                                   obs(:,1), obs(:,2));
+                if in || on
+                    collide = true;
+                    break;
+                end
+            end
+
+            if collide
+                break;
+            end
+        end
+
+        % =====================================================
+        % ⭐ 如果直连安全 → 删除中间路径
+        % =====================================================
+        if ~collide
+            path_opt = [path_opt(1:i,:); path_opt(j:end,:)];
+            j = i + 2;   % 重新扫描（关键）
+        else
+            j = j + 1;
+        end
+    end
+
+    i = i + 1;
+end
+plot(path_opt(:,1), path_opt(:,2),'g','LineWidth',2); % 最优路径
+%% =====================================================
+%% ⭐ 路径长度统计
+%% =====================================================
+
+% ===== 原始路径长度 =====
+len_raw = 0;
+for i = 2:size(path,1)
+    len_raw = len_raw + norm(path(i,:) - path(i-1,:));
+end
+
+% ===== 平滑路径长度 =====
+len_smooth = 0;
+for i = 2:size(path_smooth2,1)
+    len_smooth = len_smooth + norm(path_smooth2(i,:) - path_smooth2(i-1,:));
+end
+
+% ===== 最终优化路径长度 =====
+len_opt = 0;
+for i = 2:size(path_opt,1)
+    len_opt = len_opt + norm(path_opt(i,:) - path_opt(i-1,:));
+end
+
+% ===== 输出 =====
+fprintf('\n=========== 路径长度对比 ===========\n');
+fprintf('原始路径长度: %.3f\n', len_raw);
+fprintf('平滑路径长度: %.3f\n', len_smooth);
+fprintf('最终路径长度: %.3f\n', len_opt);
+fprintf('优化率: %.2f%%\n', (len_raw - len_opt)/len_raw * 100);
+fprintf('===================================\n');
+%% =====================================================
+%% ⭐ 保存路径与地图
+%% =====================================================
+% 
+% generate_path.all_obs = all_obs;
+% generate_path.path_raw = path;
+% generate_path.path_smooth = path_smooth2;
+% generate_path.path_opt = path_opt;
+% generate_path.start = start;
+% generate_path.goal = goal;
+% 
+% % save('generate_path不要动3和4了，好不容易调好了，不过我都copy了一份放丢包.mat', 'generate_path');
+% save('generate_path5.mat', 'generate_path');
+% disp('✅ 已保存 map1_generate_path.mat');
+%% =====================================================
+%% ⭐ ESCAPE CONTROLLER（核心）
+%% =====================================================
+function dir = escape_controller(P, path, goal, all_obs, stuck_pt, F, d0, safe_dist)
+
+theta_goal = atan2(goal(2)-P(2), goal(1)-P(1));
+
+if size(path,1) > 1
+    v_prev = path(end,:) - path(end-1,:);
+    theta_prev = atan2(v_prev(2), v_prev(1));
+else
+    theta_prev = theta_goal;
+end
+
+if norm(F) > 1e-6
+    theta_force = atan2(F(2), F(1));
+else
+    theta_force = theta_goal;
+end
+
+best_theta = 0;
+best_score = -inf;
+
+for ang = 0:15:345
+
+    theta = deg2rad(ang);
+    dir_test = [cos(theta), sin(theta)];
+
+    if ~is_free(P, theta, 15, all_obs, d0, safe_dist)
+        continue;
+    end
+
+    to_goal = cos(theta - theta_goal);
+    continuity = cos(theta - theta_prev);
+    anti_stuck = cos(theta - atan2(stuck_pt(2)-P(2), stuck_pt(1)-P(1)));
+    anti_force = cos(theta - theta_force);
+
+    dist = norm(P - stuck_pt);
+
+    if dist < 2
+        J = 1.8*to_goal ...
+          + 0.8*continuity ...
+          - 1.5*anti_stuck ...
+          - 1.0*anti_force;
+    else
+        J = 2.0*to_goal ...
+          + 1.2*continuity ...
+          - 0.8*anti_force;
+    end
+
+    if J > best_score
+        best_score = J;
+        best_theta = theta;
+    end
+end
+
+dir = [cos(best_theta), sin(best_theta)];
+end
+
+%% =====================================================
+function step = select_safe_step(P, dir, step_min, step_max, all_obs, d0, safe_dist)
+
+for s = linspace(step_max, step_min, 3)
+
+    P_new = P + s * dir;
+
+    if ~check_collision(P, P_new, all_obs, d0, safe_dist)
+        step = s;
+        return;
+    end
+end
+
+step = 0;
+end
+
+%% =====================================================
+function collide = check_collision(P, P_new, all_obs, d0, safe_dist)
+
+collide = false;
+
+for t = linspace(0.2,1,5)
+
+    P_chk = P + t*(P_new - P);
+
+    for i = 1:length(all_obs)
+
+        obs = all_obs{i};
+
+        [d_chk, ~] = last_distance_to_obs(obs, P_chk, d0);
+
+        if ~isnan(d_chk) && d_chk < safe_dist
+            collide = true;
+            return;
+        end
+
+        [in,on] = inpolygon(P_chk(1), P_chk(2), obs(:,1), obs(:,2));
+        if in || on
+            collide = true;
+            return;
+        end
+    end
+end
+end
+
+%% =====================================================
+function free = is_free(P, theta, R, all_obs, d0, safe_dist)
+
+free = true;
+
+for t = linspace(0.5, R, 8)
+
+    P_test = P + t*[cos(theta), sin(theta)];
+
+    for i=1:length(all_obs)
+
+        obs = all_obs{i};
+
+        [d,~] = last_distance_to_obs(obs,P_test,d0);
+
+        if ~isnan(d) && d < safe_dist
+            free = false;
+            return;
+        end
+
+        [in,on]=inpolygon(P_test(1),P_test(2),obs(:,1),obs(:,2));
+        if in||on
+            free = false;
+            return;
+        end
+    end
+end
+end
+
+%% =====================================================
+function F = compute_force(P, goal, all_obs, d0)
+
+F_att = (goal - P);
+F_rep = [0 0];
+
+for i = 1:length(all_obs)
+    [d, nearest_pt] = last_distance_to_obs(all_obs{i}, P, d0);
+    if ~isnan(d) && d < d0
+        dir_rep = (P - nearest_pt);
+        if norm(dir_rep) > 1e-9
+            dir_rep = dir_rep / norm(dir_rep);
+            F_rep = F_rep + (1/d - 1/d0)*(1/d^2)*dir_rep;
+        end
+    end
+end
+
+F = F_att + F_rep;
+end

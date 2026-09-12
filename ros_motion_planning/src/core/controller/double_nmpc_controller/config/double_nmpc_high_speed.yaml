@@ -1,0 +1,28 @@
+# Load under /move_base/DoubleNMPCController when enabling the plugin.
+# These are initial values for the confirmed 0.4 m/s platform; validate them with rosbag
+# before a production run. The existing APF controller remains untouched.
+control_period: 0.16
+planner_period: 0.48
+tracking_horizon_steps: 3
+planner_horizon_steps: 6
+
+max_linear_velocity: 0.40
+max_angular_velocity: 1.50
+max_linear_acceleration: 0.25
+max_linear_deceleration: 0.65
+robot_radius: 0.16
+
+# The planner uses 6 x planner_period = 2.88 s, independently of the 0.16 s
+# tracking period. Future reference curvature limits the speed before the bend.
+max_lateral_acceleration: 0.35
+min_curve_speed: 0.08
+
+# Tracking-margin feedback: never relax below 5 cm. A 10 cm upper bound can be reached
+# only when tracking risk is high and a lethal obstacle is inside the relevance distance.
+nominal_margin: 0.06
+min_margin: 0.05
+max_margin: 0.10
+obstacle_relevance_distance: 0.70
+risk_ewma_alpha: 0.22
+margin_rise_per_cycle: 0.0015
+margin_fall_per_cycle: 0.0010
