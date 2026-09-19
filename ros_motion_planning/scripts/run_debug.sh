@@ -236,7 +236,7 @@ sleep 1
 # ── 6.6 被动驱动诊断记录（不发布控制命令） ──
 echo "[6.6/8] 启动 drive_diagnostics.py (被动记录命令/编码器/停车响应)..."
 rosrun encoder_tools drive_diagnostics.py \
-    _output_dir:="$LOG_DIR" \
+    _output_dir:="$LOG_DIR" _stop_command_threshold:=0.02 \
     > "$LOG_DIR/drive_diagnostics.log" 2>&1 &
 PID_DRIVE_DIAG=$!
 echo "  PID=$PID_DRIVE_DIAG → log/drive_diagnostics.log"

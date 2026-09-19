@@ -23,7 +23,7 @@ class DriveDiagnostics:
         default_output_dir = os.path.abspath(
             os.path.join(os.path.dirname(__file__), "../../../log"))
         self.output_dir = rospy.get_param("~output_dir", default_output_dir)
-        self.stop_command_threshold = rospy.get_param("~stop_command_threshold", 0.05)
+        self.stop_command_threshold = rospy.get_param("~stop_command_threshold", 0.02)
         self.stop_speed_threshold = rospy.get_param("~stop_speed_threshold", 0.01)
 
         self.lock = threading.Lock()
