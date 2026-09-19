@@ -215,6 +215,8 @@ sleep 2
 echo "[6/8] 启动 encoder_odom.py (里程计)..."
 rosrun encoder_tools encoder_odom.py \
     _initial_x:=0.0 _initial_y:=-0.8 \
+    _velocity_window:=0.20 _min_velocity_dt:=0.01 \
+    _max_wheel_velocity:=0.65 _velocity_filter_alpha:=0.45 \
     > "$LOG_DIR/encoder_odom.log" 2>&1 &
 PID_ODOM=$!
 echo "  PID=$PID_ODOM → log/encoder_odom.log"

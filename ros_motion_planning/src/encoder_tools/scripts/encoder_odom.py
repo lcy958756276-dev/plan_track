@@ -10,8 +10,10 @@ encoder_odom.py
     右轮距离增量 = Δrtick * (pluse / 360) * 2π * wheel_radius
 """
 
-import rospy
 import math
+from collections import deque
+
+import rospy
 from std_msgs.msg import Int64MultiArray, Float64, Float64MultiArray
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import TransformStamped
@@ -30,6 +32,19 @@ class EncoderOdometry:
         initial_y = rospy.get_param("~initial_y", 0.0)
         initial_yaw = rospy.get_param("~initial_yaw", 0.0)
 
+        # Speed is derived from asynchronous serial packets, whose arrival time can
+        # occasionally bunch up.  Keep pose integration on every tick increment,
+        # but use a time window for velocity so one short receive interval cannot
+        # create a false multi-m/s odometry velocity.
+        self.velocity_window = rospy.get_param("~velocity_window", 0.20)
+        self.min_velocity_dt = rospy.get_param("~min_velocity_dt", 0.01)
+        self.max_wheel_velocity = rospy.get_param("~max_wheel_velocity", 0.65)
+        self.velocity_filter_alpha = rospy.get_param("~velocity_filter_alpha", 0.45)
+        self.velocity_window = max(0.01, self.velocity_window)
+        self.min_velocity_dt = max(0.001, self.min_velocity_dt)
+        self.max_wheel_velocity = max(0.01, self.max_wheel_velocity)
+        self.velocity_filter_alpha = min(1.0, max(0.0, self.velocity_filter_alpha))
+
         # 编码器参数 → 每脉冲对应距离
         pluse = 1.04190106 * 360.0 / (500.0 * 4 * 91)
         self.dist_per_tick = (pluse / 360.0) * 2.0 * math.pi * wheel_radius
@@ -41,6 +56,9 @@ class EncoderOdometry:
         rospy.loginfo(f"pluse           = {pluse:.6f}")
         rospy.loginfo(f"dist_per_tick   = {self.dist_per_tick:.8f} m")
         rospy.loginfo(f"initial_pose    = ({initial_x}, {initial_y}, {initial_yaw})")
+        rospy.loginfo("velocity filter = window=%.3fs min_dt=%.3fs max_wheel=%.3fm/s alpha=%.2f",
+                      self.velocity_window, self.min_velocity_dt,
+                      self.max_wheel_velocity, self.velocity_filter_alpha)
         rospy.loginfo("========================")
 
         # 状态
@@ -54,6 +72,9 @@ class EncoderOdometry:
         self.theta = initial_yaw
         self.latest_v = 0.0
         self.latest_omega = 0.0
+        self.filtered_v_left = 0.0
+        self.filtered_v_right = 0.0
+        self.velocity_history = deque()
         self.have_pose = False
         self.msg_count = 0
 
@@ -90,6 +111,7 @@ class EncoderOdometry:
             self.last_ltick = ltick
             self.last_rtick = rtick
             self.last_time = rospy.Time.now()
+            self.velocity_history.append((self.last_time, self.left_dist, self.right_dist))
             rospy.loginfo(f"收到第一条编码器数据: ltick={ltick}, rtick={rtick}")
             rospy.loginfo("里程计开始计算...")
             return
@@ -104,7 +126,8 @@ class EncoderOdometry:
         dt = (now - self.last_time).to_sec()
         self.last_time = now
 
-        # read_uart 约 2Hz → dt≈0.5~1.8s，不跳过，直接用 dt 计算位置增量
+        # Keep pose integration valid even if packet timing is abnormal.  Only
+        # velocity estimation below is protected by timing/outlier checks.
         if dt <= 0:
             rospy.logwarn_throttle(3, f"时间异常: dt={dt:.4f}s，跳过")
             return
@@ -116,9 +139,6 @@ class EncoderOdometry:
         self.left_dist  += d_left
         self.right_dist += d_right
 
-        v_left  = d_left / dt
-        v_right = d_right / dt
-
         d_center = (d_left + d_right) / 2.0
         d_theta  = (d_right - d_left) / self.wheel_base
 
@@ -127,6 +147,8 @@ class EncoderOdometry:
         self.x += d_center * math.cos(self.theta)
         self.y += d_center * math.sin(self.theta)
 
+        v_left, v_right, velocity_dt = self._estimate_wheel_velocity(
+            now, dt, d_left, d_right)
         v = (v_left + v_right) / 2.0
         omega = (v_right - v_left) / self.wheel_base
 
@@ -143,7 +165,7 @@ class EncoderOdometry:
         )
         rospy.loginfo_throttle(2.0,
             f"里程计: x={self.x:.3f} y={self.y:.3f} θ={self.theta:.3f} "
-            f"v={v:.3f}m/s ω={omega:.3f}rad/s"
+            f"v={v:.3f}m/s ω={omega:.3f}rad/s vel_window_dt={velocity_dt:.3f}s"
         )
 
         # 发布距离
@@ -160,6 +182,47 @@ class EncoderOdometry:
 
         # 发布 TF
         self._pub_tf(now)
+
+    def _estimate_wheel_velocity(self, now, sample_dt, d_left, d_right):
+        """Estimate wheel speeds over a stable receive-time window.
+
+        Tick increments always update pose.  This method only protects the
+        velocity channel used by /odom and the controller feedback.
+        """
+        self.velocity_history.append((now, self.left_dist, self.right_dist))
+        while (len(self.velocity_history) > 1 and
+               (now - self.velocity_history[0][0]).to_sec() > self.velocity_window):
+            self.velocity_history.popleft()
+
+        oldest_time, oldest_left, oldest_right = self.velocity_history[0]
+        window_dt = (now - oldest_time).to_sec()
+        if window_dt >= self.min_velocity_dt:
+            raw_left = (self.left_dist - oldest_left) / window_dt
+            raw_right = (self.right_dist - oldest_right) / window_dt
+            used_dt = window_dt
+        elif sample_dt >= self.min_velocity_dt:
+            # Sparse encoder data has no full window yet; its single-message
+            # interval is still a valid average if it was not a packet burst.
+            raw_left = d_left / sample_dt
+            raw_right = d_right / sample_dt
+            used_dt = sample_dt
+        else:
+            rospy.logwarn_throttle(
+                1.0, "编码器包间隔过小 dt=%.4fs，保持上一帧滤波速度", sample_dt)
+            return self.filtered_v_left, self.filtered_v_right, sample_dt
+
+        if (abs(raw_left) > self.max_wheel_velocity or
+                abs(raw_right) > self.max_wheel_velocity):
+            rospy.logwarn_throttle(
+                1.0,
+                "编码器速度异常 raw=(%.3f, %.3f)m/s (window_dt=%.4fs)，保持上一帧滤波速度",
+                raw_left, raw_right, used_dt)
+            return self.filtered_v_left, self.filtered_v_right, used_dt
+
+        alpha = self.velocity_filter_alpha
+        self.filtered_v_left = alpha * raw_left + (1.0 - alpha) * self.filtered_v_left
+        self.filtered_v_right = alpha * raw_right + (1.0 - alpha) * self.filtered_v_right
+        return self.filtered_v_left, self.filtered_v_right, used_dt
 
     def timer_cb(self, event):
         """10Hz 定时回调：重新发布最新的 /odom + TF，使 RViz 显示平滑"""
