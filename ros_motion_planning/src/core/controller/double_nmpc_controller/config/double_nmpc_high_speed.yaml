@@ -6,6 +6,8 @@
 control_period: 0.16
 command_period: 0.05
 planner_period: 0.48
+# Recompute the long layer at 10 Hz without changing its 0.48 s prediction step.
+planner_update_period: 0.10
 tracking_horizon_steps: 3
 planner_horizon_steps: 6
 
@@ -15,8 +17,9 @@ max_linear_acceleration: 0.25
 max_linear_deceleration: 0.65
 robot_radius: 0.16
 
-# The planner uses 6 x planner_period = 2.88 s, independently of the 0.16 s
-# tracking period. Future reference curvature limits the speed before the bend.
+# The planner predicts 6 x planner_period = 2.88 s but is refreshed every 0.10 s,
+# independently of the 0.16 s tracking discretization. Future curvature limits
+# the speed before the bend without keeping a 0.48 s stale plan.
 max_lateral_acceleration: 0.35
 min_curve_speed: 0.08
 

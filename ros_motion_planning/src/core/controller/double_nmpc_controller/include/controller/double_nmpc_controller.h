@@ -74,6 +74,7 @@ private:
   double control_period_{0.16};
   double command_period_{0.10};
   double planner_period_{0.48};
+  double planner_update_period_{0.10};
   int tracking_horizon_steps_{3};
   int planner_horizon_steps_{6};
   double max_linear_velocity_{0.40};

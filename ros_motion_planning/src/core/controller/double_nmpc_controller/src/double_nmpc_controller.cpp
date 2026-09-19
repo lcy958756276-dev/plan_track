@@ -40,6 +40,7 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
   nh.param("control_period", control_period_, control_period_);
   nh.param("command_period", command_period_, command_period_);
   nh.param("planner_period", planner_period_, planner_period_);
+  nh.param("planner_update_period", planner_update_period_, planner_update_period_);
   nh.param("tracking_horizon_steps", tracking_horizon_steps_, tracking_horizon_steps_);
   nh.param("planner_horizon_steps", planner_horizon_steps_, planner_horizon_steps_);
   nh.param("max_linear_velocity", max_linear_velocity_, max_linear_velocity_);
@@ -64,6 +65,7 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
   nh.param("margin_fall_per_cycle", margin_fall_per_cycle_, margin_fall_per_cycle_);
 
   min_margin_ = std::max(0.0, min_margin_);
+  planner_update_period_ = std::max(1e-3, planner_update_period_);
   nominal_margin_ = clamp(nominal_margin_, min_margin_, max_margin_);
   max_margin_ = std::max(nominal_margin_, max_margin_);
   tracking_margin_ = nominal_margin_;
@@ -76,7 +78,8 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
                   << command_period_ << "s, planner="
                   << planner_period_ << "s x " << planner_horizon_steps_
                   << " (" << planner_period_ * planner_horizon_steps_
-                  << "s horizon), max_angular_velocity=" << max_angular_velocity_
+                  << "s horizon, updated every " << planner_update_period_
+                  << "s), max_angular_velocity=" << max_angular_velocity_
                   << "rad/s, margin=[" << min_margin_ << ", "
                   << max_margin_ << "] m. Set ~" << name
                   << "/max_linear_velocity explicitly before high-speed operation.");
@@ -158,10 +161,10 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   const ros::Time now = ros::Time::now();
   double planner_elapsed_ms = 0.0;
   if (last_planner_update_.isZero() ||
-      (now - last_planner_update_).toSec() >= planner_period_) {
+      (now - last_planner_update_).toSec() >= planner_update_period_) {
     planner_reference_ = lookAheadPose(robot_pose, planner_lookahead_);
-    // The long layer is genuinely 6 x 0.48 = 2.88 s. Its output is cached until
-    // the next planning boundary and becomes a hard speed cap for the tracking layer.
+    // The long layer is genuinely 6 x 0.48 = 2.88 s. It is refreshed independently
+    // at planner_update_period_ and becomes a hard speed cap for the tracking layer.
     const ros::WallTime planner_started = ros::WallTime::now();
     planner_command_ = chooseControl(robot_pose, current, planner_reference_,
                                      planner_horizon_steps_, planner_period_,
