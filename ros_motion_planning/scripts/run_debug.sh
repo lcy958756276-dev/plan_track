@@ -233,6 +233,16 @@ echo "  PID=$PID_VEL_PLOT → log/velocity_plotter.log"
 
 sleep 1
 
+# ── 6.6 被动驱动诊断记录（不发布控制命令） ──
+echo "[6.6/8] 启动 drive_diagnostics.py (被动记录命令/编码器/停车响应)..."
+rosrun encoder_tools drive_diagnostics.py \
+    _output_dir:="$LOG_DIR" \
+    > "$LOG_DIR/drive_diagnostics.log" 2>&1 &
+PID_DRIVE_DIAG=$!
+echo "  PID=$PID_DRIVE_DIAG → log/drive_diagnostics.log"
+
+sleep 1
+
 # ── 7. 启动 Gazebo 同步桥接 ──
 echo "[7/8] 启动 gazebo_sync.py (里程计→Gazebo 同步 + LaserScan 时间戳修复)..."
 rosrun encoder_tools gazebo_sync.py \
@@ -350,6 +360,7 @@ echo "$PID_RVIZ"     > "$LOG_DIR/.pid_rviz"
 echo "$PID_READ"     > "$LOG_DIR/.pid_read"
 echo "$PID_ODOM"     > "$LOG_DIR/.pid_odom"
 echo "$PID_VEL_PLOT" > "$LOG_DIR/.pid_velocity_plotter"
+echo "$PID_DRIVE_DIAG" > "$LOG_DIR/.pid_drive_diagnostics"
 echo "$PID_SYNC"     > "$LOG_DIR/.pid_sync"
 echo "$PID_PREROT"     > "$LOG_DIR/.pid_prerot"
 echo "$PID_CLEAR_SCHED" > "$LOG_DIR/.pid_clear_sched"

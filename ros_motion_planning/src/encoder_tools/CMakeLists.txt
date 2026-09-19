@@ -8,6 +8,8 @@ project(encoder_tools)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  geometry_msgs
+  nav_msgs
   rospy
   std_msgs
 )
@@ -160,6 +162,7 @@ include_directories(
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
   scripts/clear_scheduler.py
+  scripts/drive_diagnostics.py
   scripts/encoder_odom.py
   scripts/gazebo_sync.py
   scripts/moving_object.py
