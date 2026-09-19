@@ -43,7 +43,7 @@ private:
   double pathCurvatureAhead(const geometry_msgs::PoseStamped& pose) const;
   void updateTrackingMargin(double position_error, double heading_error,
                             const Control& correction, double clearance);
-  Control rateLimit(const Control& desired, const Control& current) const;
+  Control rateLimit(const Control& desired) const;
   static double normalizeAngle(double angle);
   static double clamp(double value, double low, double high);
 
@@ -72,6 +72,7 @@ private:
   // Parameters. All velocity limits are local-planner parameters so the plugin can be
   // evaluated independently from the legacy APF controller.
   double control_period_{0.16};
+  double command_period_{0.10};
   double planner_period_{0.48};
   int tracking_horizon_steps_{3};
   int planner_horizon_steps_{6};

@@ -1,11 +1,12 @@
 # Load under /move_base/DoubleNMPCController when enabling the plugin.
 # These are initial values for the confirmed 0.4 m/s platform; validate them with rosbag
 # before a production run. The existing APF controller remains untouched.
-# Keep the NMPC discretization aligned with move_base/controller_frequency = 20 Hz.
-# 10 x 0.05 s preserves the former roughly 0.5 s short tracking horizon.
-control_period: 0.05
-planner_period: 0.50
-tracking_horizon_steps: 10
+# Commands are refreshed at move_base/controller_frequency = 20 Hz, while the
+# nonlinear prediction keeps the proven coarser 0.16 s discretization.
+control_period: 0.16
+command_period: 0.05
+planner_period: 0.48
+tracking_horizon_steps: 3
 planner_horizon_steps: 6
 
 max_linear_velocity: 0.40
@@ -14,7 +15,7 @@ max_linear_acceleration: 0.25
 max_linear_deceleration: 0.65
 robot_radius: 0.16
 
-# The planner uses 6 x planner_period = 3.0 s, independently of the 0.05 s
+# The planner uses 6 x planner_period = 2.88 s, independently of the 0.16 s
 # tracking period. Future reference curvature limits the speed before the bend.
 max_lateral_acceleration: 0.35
 min_curve_speed: 0.08

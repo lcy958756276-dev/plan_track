@@ -38,6 +38,7 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
   costmap_ros_ = costmap_ros;
   ros::NodeHandle nh("~/" + name);
   nh.param("control_period", control_period_, control_period_);
+  nh.param("command_period", command_period_, command_period_);
   nh.param("planner_period", planner_period_, planner_period_);
   nh.param("tracking_horizon_steps", tracking_horizon_steps_, tracking_horizon_steps_);
   nh.param("planner_horizon_steps", planner_horizon_steps_, planner_horizon_steps_);
@@ -71,8 +72,9 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
   margin_pub_ = nh.advertise<std_msgs::Float64>("dynamic_safe_margin", 1);
   initialized_ = true;
 
-  ROS_INFO_STREAM("DoubleNMPCController initialized: TMPC=" << control_period_
-                  << "s x " << tracking_horizon_steps_ << ", planner="
+  ROS_INFO_STREAM("DoubleNMPCController initialized: prediction=" << control_period_
+                  << "s x " << tracking_horizon_steps_ << ", command="
+                  << command_period_ << "s, planner="
                   << planner_period_ << "s x " << planner_horizon_steps_
                   << " (" << planner_period_ * planner_horizon_steps_
                   << "s horizon), margin=[" << min_margin_ << ", "
@@ -92,6 +94,7 @@ bool DoubleNMPCController::setPlan(const std::vector<geometry_msgs::PoseStamped>
   tracking_risk_ = 0.0;
   tracking_margin_ = nominal_margin_;
   planner_command_ = Control{};
+  previous_command_ = Control{};
   timing_window_start_ = ros::WallTime(0);
   timing_cycle_count_ = 0;
   timing_planner_count_ = 0;
@@ -146,8 +149,7 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
     }
     const Control rotate = rateLimit(
         Control{0.0, clamp(goal_heading_error / control_period_, -max_angular_velocity_,
-                            max_angular_velocity_)},
-        current);
+                            max_angular_velocity_)});
     if (rolloutIsSafe(robot_pose.pose.position.x, robot_pose.pose.position.y,
                       tf2::getYaw(robot_pose.pose.orientation), rotate, 1,
                       control_period_, tracking_margin_)) {
@@ -186,6 +188,7 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
       tracker_reference.pose.position.y - robot_pose.pose.position.y,
       tracker_reference.pose.position.x - robot_pose.pose.position.x);
   const double heading_error = normalizeAngle(target_heading - tf2::getYaw(robot_pose.pose.orientation));
+  const double tracking_speed_scale = clamp(1.0 - std::fabs(heading_error) / 1.2, 0.15, 1.0);
   const double position_error = std::hypot(
       tracker_reference.pose.position.x - robot_pose.pose.position.x,
       tracker_reference.pose.position.y - robot_pose.pose.position.y);
@@ -198,7 +201,7 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   const Control command = chooseControl(robot_pose, current, tracker_reference,
                                         tracking_horizon_steps_, control_period_,
                                         tracking_speed_cap, tracking_margin_, false);
-  const Control bounded = rateLimit(command, current);
+  const Control bounded = rateLimit(command);
   const Control correction{bounded.v - planner_command_.v,
                            bounded.w - planner_command_.w};
   updateTrackingMargin(position_error, heading_error, correction, clearance);
@@ -216,13 +219,14 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   previous_command_ = bounded;
   ROS_INFO_THROTTLE(0.5,
                     "DoubleNMPC: curvature=%.3f  curve_cap=%.3f  plan=(%.3f, %.3f) "
-                    "track_cap=%.3f  cmd=(%.3f, %.3f)  risk=%.2f  margin=%.3f",
+                    "track_cap=%.3f  cmd=(%.3f, %.3f)  heading=%.3f  speed_scale=%.2f "
+                    "risk=%.2f  margin=%.3f",
                     path_curvature, curve_speed_limit, planner_command_.v,
                     planner_command_.w, tracking_speed_cap, bounded.v, bounded.w,
-                    tracking_risk_, tracking_margin_);
+                    heading_error, tracking_speed_scale, tracking_risk_, tracking_margin_);
 
   const double cycle_elapsed_ms = (ros::WallTime::now() - cycle_started).toSec() * 1000.0;
-  const double budget_ms = control_period_ * 1000.0;
+  const double budget_ms = command_period_ * 1000.0;
   if (timing_window_start_.isZero()) {
     timing_window_start_ = cycle_started;
   }
@@ -468,15 +472,17 @@ void DoubleNMPCController::updateTrackingMargin(double position_error, double he
   margin_pub_.publish(margin_message);
 }
 
-DoubleNMPCController::Control DoubleNMPCController::rateLimit(
-    const Control& desired, const Control& current) const {
-  const double max_dv_up = max_linear_acceleration_ * control_period_;
-  const double max_dv_down = max_linear_deceleration_ * control_period_;
-  const double max_dw = max_angular_acceleration_ * control_period_;
-  return Control{clamp(desired.v, std::max(0.0, current.v - max_dv_down),
-                       std::min(max_linear_velocity_, current.v + max_dv_up)),
-                 clamp(desired.w, std::max(-max_angular_velocity_, current.w - max_dw),
-                       std::min(max_angular_velocity_, current.w + max_dw))};
+DoubleNMPCController::Control DoubleNMPCController::rateLimit(const Control& desired) const {
+  // The encoder feedback is deliberately kept for state/cost evaluation, but it is
+  // sampled slower than the 20 Hz command loop and trails the actuator. Limit changes
+  // from the last sent command so a stale feedback sample cannot freeze acceleration.
+  const double max_dv_up = max_linear_acceleration_ * command_period_;
+  const double max_dv_down = max_linear_deceleration_ * command_period_;
+  const double max_dw = max_angular_acceleration_ * command_period_;
+  return Control{clamp(desired.v, std::max(0.0, previous_command_.v - max_dv_down),
+                       std::min(max_linear_velocity_, previous_command_.v + max_dv_up)),
+                 clamp(desired.w, std::max(-max_angular_velocity_, previous_command_.w - max_dw),
+                       std::min(max_angular_velocity_, previous_command_.w + max_dw))};
 }
 
 double DoubleNMPCController::normalizeAngle(double angle) {
