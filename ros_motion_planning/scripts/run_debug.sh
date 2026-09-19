@@ -112,6 +112,7 @@ sleep 1
 
 # 静态 map → odom TF（让 RViz 在 map 固定帧下能看到小车移动）
 rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 map odom \
+    __name:=map_to_odom_static_tf \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_TF=$!
 echo "  static_transform_publisher (map→odom) PID=$PID_TF"
@@ -120,6 +121,7 @@ echo "  static_transform_publisher (map→odom) PID=$PID_TF"
 # my_robot.urdf 的 base_link 已经是 ROS 坐标系（Z 向上），所以 rpy=(0 0 0)
 # 原来 rpy=(1.5708 0 -1.5708) 会让车体侧躺，已移除
 rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 base_footprint base_link \
+    __name:=base_footprint_to_base_link_static_tf \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_FP=$!
 echo "  static_transform_publisher (base_footprint→base_link) PID=$PID_FP"
