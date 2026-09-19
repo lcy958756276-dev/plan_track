@@ -61,11 +61,13 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
   nh.param("obstacle_relevance_distance", obstacle_relevance_distance_,
            obstacle_relevance_distance_);
   nh.param("risk_ewma_alpha", risk_ewma_alpha_, risk_ewma_alpha_);
+  nh.param("turn_relax_floor", turn_relax_floor_, turn_relax_floor_);
   nh.param("margin_rise_per_cycle", margin_rise_per_cycle_, margin_rise_per_cycle_);
   nh.param("margin_fall_per_cycle", margin_fall_per_cycle_, margin_fall_per_cycle_);
 
   min_margin_ = std::max(0.0, min_margin_);
   planner_update_period_ = std::max(1e-3, planner_update_period_);
+  turn_relax_floor_ = clamp(turn_relax_floor_, 0.0, 1.0);
   nominal_margin_ = clamp(nominal_margin_, min_margin_, max_margin_);
   max_margin_ = std::max(nominal_margin_, max_margin_);
   tracking_margin_ = nominal_margin_;
@@ -179,9 +181,6 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
       tracker_reference.pose.position.x - robot_pose.pose.position.x);
   const double heading_error = normalizeAngle(target_heading - tf2::getYaw(robot_pose.pose.orientation));
   const double tracking_speed_scale = clamp(1.0 - std::fabs(heading_error) / 1.2, 0.15, 1.0);
-  const double position_error = std::hypot(
-      tracker_reference.pose.position.x - robot_pose.pose.position.x,
-      tracker_reference.pose.position.y - robot_pose.pose.position.y);
   const double clearance = obstacleClearance(robot_pose.pose.position.x,
                                              robot_pose.pose.position.y);
 
@@ -197,7 +196,9 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
       std::max(0.0, max_lateral_acceleration_) / std::max(bounded.v, 0.05));
   const Control correction{bounded.v - planner_command_.v,
                            bounded.w - planner_command_.w};
-  updateTrackingMargin(position_error, heading_error, correction, clearance);
+  const TrackingPrediction prediction = evaluateTrackingPrediction(
+      robot_pose, bounded, tracking_horizon_steps_, control_period_);
+  updateTrackingMargin(prediction, correction, clearance);
 
   if (!rolloutIsSafe(robot_pose.pose.position.x, robot_pose.pose.position.y,
                      tf2::getYaw(robot_pose.pose.orientation), bounded,
@@ -213,10 +214,12 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   ROS_INFO_THROTTLE(0.5,
                     "DoubleNMPC: curvature=%.3f  curve_cap=%.3f  plan=(%.3f, %.3f) "
                     "track_cap=%.3f  cmd=(%.3f, %.3f)  moving_w_cap=%.3f  heading=%.3f  speed_scale=%.2f "
-                    "risk=%.2f  margin=%.3f",
+                    "pred_err=(%.3f, %.3f)  turn=%.2f  risk=%.2f  margin=%.3f",
                     path_curvature, curve_speed_limit, planner_command_.v,
                     planner_command_.w, tracking_speed_cap, bounded.v, bounded.w,
                     moving_angular_limit, heading_error, tracking_speed_scale,
+                    prediction.max_position_error, prediction.max_heading_error,
+                    prediction.turn_activity,
                     tracking_risk_, tracking_margin_);
 
   const double cycle_elapsed_ms = (ros::WallTime::now() - cycle_started).toSec() * 1000.0;
@@ -437,10 +440,69 @@ double DoubleNMPCController::obstacleClearance(double x, double y) const {
   return obstacle_relevance_distance_;
 }
 
-void DoubleNMPCController::updateTrackingMargin(double position_error, double heading_error,
-                                                 const Control& correction, double clearance) {
-  const double pos_risk = clamp((position_error - 0.015) / 0.05, 0.0, 1.0);
-  const double head_risk = clamp((std::fabs(heading_error) - 0.0035) / 0.044, 0.0, 1.0);
+DoubleNMPCController::TrackingPrediction DoubleNMPCController::evaluateTrackingPrediction(
+    const geometry_msgs::PoseStamped& pose, const Control& control, int steps,
+    double step_period) const {
+  TrackingPrediction prediction;
+  if (global_plan_.empty()) {
+    return prediction;
+  }
+
+  double x = pose.pose.position.x;
+  double y = pose.pose.position.y;
+  double yaw = tf2::getYaw(pose.pose.orientation);
+  const double initial_yaw = yaw;
+  for (int step = 0; step <= steps; ++step) {
+    std::size_t nearest = 0;
+    double nearest_distance = std::numeric_limits<double>::infinity();
+    for (std::size_t i = 0; i < global_plan_.size(); ++i) {
+      const auto& point = global_plan_[i].pose.position;
+      const double distance = std::hypot(x - point.x, y - point.y);
+      if (distance < nearest_distance) {
+        nearest_distance = distance;
+        nearest = i;
+      }
+    }
+
+    const std::size_t next = std::min(nearest + 1, global_plan_.size() - 1);
+    const std::size_t previous = nearest == 0 ? 0 : nearest - 1;
+    const auto& from = global_plan_[next == nearest ? previous : nearest].pose.position;
+    const auto& to = global_plan_[next].pose.position;
+    const double reference_yaw = std::hypot(to.x - from.x, to.y - from.y) > 1e-6
+        ? std::atan2(to.y - from.y, to.x - from.x)
+        : tf2::getYaw(global_plan_[nearest].pose.orientation);
+    const double heading_error = std::fabs(normalizeAngle(yaw - reference_yaw));
+
+    if (step == 0) {
+      prediction.position_error = nearest_distance;
+      prediction.heading_error = heading_error;
+    }
+    prediction.max_position_error = std::max(prediction.max_position_error, nearest_distance);
+    prediction.max_heading_error = std::max(prediction.max_heading_error, heading_error);
+    prediction.turn_activity = std::max(
+        prediction.turn_activity,
+        clamp(std::fabs(normalizeAngle(yaw - initial_yaw)) / 0.35, 0.0, 1.0));
+
+    x += control.v * std::cos(yaw) * step_period;
+    y += control.v * std::sin(yaw) * step_period;
+    yaw = normalizeAngle(yaw + control.w * step_period);
+  }
+  prediction.turn_activity = std::max(
+      prediction.turn_activity, clamp(std::fabs(control.w) / 1.0, 0.0, 1.0));
+  return prediction;
+}
+
+void DoubleNMPCController::updateTrackingMargin(const TrackingPrediction& prediction,
+                                                 const Control& correction,
+                                                 double clearance) {
+  // This is a genuine tracking envelope: compare each predicted state against
+  // the nearest path tangent instead of treating look-ahead distance as error.
+  const double pos_error = std::max(prediction.position_error,
+                                    prediction.max_position_error);
+  const double head_error = std::max(prediction.heading_error,
+                                     prediction.max_heading_error);
+  const double pos_risk = clamp((pos_error - 0.015) / 0.05, 0.0, 1.0);
+  const double head_risk = clamp((head_error - 0.0035) / 0.044, 0.0, 1.0);
   const double input_risk = clamp(std::max(std::fabs(correction.v) / 0.10,
                                             std::fabs(correction.w) / 0.40), 0.0, 1.0);
   const double raw_risk = 0.22 * pos_risk + 0.48 * head_risk + 0.30 * input_risk;
@@ -455,7 +517,11 @@ void DoubleNMPCController::updateTrackingMargin(double position_error, double he
                                  0.0, 1.0);
   double desired_margin = nominal_margin_;
   if (tracking_risk_ < 0.10) {
-    desired_margin = min_margin_;
+    // A curve is not a failure, but it should not fully relax to the
+    // straight-line minimum until the vehicle exits the turn.
+    const double relax_gate = std::max(turn_relax_floor_,
+                                       1.0 - prediction.turn_activity);
+    desired_margin = nominal_margin_ - (nominal_margin_ - min_margin_) * relax_gate;
   } else if (tracking_risk_ > 0.20 && relevance > 0.0) {
     const double intensity = clamp((tracking_risk_ - 0.20) / 0.80, 0.0, 1.0);
     desired_margin = nominal_margin_ + (max_margin_ - nominal_margin_) * intensity * relevance;

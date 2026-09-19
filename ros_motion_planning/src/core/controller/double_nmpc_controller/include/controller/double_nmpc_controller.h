@@ -30,6 +30,14 @@ private:
     double w{0.0};
   };
 
+  struct TrackingPrediction {
+    double position_error{0.0};
+    double heading_error{0.0};
+    double max_position_error{0.0};
+    double max_heading_error{0.0};
+    double turn_activity{0.0};
+  };
+
   geometry_msgs::PoseStamped lookAheadPose(
       const geometry_msgs::PoseStamped& pose, double distance) const;
   Control chooseControl(const geometry_msgs::PoseStamped& pose, const Control& current,
@@ -41,7 +49,10 @@ private:
   bool poseIsSafe(double x, double y, double margin) const;
   double obstacleClearance(double x, double y) const;
   double pathCurvatureAhead(const geometry_msgs::PoseStamped& pose) const;
-  void updateTrackingMargin(double position_error, double heading_error,
+  TrackingPrediction evaluateTrackingPrediction(
+      const geometry_msgs::PoseStamped& pose, const Control& control,
+      int steps, double step_period) const;
+  void updateTrackingMargin(const TrackingPrediction& prediction,
                             const Control& correction, double clearance);
   Control rateLimit(const Control& desired) const;
   static double normalizeAngle(double angle);
@@ -93,6 +104,7 @@ private:
   double max_margin_{0.10};
   double obstacle_relevance_distance_{0.70};
   double risk_ewma_alpha_{0.22};
+  double turn_relax_floor_{0.20};
   double margin_rise_per_cycle_{0.0015};
   double margin_fall_per_cycle_{0.0010};
 
