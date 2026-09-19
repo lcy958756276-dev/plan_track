@@ -78,6 +78,7 @@ private:
   int planner_horizon_steps_{6};
   double max_linear_velocity_{0.40};
   double max_angular_velocity_{1.5};
+  double max_navigation_angular_velocity_{0.8};
   double max_linear_acceleration_{0.25};
   double max_linear_deceleration_{0.65};
   double max_angular_acceleration_{1.2};

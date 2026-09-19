@@ -44,6 +44,8 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
   nh.param("planner_horizon_steps", planner_horizon_steps_, planner_horizon_steps_);
   nh.param("max_linear_velocity", max_linear_velocity_, max_linear_velocity_);
   nh.param("max_angular_velocity", max_angular_velocity_, config_.max_angular_velocity());
+  nh.param("max_navigation_angular_velocity", max_navigation_angular_velocity_,
+           max_navigation_angular_velocity_);
   nh.param("max_linear_acceleration", max_linear_acceleration_, max_linear_acceleration_);
   nh.param("max_linear_deceleration", max_linear_deceleration_, max_linear_deceleration_);
   nh.param("max_angular_acceleration", max_angular_acceleration_, max_angular_acceleration_);
@@ -65,6 +67,8 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
   nh.param("margin_fall_per_cycle", margin_fall_per_cycle_, margin_fall_per_cycle_);
 
   min_margin_ = std::max(0.0, min_margin_);
+  max_navigation_angular_velocity_ = clamp(max_navigation_angular_velocity_, 0.0,
+                                           max_angular_velocity_);
   nominal_margin_ = clamp(nominal_margin_, min_margin_, max_margin_);
   max_margin_ = std::max(nominal_margin_, max_margin_);
   tracking_margin_ = nominal_margin_;
@@ -77,7 +81,8 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
                   << command_period_ << "s, planner="
                   << planner_period_ << "s x " << planner_horizon_steps_
                   << " (" << planner_period_ * planner_horizon_steps_
-                  << "s horizon), margin=[" << min_margin_ << ", "
+                  << "s horizon), nav_angular_limit=" << max_navigation_angular_velocity_
+                  << "rad/s, margin=[" << min_margin_ << ", "
                   << max_margin_ << "] m. Set ~" << name
                   << "/max_linear_velocity explicitly before high-speed operation.");
 }
@@ -202,6 +207,9 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
                                         tracking_horizon_steps_, control_period_,
                                         tracking_speed_cap, tracking_margin_, false);
   const Control bounded = rateLimit(command);
+  const double command_angular_limit = std::min(
+      max_navigation_angular_velocity_,
+      std::max(0.0, max_lateral_acceleration_) / std::max(bounded.v, 0.05));
   const Control correction{bounded.v - planner_command_.v,
                            bounded.w - planner_command_.w};
   updateTrackingMargin(position_error, heading_error, correction, clearance);
@@ -219,11 +227,12 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   previous_command_ = bounded;
   ROS_INFO_THROTTLE(0.5,
                     "DoubleNMPC: curvature=%.3f  curve_cap=%.3f  plan=(%.3f, %.3f) "
-                    "track_cap=%.3f  cmd=(%.3f, %.3f)  heading=%.3f  speed_scale=%.2f "
+                    "track_cap=%.3f  cmd=(%.3f, %.3f)  nav_w_cap=%.3f  heading=%.3f  speed_scale=%.2f "
                     "risk=%.2f  margin=%.3f",
                     path_curvature, curve_speed_limit, planner_command_.v,
                     planner_command_.w, tracking_speed_cap, bounded.v, bounded.w,
-                    heading_error, tracking_speed_scale, tracking_risk_, tracking_margin_);
+                    command_angular_limit, heading_error, tracking_speed_scale,
+                    tracking_risk_, tracking_margin_);
 
   const double cycle_elapsed_ms = (ros::WallTime::now() - cycle_started).toSec() * 1000.0;
   const double budget_ms = command_period_ * 1000.0;
@@ -334,7 +343,8 @@ DoubleNMPCController::Control DoubleNMPCController::chooseControl(
                                             reference.pose.position.x - x);
   const double heading_error = normalizeAngle(desired_heading - yaw);
   const double nominal_w = clamp(heading_error / std::max(step_period, 1e-3),
-                                 -max_angular_velocity_, max_angular_velocity_);
+                                 -max_navigation_angular_velocity_,
+                                 max_navigation_angular_velocity_);
   const double heading_speed_scale = clamp(1.0 - std::fabs(heading_error) / 1.2, 0.15, 1.0);
   const double nominal_v = std::max(0.0, speed_cap) * heading_speed_scale;
 
@@ -344,10 +354,16 @@ DoubleNMPCController::Control DoubleNMPCController::chooseControl(
   Control best{0.0, 0.0};
   for (int i = 0; i < speed_samples; ++i) {
     const double v = nominal_v * static_cast<double>(i) / (speed_samples - 1);
+    // a_lat = v * omega. This caps moving turns by both a navigation angular
+    // limit and the configured lateral-acceleration limit. In-place/very-low-speed
+    // rotation remains available through the separate goal-alignment path.
+    const double candidate_w_limit = std::min(
+        max_navigation_angular_velocity_,
+        std::max(0.0, max_lateral_acceleration_) / std::max(v, 0.05));
     for (int j = 0; j < turn_samples; ++j) {
       const double spread = -1.0 + 2.0 * static_cast<double>(j) / (turn_samples - 1);
-      const Control candidate{v, clamp(nominal_w + spread * 0.65 * max_angular_velocity_,
-                                       -max_angular_velocity_, max_angular_velocity_)};
+      const Control candidate{v, clamp(nominal_w + spread * 0.65 * candidate_w_limit,
+                                       -candidate_w_limit, candidate_w_limit)};
       if (!rolloutIsSafe(x, y, yaw, candidate, horizon_steps, step_period, margin)) {
         continue;
       }
