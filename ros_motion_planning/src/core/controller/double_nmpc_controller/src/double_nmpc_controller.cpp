@@ -92,6 +92,14 @@ bool DoubleNMPCController::setPlan(const std::vector<geometry_msgs::PoseStamped>
   tracking_risk_ = 0.0;
   tracking_margin_ = nominal_margin_;
   planner_command_ = Control{};
+  timing_window_start_ = ros::WallTime(0);
+  timing_cycle_count_ = 0;
+  timing_planner_count_ = 0;
+  timing_overrun_count_ = 0;
+  timing_total_ms_ = 0.0;
+  timing_max_ms_ = 0.0;
+  timing_planner_total_ms_ = 0.0;
+  timing_planner_max_ms_ = 0.0;
   return true;
 }
 
@@ -100,6 +108,7 @@ bool DoubleNMPCController::isGoalReached() {
 }
 
 bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel) {
+  const ros::WallTime cycle_started = ros::WallTime::now();
   cmd_vel = geometry_msgs::Twist();
   if (!initialized_ || global_plan_.empty() || costmap_ros_ == nullptr || tf_ == nullptr) {
     ROS_ERROR_THROTTLE(1.0, "DoubleNMPCController is not ready to compute commands");
@@ -158,14 +167,17 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
               min_curve_speed_, max_linear_velocity_);
 
   const ros::Time now = ros::Time::now();
+  double planner_elapsed_ms = 0.0;
   if (last_planner_update_.isZero() ||
       (now - last_planner_update_).toSec() >= planner_period_) {
     planner_reference_ = lookAheadPose(robot_pose, planner_lookahead_);
     // The long layer is genuinely 6 x 0.48 = 2.88 s. Its output is cached until
     // the next planning boundary and becomes a hard speed cap for the tracking layer.
+    const ros::WallTime planner_started = ros::WallTime::now();
     planner_command_ = chooseControl(robot_pose, current, planner_reference_,
                                      planner_horizon_steps_, planner_period_,
                                      curve_speed_limit, tracking_margin_, true);
+    planner_elapsed_ms = (ros::WallTime::now() - planner_started).toSec() * 1000.0;
     last_planner_update_ = now;
   }
 
@@ -208,6 +220,43 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
                     path_curvature, curve_speed_limit, planner_command_.v,
                     planner_command_.w, tracking_speed_cap, bounded.v, bounded.w,
                     tracking_risk_, tracking_margin_);
+
+  const double cycle_elapsed_ms = (ros::WallTime::now() - cycle_started).toSec() * 1000.0;
+  const double budget_ms = control_period_ * 1000.0;
+  if (timing_window_start_.isZero()) {
+    timing_window_start_ = cycle_started;
+  }
+  ++timing_cycle_count_;
+  timing_total_ms_ += cycle_elapsed_ms;
+  timing_max_ms_ = std::max(timing_max_ms_, cycle_elapsed_ms);
+  if (planner_elapsed_ms > 0.0) {
+    ++timing_planner_count_;
+    timing_planner_total_ms_ += planner_elapsed_ms;
+    timing_planner_max_ms_ = std::max(timing_planner_max_ms_, planner_elapsed_ms);
+  }
+  if (cycle_elapsed_ms > budget_ms) {
+    ++timing_overrun_count_;
+  }
+  const double timing_window_s = (ros::WallTime::now() - timing_window_start_).toSec();
+  if (timing_window_s >= 1.0) {
+    const double average_ms = timing_total_ms_ / std::max(1u, timing_cycle_count_);
+    const double planner_average_ms = timing_planner_count_ == 0
+        ? 0.0 : timing_planner_total_ms_ / timing_planner_count_;
+    ROS_INFO("DoubleNMPC timing: calls=%u window=%.2fs rate=%.1fHz "
+             "cycle_ms(avg/max)=%.2f/%.2f budget=%.1f over_budget=%u "
+             "planner_calls=%u planner_ms(avg/max)=%.2f/%.2f",
+             timing_cycle_count_, timing_window_s, timing_cycle_count_ / timing_window_s,
+             average_ms, timing_max_ms_, budget_ms, timing_overrun_count_,
+             timing_planner_count_, planner_average_ms, timing_planner_max_ms_);
+    timing_window_start_ = ros::WallTime::now();
+    timing_cycle_count_ = 0;
+    timing_planner_count_ = 0;
+    timing_overrun_count_ = 0;
+    timing_total_ms_ = 0.0;
+    timing_max_ms_ = 0.0;
+    timing_planner_total_ms_ = 0.0;
+    timing_planner_max_ms_ = 0.0;
+  }
   return true;
 }
 

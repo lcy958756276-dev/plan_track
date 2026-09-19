@@ -54,6 +54,17 @@ private:
   geometry_msgs::PoseStamped planner_reference_;
   Control planner_command_;
 
+  // One-second wall-clock timing window for remote Nano profiling. These are kept
+  // out of the optimization itself so timing collection does not affect control.
+  ros::WallTime timing_window_start_;
+  unsigned int timing_cycle_count_{0};
+  unsigned int timing_planner_count_{0};
+  unsigned int timing_overrun_count_{0};
+  double timing_total_ms_{0.0};
+  double timing_max_ms_{0.0};
+  double timing_planner_total_ms_{0.0};
+  double timing_planner_max_ms_{0.0};
+
   Control previous_command_;
   double tracking_risk_{0.0};
   double tracking_margin_{0.06};
