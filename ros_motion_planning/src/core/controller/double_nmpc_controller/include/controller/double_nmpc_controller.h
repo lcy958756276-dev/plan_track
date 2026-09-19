@@ -52,6 +52,9 @@ private:
   TrackingPrediction evaluateTrackingPrediction(
       const geometry_msgs::PoseStamped& pose, const Control& control,
       int steps, double step_period) const;
+  double predictedMinimumClearance(const geometry_msgs::PoseStamped& pose,
+                                   const Control& control, int steps,
+                                   double step_period) const;
   void updateTrackingMargin(const TrackingPrediction& prediction,
                             const Control& correction, double clearance);
   Control rateLimit(const Control& desired) const;
@@ -110,6 +113,7 @@ private:
 
   ros::Publisher risk_pub_;
   ros::Publisher margin_pub_;
+  ros::Publisher clearance_pub_;
 };
 
 }  // namespace rmp::controller

@@ -11,7 +11,10 @@ The controller has two nonlinear rollout layers:
 Tracking position error, heading error, and tracking-layer correction form an EWMA risk.
 The risk changes only the obstacle-clearance margin. The margin is allowed to relax to
 `0.05 m`; it may tighten to `0.10 m` only when an obstacle is relevant to the current
-costmap rollout. The plugin publishes `~/tracking_risk` and `~/dynamic_safe_margin`.
+costmap rollout. The plugin publishes `~/tracking_risk`, `~/dynamic_safe_margin`, and
+`~/predicted_min_clearance`. The last topic is the minimum obstacle clearance along
+the current short-layer predicted rollout; it is the safety-relevant clearance value
+to plot (rather than the maximum, which is normally saturated in open space).
 
 To test it, change the local planner in a dedicated launch file—not the existing debug
 entrypoint—and load the supplied parameters:

@@ -224,7 +224,7 @@ echo "  PID=$PID_ODOM → log/encoder_odom.log"
 sleep 1
 
 # ── 6.5 启动实际速度记录器 ──
-echo "[6.5/8] 启动 velocity_plotter.py (记录 /odom 实际线速度/角速度)..."
+echo "[6.5/8] 启动 velocity_plotter.py (记录速度、跟踪风险、裕度和预测净空)..."
 rosrun encoder_tools velocity_plotter.py \
     _output_dir:="$LOG_DIR" \
     > "$LOG_DIR/velocity_plotter.log" 2>&1 &

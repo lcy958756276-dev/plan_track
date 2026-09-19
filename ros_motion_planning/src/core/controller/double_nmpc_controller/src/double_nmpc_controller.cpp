@@ -73,6 +73,7 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
   tracking_margin_ = nominal_margin_;
   risk_pub_ = nh.advertise<std_msgs::Float64>("tracking_risk", 1);
   margin_pub_ = nh.advertise<std_msgs::Float64>("dynamic_safe_margin", 1);
+  clearance_pub_ = nh.advertise<std_msgs::Float64>("predicted_min_clearance", 1);
   initialized_ = true;
 
   ROS_INFO_STREAM("DoubleNMPCController initialized: prediction=" << control_period_
@@ -198,7 +199,13 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
                            bounded.w - planner_command_.w};
   const TrackingPrediction prediction = evaluateTrackingPrediction(
       robot_pose, bounded, tracking_horizon_steps_, control_period_);
+  const double predicted_min_clearance = predictedMinimumClearance(
+      robot_pose, bounded, tracking_horizon_steps_, control_period_);
   updateTrackingMargin(prediction, correction, clearance);
+
+  std_msgs::Float64 clearance_message;
+  clearance_message.data = predicted_min_clearance;
+  clearance_pub_.publish(clearance_message);
 
   if (!rolloutIsSafe(robot_pose.pose.position.x, robot_pose.pose.position.y,
                      tf2::getYaw(robot_pose.pose.orientation), bounded,
@@ -214,13 +221,14 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   ROS_INFO_THROTTLE(0.5,
                     "DoubleNMPC: curvature=%.3f  curve_cap=%.3f  plan=(%.3f, %.3f) "
                     "track_cap=%.3f  cmd=(%.3f, %.3f)  moving_w_cap=%.3f  heading=%.3f  speed_scale=%.2f "
-                    "pred_err=(%.3f, %.3f)  turn=%.2f  risk=%.2f  margin=%.3f",
+                    "pred_err=(%.3f, %.3f)  turn=%.2f  risk=%.2f  margin=%.3f  "
+                    "min_clearance=%.3f",
                     path_curvature, curve_speed_limit, planner_command_.v,
                     planner_command_.w, tracking_speed_cap, bounded.v, bounded.w,
                     moving_angular_limit, heading_error, tracking_speed_scale,
                     prediction.max_position_error, prediction.max_heading_error,
                     prediction.turn_activity,
-                    tracking_risk_, tracking_margin_);
+                    tracking_risk_, tracking_margin_, predicted_min_clearance);
 
   const double cycle_elapsed_ms = (ros::WallTime::now() - cycle_started).toSec() * 1000.0;
   const double budget_ms = command_period_ * 1000.0;
@@ -490,6 +498,22 @@ DoubleNMPCController::TrackingPrediction DoubleNMPCController::evaluateTrackingP
   prediction.turn_activity = std::max(
       prediction.turn_activity, clamp(std::fabs(control.w) / 1.0, 0.0, 1.0));
   return prediction;
+}
+
+double DoubleNMPCController::predictedMinimumClearance(
+    const geometry_msgs::PoseStamped& pose, const Control& control, int steps,
+    double step_period) const {
+  double x = pose.pose.position.x;
+  double y = pose.pose.position.y;
+  double yaw = tf2::getYaw(pose.pose.orientation);
+  double minimum_clearance = obstacle_relevance_distance_;
+  for (int step = 0; step <= steps; ++step) {
+    minimum_clearance = std::min(minimum_clearance, obstacleClearance(x, y));
+    x += control.v * std::cos(yaw) * step_period;
+    y += control.v * std::sin(yaw) * step_period;
+    yaw = normalizeAngle(yaw + control.w * step_period);
+  }
+  return minimum_clearance;
 }
 
 void DoubleNMPCController::updateTrackingMargin(const TrackingPrediction& prediction,

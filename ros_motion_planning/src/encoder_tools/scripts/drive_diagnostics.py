@@ -29,6 +29,7 @@ class DriveDiagnostics:
         self.lock = threading.Lock()
         self.start_time = None
         self.command = {"v": 0.0, "w": 0.0, "stamp": None}
+        self.last_motion_command_v = 0.0
         self.wheel_velocity = {"left": 0.0, "right": 0.0, "stamp": None}
         self.ticks = {"left": None, "right": None, "stamp": None}
         self.latest_pose = None
@@ -56,7 +57,6 @@ class DriveDiagnostics:
     def command_cb(self, msg):
         stamp = rospy.Time.now()
         with self.lock:
-            previous_v = self.command["v"]
             self.command = {"v": msg.linear.x, "w": msg.angular.z, "stamp": stamp}
             self.command_rows.append({
                 "time_s": self._relative_time(stamp),
@@ -64,8 +64,11 @@ class DriveDiagnostics:
                 "angular_radps": msg.angular.z,
             })
 
-            if (abs(previous_v) >= self.stop_command_threshold and
-                    abs(msg.linear.x) < 1e-4 and self.latest_pose is not None):
+            if abs(msg.linear.x) >= self.stop_command_threshold:
+                self.last_motion_command_v = msg.linear.x
+            elif (abs(msg.linear.x) < 1e-3 and
+                    abs(self.last_motion_command_v) >= self.stop_command_threshold and
+                    self.latest_pose is not None and self.pending_stop is None):
                 self.pending_stop = {
                     "command_time": stamp,
                     "initial_speed": self.latest_pose["linear_mps"],
@@ -74,6 +77,7 @@ class DriveDiagnostics:
                 }
                 rospy.loginfo("drive_diagnostics: stop command detected at %.3f m/s",
                               self.pending_stop["initial_speed"])
+                self.last_motion_command_v = 0.0
 
     def wheel_velocity_cb(self, msg):
         if len(msg.data) < 2:
