@@ -1,19 +1,19 @@
-=== 启动时间: 2026年 09月 19日 星期六 12:01:35 CST ===
-[12:01:35] [1] main_generate.py start
-[12:01:35] [1] main_generate.py done
-[12:01:35] [2] use_encoder_odom flag set
-[12:01:35] [3] loading robot_description
-[12:01:36] [3] robot_description loaded
-[33m[WARN] [1789790496.490578471]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
-[12:01:39] [4] starting gzserver
-[12:01:45] [4] spawn_model start
-[INFO] [1789790506.704997]: Loading model XML from ros parameter robot_description
-[INFO] [1789790506.712372]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1789790506.719201]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1789790507.307472]: Spawn status: SpawnModel: Successfully spawned entity
-[12:01:48] [4] spawn_model exit=0
-[12:02:00] [8] generating move_base launch file
-[12:02:00] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 09月 19日 星期六 13:13:35 CST ===
+[13:13:35] [1] main_generate.py start
+[13:13:35] [1] main_generate.py done
+[13:13:35] [2] use_encoder_odom flag set
+[13:13:35] [3] loading robot_description
+[13:13:36] [3] robot_description loaded
+[33m[WARN] [1789794816.453896822]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[13:13:39] [4] starting gzserver
+[13:13:45] [4] spawn_model start
+[INFO] [1789794826.625692]: Loading model XML from ros parameter robot_description
+[INFO] [1789794826.632722]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1789794826.636794]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1789794827.265702]: Spawn status: SpawnModel: Successfully spawned entity
+[13:13:47] [4] spawn_model exit=0
+[13:14:00] [8] generating move_base launch file
+[13:14:00] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 double_nmpc_controller/DoubleNMPCController
@@ -45,13 +45,13 @@ global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 rpp_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/rpp_controller/rpp_controller_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1789790522.401366838]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1789790522.403930569]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1789794842.607026435]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1789794842.609643607]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20260919 12:02:02.861657 30155 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
-I20260919 12:02:02.866394 30155 path_planner_factory.cpp:137] Using path planner: astar_polyline
-[33m[WARN] [1789790522.911097430]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[12:02:03] [8] move_base 启动后状态:
+I20260919 13:14:03.030488  8707 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
+I20260919 13:14:03.036814  8707 path_planner_factory.cpp:137] Using path planner: astar_polyline
+[33m[WARN] [1789794843.056884128]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[13:14:04] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -114,90 +114,86 @@ I20260919 12:02:02.866394 30155 path_planner_factory.cpp:137] Using path planner
 /move_base/make_plan
 /move_base/set_logger_level
 /move_base/set_parameters
-I20260919 12:02:07.275804 30155 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(-3.50104, -2.51331)
-I20260919 12:02:07.299353 30155 astar_polyline_planner.cpp:46] AStarPolyline: base poses=83, polyline vertices=16, dense poses=83
-W20260919 12:02:07.299721 30155 path_planner_node.cpp:215] Path heading change 150.81 deg > 90 deg, accepting new plan for pre-rotation
-I20260919 12:02:07.302234 30155 path_planner_node.cpp:302] PathPlanner make_plan response: poses=83 end=(-3.50104, -2.51331) end_goal_dist=0
-I20260919 12:02:21.005911 30165 astar_polyline_planner.cpp:46] AStarPolyline: base poses=84, polyline vertices=12, dense poses=84
-[0m[INFO] [1789790522.405079197]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1789790522.418610236]: Requesting the map...[0m
-[0m[INFO] [1789790522.623580525]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1789790522.723336842]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1789790522.730617393]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1789790522.742257404]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1789790522.774447009]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1789790522.781806827]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1789790522.914822109]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1789790522.919856447]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1789790522.971349671]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1789790523.030721391]: Created local_planner double_nmpc_controller/DoubleNMPCController[0m
-[0m[INFO] [1789790523.063613331]: DoubleNMPCController initialized: prediction=0.16s x 3, command=0.05s, planner=0.48s x 6 (2.88s horizon), max_angular_velocity=1.5rad/s, margin=[0.05, 0.1] m. Set ~DoubleNMPCController/max_linear_velocity explicitly before high-speed operation.[0m
-[0m[INFO] [1789790523.532918067]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1789790523.543945794]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1789790523.592105715]: odom received![0m
-[0m[INFO] [1789790541.046365365]: DoubleNMPC: curvature=-0.448  curve_cap=0.400  plan=(0.350, -0.096) track_cap=0.350  cmd=(0.013, -0.000)  moving_w_cap=1.500  heading=-0.115  speed_scale=0.90 risk=0.22  margin=0.060[0m
-[0m[INFO] [1789790541.595657303]: DoubleNMPC: curvature=-0.448  curve_cap=0.400  plan=(0.357, -0.056) track_cap=0.357  cmd=(0.150, 0.104)  moving_w_cap=1.500  heading=-0.094  speed_scale=0.92 risk=0.95  margin=0.067[0m
-[0m[INFO] [1789790542.045809852]: DoubleNMPC timing: calls=21 window=1.00s rate=21.0Hz cycle_ms(avg/max)=0.39/1.03 budget=50.0 over_budget=0 planner_calls=3 planner_ms(avg/max)=0.19/0.23[0m
-[0m[INFO] [1789790542.095663110]: DoubleNMPC: curvature=-0.448  curve_cap=0.400  plan=(0.370, 0.020) track_cap=0.370  cmd=(0.275, 0.359)  moving_w_cap=1.273  heading=-0.045  speed_scale=0.96 risk=0.99  margin=0.067[0m
-[0m[INFO] [1789790542.595677549]: DoubleNMPC: curvature=-0.482  curve_cap=0.400  plan=(0.377, 0.057) track_cap=0.377  cmd=(0.374, 0.096)  moving_w_cap=0.935  heading=-0.009  speed_scale=0.99 risk=0.47  margin=0.063[0m
-[0m[INFO] [1789790543.095640752]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.39/0.59 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.19/0.22[0m
-[0m[INFO] [1789790543.145608415]: DoubleNMPC: curvature=-0.503  curve_cap=0.400  plan=(0.381, -0.119) track_cap=0.381  cmd=(0.370, -0.086)  moving_w_cap=0.945  heading=0.033  speed_scale=0.97 risk=0.46  margin=0.065[0m
-[0m[INFO] [1789790543.645665022]: DoubleNMPC: curvature=-0.333  curve_cap=0.400  plan=(0.292, -0.070) track_cap=0.292  cmd=(0.278, -0.057)  moving_w_cap=1.259  heading=0.056  speed_scale=0.95 risk=0.71  margin=0.072[0m
-[0m[INFO] [1789790544.145610038]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.36/0.49 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.16/0.17[0m
-[0m[INFO] [1789790544.195649286]: DoubleNMPC: curvature=-0.173  curve_cap=0.400  plan=(0.298, -0.016) track_cap=0.298  cmd=(0.277, -0.081)  moving_w_cap=1.265  heading=0.086  speed_scale=0.93 risk=0.77  margin=0.066[0m
-[0m[INFO] [1789790544.745609959]: DoubleNMPC: curvature=-0.122  curve_cap=0.400  plan=(0.298, 0.019) track_cap=0.298  cmd=(0.269, -0.115)  moving_w_cap=1.303  heading=0.117  speed_scale=0.90 risk=0.82  margin=0.074[0m
-[0m[INFO] [1789790545.195669546]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.38/0.57 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.17/0.18[0m
-[0m[INFO] [1789790545.245627030]: DoubleNMPC: curvature=-0.005  curve_cap=0.400  plan=(0.289, 0.090) track_cap=0.289  cmd=(0.257, -0.047)  moving_w_cap=1.363  heading=0.134  speed_scale=0.89 risk=0.80  margin=0.066[0m
-[0m[INFO] [1789790545.745892780]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.376, -0.053) track_cap=0.376  cmd=(0.315, 0.350)  moving_w_cap=1.111  heading=0.169  speed_scale=0.86 risk=0.93  margin=0.060[0m
-[0m[INFO] [1789790546.245635493]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.39/0.74 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.19/0.19[0m
-[0m[INFO] [1789790546.295682228]: DoubleNMPC: curvature=-0.000  curve_cap=0.400  plan=(0.279, -0.098) track_cap=0.279  cmd=(0.242, 0.048)  moving_w_cap=1.443  heading=0.158  speed_scale=0.87 risk=0.90  margin=0.066[0m
-[0m[INFO] [1789790546.795684052]: DoubleNMPC: curvature=-0.021  curve_cap=0.400  plan=(0.373, -0.037) track_cap=0.373  cmd=(0.314, 0.297)  moving_w_cap=1.113  heading=0.160  speed_scale=0.87 risk=0.95  margin=0.067[0m
-[0m[INFO] [1789790547.295640397]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.37/0.52 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.19/0.20[0m
-[0m[INFO] [1789790547.345620792]: DoubleNMPC: curvature=-0.097  curve_cap=0.400  plan=(0.378, -0.065) track_cap=0.378  cmd=(0.331, 0.258)  moving_w_cap=1.059  heading=0.151  speed_scale=0.87 risk=0.94  margin=0.069[0m
-[0m[INFO] [1789790547.914508705]: DoubleNMPC: curvature=-0.211  curve_cap=0.400  plan=(0.291, 0.079) track_cap=0.291  cmd=(0.260, -0.078)  moving_w_cap=1.348  heading=0.128  speed_scale=0.89 risk=0.82  margin=0.068[0m
-[0m[INFO] [1789790548.345616255]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.36/0.48 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.17/0.17[0m
-[0m[INFO] [1789790548.445598708]: DoubleNMPC: curvature=-0.254  curve_cap=0.400  plan=(0.296, 0.036) track_cap=0.296  cmd=(0.264, -0.067)  moving_w_cap=1.324  heading=0.127  speed_scale=0.89 risk=0.80  margin=0.068[0m
-[0m[INFO] [1789790548.945594849]: DoubleNMPC: curvature=-0.174  curve_cap=0.400  plan=(0.299, 0.004) track_cap=0.299  cmd=(0.269, -0.072)  moving_w_cap=1.303  heading=0.124  speed_scale=0.90 risk=0.79  margin=0.069[0m
-[0m[INFO] [1789790549.395643965]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.36/0.49 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.17/0.17[0m
-[0m[INFO] [1789790549.445618694]: DoubleNMPC: curvature=-0.043  curve_cap=0.400  plan=(0.298, -0.015) track_cap=0.298  cmd=(0.274, -0.219)  moving_w_cap=1.278  heading=0.098  speed_scale=0.92 risk=0.83  margin=0.075[0m
-[0m[INFO] [1789790549.945623658]: DoubleNMPC: curvature=-0.000  curve_cap=0.400  plan=(0.298, -0.016) track_cap=0.298  cmd=(0.274, -0.225)  moving_w_cap=1.277  heading=0.097  speed_scale=0.92 risk=0.85  margin=0.070[0m
-[0m[INFO] [1789790550.445661863]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.299, 0.007) track_cap=0.299  cmd=(0.273, -0.181)  moving_w_cap=1.281  heading=0.104  speed_scale=0.91 risk=0.83  margin=0.060[0m
-[0m[INFO] [1789790550.445742987]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.41/0.75 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.18/0.18[0m
-[0m[INFO] [1789790550.995659242]: DoubleNMPC: curvature=-0.000  curve_cap=0.400  plan=(0.296, 0.037) track_cap=0.296  cmd=(0.269, -0.162)  moving_w_cap=1.303  heading=0.110  speed_scale=0.91 risk=0.81  margin=0.064[0m
-[0m[INFO] [1789790551.495699516]: DoubleNMPC: curvature=0.008  curve_cap=0.400  plan=(0.292, 0.064) track_cap=0.292  cmd=(0.262, -0.102)  moving_w_cap=1.333  heading=0.122  speed_scale=0.90 risk=0.80  margin=0.060[0m
-[0m[INFO] [1789790551.495786944]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.38/0.53 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.18/0.18[0m
-[0m[INFO] [1789790552.045902653]: DoubleNMPC: curvature=0.485  curve_cap=0.400  plan=(0.356, 0.061) track_cap=0.356  cmd=(0.265, 0.093)  moving_w_cap=1.323  heading=0.137  speed_scale=0.89 risk=0.84  margin=0.060[0m
-[0m[INFO] [1789790552.545780991]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.45/1.14 budget=50.0 over_budget=0 planner_calls=3 planner_ms(avg/max)=0.25/0.35[0m
-[0m[INFO] [1789790552.595650688]: DoubleNMPC: curvature=1.301  curve_cap=0.400  plan=(0.331, 0.205) track_cap=0.331  cmd=(0.292, 0.103)  moving_w_cap=1.200  heading=0.141  speed_scale=0.88 risk=0.83  margin=0.068[0m
-[0m[INFO] [1789790553.145742960]: DoubleNMPC: curvature=1.705  curve_cap=0.400  plan=(0.276, 0.225) track_cap=0.276  cmd=(0.246, -0.108)  moving_w_cap=1.422  heading=0.131  speed_scale=0.89 risk=0.87  margin=0.065[0m
-[0m[INFO] [1789790553.595644515]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.39/0.71 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.17/0.17[0m
-[0m[INFO] [1789790553.695657200]: DoubleNMPC: curvature=1.608  curve_cap=0.400  plan=(0.235, 0.384) track_cap=0.235  cmd=(0.194, 0.440)  moving_w_cap=1.500  heading=0.214  speed_scale=0.82 risk=0.83  margin=0.072[0m
-[0m[INFO] [1789790554.195675691]: DoubleNMPC: curvature=1.344  curve_cap=0.400  plan=(0.197, 0.292) track_cap=0.197  cmd=(0.148, 1.040)  moving_w_cap=1.500  heading=0.301  speed_scale=0.75 risk=0.97  margin=0.078[0m
-[0m[INFO] [1789790554.645635320]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.38/0.56 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.17/0.18[0m
-[0m[INFO] [1789790554.745606657]: DoubleNMPC: curvature=1.108  curve_cap=0.400  plan=(0.199, 0.282) track_cap=0.199  cmd=(0.146, 1.256)  moving_w_cap=1.500  heading=0.316  speed_scale=0.74 risk=1.00  margin=0.075[0m
-[0m[INFO] [1789790555.295673816]: DoubleNMPC: curvature=0.910  curve_cap=0.400  plan=(0.220, 0.478) track_cap=0.220  cmd=(0.179, 0.930)  moving_w_cap=1.500  heading=0.221  speed_scale=0.82 risk=1.00  margin=0.078[0m
-[0m[INFO] [1789790555.695646457]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.40/0.99 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.17/0.17[0m
-[0m[INFO] [1789790555.845612197]: DoubleNMPC: curvature=0.718  curve_cap=0.400  plan=(0.251, 0.325) track_cap=0.251  cmd=(0.221, 0.660)  moving_w_cap=1.500  heading=0.145  speed_scale=0.88 risk=0.98  margin=0.074[0m
-[0m[INFO] [1789790556.395662255]: DoubleNMPC: curvature=0.223  curve_cap=0.400  plan=(0.267, 0.262) track_cap=0.267  cmd=(0.227, 1.119)  moving_w_cap=1.500  heading=0.179  speed_scale=0.85 risk=1.00  margin=0.074[0m
-[0m[INFO] [1789790556.745629221]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.36/0.64 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.17/0.18[0m
-[0m[INFO] [1789790556.913518566]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.298, 0.130) track_cap=0.298  cmd=(0.278, 0.695)  moving_w_cap=1.258  heading=0.078  speed_scale=0.93 risk=1.00  margin=0.070[0m
-[0m[INFO] [1789790557.445585833]: DoubleNMPC: curvature=0.154  curve_cap=0.400  plan=(0.338, 0.164) track_cap=0.338  cmd=(0.334, 0.430)  moving_w_cap=1.048  heading=0.014  speed_scale=0.99 risk=0.70  margin=0.069[0m
-[0m[INFO] [1789790557.795622428]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.36/0.48 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.18/0.19[0m
-[0m[INFO] [1789790557.945673477]: DoubleNMPC: curvature=0.256  curve_cap=0.400  plan=(0.278, 0.180) track_cap=0.278  cmd=(0.263, 0.244)  moving_w_cap=1.328  heading=-0.065  speed_scale=0.95 risk=0.63  margin=0.062[0m
-[0m[INFO] [1789790558.495651798]: DoubleNMPC: curvature=0.922  curve_cap=0.400  plan=(0.297, 0.233) track_cap=0.297  cmd=(0.253, -0.131)  moving_w_cap=1.383  heading=-0.179  speed_scale=0.85 risk=0.89  margin=0.067[0m
-[0m[INFO] [1789790558.845595486]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.36/0.50 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.18/0.18[0m
-[0m[INFO] [1789790559.045801196]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.163, 0.514) track_cap=0.163  cmd=(0.126, -0.525)  moving_w_cap=1.500  heading=-0.276  speed_scale=0.77 risk=0.99  margin=0.069[0m
-[0m[INFO] [1789790559.595629290]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.075, 0.358) track_cap=0.075  cmd=(0.058, -0.525)  moving_w_cap=1.500  heading=-0.296  speed_scale=0.75 risk=1.00  margin=0.071[0m
-[0m[INFO] [1789790559.913854355]: DoubleNMPC timing: calls=21 window=1.07s rate=19.7Hz cycle_ms(avg/max)=0.39/0.77 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.19/0.20[0m
-[0m[INFO] [1789790560.095648911]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.071, -1.500) track_cap=0.071  cmd=(0.050, -0.525)  moving_w_cap=1.500  heading=-0.357  speed_scale=0.70 risk=1.00  margin=0.066[0m
-[0m[INFO] [1789790560.645596552]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.067, -1.500) track_cap=0.067  cmd=(0.045, -0.525)  moving_w_cap=1.500  heading=-0.393  speed_scale=0.67 risk=1.00  margin=0.071[0m
-[0m[INFO] [1789790560.945545508]: DoubleNMPC timing: calls=21 window=1.03s rate=20.4Hz cycle_ms(avg/max)=0.40/1.49 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.20/0.21[0m
-... logging to /home/lcy/.ros/log/ae40fd14-b3d5-11f1-8af3-189341889b90/roslaunch-ubuntu-30132.log
+I20260919 13:14:06.179720  8707 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(-3.40474, -2.35327)
+I20260919 13:14:06.193244  8707 astar_polyline_planner.cpp:46] AStarPolyline: base poses=80, polyline vertices=15, dense poses=80
+W20260919 13:14:06.193545  8707 path_planner_node.cpp:215] Path heading change 152.022 deg > 90 deg, accepting new plan for pre-rotation
+I20260919 13:14:06.196067  8707 path_planner_node.cpp:302] PathPlanner make_plan response: poses=80 end=(-3.40474, -2.35327) end_goal_dist=0
+I20260919 13:14:19.365772  8717 astar_polyline_planner.cpp:46] AStarPolyline: base poses=82, polyline vertices=14, dense poses=82
+[0m[INFO] [1789794842.610792434]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1789794842.621185811]: Requesting the map...[0m
+[0m[INFO] [1789794842.825338483]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1789794842.925105210]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1789794842.929793657]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1789794842.933613554]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1789794842.959903565]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1789794842.967397764]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1789794843.059443526]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1789794843.063910773]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1789794843.111354875]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1789794843.178429996]: Created local_planner double_nmpc_controller/DoubleNMPCController[0m
+[0m[INFO] [1789794843.206992214]: DoubleNMPCController initialized: prediction=0.16s x 3, command=0.05s, planner=0.48s x 6 (2.88s horizon), max_angular_velocity=1.5rad/s, margin=[0.05, 0.1] m. Set ~DoubleNMPCController/max_linear_velocity explicitly before high-speed operation.[0m
+[0m[INFO] [1789794843.668016419]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1789794843.679512839]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1789794843.732750456]: odom received![0m
+[0m[INFO] [1789794859.404465888]: DoubleNMPC: curvature=-0.670  curve_cap=0.400  plan=(0.335, -0.181) track_cap=0.335  cmd=(0.013, -0.060)  moving_w_cap=1.500  heading=-0.129  speed_scale=0.89 risk=0.22  margin=0.060[0m
+[0m[INFO] [1789794859.953765366]: DoubleNMPC: curvature=-0.670  curve_cap=0.400  plan=(0.343, -0.136) track_cap=0.343  cmd=(0.150, -0.095)  moving_w_cap=1.500  heading=-0.102  speed_scale=0.91 risk=0.95  margin=0.063[0m
+[0m[INFO] [1789794860.403899372]: DoubleNMPC timing: calls=21 window=1.00s rate=21.0Hz cycle_ms(avg/max)=0.46/1.67 budget=50.0 over_budget=0 planner_calls=3 planner_ms(avg/max)=0.19/0.23[0m
+[0m[INFO] [1789794860.503735329]: DoubleNMPC: curvature=-0.648  curve_cap=0.400  plan=(0.360, -0.038) track_cap=0.360  cmd=(0.288, 0.050)  moving_w_cap=1.217  heading=-0.030  speed_scale=0.98 risk=0.89  margin=0.066[0m
+[0m[INFO] [1789794861.003756058]: DoubleNMPC: curvature=-0.542  curve_cap=0.400  plan=(0.372, 0.028) track_cap=0.372  cmd=(0.366, 0.121)  moving_w_cap=0.957  heading=0.019  speed_scale=0.98 risk=0.46  margin=0.062[0m
+[0m[INFO] [1789794861.454434963]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.35/0.48 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.16/0.16[0m
+[0m[INFO] [1789794861.504091185]: DoubleNMPC: curvature=-0.317  curve_cap=0.400  plan=(0.379, -0.129) track_cap=0.379  cmd=(0.367, -0.208)  moving_w_cap=0.953  heading=0.038  speed_scale=0.97 risk=0.65  margin=0.068[0m
+[0m[INFO] [1789794862.053730141]: DoubleNMPC: curvature=-0.092  curve_cap=0.400  plan=(0.295, -0.044) track_cap=0.295  cmd=(0.277, -0.145)  moving_w_cap=1.265  heading=0.073  speed_scale=0.94 risk=0.77  margin=0.072[0m
+[0m[INFO] [1789794862.503773539]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.38/0.81 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.17/0.19[0m
+[0m[INFO] [1789794862.553757867]: DoubleNMPC: curvature=-0.019  curve_cap=0.400  plan=(0.296, 0.036) track_cap=0.296  cmd=(0.266, -0.112)  moving_w_cap=1.314  heading=0.119  speed_scale=0.90 risk=0.81  margin=0.065[0m
+[0m[INFO] [1789794863.103732737]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.285, 0.129) track_cap=0.285  cmd=(0.247, 0.065)  moving_w_cap=1.416  heading=0.158  speed_scale=0.87 risk=0.81  margin=0.074[0m
+[0m[INFO] [1789794863.553742405]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.35/0.48 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.18/0.19[0m
+[0m[INFO] [1789794863.653744703]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.370, -0.015) track_cap=0.370  cmd=(0.313, 0.426)  moving_w_cap=1.119  heading=0.184  speed_scale=0.85 risk=0.95  margin=0.064[0m
+[0m[INFO] [1789794864.153742552]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.367, -0.003) track_cap=0.367  cmd=(0.311, 0.414)  moving_w_cap=1.124  heading=0.183  speed_scale=0.85 risk=0.99  margin=0.060[0m
+[0m[INFO] [1789794864.603729857]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.36/0.59 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.19/0.19[0m
+[0m[INFO] [1789794864.653751796]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.370, -0.018) track_cap=0.370  cmd=(0.316, 0.376)  moving_w_cap=1.108  heading=0.175  speed_scale=0.85 risk=0.98  margin=0.060[0m
+[0m[INFO] [1789794865.153765935]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.377, -0.055) track_cap=0.377  cmd=(0.332, 0.204)  moving_w_cap=1.054  heading=0.142  speed_scale=0.88 risk=0.93  margin=0.067[0m
+[0m[INFO] [1789794865.653749866]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.37/0.53 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.20/0.21[0m
+[0m[INFO] [1789794865.703736939]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.287, 0.111) track_cap=0.287  cmd=(0.255, -0.062)  moving_w_cap=1.373  heading=0.133  speed_scale=0.89 risk=0.84  margin=0.061[0m
+[0m[INFO] [1789794866.253753815]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.288, 0.100) track_cap=0.288  cmd=(0.259, -0.105)  moving_w_cap=1.353  heading=0.122  speed_scale=0.90 risk=0.84  margin=0.069[0m
+[0m[INFO] [1789794866.703725796]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.35/0.50 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.18/0.20[0m
+[0m[INFO] [1789794866.803742357]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.287, 0.106) track_cap=0.287  cmd=(0.256, -0.075)  moving_w_cap=1.366  heading=0.130  speed_scale=0.89 risk=0.85  margin=0.065[0m
+[0m[INFO] [1789794867.318492443]: DoubleNMPC: curvature=-0.014  curve_cap=0.400  plan=(0.383, 0.108) track_cap=0.383  cmd=(0.346, 0.069)  moving_w_cap=1.010  heading=0.114  speed_scale=0.91 risk=0.86  margin=0.073[0m
+[0m[INFO] [1789794867.753959407]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.38/0.55 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.18/0.19[0m
+[0m[INFO] [1789794867.853813519]: DoubleNMPC: curvature=-0.029  curve_cap=0.400  plan=(0.289, 0.092) track_cap=0.289  cmd=(0.261, 0.063)  moving_w_cap=1.339  heading=0.115  speed_scale=0.90 risk=0.79  margin=0.072[0m
+[0m[INFO] [1789794868.353854853]: DoubleNMPC: curvature=-0.051  curve_cap=0.400  plan=(0.290, 0.080) track_cap=0.290  cmd=(0.267, -0.031)  moving_w_cap=1.310  heading=0.096  speed_scale=0.92 risk=0.78  margin=0.069[0m
+[0m[INFO] [1789794868.803749892]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.43/0.91 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.29/0.37[0m
+[0m[INFO] [1789794868.903919587]: DoubleNMPC: curvature=-0.039  curve_cap=0.400  plan=(0.294, 0.048) track_cap=0.294  cmd=(0.270, -0.023)  moving_w_cap=1.294  heading=0.097  speed_scale=0.92 risk=0.78  margin=0.060[0m
+[0m[INFO] [1789794869.453774502]: DoubleNMPC: curvature=-0.014  curve_cap=0.400  plan=(0.295, 0.040) track_cap=0.295  cmd=(0.274, -0.089)  moving_w_cap=1.276  heading=0.085  speed_scale=0.93 risk=0.79  margin=0.060[0m
+[0m[INFO] [1789794869.853731071]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.39/0.66 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.19/0.19[0m
+[0m[INFO] [1789794869.953816125]: DoubleNMPC: curvature=0.061  curve_cap=0.400  plan=(0.292, 0.067) track_cap=0.292  cmd=(0.270, -0.071)  moving_w_cap=1.295  heading=0.090  speed_scale=0.93 risk=0.80  margin=0.065[0m
+[0m[INFO] [1789794870.503748126]: DoubleNMPC: curvature=0.618  curve_cap=0.400  plan=(0.362, 0.235) track_cap=0.362  cmd=(0.307, 0.046)  moving_w_cap=1.139  heading=0.089  speed_scale=0.93 risk=0.86  margin=0.060[0m
+[0m[INFO] [1789794870.903892909]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.38/0.60 budget=50.0 over_budget=0 planner_calls=3 planner_ms(avg/max)=0.18/0.19[0m
+[0m[INFO] [1789794871.053780670]: DoubleNMPC: curvature=1.488  curve_cap=0.400  plan=(0.335, 0.182) track_cap=0.335  cmd=(0.311, -0.024)  moving_w_cap=1.124  heading=0.084  speed_scale=0.93 risk=0.86  margin=0.062[0m
+[0m[INFO] [1789794871.603735485]: DoubleNMPC: curvature=1.810  curve_cap=0.400  plan=(0.290, 0.166) track_cap=0.290  cmd=(0.268, 0.044)  moving_w_cap=1.308  heading=0.091  speed_scale=0.92 risk=0.85  margin=0.060[0m
+[0m[INFO] [1789794871.953724777]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.36/0.56 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.20/0.21[0m
+[0m[INFO] [1789794872.153720233]: DoubleNMPC: curvature=1.398  curve_cap=0.400  plan=(0.249, 0.333) track_cap=0.249  cmd=(0.209, 0.704)  moving_w_cap=1.500  heading=0.196  speed_scale=0.84 risk=0.88  margin=0.073[0m
+[0m[INFO] [1789794872.703721307]: DoubleNMPC: curvature=1.070  curve_cap=0.400  plan=(0.210, 0.535) track_cap=0.210  cmd=(0.169, 1.233)  moving_w_cap=1.500  heading=0.236  speed_scale=0.80 risk=0.99  margin=0.067[0m
+[0m[INFO] [1789794873.003743541]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.34/0.48 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.17/0.18[0m
+[0m[INFO] [1789794873.203738354]: DoubleNMPC: curvature=0.923  curve_cap=0.400  plan=(0.219, 0.154) track_cap=0.219  cmd=(0.181, 1.076)  moving_w_cap=1.500  heading=0.210  speed_scale=0.83 risk=1.00  margin=0.075[0m
+[0m[INFO] [1789794873.753737332]: DoubleNMPC: curvature=0.781  curve_cap=0.400  plan=(0.239, 0.370) track_cap=0.239  cmd=(0.210, 0.949)  moving_w_cap=1.500  heading=0.149  speed_scale=0.88 risk=1.00  margin=0.070[0m
+[0m[INFO] [1789794874.053722998]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.35/0.52 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.17/0.18[0m
+[0m[INFO] [1789794874.307507396]: DoubleNMPC: curvature=0.438  curve_cap=0.400  plan=(0.265, 0.273) track_cap=0.265  cmd=(0.228, 1.015)  moving_w_cap=1.500  heading=0.166  speed_scale=0.86 risk=1.00  margin=0.075[0m
+[0m[INFO] [1789794874.853735878]: DoubleNMPC: curvature=0.284  curve_cap=0.400  plan=(0.280, 0.207) track_cap=0.280  cmd=(0.246, 0.846)  moving_w_cap=1.425  heading=0.148  speed_scale=0.88 risk=1.00  margin=0.071[0m
+[0m[INFO] [1789794875.103710697]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.34/0.48 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.18/0.19[0m
+[0m[INFO] [1789794875.353734371]: DoubleNMPC: curvature=0.316  curve_cap=0.400  plan=(0.305, 0.343) track_cap=0.305  cmd=(0.281, 0.605)  moving_w_cap=1.245  heading=0.096  speed_scale=0.92 risk=0.96  margin=0.071[0m
+[0m[INFO] [1789794875.903864911]: DoubleNMPC: curvature=2.387  curve_cap=0.383  plan=(0.178, 0.495) track_cap=0.178  cmd=(0.214, 0.244)  moving_w_cap=1.500  heading=0.029  speed_scale=0.98 risk=0.72  margin=0.070[0m
+[0m[INFO] [1789794876.153720285]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.34/0.61 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.18/0.18[0m
+[0m[INFO] [1789794876.403889843]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.098, 0.610) track_cap=0.098  cmd=(0.139, 0.132)  moving_w_cap=1.500  heading=-0.057  speed_scale=0.95 risk=0.79  margin=0.063[0m
+[0m[INFO] [1789794876.953709747]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.088, 0.682) track_cap=0.088  cmd=(0.077, 0.122)  moving_w_cap=1.500  heading=-0.155  speed_scale=0.87 risk=0.95  margin=0.069[0m
+[0m[INFO] [1789794877.203732030]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.33/0.62 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=0.18/0.18[0m
+[0m[INFO] [1789794877.453737282]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.076, 0.383) track_cap=0.076  cmd=(0.057, -0.478)  moving_w_cap=1.500  heading=-0.299  speed_scale=0.75 risk=1.00  margin=0.067[0m
+[0m[INFO] [1789794878.003710404]: DoubleNMPC: curvature=0.000  curve_cap=0.400  plan=(0.000, -1.500) track_cap=0.000  cmd=(0.000, -0.525)  moving_w_cap=1.500  heading=-0.386  speed_scale=0.68 risk=1.00  margin=0.071[0m
+... logging to /home/lcy/.ros/log/5c32a94c-b3e8-11f1-aaf4-189341889b90/roslaunch-ubuntu-8641.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:38543/[0m
+[1mstarted roslaunch server http://ubuntu:40431/[0m
 
 SUMMARY
 ========
@@ -305,7 +301,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [30155][0m
+[1mprocess[move_base-1]: started with pid [8707][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
