@@ -37,7 +37,9 @@ class SerialBridge:
 
         # ── 物理参数（差速模型用） ──
         self.wheel_radius = rospy.get_param("~wheel_radius", 0.1065)
-        self.wheel_base   = rospy.get_param("~wheel_base", 0.45)
+        # Must match encoder_odom.py: a different wheelbase makes the commanded
+        # angular speed differ from the measured angular speed by that ratio.
+        self.wheel_base   = rospy.get_param("~wheel_base", 0.8)
         self.cmd_timeout = rospy.get_param("~cmd_timeout", 0.3)
         self.zero_repeat_period = rospy.get_param("~zero_repeat_period", 0.2)
         self.stop_burst_count = rospy.get_param("~stop_burst_count", 3)
