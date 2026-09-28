@@ -11,6 +11,12 @@ planner_update_period: 0.10
 tracking_horizon_steps: 3
 planner_horizon_steps: 6
 goal_tolerance: 0.08
+# Inside this range, use a stable point-capture controller. It retains the 0.08 m
+# completion requirement while preventing long/short NMPC choices from alternating
+# around the final path point.
+terminal_approach_distance: 0.35
+terminal_max_linear_velocity: 0.12
+terminal_heading_threshold: 0.25
 
 max_linear_velocity: 0.40
 max_angular_velocity: 1.50

@@ -38,8 +38,17 @@ private:
     double turn_activity{0.0};
   };
 
+  struct PathProjection {
+    geometry_msgs::PoseStamped pose;
+    double arc_length{0.0};
+    double lateral_error{0.0};
+  };
+
   geometry_msgs::PoseStamped lookAheadPose(
       const geometry_msgs::PoseStamped& pose, double distance) const;
+  PathProjection projectOntoPath(const geometry_msgs::PoseStamped& pose,
+                                 double minimum_arc_length) const;
+  geometry_msgs::PoseStamped poseAtPathArcLength(double arc_length) const;
   Control chooseControl(const geometry_msgs::PoseStamped& pose, const Control& current,
                         const geometry_msgs::PoseStamped& reference, int horizon_steps,
                         double step_period, double speed_cap, double margin,
@@ -67,6 +76,8 @@ private:
   ros::Time last_planner_update_;
   geometry_msgs::PoseStamped planner_reference_;
   Control planner_command_;
+  double path_progress_{0.0};
+  double global_plan_length_{0.0};
 
   // One-second wall-clock timing window for remote Nano profiling. These are kept
   // out of the optimization itself so timing collection does not affect control.
@@ -98,6 +109,9 @@ private:
   double max_angular_acceleration_{1.2};
   double robot_radius_{0.16};
   double goal_tolerance_{0.08};
+  double terminal_approach_distance_{0.35};
+  double terminal_max_linear_velocity_{0.12};
+  double terminal_heading_threshold_{0.25};
   double planner_lookahead_{0.95};
   double tracker_lookahead_{0.45};
   double max_lateral_acceleration_{0.35};

@@ -50,6 +50,12 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
   nh.param("max_angular_acceleration", max_angular_acceleration_, max_angular_acceleration_);
   nh.param("robot_radius", robot_radius_, robot_radius_);
   nh.param("goal_tolerance", goal_tolerance_, goal_tolerance_);
+  nh.param("terminal_approach_distance", terminal_approach_distance_,
+           terminal_approach_distance_);
+  nh.param("terminal_max_linear_velocity", terminal_max_linear_velocity_,
+           terminal_max_linear_velocity_);
+  nh.param("terminal_heading_threshold", terminal_heading_threshold_,
+           terminal_heading_threshold_);
   nh.param("planner_lookahead", planner_lookahead_, planner_lookahead_);
   nh.param("tracker_lookahead", tracker_lookahead_, tracker_lookahead_);
   nh.param("max_lateral_acceleration", max_lateral_acceleration_,
@@ -67,6 +73,10 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
 
   min_margin_ = std::max(0.0, min_margin_);
   planner_update_period_ = std::max(1e-3, planner_update_period_);
+  terminal_approach_distance_ = std::max(goal_tolerance_, terminal_approach_distance_);
+  terminal_max_linear_velocity_ = clamp(terminal_max_linear_velocity_, 0.01,
+                                        max_linear_velocity_);
+  terminal_heading_threshold_ = clamp(terminal_heading_threshold_, 0.01, M_PI);
   turn_relax_floor_ = clamp(turn_relax_floor_, 0.0, 1.0);
   nominal_margin_ = clamp(nominal_margin_, min_margin_, max_margin_);
   max_margin_ = std::max(nominal_margin_, max_margin_);
@@ -94,6 +104,13 @@ bool DoubleNMPCController::setPlan(const std::vector<geometry_msgs::PoseStamped>
     return false;
   }
   global_plan_ = plan;
+  global_plan_length_ = 0.0;
+  for (std::size_t i = 1; i < global_plan_.size(); ++i) {
+    const auto& previous = global_plan_[i - 1].pose.position;
+    const auto& current = global_plan_[i].pose.position;
+    global_plan_length_ += std::hypot(current.x - previous.x, current.y - previous.y);
+  }
+  path_progress_ = 0.0;
   planner_reference_ = plan.front();
   last_planner_update_ = ros::Time(0);
   goal_reached_ = false;
@@ -154,6 +171,18 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
     return true;
   }
 
+  // A nearest vertex is not a valid path coordinate: it jumps between samples and
+  // can move backward after a small odometry wobble. Project onto segments and only
+  // allow a tiny backward window for a newly replanned path.
+  const PathProjection path_projection = projectOntoPath(
+      robot_pose, std::max(0.0, path_progress_ - 0.05));
+  path_progress_ = std::max(path_progress_, path_projection.arc_length);
+  const double recovery_scale = clamp(1.0 - path_projection.lateral_error / 0.50,
+                                      0.35, 1.0);
+  const double planner_lookahead = std::max(0.25, planner_lookahead_ * recovery_scale);
+  const double tracker_lookahead = std::max(0.12, tracker_lookahead_ * recovery_scale);
+  const bool terminal_approach = goal_distance <= terminal_approach_distance_;
+
   const double path_curvature = pathCurvatureAhead(robot_pose);
   const double curve_speed_limit = std::fabs(path_curvature) < 1e-3
       ? max_linear_velocity_
@@ -163,9 +192,9 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
 
   const ros::Time now = ros::Time::now();
   double planner_elapsed_ms = 0.0;
-  if (last_planner_update_.isZero() ||
-      (now - last_planner_update_).toSec() >= planner_update_period_) {
-    planner_reference_ = lookAheadPose(robot_pose, planner_lookahead_);
+  if (!terminal_approach && (last_planner_update_.isZero() ||
+      (now - last_planner_update_).toSec() >= planner_update_period_)) {
+    planner_reference_ = poseAtPathArcLength(path_progress_ + planner_lookahead);
     // The long layer is genuinely 6 x 0.48 = 2.88 s. It is refreshed independently
     // at planner_update_period_ and becomes a hard speed cap for the tracking layer.
     const ros::WallTime planner_started = ros::WallTime::now();
@@ -176,7 +205,7 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
     last_planner_update_ = now;
   }
 
-  const auto tracker_reference = lookAheadPose(robot_pose, tracker_lookahead_);
+  const auto tracker_reference = poseAtPathArcLength(path_progress_ + tracker_lookahead);
   const double target_heading = std::atan2(
       tracker_reference.pose.position.y - robot_pose.pose.position.y,
       tracker_reference.pose.position.x - robot_pose.pose.position.x);
@@ -193,11 +222,29 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   // If the long layer has selected a safe in-place turn, preserve that decision.
   // Letting the short layer re-optimize with a zero linear-speed cap produced tiny,
   // alternating angular commands that the wheel deadband turned into endpoint jitter.
-  const Control command = planner_requests_in_place_turn
-      ? Control{0.0, planner_command_.w}
-      : chooseControl(robot_pose, current, tracker_reference,
-                      tracking_horizon_steps_, control_period_,
-                      tracking_speed_cap, tracking_margin_, false);
+  Control command;
+  if (terminal_approach) {
+    const double terminal_heading = std::atan2(
+        goal.pose.position.y - robot_pose.pose.position.y,
+        goal.pose.position.x - robot_pose.pose.position.x);
+    const double terminal_heading_error = normalizeAngle(
+        terminal_heading - tf2::getYaw(robot_pose.pose.orientation));
+    const double terminal_w = clamp(1.8 * terminal_heading_error, -0.60, 0.60);
+    if (std::fabs(terminal_heading_error) > terminal_heading_threshold_) {
+      command = Control{0.0, terminal_w};
+    } else {
+      const double remaining = std::max(0.0, goal_distance - goal_tolerance_);
+      command = Control{std::min(terminal_max_linear_velocity_,
+                                  std::max(0.035, 0.65 * remaining)), terminal_w};
+    }
+    planner_command_ = command;
+  } else {
+    command = planner_requests_in_place_turn
+        ? Control{0.0, planner_command_.w}
+        : chooseControl(robot_pose, current, tracker_reference,
+                        tracking_horizon_steps_, control_period_,
+                        tracking_speed_cap, tracking_margin_, false);
+  }
   const Control bounded = rateLimit(command);
   const double moving_angular_limit = std::min(
       max_angular_velocity_,
@@ -226,11 +273,13 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   cmd_vel.angular.z = bounded.w;
   previous_command_ = bounded;
   ROS_INFO_THROTTLE(0.5,
-                    "DoubleNMPC: curvature=%.3f  curve_cap=%.3f  plan=(%.3f, %.3f) "
+                    "DoubleNMPC: terminal=%d goal_dist=%.3f path_s=%.3f/%.3f cte=%.3f lookahead=(%.2f,%.2f) "
+                    "curvature=%.3f  curve_cap=%.3f  plan=(%.3f, %.3f) "
                     "track_cap=%.3f  cmd=(%.3f, %.3f)  moving_w_cap=%.3f  heading=%.3f  speed_scale=%.2f "
                     "pred_err=(%.3f, %.3f)  turn=%.2f  risk=%.2f  margin=%.3f  "
                     "min_clearance=%.3f",
-                    path_curvature, curve_speed_limit, planner_command_.v,
+                    terminal_approach, goal_distance, path_progress_, global_plan_length_, path_projection.lateral_error,
+                    planner_lookahead, tracker_lookahead, path_curvature, curve_speed_limit, planner_command_.v,
                     planner_command_.w, tracking_speed_cap, bounded.v, bounded.w,
                     moving_angular_limit, heading_error, tracking_speed_scale,
                     prediction.max_position_error, prediction.max_heading_error,
@@ -278,40 +327,93 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
 
 geometry_msgs::PoseStamped DoubleNMPCController::lookAheadPose(
     const geometry_msgs::PoseStamped& pose, double distance) const {
-  geometry_msgs::PoseStamped result = global_plan_.back();
+  const PathProjection projection = projectOntoPath(
+      pose, std::max(0.0, path_progress_ - 0.05));
+  return poseAtPathArcLength(std::max(path_progress_, projection.arc_length) + distance);
+}
+
+DoubleNMPCController::PathProjection DoubleNMPCController::projectOntoPath(
+    const geometry_msgs::PoseStamped& pose, double minimum_arc_length) const {
+  PathProjection result;
+  if (global_plan_.empty()) {
+    return result;
+  }
+  result.pose = global_plan_.front();
   if (global_plan_.size() == 1) {
+    result.lateral_error = std::hypot(pose.pose.position.x - result.pose.pose.position.x,
+                                      pose.pose.position.y - result.pose.pose.position.y);
     return result;
   }
 
-  const double x = pose.pose.position.x;
-  const double y = pose.pose.position.y;
-  std::size_t nearest = 0;
-  double nearest_distance = std::numeric_limits<double>::infinity();
-  for (std::size_t i = 0; i < global_plan_.size(); ++i) {
-    const double d = std::hypot(x - global_plan_[i].pose.position.x,
-                                y - global_plan_[i].pose.position.y);
-    if (d < nearest_distance) {
-      nearest_distance = d;
-      nearest = i;
-    }
-  }
-
-  double traveled = 0.0;
-  for (std::size_t i = nearest; i + 1 < global_plan_.size(); ++i) {
+  double accumulated = 0.0;
+  double best_distance = std::numeric_limits<double>::infinity();
+  for (std::size_t i = 0; i + 1 < global_plan_.size(); ++i) {
     const auto& a = global_plan_[i].pose.position;
     const auto& b = global_plan_[i + 1].pose.position;
-    const double segment = std::hypot(b.x - a.x, b.y - a.y);
-    if (traveled + segment >= distance && segment > 1e-6) {
-      const double ratio = (distance - traveled) / segment;
+    const double dx = b.x - a.x;
+    const double dy = b.y - a.y;
+    const double length_squared = dx * dx + dy * dy;
+    const double length = std::sqrt(length_squared);
+    if (length < 1e-6) {
+      continue;
+    }
+    const double segment_end = accumulated + length;
+    if (segment_end + 1e-6 >= minimum_arc_length) {
+      const double raw_ratio = ((pose.pose.position.x - a.x) * dx +
+                                (pose.pose.position.y - a.y) * dy) / length_squared;
+      const double min_ratio = clamp((minimum_arc_length - accumulated) / length, 0.0, 1.0);
+      const double ratio = clamp(raw_ratio, min_ratio, 1.0);
+      const double px = a.x + ratio * dx;
+      const double py = a.y + ratio * dy;
+      const double error = std::hypot(pose.pose.position.x - px, pose.pose.position.y - py);
+      if (error < best_distance) {
+        best_distance = error;
+        result.pose = global_plan_[i];
+        result.pose.pose.position.x = px;
+        result.pose.pose.position.y = py;
+        const double yaw = std::atan2(dy, dx);
+        result.pose.pose.orientation = tf2::toMsg(tf2::Quaternion(
+            0.0, 0.0, std::sin(yaw / 2.0), std::cos(yaw / 2.0)));
+        result.arc_length = accumulated + ratio * length;
+        result.lateral_error = error;
+      }
+    }
+    accumulated = segment_end;
+  }
+  if (!std::isfinite(best_distance)) {
+    result.pose = global_plan_.back();
+    result.arc_length = global_plan_length_;
+    result.lateral_error = std::hypot(pose.pose.position.x - result.pose.pose.position.x,
+                                      pose.pose.position.y - result.pose.pose.position.y);
+  }
+  return result;
+}
+
+geometry_msgs::PoseStamped DoubleNMPCController::poseAtPathArcLength(double arc_length) const {
+  geometry_msgs::PoseStamped result = global_plan_.back();
+  if (global_plan_.size() < 2) {
+    return result;
+  }
+  arc_length = clamp(arc_length, 0.0, global_plan_length_);
+  double accumulated = 0.0;
+  for (std::size_t i = 0; i + 1 < global_plan_.size(); ++i) {
+    const auto& a = global_plan_[i].pose.position;
+    const auto& b = global_plan_[i + 1].pose.position;
+    const double length = std::hypot(b.x - a.x, b.y - a.y);
+    if (length < 1e-6) {
+      continue;
+    }
+    if (accumulated + length >= arc_length) {
+      const double ratio = (arc_length - accumulated) / length;
       result = global_plan_[i];
       result.pose.position.x = a.x + ratio * (b.x - a.x);
       result.pose.position.y = a.y + ratio * (b.y - a.y);
       const double yaw = std::atan2(b.y - a.y, b.x - a.x);
-      result.pose.orientation = tf2::toMsg(tf2::Quaternion(0.0, 0.0,
-          std::sin(yaw / 2.0), std::cos(yaw / 2.0)));
+      result.pose.orientation = tf2::toMsg(tf2::Quaternion(
+          0.0, 0.0, std::sin(yaw / 2.0), std::cos(yaw / 2.0)));
       return result;
     }
-    traveled += segment;
+    accumulated += length;
   }
   return result;
 }
@@ -372,18 +474,32 @@ DoubleNMPCController::Control DoubleNMPCController::chooseControl(
       double px = x;
       double py = y;
       double pyaw = yaw;
+      double accumulated_cross_track_error = 0.0;
       for (int step = 0; step < horizon_steps; ++step) {
         px += candidate.v * std::cos(pyaw) * step_period;
         py += candidate.v * std::sin(pyaw) * step_period;
         pyaw = normalizeAngle(pyaw + candidate.w * step_period);
+        geometry_msgs::PoseStamped predicted_pose = pose;
+        predicted_pose.pose.position.x = px;
+        predicted_pose.pose.position.y = py;
+        predicted_pose.pose.orientation = tf2::toMsg(tf2::Quaternion(
+            0.0, 0.0, std::sin(pyaw / 2.0), std::cos(pyaw / 2.0)));
+        accumulated_cross_track_error += projectOntoPath(
+            predicted_pose, std::max(0.0, path_progress_ - 0.05)).lateral_error;
       }
       const double position_cost = std::hypot(px - reference.pose.position.x,
                                               py - reference.pose.position.y);
       const double heading_cost = std::fabs(normalizeAngle(
           tf2::getYaw(reference.pose.orientation) - pyaw));
+      const double cross_track_cost = accumulated_cross_track_error /
+                                      std::max(1, horizon_steps);
       const double effort_cost = 0.12 * std::fabs(candidate.v - current.v) +
                                  0.05 * std::fabs(candidate.w - current.w);
-      const double cost = 8.0 * position_cost + 1.8 * heading_cost + effort_cost;
+      // Endpoint-only tracking lets a vehicle carry lateral error until the last
+      // segment. Penalizing the full predicted trajectory makes returning to the
+      // global route beneficial as soon as odometry sees a deviation.
+      const double cost = 8.0 * position_cost + 4.0 * cross_track_cost +
+                          1.8 * heading_cost + effort_cost;
       if (cost < best_cost) {
         best_cost = cost;
         best = candidate;
