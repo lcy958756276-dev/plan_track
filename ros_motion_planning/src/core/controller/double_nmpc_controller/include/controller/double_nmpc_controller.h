@@ -97,7 +97,7 @@ private:
   double max_linear_deceleration_{0.65};
   double max_angular_acceleration_{1.2};
   double robot_radius_{0.16};
-  double goal_tolerance_{0.20};
+  double goal_tolerance_{0.08};
   double planner_lookahead_{0.95};
   double tracker_lookahead_{0.45};
   double max_lateral_acceleration_{0.35};
