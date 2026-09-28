@@ -14,7 +14,7 @@ from tf.transformations import euler_from_quaternion
 class PreRotate:
     def __init__(self):
         self.alignment_tol = math.radians(3.0)
-        self.max_angular = 0.45                         # rad/s，慢一点更稳
+        self.max_angular = 1.0                          # rad/s
         self.plan_heading_dist = 0.35                    # 沿全局路径取多远的点来决定初始朝向
         self.plan_retry_timeout = 3.0                    # 等待全局规划结果的最长时间
         self.stop_before_rotate = 1.0                    # 新 goal 后先停稳，再按路径方向旋转
