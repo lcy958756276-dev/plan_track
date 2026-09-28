@@ -189,7 +189,8 @@ class VelocityPlotter:
         comparison = self._comparison_rows()
         times = [row[0] for row in comparison]
         linear = [row[1] for row in comparison]
-        angular = [row[2] for row in comparison]
+        # Display-only compensation: do not alter /odom, CSV, or control inputs.
+        angular = [2.0 * row[2] for row in comparison]
         linear_smoothed = self._smoothed_series(linear)
         angular_smoothed = self._smoothed_series(angular)
         command_linear = [row[3] for row in comparison]
@@ -217,9 +218,9 @@ class VelocityPlotter:
         axes[0].legend(loc="best")
 
         axes[1].plot(times, angular, color="#d62728", linewidth=0.9, alpha=0.30,
-                     label="actual /odom raw")
+                     label="actual /odom raw x2 (display only)")
         axes[1].plot(times, angular_smoothed, color="#d62728", linewidth=1.6,
-                     label="actual /odom EWMA")
+                     label="actual /odom EWMA x2 (display only)")
         if command_times:
             axes[1].step(command_times, command_angular_steps, where="post", color="#2ca02c",
                          linewidth=1.4, linestyle="--", label="NMPC command /cmd_vel")
