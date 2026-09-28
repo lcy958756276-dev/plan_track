@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Fixed-command test for the ROS-to-MCU serial path. Run this only with the
-# debug stack already running and no active navigation goal.
+# Standalone fixed-speed test for the ROS-to-MCU serial path.
+# It starts roscore, serial_bridge.py, and encoder_odom.py when necessary.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -12,6 +12,8 @@ DURATION_S="${1:-5}"
 LINEAR_MPS="${2:-0.300}"
 ANGULAR_RADPS="${3:-0.000}"
 RATE_HZ="${4:-20}"
+SERIAL_PORT="${SERIAL_PORT:-/dev/ttyTHS0}"
+SERIAL_BAUD="${SERIAL_BAUD:-57600}"
 
 is_number() {
     [[ "$1" =~ ^-?[0-9]+([.][0-9]+)?$ ]]
@@ -19,7 +21,7 @@ is_number() {
 
 for value in "$DURATION_S" "$LINEAR_MPS" "$ANGULAR_RADPS" "$RATE_HZ"; do
     if ! is_number "$value"; then
-        echo "All arguments must be numeric: duration_s linear_mps angular_radps rate_hz" >&2
+        echo "Usage: $0 [duration_s] [linear_mps] [angular_radps] [rate_hz]" >&2
         exit 2
     fi
 done
@@ -30,9 +32,25 @@ if ! awk -v duration="$DURATION_S" -v linear="$LINEAR_MPS" -v angular="$ANGULAR_
     exit 2
 fi
 
+if [[ ! -f /opt/ros/noetic/setup.bash ]]; then
+    echo "ROS Noetic was not found at /opt/ros/noetic/setup.bash" >&2
+    exit 1
+fi
+
+if [[ ! -f "$WORKSPACE_DIR/devel/setup.bash" ]]; then
+    echo "Missing $WORKSPACE_DIR/devel/setup.bash. Build this workspace first." >&2
+    exit 1
+fi
+
+source /opt/ros/noetic/setup.bash
+source "$WORKSPACE_DIR/devel/setup.bash"
+
 mkdir -p "$LOG_DIR"
 STAMP="$(date +%Y%m%d_%H%M%S)"
 TEST_LOG="$LOG_DIR/serial_speed_test_${STAMP}.log"
+ROSCORE_LOG="$LOG_DIR/serial_speed_test_${STAMP}_roscore.log"
+BRIDGE_LOG="$LOG_DIR/serial_speed_test_${STAMP}_bridge.log"
+ODOM_NODE_LOG="$LOG_DIR/serial_speed_test_${STAMP}_encoder_odom.log"
 ODOM_LOG="$LOG_DIR/serial_speed_test_${STAMP}_odom.csv"
 WHEEL_LOG="$LOG_DIR/serial_speed_test_${STAMP}_wheel.csv"
 
@@ -41,39 +59,91 @@ RIGHT_WHEEL=$(awk -v v="$LINEAR_MPS" -v w="$ANGULAR_RADPS" 'BEGIN { printf "%.3f
 ZERO_TWIST='{linear: {x: 0.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}'
 TEST_TWIST="{linear: {x: $LINEAR_MPS, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: $ANGULAR_RADPS}}"
 
+ROSCORE_PID=""
+BRIDGE_PID=""
+ENCODER_PID=""
 PUBLISHER_PID=""
 ODOM_PID=""
 WHEEL_PID=""
 
+stop_pid() {
+    local pid="$1"
+    if [[ -n "$pid" ]] && kill -0 "$pid" 2>/dev/null; then
+        kill "$pid" 2>/dev/null || true
+        wait "$pid" 2>/dev/null || true
+    fi
+}
+
 cleanup() {
     local exit_code=$?
-    for pid in "$PUBLISHER_PID" "$ODOM_PID" "$WHEEL_PID"; do
-        if [[ -n "$pid" ]] && kill -0 "$pid" 2>/dev/null; then
-            kill "$pid" 2>/dev/null || true
-        fi
-    done
     rostopic pub -1 /cmd_vel geometry_msgs/Twist "$ZERO_TWIST" >/dev/null 2>&1 || true
+    stop_pid "$PUBLISHER_PID"
+    stop_pid "$ODOM_PID"
+    stop_pid "$WHEEL_PID"
+    stop_pid "$ENCODER_PID"
+    stop_pid "$BRIDGE_PID"
+    stop_pid "$ROSCORE_PID"
     exit "$exit_code"
 }
 trap cleanup EXIT INT TERM
+
+wait_for_master() {
+    local attempt
+    for attempt in $(seq 1 50); do
+        if rostopic list >/dev/null 2>&1; then
+            return 0
+        fi
+        sleep 0.1
+    done
+    return 1
+}
 
 exec > >(tee -a "$TEST_LOG") 2>&1
 
 echo "serial speed test started: $(date -Is)"
 echo "command: v=$LINEAR_MPS m/s, w=$ANGULAR_RADPS rad/s, rate=$RATE_HZ Hz, duration=$DURATION_S s"
 echo "expected serial payload: l:$LEFT_WHEEL,r:$RIGHT_WHEEL"
+echo "serial port: $SERIAL_PORT @ $SERIAL_BAUD"
 echo "test log: $TEST_LOG"
 
 if ! rostopic list >/dev/null 2>&1; then
-    echo "ROS master is unavailable. Start run_debug.sh before this test." >&2
+    echo "starting private roscore"
+    roscore > "$ROSCORE_LOG" 2>&1 &
+    ROSCORE_PID=$!
+    if ! wait_for_master; then
+        echo "roscore did not become ready; see $ROSCORE_LOG" >&2
+        exit 1
+    fi
+else
+    echo "using existing ROS master"
+fi
+
+if rosnode list 2>/dev/null | grep -qE '^/serial_bridge$'; then
+    echo "A serial_bridge node is already running. Stop the debug stack before this standalone test." >&2
     exit 1
 fi
 
-echo "cmd_vel publishers before test:"
-rostopic info /cmd_vel || true
+if [[ ! -e "$SERIAL_PORT" ]]; then
+    echo "Serial port $SERIAL_PORT does not exist." >&2
+    exit 1
+fi
 
-if ! rostopic list | grep -qx '/wheel_ticks'; then
-    echo "/wheel_ticks is unavailable. serial_bridge.py must be running." >&2
+echo "starting serial bridge"
+rosrun encoder_tools serial_bridge.py _port:="$SERIAL_PORT" _baud:="$SERIAL_BAUD" \
+    > "$BRIDGE_LOG" 2>&1 &
+BRIDGE_PID=$!
+
+echo "starting encoder odometry"
+rosrun encoder_tools encoder_odom.py > "$ODOM_NODE_LOG" 2>&1 &
+ENCODER_PID=$!
+
+sleep 1
+if ! kill -0 "$BRIDGE_PID" 2>/dev/null; then
+    echo "serial_bridge.py exited; see $BRIDGE_LOG" >&2
+    exit 1
+fi
+if ! kill -0 "$ENCODER_PID" 2>/dev/null; then
+    echo "encoder_odom.py exited; see $ODOM_NODE_LOG" >&2
     exit 1
 fi
 
@@ -88,13 +158,14 @@ rostopic pub -r "$RATE_HZ" /cmd_vel geometry_msgs/Twist "$TEST_TWIST" >/dev/null
 PUBLISHER_PID=$!
 sleep "$DURATION_S"
 
-kill "$PUBLISHER_PID" 2>/dev/null || true
-wait "$PUBLISHER_PID" 2>/dev/null || true
+stop_pid "$PUBLISHER_PID"
 PUBLISHER_PID=""
 rostopic pub -1 /cmd_vel geometry_msgs/Twist "$ZERO_TWIST" >/dev/null 2>&1 || true
 sleep 0.5
 
 echo "fixed command complete: $(date -Is)"
+echo "bridge log: $BRIDGE_LOG"
+echo "odom node log: $ODOM_NODE_LOG"
 echo "odom samples: $ODOM_LOG"
 echo "wheel samples: $WHEEL_LOG"
-echo "check the matching interval in log/serial_bridge.log for the exact bytes written to MCU"
+echo "the robot has been commanded to stop"
