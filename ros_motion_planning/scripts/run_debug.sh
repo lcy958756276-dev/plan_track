@@ -180,7 +180,6 @@ echo "  /use_sim_time → false（编码器/里程计使用真实时钟）"
 # ── 5. 启动串口桥接（合并读 tick + 写速度到同一串口） ──
 echo "[5/8] 启动 serial_bridge.py (串口桥接：读编码器 + 写 cmd_vel)..."
 rosrun encoder_tools serial_bridge.py \
-    _wheel_base:=0.8 \
     > "$LOG_DIR/serial_bridge.log" 2>&1 &
 PID_READ=$!
 echo "  PID=$PID_READ → log/serial_bridge.log"
@@ -190,7 +189,7 @@ sleep 2
 # ── 6. 启动里程计 ──
 echo "[6/8] 启动 encoder_odom.py (里程计)..."
 rosrun encoder_tools encoder_odom.py \
-    _initial_x:=0.0 _initial_y:=-0.8 _wheel_base:=0.8 \
+    _initial_x:=0.0 _initial_y:=-0.8 \
     > "$LOG_DIR/encoder_odom.log" 2>&1 &
 PID_ODOM=$!
 echo "  PID=$PID_ODOM → log/encoder_odom.log"
