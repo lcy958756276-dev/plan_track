@@ -93,6 +93,11 @@ private:
   Control previous_command_;
   double tracking_risk_{0.0};
   double tracking_margin_{0.06};
+  double planner_margin_snapshot_{0.06};
+  double position_error_ewma_{0.0};
+  double heading_error_ewma_{0.0};
+  double input_correction_ewma_{0.0};
+  double turn_activity_ewma_{0.0};
 
   // Parameters. All velocity limits are local-planner parameters so the plugin can be
   // evaluated independently from the legacy APF controller.
@@ -121,6 +126,19 @@ private:
   double max_margin_{0.10};
   double obstacle_relevance_distance_{0.70};
   double risk_ewma_alpha_{0.22};
+  double turn_risk_ewma_alpha_{0.25};
+  double position_risk_deadzone_{0.015};
+  double position_risk_reference_{0.05};
+  double heading_risk_deadzone_{0.0035};
+  double heading_risk_reference_{0.044};
+  double input_risk_deadzone_{0.12};
+  double equivalent_body_error_reference_{0.05};
+  double risk_rise_per_cycle_{0.10};
+  double risk_fall_per_cycle_{0.05};
+  double margin_relax_risk_{0.10};
+  double margin_tighten_risk_{0.20};
+  double pressure_floor_{0.40};
+  double safety_check_period_{0.08};
   double turn_relax_floor_{0.20};
   double margin_rise_per_cycle_{0.0015};
   double margin_fall_per_cycle_{0.0010};

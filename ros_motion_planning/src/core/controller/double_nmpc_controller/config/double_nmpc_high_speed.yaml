@@ -36,7 +36,24 @@ nominal_margin: 0.06
 min_margin: 0.05
 max_margin: 0.10
 obstacle_relevance_distance: 0.70
+# Each feedback component is filtered independently before it contributes to
+# tracking risk. The two risk thresholds form the margin hysteresis band.
 risk_ewma_alpha: 0.22
+turn_risk_ewma_alpha: 0.25
+position_risk_deadzone: 0.015
+position_risk_reference: 0.05
+heading_risk_deadzone: 0.0035
+heading_risk_reference: 0.044
+input_risk_deadzone: 0.12
+equivalent_body_error_reference: 0.05
+risk_rise_per_cycle: 0.10
+risk_fall_per_cycle: 0.05
+margin_relax_risk: 0.10
+margin_tighten_risk: 0.20
+pressure_floor: 0.40
+# Check every long-layer rollout at this maximum integration interval, including
+# the intervals between the 0.48 s planner states.
+safety_check_period: 0.08
 # On an active turn, retain part of the nominal margin even at low tracking risk.
 # 0 retains the nominal margin; 1 permits full relaxation to min_margin.
 turn_relax_floor: 0.20

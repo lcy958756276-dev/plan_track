@@ -67,6 +67,20 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
   nh.param("obstacle_relevance_distance", obstacle_relevance_distance_,
            obstacle_relevance_distance_);
   nh.param("risk_ewma_alpha", risk_ewma_alpha_, risk_ewma_alpha_);
+  nh.param("turn_risk_ewma_alpha", turn_risk_ewma_alpha_, turn_risk_ewma_alpha_);
+  nh.param("position_risk_deadzone", position_risk_deadzone_, position_risk_deadzone_);
+  nh.param("position_risk_reference", position_risk_reference_, position_risk_reference_);
+  nh.param("heading_risk_deadzone", heading_risk_deadzone_, heading_risk_deadzone_);
+  nh.param("heading_risk_reference", heading_risk_reference_, heading_risk_reference_);
+  nh.param("input_risk_deadzone", input_risk_deadzone_, input_risk_deadzone_);
+  nh.param("equivalent_body_error_reference", equivalent_body_error_reference_,
+           equivalent_body_error_reference_);
+  nh.param("risk_rise_per_cycle", risk_rise_per_cycle_, risk_rise_per_cycle_);
+  nh.param("risk_fall_per_cycle", risk_fall_per_cycle_, risk_fall_per_cycle_);
+  nh.param("margin_relax_risk", margin_relax_risk_, margin_relax_risk_);
+  nh.param("margin_tighten_risk", margin_tighten_risk_, margin_tighten_risk_);
+  nh.param("pressure_floor", pressure_floor_, pressure_floor_);
+  nh.param("safety_check_period", safety_check_period_, safety_check_period_);
   nh.param("turn_relax_floor", turn_relax_floor_, turn_relax_floor_);
   nh.param("margin_rise_per_cycle", margin_rise_per_cycle_, margin_rise_per_cycle_);
   nh.param("margin_fall_per_cycle", margin_fall_per_cycle_, margin_fall_per_cycle_);
@@ -77,10 +91,20 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
   terminal_max_linear_velocity_ = clamp(terminal_max_linear_velocity_, 0.01,
                                         max_linear_velocity_);
   terminal_heading_threshold_ = clamp(terminal_heading_threshold_, 0.01, M_PI);
+  risk_ewma_alpha_ = clamp(risk_ewma_alpha_, 0.0, 1.0);
+  turn_risk_ewma_alpha_ = clamp(turn_risk_ewma_alpha_, 0.0, 1.0);
+  position_risk_reference_ = std::max(1e-4, position_risk_reference_);
+  heading_risk_reference_ = std::max(1e-4, heading_risk_reference_);
+  equivalent_body_error_reference_ = std::max(1e-4, equivalent_body_error_reference_);
+  margin_relax_risk_ = clamp(margin_relax_risk_, 0.0, 1.0);
+  margin_tighten_risk_ = clamp(margin_tighten_risk_, margin_relax_risk_, 1.0);
+  pressure_floor_ = clamp(pressure_floor_, 0.0, 1.0);
+  safety_check_period_ = std::max(0.01, safety_check_period_);
   turn_relax_floor_ = clamp(turn_relax_floor_, 0.0, 1.0);
   nominal_margin_ = clamp(nominal_margin_, min_margin_, max_margin_);
   max_margin_ = std::max(nominal_margin_, max_margin_);
   tracking_margin_ = nominal_margin_;
+  planner_margin_snapshot_ = nominal_margin_;
   risk_pub_ = nh.advertise<std_msgs::Float64>("tracking_risk", 1);
   margin_pub_ = nh.advertise<std_msgs::Float64>("dynamic_safe_margin", 1);
   clearance_pub_ = nh.advertise<std_msgs::Float64>("predicted_min_clearance", 1);
@@ -116,6 +140,11 @@ bool DoubleNMPCController::setPlan(const std::vector<geometry_msgs::PoseStamped>
   goal_reached_ = false;
   tracking_risk_ = 0.0;
   tracking_margin_ = nominal_margin_;
+  planner_margin_snapshot_ = nominal_margin_;
+  position_error_ewma_ = 0.0;
+  heading_error_ewma_ = 0.0;
+  input_correction_ewma_ = 0.0;
+  turn_activity_ewma_ = 0.0;
   planner_command_ = Control{};
   previous_command_ = Control{};
   timing_window_start_ = ros::WallTime(0);
@@ -195,12 +224,15 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   if (!terminal_approach && (last_planner_update_.isZero() ||
       (now - last_planner_update_).toSec() >= planner_update_period_)) {
     planner_reference_ = poseAtPathArcLength(path_progress_ + planner_lookahead);
+    // Freeze the tracking envelope for this complete long-layer optimization.
+    // Subsequent 20 Hz feedback affects the next 10 Hz planning snapshot only.
+    planner_margin_snapshot_ = tracking_margin_;
     // The long layer is genuinely 6 x 0.48 = 2.88 s. It is refreshed independently
     // at planner_update_period_ and becomes a hard speed cap for the tracking layer.
     const ros::WallTime planner_started = ros::WallTime::now();
     planner_command_ = chooseControl(robot_pose, current, planner_reference_,
                                      planner_horizon_steps_, planner_period_,
-                                     curve_speed_limit, tracking_margin_, true);
+                                     curve_speed_limit, planner_margin_snapshot_, true);
     planner_elapsed_ms = (ros::WallTime::now() - planner_started).toSec() * 1000.0;
     last_planner_update_ = now;
   }
@@ -274,12 +306,13 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   previous_command_ = bounded;
   ROS_INFO_THROTTLE(0.5,
                     "DoubleNMPC: terminal=%d goal_dist=%.3f path_s=%.3f/%.3f cte=%.3f lookahead=(%.2f,%.2f) "
-                    "curvature=%.3f  curve_cap=%.3f  plan=(%.3f, %.3f) "
+                    "curvature=%.3f  curve_cap=%.3f  plan_margin=%.3f  plan=(%.3f, %.3f) "
                     "track_cap=%.3f  cmd=(%.3f, %.3f)  moving_w_cap=%.3f  heading=%.3f  speed_scale=%.2f "
                     "pred_err=(%.3f, %.3f)  turn=%.2f  risk=%.2f  margin=%.3f  "
                     "min_clearance=%.3f",
                     terminal_approach, goal_distance, path_progress_, global_plan_length_, path_projection.lateral_error,
-                    planner_lookahead, tracker_lookahead, path_curvature, curve_speed_limit, planner_command_.v,
+                    planner_lookahead, tracker_lookahead, path_curvature, curve_speed_limit,
+                    planner_margin_snapshot_, planner_command_.v,
                     planner_command_.w, tracking_speed_cap, bounded.v, bounded.w,
                     moving_angular_limit, heading_error, tracking_speed_scale,
                     prediction.max_position_error, prediction.max_heading_error,
@@ -512,15 +545,20 @@ DoubleNMPCController::Control DoubleNMPCController::chooseControl(
 bool DoubleNMPCController::rolloutIsSafe(double x, double y, double yaw,
                                           const Control& control, int steps,
                                           double step_period, double margin) const {
-  for (int i = 0; i <= steps; ++i) {
-    if (!poseIsSafe(x, y, margin)) {
-      return false;
+  const int substeps = std::max(1, static_cast<int>(std::ceil(
+      step_period / safety_check_period_)));
+  const double subperiod = step_period / static_cast<double>(substeps);
+  for (int step = 0; step < steps; ++step) {
+    for (int substep = 0; substep < substeps; ++substep) {
+      if (!poseIsSafe(x, y, margin)) {
+        return false;
+      }
+      x += control.v * std::cos(yaw) * subperiod;
+      y += control.v * std::sin(yaw) * subperiod;
+      yaw = normalizeAngle(yaw + control.w * subperiod);
     }
-    x += control.v * std::cos(yaw) * step_period;
-    y += control.v * std::sin(yaw) * step_period;
-    yaw = normalizeAngle(yaw + control.w * step_period);
   }
-  return true;
+  return poseIsSafe(x, y, margin);
 }
 
 bool DoubleNMPCController::poseIsSafe(double x, double y, double margin) const {
@@ -642,20 +680,55 @@ double DoubleNMPCController::predictedMinimumClearance(
 void DoubleNMPCController::updateTrackingMargin(const TrackingPrediction& prediction,
                                                  const Control& correction,
                                                  double clearance) {
-  // This is a genuine tracking envelope: compare each predicted state against
-  // the nearest path tangent instead of treating look-ahead distance as error.
-  const double pos_error = std::max(prediction.position_error,
-                                    prediction.max_position_error);
-  const double head_error = std::max(prediction.heading_error,
-                                     prediction.max_heading_error);
-  const double pos_risk = clamp((pos_error - 0.015) / 0.05, 0.0, 1.0);
-  const double head_risk = clamp((head_error - 0.0035) / 0.044, 0.0, 1.0);
-  const double input_risk = clamp(std::max(std::fabs(correction.v) / 0.10,
-                                            std::fabs(correction.w) / 0.40), 0.0, 1.0);
-  const double raw_risk = 0.22 * pos_risk + 0.48 * head_risk + 0.30 * input_risk;
-  tracking_risk_ = clamp((1.0 - risk_ewma_alpha_) * tracking_risk_ +
-                             risk_ewma_alpha_ * raw_risk,
+  const double position_error = std::max(prediction.position_error,
+                                         prediction.max_position_error);
+  const double heading_error = std::max(prediction.heading_error,
+                                        prediction.max_heading_error);
+  const double input_correction = clamp(
+      std::max(std::fabs(correction.v) / 0.10,
+               std::fabs(correction.w) / 0.40), 0.0, 2.0);
+
+  // Keep feedback components separate until the final combination. This exposes
+  // whether a tightening was caused by lateral tracking, heading, control effort,
+  // or an active turn, rather than hiding everything in one filtered scalar.
+  position_error_ewma_ = (1.0 - risk_ewma_alpha_) * position_error_ewma_ +
+                         risk_ewma_alpha_ * position_error;
+  heading_error_ewma_ = (1.0 - risk_ewma_alpha_) * heading_error_ewma_ +
+                        risk_ewma_alpha_ * heading_error;
+  input_correction_ewma_ = (1.0 - risk_ewma_alpha_) * input_correction_ewma_ +
+                           risk_ewma_alpha_ * input_correction;
+  turn_activity_ewma_ = (1.0 - turn_risk_ewma_alpha_) * turn_activity_ewma_ +
+                        turn_risk_ewma_alpha_ * prediction.turn_activity;
+
+  const double position_risk = clamp(
+      (position_error_ewma_ - position_risk_deadzone_) / position_risk_reference_,
+      0.0, 1.0);
+  const double heading_risk = clamp(
+      (heading_error_ewma_ - heading_risk_deadzone_) / heading_risk_reference_,
+      0.0, 1.0);
+  const double input_risk = clamp(
+      (input_correction_ewma_ - input_risk_deadzone_) /
+          std::max(1e-4, 1.0 - input_risk_deadzone_),
+      0.0, 1.0);
+  const double turn_risk = clamp(turn_activity_ewma_, 0.0, 1.0);
+
+  const double raw_risk = clamp(0.16 * position_risk + 0.34 * heading_risk +
+                                    0.24 * input_risk +
+                                    0.30 * turn_risk *
+                                        (0.55 * heading_risk + 0.45 * input_risk),
+                                0.0, 1.0);
+  tracking_risk_ = clamp(tracking_risk_ + clamp(raw_risk - tracking_risk_,
+                                                  -risk_fall_per_cycle_,
+                                                  risk_rise_per_cycle_),
                          0.0, 1.0);
+
+  // This is a circular-body envelope, not the MATLAB rectangular certificate.
+  // It gives the margin controller a conservative heading-dependent displacement.
+  const double equivalent_body_error = position_error_ewma_ +
+      robot_radius_ * std::sin(std::min(0.5 * M_PI, heading_error_ewma_));
+  const double body_pressure = clamp(
+      equivalent_body_error / equivalent_body_error_reference_, 0.0, 1.0);
+  const double joint_pressure = std::max({turn_risk, input_risk, body_pressure});
 
   // Larger clearance margins matter only around obstacles. In open space they stay at
   // nominal/relaxed values, preserving the user's requested 0.05 m absolute lower bound.
@@ -663,15 +736,20 @@ void DoubleNMPCController::updateTrackingMargin(const TrackingPrediction& predic
                                      std::max(obstacle_relevance_distance_ - robot_radius_, 1e-3),
                                  0.0, 1.0);
   double desired_margin = nominal_margin_;
-  if (tracking_risk_ < 0.10) {
+  if (tracking_risk_ < margin_relax_risk_) {
     // A curve is not a failure, but it should not fully relax to the
     // straight-line minimum until the vehicle exits the turn.
     const double relax_gate = std::max(turn_relax_floor_,
-                                       1.0 - prediction.turn_activity);
+                                       1.0 - turn_risk);
     desired_margin = nominal_margin_ - (nominal_margin_ - min_margin_) * relax_gate;
-  } else if (tracking_risk_ > 0.20 && relevance > 0.0) {
-    const double intensity = clamp((tracking_risk_ - 0.20) / 0.80, 0.0, 1.0);
-    desired_margin = nominal_margin_ + (max_margin_ - nominal_margin_) * intensity * relevance;
+  } else if (tracking_risk_ > margin_tighten_risk_ && relevance > 0.0) {
+    const double intensity = clamp(
+        (tracking_risk_ - margin_tighten_risk_) /
+            std::max(1e-4, 1.0 - margin_tighten_risk_),
+        0.0, 1.0);
+    const double pressure = pressure_floor_ + (1.0 - pressure_floor_) * joint_pressure;
+    desired_margin = nominal_margin_ +
+        (max_margin_ - nominal_margin_) * intensity * pressure * relevance;
   }
   const double delta = desired_margin - tracking_margin_;
   tracking_margin_ += clamp(delta, -margin_fall_per_cycle_, margin_rise_per_cycle_);
