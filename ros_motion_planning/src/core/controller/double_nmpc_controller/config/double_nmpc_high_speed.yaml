@@ -10,6 +10,9 @@ planner_period: 0.48
 planner_update_period: 0.10
 tracking_horizon_steps: 3
 planner_horizon_steps: 6
+# Long plans always append this fixed 3 x 0.48 s rate-limited brake tail and
+# must pass dense safety certification over the complete 4.32 s sequence.
+planner_brake_stages: 3
 goal_tolerance: 0.08
 # Inside this range, use a stable point-capture controller. It retains the 0.08 m
 # completion requirement while preventing long/short NMPC choices from alternating

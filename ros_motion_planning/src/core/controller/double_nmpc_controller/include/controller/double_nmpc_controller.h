@@ -1,6 +1,8 @@
 #ifndef RMP_CONTROLLER_DOUBLE_NMPC_CONTROLLER_H_
 #define RMP_CONTROLLER_DOUBLE_NMPC_CONTROLLER_H_
 
+#include <cstdint>
+#include <vector>
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Twist.h>
@@ -44,6 +46,27 @@ private:
     double lateral_error{0.0};
   };
 
+  struct LongPlanStage {
+    Control control;
+    geometry_msgs::PoseStamped predicted_pose;
+    double minimum_clearance{0.0};
+  };
+
+  // The cache is a safety certificate for the long layer, not a delayed pose
+  // reference for the tracker. This deliberately avoids the stale-reference
+  // behavior observed with the previous asynchronous experiment.
+  struct LongPlan {
+    std::uint64_t id{0};
+    ros::Time created_at;
+    double margin{0.0};
+    bool motion_valid{false};
+    bool brake_valid{false};
+    bool full_valid{false};
+    int first_invalid_stage{-1};
+    double minimum_clearance{0.0};
+    std::vector<LongPlanStage> stages;
+  };
+
   geometry_msgs::PoseStamped lookAheadPose(
       const geometry_msgs::PoseStamped& pose, double distance) const;
   PathProjection projectOntoPath(const geometry_msgs::PoseStamped& pose,
@@ -53,6 +76,13 @@ private:
                         const geometry_msgs::PoseStamped& reference, int horizon_steps,
                         double step_period, double speed_cap, double margin,
                         bool planner_layer) const;
+  LongPlan buildLongPlan(const geometry_msgs::PoseStamped& pose,
+                         const Control& first_control, double margin,
+                         const ros::Time& created_at) const;
+  bool appendCertifiedStage(LongPlan& plan, geometry_msgs::PoseStamped& pose,
+                            const Control& control, double margin) const;
+  static geometry_msgs::PoseStamped advancePose(const geometry_msgs::PoseStamped& pose,
+                                                const Control& control, double period);
   bool rolloutIsSafe(double x, double y, double yaw, const Control& control,
                      int steps, double step_period, double margin) const;
   bool poseIsSafe(double x, double y, double margin) const;
@@ -78,6 +108,8 @@ private:
   Control planner_command_;
   double path_progress_{0.0};
   double global_plan_length_{0.0};
+  std::uint64_t next_long_plan_id_{1};
+  LongPlan cached_long_plan_;
 
   // One-second wall-clock timing window for remote Nano profiling. These are kept
   // out of the optimization itself so timing collection does not affect control.
@@ -107,6 +139,7 @@ private:
   double planner_update_period_{0.10};
   int tracking_horizon_steps_{3};
   int planner_horizon_steps_{6};
+  int planner_brake_stages_{3};
   double max_linear_velocity_{0.40};
   double max_angular_velocity_{1.5};
   double max_linear_acceleration_{0.25};

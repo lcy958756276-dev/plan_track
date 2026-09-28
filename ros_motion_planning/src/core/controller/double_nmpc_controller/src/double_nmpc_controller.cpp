@@ -43,6 +43,7 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
   nh.param("planner_update_period", planner_update_period_, planner_update_period_);
   nh.param("tracking_horizon_steps", tracking_horizon_steps_, tracking_horizon_steps_);
   nh.param("planner_horizon_steps", planner_horizon_steps_, planner_horizon_steps_);
+  nh.param("planner_brake_stages", planner_brake_stages_, planner_brake_stages_);
   nh.param("max_linear_velocity", max_linear_velocity_, max_linear_velocity_);
   nh.param("max_angular_velocity", max_angular_velocity_, config_.max_angular_velocity());
   nh.param("max_linear_acceleration", max_linear_acceleration_, max_linear_acceleration_);
@@ -87,6 +88,12 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
 
   min_margin_ = std::max(0.0, min_margin_);
   planner_update_period_ = std::max(1e-3, planner_update_period_);
+  planner_horizon_steps_ = std::max(1, planner_horizon_steps_);
+  if (planner_brake_stages_ != 3) {
+    ROS_WARN("DoubleNMPC uses a fixed three-stage brake tail; ignoring planner_brake_stages=%d",
+             planner_brake_stages_);
+    planner_brake_stages_ = 3;
+  }
   terminal_approach_distance_ = std::max(goal_tolerance_, terminal_approach_distance_);
   terminal_max_linear_velocity_ = clamp(terminal_max_linear_velocity_, 0.01,
                                         max_linear_velocity_);
@@ -115,7 +122,8 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
                   << command_period_ << "s, planner="
                   << planner_period_ << "s x " << planner_horizon_steps_
                   << " (" << planner_period_ * planner_horizon_steps_
-                  << "s horizon, updated every " << planner_update_period_
+                  << "s motion + " << planner_period_ * planner_brake_stages_
+                  << "s brake certification, updated every " << planner_update_period_
                   << "s), max_angular_velocity=" << max_angular_velocity_
                   << "rad/s, margin=[" << min_margin_ << ", "
                   << max_margin_ << "] m. Set ~" << name
@@ -146,6 +154,8 @@ bool DoubleNMPCController::setPlan(const std::vector<geometry_msgs::PoseStamped>
   input_correction_ewma_ = 0.0;
   turn_activity_ewma_ = 0.0;
   planner_command_ = Control{};
+  cached_long_plan_ = LongPlan{};
+  next_long_plan_id_ = 1;
   previous_command_ = Control{};
   timing_window_start_ = ros::WallTime(0);
   timing_cycle_count_ = 0;
@@ -226,9 +236,32 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
     planner_reference_ = poseAtPathArcLength(path_progress_ + planner_lookahead);
     planner_margin_snapshot_ = tracking_margin_;
     const ros::WallTime planner_started = ros::WallTime::now();
-    planner_command_ = chooseControl(robot_pose, current, planner_reference_,
-                                     planner_horizon_steps_, planner_period_,
-                                     curve_speed_limit, planner_margin_snapshot_, true);
+    const Control first_control = chooseControl(robot_pose, current, planner_reference_,
+                                                planner_horizon_steps_, planner_period_,
+                                                curve_speed_limit, planner_margin_snapshot_, true);
+    cached_long_plan_ = buildLongPlan(robot_pose, first_control,
+                                      planner_margin_snapshot_, now);
+    cached_long_plan_.id = next_long_plan_id_++;
+    if (cached_long_plan_.full_valid) {
+      planner_command_ = cached_long_plan_.stages.front().control;
+      ROS_INFO("DoubleNMPC long plan: id=%llu full=1 move=6 brake=%d min_clearance=%.3f "
+               "u_move=(%.3f,%.3f) u_brake=[(%.3f,%.3f),(%.3f,%.3f),(%.3f,%.3f)]",
+               static_cast<unsigned long long>(cached_long_plan_.id), planner_brake_stages_,
+               cached_long_plan_.minimum_clearance, planner_command_.v, planner_command_.w,
+               cached_long_plan_.stages[planner_horizon_steps_].control.v,
+               cached_long_plan_.stages[planner_horizon_steps_].control.w,
+               cached_long_plan_.stages[planner_horizon_steps_ + 1].control.v,
+               cached_long_plan_.stages[planner_horizon_steps_ + 1].control.w,
+               cached_long_plan_.stages[planner_horizon_steps_ + 2].control.v,
+               cached_long_plan_.stages[planner_horizon_steps_ + 2].control.w);
+    } else {
+      planner_command_ = Control{};
+      ROS_WARN("DoubleNMPC long plan: id=%llu full=0 motion=%d brake=%d first_invalid_stage=%d "
+               "min_clearance=%.3f; holding zero long-layer command",
+               static_cast<unsigned long long>(cached_long_plan_.id),
+               cached_long_plan_.motion_valid, cached_long_plan_.brake_valid,
+               cached_long_plan_.first_invalid_stage, cached_long_plan_.minimum_clearance);
+    }
     planner_elapsed_ms = (ros::WallTime::now() - planner_started).toSec() * 1000.0;
     last_planner_update_ = now;
   }
@@ -535,6 +568,87 @@ DoubleNMPCController::Control DoubleNMPCController::chooseControl(
     }
   }
   return best;
+}
+
+geometry_msgs::PoseStamped DoubleNMPCController::advancePose(
+    const geometry_msgs::PoseStamped& pose, const Control& control, double period) {
+  geometry_msgs::PoseStamped advanced = pose;
+  const double yaw = tf2::getYaw(pose.pose.orientation);
+  advanced.pose.position.x += control.v * std::cos(yaw) * period;
+  advanced.pose.position.y += control.v * std::sin(yaw) * period;
+  const double next_yaw = normalizeAngle(yaw + control.w * period);
+  advanced.pose.orientation = tf2::toMsg(tf2::Quaternion(
+      0.0, 0.0, std::sin(next_yaw / 2.0), std::cos(next_yaw / 2.0)));
+  return advanced;
+}
+
+bool DoubleNMPCController::appendCertifiedStage(LongPlan& plan,
+                                                geometry_msgs::PoseStamped& pose,
+                                                const Control& control,
+                                                double margin) const {
+  const double yaw = tf2::getYaw(pose.pose.orientation);
+  const int substeps = std::max(1, static_cast<int>(std::ceil(
+      planner_period_ / safety_check_period_)));
+  const double subperiod = planner_period_ / static_cast<double>(substeps);
+  double x = pose.pose.position.x;
+  double y = pose.pose.position.y;
+  double subyaw = yaw;
+  double minimum_clearance = obstacleClearance(x, y);
+  for (int substep = 0; substep < substeps; ++substep) {
+    if (!poseIsSafe(x, y, margin)) {
+      return false;
+    }
+    x += control.v * std::cos(subyaw) * subperiod;
+    y += control.v * std::sin(subyaw) * subperiod;
+    subyaw = normalizeAngle(subyaw + control.w * subperiod);
+    minimum_clearance = std::min(minimum_clearance, obstacleClearance(x, y));
+  }
+  if (!poseIsSafe(x, y, margin)) {
+    return false;
+  }
+  LongPlanStage stage;
+  stage.control = control;
+  stage.predicted_pose = advancePose(pose, control, planner_period_);
+  stage.minimum_clearance = minimum_clearance;
+  plan.minimum_clearance = std::min(plan.minimum_clearance, minimum_clearance);
+  plan.stages.push_back(stage);
+  pose = stage.predicted_pose;
+  return true;
+}
+
+DoubleNMPCController::LongPlan DoubleNMPCController::buildLongPlan(
+    const geometry_msgs::PoseStamped& pose, const Control& first_control, double margin,
+    const ros::Time& created_at) const {
+  LongPlan plan;
+  plan.created_at = created_at;
+  plan.margin = margin;
+  plan.minimum_clearance = obstacle_relevance_distance_;
+
+  geometry_msgs::PoseStamped predicted_pose = pose;
+  for (int stage = 0; stage < planner_horizon_steps_; ++stage) {
+    if (!appendCertifiedStage(plan, predicted_pose, first_control, margin)) {
+      plan.first_invalid_stage = stage;
+      return plan;
+    }
+  }
+  plan.motion_valid = true;
+
+  Control brake_control = first_control;
+  for (int stage = 0; stage < planner_brake_stages_; ++stage) {
+    brake_control.v = std::max(0.0,
+        brake_control.v - max_linear_deceleration_ * planner_period_);
+    brake_control.w = std::copysign(
+        std::max(0.0, std::fabs(brake_control.w) -
+                          max_angular_acceleration_ * planner_period_),
+        brake_control.w);
+    if (!appendCertifiedStage(plan, predicted_pose, brake_control, margin)) {
+      plan.first_invalid_stage = planner_horizon_steps_ + stage;
+      return plan;
+    }
+  }
+  plan.brake_valid = true;
+  plan.full_valid = true;
+  return plan;
 }
 
 bool DoubleNMPCController::rolloutIsSafe(double x, double y, double yaw,
