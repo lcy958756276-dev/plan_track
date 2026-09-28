@@ -1,0 +1,238 @@
+=== 启动时间: 2026年 09月 28日 星期一 16:46:58 CST ===
+[16:46:58] [1] main_generate.py start
+[16:46:59] [1] main_generate.py done
+[16:46:59] [2] use_encoder_odom flag set
+[16:46:59] [3] loading robot_description
+[16:46:59] [3] robot_description loaded
+[33m[WARN] [1790585220.075273133]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.[0m
+[16:47:02] [4] starting gzserver
+[16:47:09] [4] spawn_model start
+[INFO] [1790585230.353221]: Loading model XML from ros parameter robot_description
+[INFO] [1790585230.362676]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1790585230.368771]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1790585230.945719]: Spawn status: SpawnModel: Successfully spawned entity
+[16:47:11] [4] spawn_model exit=0
+[16:47:23] [8] generating move_base launch file
+[16:47:23] [8] starting move_base via roslaunch
+  启动 move_base 前检查参数状态:
+path_planner/PathPlanner
+double_nmpc_controller/DoubleNMPCController
+- name: static_map
+  type: costmap_2d::StaticLayer
+- name: obstacle_layer
+  type: costmap_2d::ObstacleLayer
+- name: voronoi_layer
+  type: costmap_2d::VoronoiLayer
+- name: inflation_layer
+  type: costmap_2d::InflationLayer
+
+  [诊断] rospack plugins nav_core:
+path_planner /home/lcy/robot_graduation/ros_motion_planning/src/core/path_planner/path_planner/path_planner_plugin.xml
+mpc_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/mpc_controller/mpc_controller_plugin.xml
+lqr_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/lqr_controller/lqr_controller_plugin.xml
+orca_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/orca_controller/orca_controller_plugin.xml
+apf_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/apf_controller/apf_controller_plugin.xml
+dwa_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/dwa_controller/dwa_controller_plugin.xml
+rpp_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/rpp_controller/rpp_controller_plugin.xml
+pid_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/pid_controller/pid_controller_plugin.xml
+static_controller /home/lcy/robot_graduation/ros_motion_planning/src/core/controller/static_controller/static_controller_plugin.xml
+move_slow_and_clear /opt/ros/noetic/share/move_slow_and_clear/recovery_plugin.xml
+base_local_planner /opt/ros/noetic/share/base_local_planner/blp_plugin.xml
+navfn /opt/ros/noetic/share/navfn/bgp_plugin.xml
+carrot_planner /opt/ros/noetic/share/carrot_planner/bgp_plugin.xml
+dwa_local_planner /opt/ros/noetic/share/dwa_local_planner/blp_plugin.xml
+global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
+rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
+clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
+[33m[WARN] [1790585246.464460955]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1790585246.467769113]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+I20260928 16:47:27.033540 32804 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
+I20260928 16:47:27.059402 32804 path_planner_factory.cpp:137] Using path planner: astar_polyline
+[33m[WARN] [1790585247.088915409]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20260928 16:47:27.245544 32804 apf_controller.cpp:105] APF controller initialized!
+[16:47:27] [8] move_base 启动后状态:
+  [诊断] 检查 move_base 是否存活:
+  [诊断] move_base 进程存活
+  [诊断] rostopic list | grep move_base:
+/move_base/PathPlanner/expand
+/move_base/PathPlanner/expand_updates
+/move_base/PathPlanner/key_points
+/move_base/PathPlanner/particles
+/move_base/PathPlanner/particles_array
+/move_base/PathPlanner/plan
+/move_base/PathPlanner/random_tree
+/move_base/PathPlanner/random_tree_array
+/move_base/PathPlanner/safety_corridor
+/move_base/cancel
+/move_base/current_goal
+/move_base/feedback
+/move_base/global_costmap/costmap
+/move_base/global_costmap/costmap_updates
+/move_base/global_costmap/footprint
+/move_base/global_costmap/inflation_layer/parameter_descriptions
+/move_base/global_costmap/inflation_layer/parameter_updates
+/move_base/global_costmap/obstacle_layer/parameter_descriptions
+/move_base/global_costmap/obstacle_layer/parameter_updates
+/move_base/global_costmap/parameter_descriptions
+/move_base/global_costmap/parameter_updates
+/move_base/global_costmap/static_map/parameter_descriptions
+/move_base/global_costmap/static_map/parameter_updates
+/move_base/global_costmap/voronoi_layer/parameter_descriptions
+/move_base/global_costmap/voronoi_layer/parameter_updates
+/move_base/global_costmap/voronoi_layer/voronoi_grid
+/move_base/goal
+/move_base/local_costmap/costmap
+/move_base/local_costmap/costmap_updates
+/move_base/local_costmap/footprint
+/move_base/local_costmap/inflation_layer/parameter_descriptions
+/move_base/local_costmap/inflation_layer/parameter_updates
+/move_base/local_costmap/obstacle_layer/parameter_descriptions
+/move_base/local_costmap/obstacle_layer/parameter_updates
+/move_base/local_costmap/parameter_descriptions
+/move_base/local_costmap/parameter_updates
+/move_base/parameter_descriptions
+/move_base/parameter_updates
+/move_base/recovery_status
+/move_base/result
+/move_base/status
+/move_base_simple/goal
+  [诊断] rosservice list | grep move_base:
+/move_base/PathPlanner/make_plan
+/move_base/clear_costmaps
+/move_base/get_loggers
+/move_base/global_costmap/inflation_layer/set_parameters
+/move_base/global_costmap/obstacle_layer/set_parameters
+/move_base/global_costmap/set_parameters
+/move_base/global_costmap/static_map/set_parameters
+/move_base/global_costmap/voronoi_layer/set_parameters
+/move_base/local_costmap/inflation_layer/set_parameters
+/move_base/local_costmap/obstacle_layer/set_parameters
+/move_base/local_costmap/set_parameters
+/move_base/make_plan
+/move_base/set_logger_level
+/move_base/set_parameters
+I20260928 16:47:34.198781 32804 path_planner_node.cpp:290] PathPlanner make_plan request: start=(0, -0.8) goal=(-3.33058, -1.69166)
+I20260928 16:47:34.208173 32804 astar_polyline_planner.cpp:46] AStarPolyline: base poses=67, polyline vertices=10, dense poses=67
+W20260928 16:47:34.208884 32804 path_planner_node.cpp:215] Path heading change 152.715 deg > 90 deg, accepting new plan for pre-rotation
+I20260928 16:47:34.214880 32804 path_planner_node.cpp:302] PathPlanner make_plan response: poses=67 end=(-3.33058, -1.69166) end_goal_dist=0
+I20260928 16:47:55.922267 32814 astar_polyline_planner.cpp:46] AStarPolyline: base poses=67, polyline vertices=8, dense poses=67
+I20260928 16:47:56.015260 32813 apf_controller.cpp:125] Got new plan
+I20260928 16:48:01.644693 32813 apf_controller.cpp:241] APF curvature speed limit: kappa=0, limit_v=0.14 m/s, lookahead_dist=0.25 m, goal_dist=3.21258
+I20260928 16:48:02.915611 32813 apf_controller.cpp:241] APF curvature speed limit: kappa=-2.82866, limit_v=0.06 m/s, lookahead_dist=0.25 m, goal_dist=3.16355
+I20260928 16:48:03.915364 32813 apf_controller.cpp:241] APF curvature speed limit: kappa=-2.18209, limit_v=0.0608829 m/s, lookahead_dist=0.25 m, goal_dist=3.13329
+I20260928 16:48:04.915326 32813 apf_controller.cpp:241] APF curvature speed limit: kappa=-2.18209, limit_v=0.0608829 m/s, lookahead_dist=0.25 m, goal_dist=3.10314
+[0m[INFO] [1790585246.468970003]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1790585246.481053173]: Requesting the map...[0m
+[0m[INFO] [1790585246.785443080]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1790585246.885213171]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1790585246.891411612]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1790585246.895542338]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1790585246.929005092]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1790585246.939333939]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1790585247.091709751]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1790585247.097752057]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1790585247.153196762]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1790585247.240429358]: Created local_planner apf_controller/APFController[0m
+[0m[INFO] [1790585247.737301264]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1790585247.748391300]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1790585247.804945914]: odom received![0m
+... logging to /home/lcy/.ros/log/adb100f8-bb12-11f1-a851-189341889b90/roslaunch-ubuntu-32781.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/tmp/move_base_debug.launch
+[1mstarted roslaunch server http://ubuntu:42997/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /move_base/PathPlanner/planner_name: astar_polyline
+ * /move_base/base_global_planner: path_planner/Path...
+ * /move_base/base_local_planner: apf_controller/AP...
+ * /move_base/conservative_reset_dist: 3.0
+ * /move_base/controller_frequency: 10.0
+ * /move_base/controller_patience: 15.0
+ * /move_base/global_costmap/cost_scaling_factor: 2.0
+ * /move_base/global_costmap/footprint: [[-0.1, -0.3], [-...
+ * /move_base/global_costmap/footprint_padding: 0.1
+ * /move_base/global_costmap/global_frame: map
+ * /move_base/global_costmap/inflation_layer/cost_scaling_factor: 2.0
+ * /move_base/global_costmap/inflation_layer/enabled: True
+ * /move_base/global_costmap/inflation_layer/inflation_radius: 0.2
+ * /move_base/global_costmap/inflation_radius: 0.3
+ * /move_base/global_costmap/map_type: costmap
+ * /move_base/global_costmap/meter_scoring: True
+ * /move_base/global_costmap/obstacle_layer/observation_sources: scan
+ * /move_base/global_costmap/obstacle_layer/scan/clearing: True
+ * /move_base/global_costmap/obstacle_layer/scan/data_type: LaserScan
+ * /move_base/global_costmap/obstacle_layer/scan/expected_update_rate: 0.0
+ * /move_base/global_costmap/obstacle_layer/scan/inf_is_valid: True
+ * /move_base/global_costmap/obstacle_layer/scan/marking: True
+ * /move_base/global_costmap/obstacle_layer/scan/max_obstacle_height: 0.8
+ * /move_base/global_costmap/obstacle_layer/scan/min_obstacle_height: 0.0
+ * /move_base/global_costmap/obstacle_layer/scan/observation_persistence: 0.0
+ * /move_base/global_costmap/obstacle_layer/scan/obstacle_range: 2.0
+ * /move_base/global_costmap/obstacle_layer/scan/raytrace_range: 12.0
+ * /move_base/global_costmap/obstacle_layer/scan/sensor_frame: base_scan
+ * /move_base/global_costmap/obstacle_layer/scan/topic: /scan_fixed
+ * /move_base/global_costmap/origin_z: 0.0
+ * /move_base/global_costmap/plugins: [{'name': 'static...
+ * /move_base/global_costmap/publish_frequency: 1.0
+ * /move_base/global_costmap/publish_voxel_map: False
+ * /move_base/global_costmap/robot_base_frame: base_footprint
+ * /move_base/global_costmap/static_map/clear_time: 20
+ * /move_base/global_costmap/static_map/enabled: True
+ * /move_base/global_costmap/static_map/publish_static_map: True
+ * /move_base/global_costmap/transform_tolerance: 0.5
+ * /move_base/global_costmap/update_frequency: 2.0
+ * /move_base/global_costmap/z_resolution: 1
+ * /move_base/global_costmap/z_voxels: 2
+ * /move_base/local_costmap/global_frame: odom
+ * /move_base/local_costmap/height: 3
+ * /move_base/local_costmap/inflation_layer/cost_scaling_factor: 10.0
+ * /move_base/local_costmap/inflation_layer/enabled: True
+ * /move_base/local_costmap/inflation_layer/inflation_radius: 0.2
+ * /move_base/local_costmap/obstacle_layer/observation_sources: scan
+ * /move_base/local_costmap/obstacle_layer/scan/clearing: True
+ * /move_base/local_costmap/obstacle_layer/scan/data_type: LaserScan
+ * /move_base/local_costmap/obstacle_layer/scan/expected_update_rate: 0.0
+ * /move_base/local_costmap/obstacle_layer/scan/inf_is_valid: True
+ * /move_base/local_costmap/obstacle_layer/scan/marking: True
+ * /move_base/local_costmap/obstacle_layer/scan/max_obstacle_height: 0.8
+ * /move_base/local_costmap/obstacle_layer/scan/min_obstacle_height: 0.0
+ * /move_base/local_costmap/obstacle_layer/scan/observation_persistence: 0.0
+ * /move_base/local_costmap/obstacle_layer/scan/obstacle_range: 2.0
+ * /move_base/local_costmap/obstacle_layer/scan/raytrace_range: 3.0
+ * /move_base/local_costmap/obstacle_layer/scan/sensor_frame: base_scan
+ * /move_base/local_costmap/obstacle_layer/scan/topic: /scan_fixed
+ * /move_base/local_costmap/plugins: [{'name': 'obstac...
+ * /move_base/local_costmap/publish_frequency: 1.0
+ * /move_base/local_costmap/resolution: 0.05
+ * /move_base/local_costmap/robot_base_frame: base_footprint
+ * /move_base/local_costmap/rolling_window: True
+ * /move_base/local_costmap/static_map: False
+ * /move_base/local_costmap/transform_tolerance: 0.5
+ * /move_base/local_costmap/update_frequency: 2.0
+ * /move_base/local_costmap/width: 3
+ * /move_base/oscillation_distance: 0.2
+ * /move_base/oscillation_timeout: 10.0
+ * /move_base/planner_frequency: 0.0
+ * /move_base/planner_patience: 5.0
+ * /move_base/recovery_behavior_enabled: False
+ * /move_base/shutdown_costmaps: False
+ * /rosdistro: noetic
+ * /rosversion: 1.17.0
+
+NODES
+  /
+    move_base (move_base/move_base)
+
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/tmp/move_base_debug.launch http://localhost:11311
+[1mprocess[move_base-1]: started with pid [32804][0m
+[move_base-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m

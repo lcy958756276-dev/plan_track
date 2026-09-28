@@ -1,0 +1,8 @@
+# generated from catkin/cmake/template/pkg.context.pc.in
+CATKIN_PACKAGE_PREFIX = ""
+PROJECT_PKG_CONFIG_INCLUDE_DIRS = "/home/lcy/robot_graduation/ros_motion_planning/src/core/controller/lqr_controller/include".split(';') if "/home/lcy/robot_graduation/ros_motion_planning/src/core/controller/lqr_controller/include" != "" else []
+PROJECT_CATKIN_DEPENDS = "controller;system_config".replace(';', ' ')
+PKG_CONFIG_LIBRARIES_WITH_PREFIX = "".split(';') if "" != "" else []
+PROJECT_NAME = "lqr_controller"
+PROJECT_SPACE_DIR = "/home/lcy/robot_graduation/ros_motion_planning/devel"
+PROJECT_VERSION = "0.0.0"
