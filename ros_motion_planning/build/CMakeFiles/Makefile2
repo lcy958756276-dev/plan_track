@@ -71,6 +71,7 @@ all: sim_env/all
 all: plugins/rviz_plugins/spencer_tracking_rviz_plugin/all
 all: core/controller/controller/all
 all: core/controller/apf_controller/all
+all: core/controller/double_nmpc_controller/all
 all: core/controller/dwa_controller/all
 all: core/controller/lqr_controller/all
 all: core/controller/mpc_controller/all
@@ -103,6 +104,7 @@ preinstall: sim_env/preinstall
 preinstall: plugins/rviz_plugins/spencer_tracking_rviz_plugin/preinstall
 preinstall: core/controller/controller/preinstall
 preinstall: core/controller/apf_controller/preinstall
+preinstall: core/controller/double_nmpc_controller/preinstall
 preinstall: core/controller/dwa_controller/preinstall
 preinstall: core/controller/lqr_controller/preinstall
 preinstall: core/controller/mpc_controller/preinstall
@@ -140,6 +142,7 @@ clean: sim_env/clean
 clean: plugins/rviz_plugins/spencer_tracking_rviz_plugin/clean
 clean: core/controller/controller/clean
 clean: core/controller/apf_controller/clean
+clean: core/controller/double_nmpc_controller/clean
 clean: core/controller/dwa_controller/clean
 clean: core/controller/lqr_controller/clean
 clean: core/controller/mpc_controller/clean
@@ -249,6 +252,24 @@ core/controller/controller/clean: core/controller/controller/CMakeFiles/base_loc
 core/controller/controller/clean: core/controller/controller/CMakeFiles/controller.dir/clean
 
 .PHONY : core/controller/controller/clean
+
+#=============================================================================
+# Directory level rules for directory core/controller/double_nmpc_controller
+
+# Recursive "all" directory target.
+core/controller/double_nmpc_controller/all: core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/all
+
+.PHONY : core/controller/double_nmpc_controller/all
+
+# Recursive "preinstall" directory target.
+core/controller/double_nmpc_controller/preinstall:
+
+.PHONY : core/controller/double_nmpc_controller/preinstall
+
+# Recursive "clean" directory target.
+core/controller/double_nmpc_controller/clean: core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/clean
+
+.PHONY : core/controller/double_nmpc_controller/clean
 
 #=============================================================================
 # Directory level rules for directory core/controller/dwa_controller
@@ -1067,12 +1088,12 @@ gtest/googlemock/CMakeFiles/gmock_main.dir/all: gtest/googlemock/CMakeFiles/gmoc
 gtest/googlemock/CMakeFiles/gmock_main.dir/all: gtest/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f gtest/googlemock/CMakeFiles/gmock_main.dir/build.make gtest/googlemock/CMakeFiles/gmock_main.dir/depend
 	$(MAKE) -f gtest/googlemock/CMakeFiles/gmock_main.dir/build.make gtest/googlemock/CMakeFiles/gmock_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=11 "Built target gmock_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num= "Built target gmock_main"
 .PHONY : gtest/googlemock/CMakeFiles/gmock_main.dir/all
 
 # Build rule for subdir invocation for target.
 gtest/googlemock/CMakeFiles/gmock_main.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 gtest/googlemock/CMakeFiles/gmock_main.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : gtest/googlemock/CMakeFiles/gmock_main.dir/rule
@@ -1094,12 +1115,12 @@ gtest/googlemock/CMakeFiles/gmock_main.dir/clean:
 gtest/googlemock/CMakeFiles/gmock.dir/all: gtest/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f gtest/googlemock/CMakeFiles/gmock.dir/build.make gtest/googlemock/CMakeFiles/gmock.dir/depend
 	$(MAKE) -f gtest/googlemock/CMakeFiles/gmock.dir/build.make gtest/googlemock/CMakeFiles/gmock.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num= "Built target gmock"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=11 "Built target gmock"
 .PHONY : gtest/googlemock/CMakeFiles/gmock.dir/all
 
 # Build rule for subdir invocation for target.
 gtest/googlemock/CMakeFiles/gmock.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 gtest/googlemock/CMakeFiles/gmock.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : gtest/googlemock/CMakeFiles/gmock.dir/rule
@@ -1121,7 +1142,7 @@ gtest/googlemock/CMakeFiles/gmock.dir/clean:
 gtest/googletest/CMakeFiles/gtest_main.dir/all: gtest/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f gtest/googletest/CMakeFiles/gtest_main.dir/build.make gtest/googletest/CMakeFiles/gtest_main.dir/depend
 	$(MAKE) -f gtest/googletest/CMakeFiles/gtest_main.dir/build.make gtest/googletest/CMakeFiles/gtest_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=12 "Built target gtest_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num= "Built target gtest_main"
 .PHONY : gtest/googletest/CMakeFiles/gtest_main.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1148,12 +1169,12 @@ gtest/googletest/CMakeFiles/gtest_main.dir/clean:
 gtest/googletest/CMakeFiles/gtest.dir/all:
 	$(MAKE) -f gtest/googletest/CMakeFiles/gtest.dir/build.make gtest/googletest/CMakeFiles/gtest.dir/depend
 	$(MAKE) -f gtest/googletest/CMakeFiles/gtest.dir/build.make gtest/googletest/CMakeFiles/gtest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num= "Built target gtest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=12 "Built target gtest"
 .PHONY : gtest/googletest/CMakeFiles/gtest.dir/all
 
 # Build rule for subdir invocation for target.
 gtest/googletest/CMakeFiles/gtest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 gtest/googletest/CMakeFiles/gtest.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : gtest/googletest/CMakeFiles/gtest.dir/rule
@@ -1589,7 +1610,7 @@ plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_co
 
 # Build rule for subdir invocation for target.
 plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages.dir/rule
@@ -1666,12 +1687,12 @@ plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_co
 plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_py.dir/all: plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/_spencer_control_msgs_generate_messages_check_deps_ComponentStatus.dir/all
 	$(MAKE) -f plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_py.dir/build.make plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_py.dir/depend
 	$(MAKE) -f plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_py.dir/build.make plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_py.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num= "Built target spencer_control_msgs_generate_messages_py"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=46 "Built target spencer_control_msgs_generate_messages_py"
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_py.dir/all
 
 # Build rule for subdir invocation for target.
 plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_py.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_py.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_py.dir/rule
@@ -1726,7 +1747,7 @@ plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_co
 
 # Build rule for subdir invocation for target.
 plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_geneus.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_geneus.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_geneus.dir/rule
@@ -1749,12 +1770,12 @@ plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_co
 plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_lisp.dir/all: plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/_spencer_control_msgs_generate_messages_check_deps_ComponentStatus.dir/all
 	$(MAKE) -f plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_lisp.dir/build.make plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_lisp.dir/depend
 	$(MAKE) -f plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_lisp.dir/build.make plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_lisp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=45 "Built target spencer_control_msgs_generate_messages_lisp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num= "Built target spencer_control_msgs_generate_messages_lisp"
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_lisp.dir/all
 
 # Build rule for subdir invocation for target.
 plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_lisp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_lisp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_lisp.dir/rule
@@ -1777,12 +1798,12 @@ plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_co
 plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_eus.dir/all: plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/_spencer_control_msgs_generate_messages_check_deps_ComponentStatus.dir/all
 	$(MAKE) -f plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_eus.dir/build.make plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_eus.dir/depend
 	$(MAKE) -f plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_eus.dir/build.make plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_eus.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num= "Built target spencer_control_msgs_generate_messages_eus"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=45 "Built target spencer_control_msgs_generate_messages_eus"
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_eus.dir/all
 
 # Build rule for subdir invocation for target.
 plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_eus.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_eus.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_generate_messages_eus.dir/rule
@@ -1837,7 +1858,7 @@ plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_co
 
 # Build rule for subdir invocation for target.
 plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_genlisp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_genlisp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_genlisp.dir/rule
@@ -1891,7 +1912,7 @@ plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_co
 
 # Build rule for subdir invocation for target.
 plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_genpy.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_genpy.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_control_msgs/CMakeFiles/spencer_control_msgs_genpy.dir/rule
@@ -1976,7 +1997,7 @@ plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/sp
 
 # Build rule for subdir invocation for target.
 plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/spencer_human_attribute_msgs_generate_messages.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/spencer_human_attribute_msgs_generate_messages.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/spencer_human_attribute_msgs_generate_messages.dir/rule
@@ -2057,7 +2078,7 @@ plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/sp
 
 # Build rule for subdir invocation for target.
 plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/spencer_human_attribute_msgs_gencpp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/spencer_human_attribute_msgs_gencpp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/spencer_human_attribute_msgs_gencpp.dir/rule
@@ -2223,12 +2244,12 @@ plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/sp
 plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/spencer_human_attribute_msgs_generate_messages_cpp.dir/all: plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/_spencer_human_attribute_msgs_generate_messages_check_deps_CategoricalAttribute.dir/all
 	$(MAKE) -f plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/spencer_human_attribute_msgs_generate_messages_cpp.dir/build.make plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/spencer_human_attribute_msgs_generate_messages_cpp.dir/depend
 	$(MAKE) -f plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/spencer_human_attribute_msgs_generate_messages_cpp.dir/build.make plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/spencer_human_attribute_msgs_generate_messages_cpp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=46 "Built target spencer_human_attribute_msgs_generate_messages_cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num= "Built target spencer_human_attribute_msgs_generate_messages_cpp"
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/spencer_human_attribute_msgs_generate_messages_cpp.dir/all
 
 # Build rule for subdir invocation for target.
 plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/spencer_human_attribute_msgs_generate_messages_cpp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/spencer_human_attribute_msgs_generate_messages_cpp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_human_attribute_msgs/CMakeFiles/spencer_human_attribute_msgs_generate_messages_cpp.dir/rule
@@ -2400,7 +2421,7 @@ plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/spencer_t
 
 # Build rule for subdir invocation for target.
 plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/spencer_tracking_msgs_generate_messages.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 19
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 18
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/spencer_tracking_msgs_generate_messages.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/spencer_tracking_msgs_generate_messages.dir/rule
@@ -2791,12 +2812,12 @@ plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/spencer_t
 plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/spencer_tracking_msgs_generate_messages_cpp.dir/all: plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/_spencer_tracking_msgs_generate_messages_check_deps_TrackingTimingMetrics.dir/all
 	$(MAKE) -f plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/spencer_tracking_msgs_generate_messages_cpp.dir/build.make plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/spencer_tracking_msgs_generate_messages_cpp.dir/depend
 	$(MAKE) -f plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/spencer_tracking_msgs_generate_messages_cpp.dir/build.make plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/spencer_tracking_msgs_generate_messages_cpp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=56,57,58,59 "Built target spencer_tracking_msgs_generate_messages_cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=57,58,59 "Built target spencer_tracking_msgs_generate_messages_cpp"
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/spencer_tracking_msgs_generate_messages_cpp.dir/all
 
 # Build rule for subdir invocation for target.
 plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/spencer_tracking_msgs_generate_messages_cpp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 3
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/spencer_tracking_msgs_generate_messages_cpp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/spencer_tracking_msgs_generate_messages_cpp.dir/rule
@@ -3015,7 +3036,7 @@ plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/spencer_t
 
 # Build rule for subdir invocation for target.
 plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/spencer_tracking_msgs_gencpp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 3
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/spencer_tracking_msgs_gencpp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_tracking_msgs/CMakeFiles/spencer_tracking_msgs_gencpp.dir/rule
@@ -3266,12 +3287,12 @@ plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsi
 plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_lisp.dir/all: plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/_pedsim_msgs_generate_messages_check_deps_SocialRelation.dir/all
 	$(MAKE) -f plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_lisp.dir/build.make plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_lisp.dir/depend
 	$(MAKE) -f plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_lisp.dir/build.make plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_lisp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=30,31,32,33,34 "Built target pedsim_msgs_generate_messages_lisp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=31,32,33,34 "Built target pedsim_msgs_generate_messages_lisp"
 .PHONY : plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_lisp.dir/all
 
 # Build rule for subdir invocation for target.
 plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_lisp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_lisp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_lisp.dir/rule
@@ -3298,7 +3319,7 @@ plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsi
 
 # Build rule for subdir invocation for target.
 plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_geneus.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 5
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_geneus.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_geneus.dir/rule
@@ -3340,12 +3361,12 @@ plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsi
 plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_eus.dir/all: plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/_pedsim_msgs_generate_messages_check_deps_SocialRelation.dir/all
 	$(MAKE) -f plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_eus.dir/build.make plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_eus.dir/depend
 	$(MAKE) -f plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_eus.dir/build.make plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_eus.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=26,27,28,29 "Built target pedsim_msgs_generate_messages_eus"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=26,27,28,29,30 "Built target pedsim_msgs_generate_messages_eus"
 .PHONY : plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_eus.dir/all
 
 # Build rule for subdir invocation for target.
 plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_eus.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 5
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_eus.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_eus.dir/rule
@@ -3372,7 +3393,7 @@ plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsi
 
 # Build rule for subdir invocation for target.
 plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_gencpp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_gencpp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_gencpp.dir/rule
@@ -3522,12 +3543,12 @@ plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsi
 plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_cpp.dir/all: plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/_pedsim_msgs_generate_messages_check_deps_SocialRelation.dir/all
 	$(MAKE) -f plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_cpp.dir/build.make plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_cpp.dir/depend
 	$(MAKE) -f plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_cpp.dir/build.make plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_cpp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=21,22,23,24,25 "Built target pedsim_msgs_generate_messages_cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=22,23,24,25 "Built target pedsim_msgs_generate_messages_cpp"
 .PHONY : plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_cpp.dir/all
 
 # Build rule for subdir invocation for target.
 plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_cpp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_cpp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages_cpp.dir/rule
@@ -3925,7 +3946,7 @@ plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsi
 
 # Build rule for subdir invocation for target.
 plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_genlisp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_genlisp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_genlisp.dir/rule
@@ -4226,7 +4247,7 @@ plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsi
 
 # Build rule for subdir invocation for target.
 plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 23
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 22
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/gazebo_plugins/pedestrian_visualizer_plugin/pedsim_msgs/CMakeFiles/pedsim_msgs_generate_messages.dir/rule
@@ -4496,7 +4517,7 @@ plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/sp
 
 # Build rule for subdir invocation for target.
 plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/spencer_social_relation_msgs_genpy.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/spencer_social_relation_msgs_genpy.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/spencer_social_relation_msgs_genpy.dir/rule
@@ -4527,7 +4548,7 @@ plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/sp
 
 # Build rule for subdir invocation for target.
 plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/spencer_social_relation_msgs_generate_messages.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/spencer_social_relation_msgs_generate_messages.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/spencer_social_relation_msgs_generate_messages.dir/rule
@@ -4583,12 +4604,12 @@ plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/sp
 plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/spencer_social_relation_msgs_generate_messages_py.dir/all: plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/_spencer_social_relation_msgs_generate_messages_check_deps_SocialRelation.dir/all
 	$(MAKE) -f plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/spencer_social_relation_msgs_generate_messages_py.dir/build.make plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/spencer_social_relation_msgs_generate_messages_py.dir/depend
 	$(MAKE) -f plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/spencer_social_relation_msgs_generate_messages_py.dir/build.make plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/spencer_social_relation_msgs_generate_messages_py.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=55 "Built target spencer_social_relation_msgs_generate_messages_py"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=55,56 "Built target spencer_social_relation_msgs_generate_messages_py"
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/spencer_social_relation_msgs_generate_messages_py.dir/all
 
 # Build rule for subdir invocation for target.
 plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/spencer_social_relation_msgs_generate_messages_py.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/spencer_social_relation_msgs_generate_messages_py.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/rviz_plugins/spencer_messages/spencer_social_relation_msgs/CMakeFiles/spencer_social_relation_msgs_generate_messages_py.dir/rule
@@ -6584,7 +6605,7 @@ plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_gennod
 
 # Build rule for subdir invocation for target.
 plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_gennodejs.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_gennodejs.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_gennodejs.dir/rule
@@ -7070,7 +7091,7 @@ plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_genpy.
 
 # Build rule for subdir invocation for target.
 plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_genpy.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_genpy.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_genpy.dir/rule
@@ -7173,12 +7194,12 @@ plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_genlis
 plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_generate_messages_nodejs.dir/all: plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/_gazebo_sfm_plugin_generate_messages_check_deps_ped_state.dir/all
 	$(MAKE) -f plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_generate_messages_nodejs.dir/build.make plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_generate_messages_nodejs.dir/depend
 	$(MAKE) -f plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_generate_messages_nodejs.dir/build.make plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_generate_messages_nodejs.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num= "Built target gazebo_sfm_plugin_generate_messages_nodejs"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=10 "Built target gazebo_sfm_plugin_generate_messages_nodejs"
 .PHONY : plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_generate_messages_nodejs.dir/all
 
 # Build rule for subdir invocation for target.
 plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_generate_messages_nodejs.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_generate_messages_nodejs.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_generate_messages_nodejs.dir/rule
@@ -7258,12 +7279,12 @@ plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_geneus
 plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_generate_messages_py.dir/all: plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/_gazebo_sfm_plugin_generate_messages_check_deps_ped_state.dir/all
 	$(MAKE) -f plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_generate_messages_py.dir/build.make plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_generate_messages_py.dir/depend
 	$(MAKE) -f plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_generate_messages_py.dir/build.make plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_generate_messages_py.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=10 "Built target gazebo_sfm_plugin_generate_messages_py"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num= "Built target gazebo_sfm_plugin_generate_messages_py"
 .PHONY : plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_generate_messages_py.dir/all
 
 # Build rule for subdir invocation for target.
 plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_generate_messages_py.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_generate_messages_py.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/gazebo_plugins/pedestrian_sfm_plugin/CMakeFiles/gazebo_sfm_plugin_generate_messages_py.dir/rule
@@ -7373,7 +7394,7 @@ plugins/gazebo_plugins/pedestrian_visualizer_plugin/gazebo_ped_visualizer_plugin
 
 # Build rule for subdir invocation for target.
 plugins/gazebo_plugins/pedestrian_visualizer_plugin/gazebo_ped_visualizer_plugin/CMakeFiles/PedestrianVisualPlugin.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 26
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 25
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/gazebo_plugins/pedestrian_visualizer_plugin/gazebo_ped_visualizer_plugin/CMakeFiles/PedestrianVisualPlugin.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/gazebo_plugins/pedestrian_visualizer_plugin/gazebo_ped_visualizer_plugin/CMakeFiles/PedestrianVisualPlugin.dir/rule
@@ -7755,7 +7776,7 @@ plugins/rviz_plugins/spencer_tracking_rviz_plugin/CMakeFiles/spencer_tracking_rv
 
 # Build rule for subdir invocation for target.
 plugins/rviz_plugins/spencer_tracking_rviz_plugin/CMakeFiles/spencer_tracking_rviz_plugin.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 36
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 35
 	$(MAKE) -f CMakeFiles/Makefile2 plugins/rviz_plugins/spencer_tracking_rviz_plugin/CMakeFiles/spencer_tracking_rviz_plugin.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : plugins/rviz_plugins/spencer_tracking_rviz_plugin/CMakeFiles/spencer_tracking_rviz_plugin.dir/rule
@@ -7990,6 +8011,35 @@ core/controller/apf_controller/CMakeFiles/apf_controller.dir/clean:
 .PHONY : core/controller/apf_controller/CMakeFiles/apf_controller.dir/clean
 
 #=============================================================================
+# Target rules for target core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir
+
+# All Build rule for target.
+core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/all: core/common/CMakeFiles/common.dir/all
+core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/all: core/system_config/CMakeFiles/system_config.dir/all
+core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/all: core/controller/controller/CMakeFiles/controller.dir/all
+	$(MAKE) -f core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/build.make core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/depend
+	$(MAKE) -f core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/build.make core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num= "Built target double_nmpc_controller"
+.PHONY : core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/all
+
+# Build rule for subdir invocation for target.
+core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 16
+	$(MAKE) -f CMakeFiles/Makefile2 core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
+.PHONY : core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/rule
+
+# Convenience name for target.
+double_nmpc_controller: core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/rule
+
+.PHONY : double_nmpc_controller
+
+# clean rule for target.
+core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/clean:
+	$(MAKE) -f core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/build.make core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/clean
+.PHONY : core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/clean
+
+#=============================================================================
 # Target rules for target core/controller/dwa_controller/CMakeFiles/dwa_controller.dir
 
 # All Build rule for target.
@@ -8076,7 +8126,7 @@ core/controller/dwa_controller/CMakeFiles/dwa_controller.dir/all: core/controlle
 core/controller/dwa_controller/CMakeFiles/dwa_controller.dir/all: core/controller/dwa_controller/CMakeFiles/dwa_controller_gencfg.dir/all
 	$(MAKE) -f core/controller/dwa_controller/CMakeFiles/dwa_controller.dir/build.make core/controller/dwa_controller/CMakeFiles/dwa_controller.dir/depend
 	$(MAKE) -f core/controller/dwa_controller/CMakeFiles/dwa_controller.dir/build.make core/controller/dwa_controller/CMakeFiles/dwa_controller.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num= "Built target dwa_controller"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=8 "Built target dwa_controller"
 .PHONY : core/controller/dwa_controller/CMakeFiles/dwa_controller.dir/all
 
 # Build rule for subdir invocation for target.
@@ -8103,12 +8153,12 @@ core/controller/dwa_controller/CMakeFiles/dwa_controller.dir/clean:
 core/controller/dwa_controller/CMakeFiles/dwa_controller_gencfg.dir/all:
 	$(MAKE) -f core/controller/dwa_controller/CMakeFiles/dwa_controller_gencfg.dir/build.make core/controller/dwa_controller/CMakeFiles/dwa_controller_gencfg.dir/depend
 	$(MAKE) -f core/controller/dwa_controller/CMakeFiles/dwa_controller_gencfg.dir/build.make core/controller/dwa_controller/CMakeFiles/dwa_controller_gencfg.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=8 "Built target dwa_controller_gencfg"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num= "Built target dwa_controller_gencfg"
 .PHONY : core/controller/dwa_controller/CMakeFiles/dwa_controller_gencfg.dir/all
 
 # Build rule for subdir invocation for target.
 core/controller/dwa_controller/CMakeFiles/dwa_controller_gencfg.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 	$(MAKE) -f CMakeFiles/Makefile2 core/controller/dwa_controller/CMakeFiles/dwa_controller_gencfg.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : core/controller/dwa_controller/CMakeFiles/dwa_controller_gencfg.dir/rule
@@ -8132,12 +8182,12 @@ core/controller/lqr_controller/CMakeFiles/lqr_controller.dir/all: core/system_co
 core/controller/lqr_controller/CMakeFiles/lqr_controller.dir/all: core/controller/controller/CMakeFiles/controller.dir/all
 	$(MAKE) -f core/controller/lqr_controller/CMakeFiles/lqr_controller.dir/build.make core/controller/lqr_controller/CMakeFiles/lqr_controller.dir/depend
 	$(MAKE) -f core/controller/lqr_controller/CMakeFiles/lqr_controller.dir/build.make core/controller/lqr_controller/CMakeFiles/lqr_controller.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num= "Built target lqr_controller"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=13 "Built target lqr_controller"
 .PHONY : core/controller/lqr_controller/CMakeFiles/lqr_controller.dir/all
 
 # Build rule for subdir invocation for target.
 core/controller/lqr_controller/CMakeFiles/lqr_controller.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 16
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 17
 	$(MAKE) -f CMakeFiles/Makefile2 core/controller/lqr_controller/CMakeFiles/lqr_controller.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : core/controller/lqr_controller/CMakeFiles/lqr_controller.dir/rule
@@ -8161,12 +8211,12 @@ core/controller/mpc_controller/CMakeFiles/mpc_controller.dir/all: core/system_co
 core/controller/mpc_controller/CMakeFiles/mpc_controller.dir/all: core/controller/controller/CMakeFiles/controller.dir/all
 	$(MAKE) -f core/controller/mpc_controller/CMakeFiles/mpc_controller.dir/build.make core/controller/mpc_controller/CMakeFiles/mpc_controller.dir/depend
 	$(MAKE) -f core/controller/mpc_controller/CMakeFiles/mpc_controller.dir/build.make core/controller/mpc_controller/CMakeFiles/mpc_controller.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=13 "Built target mpc_controller"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num= "Built target mpc_controller"
 .PHONY : core/controller/mpc_controller/CMakeFiles/mpc_controller.dir/all
 
 # Build rule for subdir invocation for target.
 core/controller/mpc_controller/CMakeFiles/mpc_controller.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 17
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 16
 	$(MAKE) -f CMakeFiles/Makefile2 core/controller/mpc_controller/CMakeFiles/mpc_controller.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : core/controller/mpc_controller/CMakeFiles/mpc_controller.dir/rule
@@ -8191,12 +8241,12 @@ core/controller/orca_controller/CMakeFiles/orca_controller.dir/all: core/control
 core/controller/orca_controller/CMakeFiles/orca_controller.dir/all: core/controller/orca_controller/CMakeFiles/RVO.dir/all
 	$(MAKE) -f core/controller/orca_controller/CMakeFiles/orca_controller.dir/build.make core/controller/orca_controller/CMakeFiles/orca_controller.dir/depend
 	$(MAKE) -f core/controller/orca_controller/CMakeFiles/orca_controller.dir/build.make core/controller/orca_controller/CMakeFiles/orca_controller.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num= "Built target orca_controller"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=14 "Built target orca_controller"
 .PHONY : core/controller/orca_controller/CMakeFiles/orca_controller.dir/all
 
 # Build rule for subdir invocation for target.
 core/controller/orca_controller/CMakeFiles/orca_controller.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 17
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 18
 	$(MAKE) -f CMakeFiles/Makefile2 core/controller/orca_controller/CMakeFiles/orca_controller.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles 0
 .PHONY : core/controller/orca_controller/CMakeFiles/orca_controller.dir/rule
@@ -8415,7 +8465,7 @@ core/path_planner/path_planner/CMakeFiles/path_planner.dir/all: core/system_conf
 core/path_planner/path_planner/CMakeFiles/path_planner.dir/all: plugins/map_plugins/voronoi_layer/CMakeFiles/voronoi_layer.dir/all
 	$(MAKE) -f core/path_planner/path_planner/CMakeFiles/path_planner.dir/build.make core/path_planner/path_planner/CMakeFiles/path_planner.dir/depend
 	$(MAKE) -f core/path_planner/path_planner/CMakeFiles/path_planner.dir/build.make core/path_planner/path_planner/CMakeFiles/path_planner.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=14,15,16,17,18,19,20 "Built target path_planner"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lcy/robot_graduation/ros_motion_planning/build/CMakeFiles --progress-num=15,16,17,18,19,20,21 "Built target path_planner"
 .PHONY : core/path_planner/path_planner/CMakeFiles/path_planner.dir/all
 
 # Build rule for subdir invocation for target.

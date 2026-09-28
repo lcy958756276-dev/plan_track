@@ -3314,6 +3314,19 @@ apf_controller/fast:
 .PHONY : apf_controller/fast
 
 #=============================================================================
+# Target rules for targets named double_nmpc_controller
+
+# Build rule for target.
+double_nmpc_controller: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 double_nmpc_controller
+.PHONY : double_nmpc_controller
+
+# fast build rule for target.
+double_nmpc_controller/fast:
+	$(MAKE) -f core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/build.make core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/build
+.PHONY : double_nmpc_controller/fast
+
+#=============================================================================
 # Target rules for targets named dwa_controller
 
 # Build rule for target.
@@ -3776,6 +3789,7 @@ help:
 	@echo "... base_local_planner_gencfg"
 	@echo "... controller"
 	@echo "... apf_controller"
+	@echo "... double_nmpc_controller"
 	@echo "... dwa_controller"
 	@echo "... dwa_controller_gencfg"
 	@echo "... lqr_controller"
