@@ -1,0 +1,6 @@
+lcy@ubuntu:~/robot_graduation$ roslaunch lslidar_driver lslidar_serial.launch
+lcy@ubuntu:~/robot_graduation$ rosrun tf static_transform_publisher 0 0 0.2 0 0 0 base_footprint laser 100
+
+lcy@ubuntu:~/robot_graduation$ roslaunch hector_mapping mapping_default.launch scan_topic:=/scan base_frame:=laser odom_frame:=laser
+
+lcy@ubuntu:~/robot_graduation$ rviz
