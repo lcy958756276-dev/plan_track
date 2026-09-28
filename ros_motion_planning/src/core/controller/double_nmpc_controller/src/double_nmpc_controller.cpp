@@ -188,9 +188,16 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   // The tracking optimizer may refine steering, but cannot exceed the low-rate plan's
   // speed. This prevents a short-horizon tracker from re-accelerating before a bend.
   const double tracking_speed_cap = std::min(curve_speed_limit, planner_command_.v);
-  const Control command = chooseControl(robot_pose, current, tracker_reference,
-                                        tracking_horizon_steps_, control_period_,
-                                        tracking_speed_cap, tracking_margin_, false);
+  const bool planner_requests_in_place_turn =
+      planner_command_.v <= 1e-4 && std::fabs(planner_command_.w) > 1e-3;
+  // If the long layer has selected a safe in-place turn, preserve that decision.
+  // Letting the short layer re-optimize with a zero linear-speed cap produced tiny,
+  // alternating angular commands that the wheel deadband turned into endpoint jitter.
+  const Control command = planner_requests_in_place_turn
+      ? Control{0.0, planner_command_.w}
+      : chooseControl(robot_pose, current, tracker_reference,
+                      tracking_horizon_steps_, control_period_,
+                      tracking_speed_cap, tracking_margin_, false);
   const Control bounded = rateLimit(command);
   const double moving_angular_limit = std::min(
       max_angular_velocity_,

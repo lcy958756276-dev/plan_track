@@ -144,6 +144,17 @@ class VelocityPlotter:
             angular.append(command_angular)
         return times, linear, angular
 
+    @staticmethod
+    def _smoothed_series(values, alpha=0.25):
+        """Return an EWMA view of the irregular encoder-derived speed samples."""
+        if not values:
+            return []
+
+        smoothed = [values[0]]
+        for value in values[1:]:
+            smoothed.append(alpha * value + (1.0 - alpha) * smoothed[-1])
+        return smoothed
+
     def shutdown(self):
         if not self.rows:
             rospy.logwarn("velocity_plotter: no /odom velocity samples recorded")
@@ -179,6 +190,8 @@ class VelocityPlotter:
         times = [row[0] for row in comparison]
         linear = [row[1] for row in comparison]
         angular = [row[2] for row in comparison]
+        linear_smoothed = self._smoothed_series(linear)
+        angular_smoothed = self._smoothed_series(angular)
         command_linear = [row[3] for row in comparison]
         command_angular = [row[4] for row in comparison]
         tracking_risk = [row[5] for row in comparison]
@@ -187,7 +200,10 @@ class VelocityPlotter:
         command_times, command_linear_steps, command_angular_steps = self._command_step_series()
 
         fig, axes = plt.subplots(5, 1, sharex=True, figsize=(10, 12))
-        axes[0].plot(times, linear, color="#1f77b4", linewidth=1.5, label="actual /odom")
+        axes[0].plot(times, linear, color="#1f77b4", linewidth=0.9, alpha=0.30,
+                     label="actual /odom raw")
+        axes[0].plot(times, linear_smoothed, color="#1f77b4", linewidth=1.6,
+                     label="actual /odom EWMA")
         if command_times:
             axes[0].step(command_times, command_linear_steps, where="post", color="#ff7f0e",
                          linewidth=1.4, linestyle="--", label="NMPC command /cmd_vel")
@@ -200,7 +216,10 @@ class VelocityPlotter:
         axes[0].grid(True, alpha=0.3)
         axes[0].legend(loc="best")
 
-        axes[1].plot(times, angular, color="#d62728", linewidth=1.5, label="actual /odom")
+        axes[1].plot(times, angular, color="#d62728", linewidth=0.9, alpha=0.30,
+                     label="actual /odom raw")
+        axes[1].plot(times, angular_smoothed, color="#d62728", linewidth=1.6,
+                     label="actual /odom EWMA")
         if command_times:
             axes[1].step(command_times, command_angular_steps, where="post", color="#2ca02c",
                          linewidth=1.4, linestyle="--", label="NMPC command /cmd_vel")
