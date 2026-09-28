@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Record actual robot velocity from /odom and generate a curve plot on shutdown.
+Record commanded and actual robot velocity and generate a comparison plot on shutdown.
 
 Outputs:
   - log/velocity_actual.csv
@@ -12,7 +12,9 @@ import math
 import os
 
 import rospy
+from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
+from std_msgs.msg import Float64
 
 
 class VelocityPlotter:
@@ -25,12 +27,23 @@ class VelocityPlotter:
         self.png_path = os.path.join(self.output_dir, "velocity_actual.png")
         self.start_time = None
         self.rows = []
+        self.command_events = []
+        self.risk_events = []
+        self.margin_events = []
+        self.clearance_events = []
 
         os.makedirs(self.output_dir, exist_ok=True)
         rospy.Subscriber("/odom", Odometry, self.odom_cb, queue_size=100)
+        rospy.Subscriber("/cmd_vel", Twist, self.command_cb, queue_size=100)
+        rospy.Subscriber("/move_base/DoubleNMPCController/tracking_risk", Float64,
+                         self.risk_cb, queue_size=100)
+        rospy.Subscriber("/move_base/DoubleNMPCController/dynamic_safe_margin", Float64,
+                         self.margin_cb, queue_size=100)
+        rospy.Subscriber("/move_base/DoubleNMPCController/predicted_min_clearance", Float64,
+                         self.clearance_cb, queue_size=100)
         rospy.on_shutdown(self.shutdown)
 
-        rospy.loginfo("velocity_plotter: recording actual /odom velocity")
+        rospy.loginfo("velocity_plotter: recording velocity and DoubleNMPC safety feedback")
         rospy.loginfo("velocity_plotter: csv=%s", self.csv_path)
         rospy.loginfo("velocity_plotter: png=%s", self.png_path)
 
@@ -46,6 +59,91 @@ class VelocityPlotter:
         angular_speed = msg.twist.twist.angular.z
         self.rows.append((now - self.start_time, linear_speed, angular_speed))
 
+    def command_cb(self, msg):
+        now = rospy.Time.now().to_sec()
+        self.command_events.append((now, msg.linear.x, msg.angular.z))
+
+    def risk_cb(self, msg):
+        self.risk_events.append((rospy.Time.now().to_sec(), msg.data))
+
+    def margin_cb(self, msg):
+        self.margin_events.append((rospy.Time.now().to_sec(), msg.data))
+
+    def clearance_cb(self, msg):
+        self.clearance_events.append((rospy.Time.now().to_sec(), msg.data))
+
+    def _held_scalar_samples(self, events):
+        """Align a scalar ROS topic to odometry with zero-order hold."""
+        events = sorted(events, key=lambda event: event[0])
+        event_index = 0
+        value = float("nan")
+        samples = []
+        for time_s, _, _ in self.rows:
+            absolute_time = self.start_time + time_s
+            while event_index < len(events) and events[event_index][0] <= absolute_time:
+                _, value = events[event_index]
+                event_index += 1
+            samples.append(value)
+        return samples
+
+    def _comparison_rows(self):
+        """Align zero-order-held /cmd_vel samples to each /odom timestamp."""
+        events = sorted(self.command_events, key=lambda event: event[0])
+        event_index = 0
+        command_linear = 0.0
+        command_angular = 0.0
+        risk = self._held_scalar_samples(self.risk_events)
+        margin = self._held_scalar_samples(self.margin_events)
+        clearance = self._held_scalar_samples(self.clearance_events)
+        comparison = []
+        for row_index, (time_s, actual_linear, actual_angular) in enumerate(self.rows):
+            absolute_time = self.start_time + time_s
+            while event_index < len(events) and events[event_index][0] <= absolute_time:
+                _, command_linear, command_angular = events[event_index]
+                event_index += 1
+            comparison.append((time_s, actual_linear, actual_angular,
+                               command_linear, command_angular, risk[row_index],
+                               margin[row_index], clearance[row_index]))
+        return comparison
+
+    def _command_step_series(self):
+        """Return /cmd_vel as a time-aligned step series using command event times."""
+        if self.start_time is None or not self.rows:
+            return [], [], []
+
+        events = sorted(self.command_events, key=lambda event: event[0])
+        if not events:
+            return [], [], []
+
+        end_time = self.rows[-1][0]
+        command_linear = 0.0
+        command_angular = 0.0
+        times = [0.0]
+        linear = [command_linear]
+        angular = [command_angular]
+
+        for event_time, event_linear, event_angular in events:
+            relative_time = event_time - self.start_time
+            if relative_time < 0.0:
+                command_linear = event_linear
+                command_angular = event_angular
+                linear[0] = command_linear
+                angular[0] = command_angular
+                continue
+            if relative_time > end_time:
+                break
+            times.append(relative_time)
+            linear.append(event_linear)
+            angular.append(event_angular)
+            command_linear = event_linear
+            command_angular = event_angular
+
+        if times[-1] < end_time:
+            times.append(end_time)
+            linear.append(command_linear)
+            angular.append(command_angular)
+        return times, linear, angular
+
     def shutdown(self):
         if not self.rows:
             rospy.logwarn("velocity_plotter: no /odom velocity samples recorded")
@@ -55,10 +153,16 @@ class VelocityPlotter:
         self._write_plot()
 
     def _write_csv(self):
+        comparison = self._comparison_rows()
         with open(self.csv_path, "w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow(["time_s", "actual_linear_mps", "actual_angular_radps"])
-            writer.writerows(self.rows)
+            writer.writerow(["time_s", "actual_linear_mps", "actual_angular_radps",
+                             "command_linear_mps", "command_angular_radps",
+                             "command_linear_abs_mps", "command_angular_abs_radps",
+                             "tracking_risk", "dynamic_safe_margin_m",
+                             "predicted_min_clearance_m"])
+            for row in comparison:
+                writer.writerow(row[:5] + (abs(row[3]), abs(row[4])) + row[5:])
         rospy.loginfo("velocity_plotter: wrote %d samples to %s", len(self.rows), self.csv_path)
 
     def _write_plot(self):
@@ -71,21 +175,66 @@ class VelocityPlotter:
             rospy.logwarn("velocity_plotter: matplotlib unavailable, skip png: %s", e)
             return
 
-        times = [row[0] for row in self.rows]
-        linear = [row[1] for row in self.rows]
-        angular = [row[2] for row in self.rows]
+        comparison = self._comparison_rows()
+        times = [row[0] for row in comparison]
+        linear = [row[1] for row in comparison]
+        angular = [row[2] for row in comparison]
+        command_linear = [row[3] for row in comparison]
+        command_angular = [row[4] for row in comparison]
+        tracking_risk = [row[5] for row in comparison]
+        tracking_margin = [row[6] for row in comparison]
+        predicted_min_clearance = [row[7] for row in comparison]
+        command_times, command_linear_steps, command_angular_steps = self._command_step_series()
 
-        fig, axes = plt.subplots(2, 1, sharex=True, figsize=(10, 6))
-        axes[0].plot(times, linear, color="#1f77b4", linewidth=1.5)
+        fig, axes = plt.subplots(5, 1, sharex=True, figsize=(10, 12))
+        axes[0].plot(times, linear, color="#1f77b4", linewidth=1.5, label="actual /odom")
+        if command_times:
+            axes[0].step(command_times, command_linear_steps, where="post", color="#ff7f0e",
+                         linewidth=1.4, linestyle="--", label="NMPC command /cmd_vel")
+            axes[0].scatter(command_times, command_linear_steps, color="#ff7f0e", s=10,
+                            alpha=0.7, label="NMPC command samples")
+        else:
+            axes[0].step(times, command_linear, where="post", color="#ff7f0e",
+                         linewidth=1.4, linestyle="--", label="NMPC command /cmd_vel")
         axes[0].set_ylabel("linear (m/s)")
         axes[0].grid(True, alpha=0.3)
+        axes[0].legend(loc="best")
 
-        axes[1].plot(times, angular, color="#d62728", linewidth=1.5)
+        axes[1].plot(times, angular, color="#d62728", linewidth=1.5, label="actual /odom")
+        if command_times:
+            axes[1].step(command_times, command_angular_steps, where="post", color="#2ca02c",
+                         linewidth=1.4, linestyle="--", label="NMPC command /cmd_vel")
+            axes[1].scatter(command_times, command_angular_steps, color="#2ca02c", s=10,
+                            alpha=0.7, label="NMPC command samples")
+        else:
+            axes[1].step(times, command_angular, where="post", color="#2ca02c",
+                         linewidth=1.4, linestyle="--", label="NMPC command /cmd_vel")
         axes[1].set_xlabel("time (s)")
         axes[1].set_ylabel("angular (rad/s)")
         axes[1].grid(True, alpha=0.3)
+        axes[1].legend(loc="best")
 
-        fig.suptitle("Actual velocity from /odom")
+        axes[2].plot(times, tracking_risk, color="#9467bd", linewidth=1.3,
+                     label="tracking risk")
+        axes[2].set_ylim(-0.05, 1.05)
+        axes[2].set_ylabel("risk (0-1)")
+        axes[2].grid(True, alpha=0.3)
+        axes[2].legend(loc="best")
+
+        axes[3].plot(times, tracking_margin, color="#8c564b", linewidth=1.3,
+                     label="dynamic tracking margin")
+        axes[3].set_ylabel("margin (m)")
+        axes[3].grid(True, alpha=0.3)
+        axes[3].legend(loc="best")
+
+        axes[4].plot(times, predicted_min_clearance, color="#17becf", linewidth=1.3,
+                     label="predicted minimum clearance")
+        axes[4].set_xlabel("time (s)")
+        axes[4].set_ylabel("clearance (m)")
+        axes[4].grid(True, alpha=0.3)
+        axes[4].legend(loc="best")
+
+        fig.suptitle("Velocity and DoubleNMPC adaptive safety feedback")
         fig.tight_layout()
         fig.savefig(self.png_path, dpi=150)
         plt.close(fig)
