@@ -247,8 +247,11 @@ cat > "$MB_LAUNCH" << MBEOF
     <param name="base_global_planner" value="path_planner/PathPlanner"/>
     <param name="PathPlanner/planner_name" value="astar_polyline"/>
 
-    <!-- 局部规划器 -->
-    <param name="base_local_planner" value="apf_controller/APFController"/>
+    <!-- 局部规划器：双层 NMPC -->
+    <param name="base_local_planner" value="double_nmpc_controller/DoubleNMPCController"/>
+    <rosparam command="load"
+      file="$WORKSPACE_DIR/src/core/controller/double_nmpc_controller/config/double_nmpc_high_speed.yaml"
+      ns="DoubleNMPCController"/>
 
     <!-- 禁用恢复行为（实物车速度低，不会大幅偏离路径） -->
     <param name="recovery_behavior_enabled" value="false"/>
@@ -291,7 +294,7 @@ roslaunch "$MB_LAUNCH" \
 PID_MB=$!
 echo "  move_base PID=$PID_MB (roslaunch)"
 echo "  全局规划器: A* Polyline (折线化后补密)"
-echo "  局部规划器: APF"
+echo "  局部规划器: Double NMPC"
 echo "  RViz 中点击 2D Nav Goal → 全局路径将显示在地图上"
 
 sleep 3
