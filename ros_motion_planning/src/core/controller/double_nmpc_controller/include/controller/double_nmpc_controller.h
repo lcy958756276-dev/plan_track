@@ -1,8 +1,6 @@
 #ifndef RMP_CONTROLLER_DOUBLE_NMPC_CONTROLLER_H_
 #define RMP_CONTROLLER_DOUBLE_NMPC_CONTROLLER_H_
 
-#include <cstdint>
-#include <future>
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Twist.h>
@@ -18,7 +16,7 @@ public:
   DoubleNMPCController();
   DoubleNMPCController(std::string name, tf2_ros::Buffer* tf,
                        costmap_2d::Costmap2DROS* costmap_ros);
-  ~DoubleNMPCController() override;
+  ~DoubleNMPCController() override = default;
 
   void initialize(std::string name, tf2_ros::Buffer* tf,
                   costmap_2d::Costmap2DROS* costmap_ros) override;
@@ -46,32 +44,6 @@ private:
     double lateral_error{0.0};
   };
 
-  // A long-layer plan is immutable once published. The 20 Hz tracker only reads
-  // this cache; it never waits for the background long-layer computation.
-  struct LongPlan {
-    std::uint64_t id{0};
-    std::uint64_t plan_version{0};
-    ros::Time launched_at;
-    ros::Time ready_at;
-    ros::Time activated_at;
-    double start_arc_length{0.0};
-    double margin{0.0};
-    double solve_time_ms{0.0};
-    std::vector<Control> controls;
-    std::vector<geometry_msgs::PoseStamped> states;
-  };
-
-  struct LongPlanRequest {
-    std::uint64_t id{0};
-    std::uint64_t plan_version{0};
-    ros::Time launched_at;
-    geometry_msgs::PoseStamped start_pose;
-    Control start_control;
-    double start_arc_length{0.0};
-    double curve_speed_limit{0.0};
-    double margin{0.0};
-  };
-
   geometry_msgs::PoseStamped lookAheadPose(
       const geometry_msgs::PoseStamped& pose, double distance) const;
   PathProjection projectOntoPath(const geometry_msgs::PoseStamped& pose,
@@ -80,14 +52,7 @@ private:
   Control chooseControl(const geometry_msgs::PoseStamped& pose, const Control& current,
                         const geometry_msgs::PoseStamped& reference, int horizon_steps,
                         double step_period, double speed_cap, double margin,
-                        bool planner_layer, double path_progress) const;
-  LongPlan buildLongPlan(const LongPlanRequest& request) const;
-  void launchLongPlan(const LongPlanRequest& request);
-  void collectLongPlanResult(const ros::Time& now);
-  void commitPendingLongPlan(const ros::Time& now);
-  bool sampleActiveLongPlan(const ros::Time& now, Control& control,
-                            geometry_msgs::PoseStamped& reference,
-                            unsigned int& stage, double& age) const;
+                        bool planner_layer) const;
   bool rolloutIsSafe(double x, double y, double yaw, const Control& control,
                      int steps, double step_period, double margin) const;
   bool poseIsSafe(double x, double y, double margin) const;
@@ -109,19 +74,10 @@ private:
   bool goal_reached_{false};
   tf2_ros::Buffer* tf_{nullptr};
   ros::Time last_planner_update_;
-  ros::Time next_planner_activation_;
   geometry_msgs::PoseStamped planner_reference_;
   Control planner_command_;
   double path_progress_{0.0};
   double global_plan_length_{0.0};
-  std::uint64_t plan_version_{0};
-  std::uint64_t next_long_plan_id_{1};
-  std::future<LongPlan> long_plan_future_;
-  bool long_plan_running_{false};
-  LongPlan pending_long_plan_;
-  bool has_pending_long_plan_{false};
-  LongPlan active_long_plan_;
-  bool has_active_long_plan_{false};
 
   // One-second wall-clock timing window for remote Nano profiling. These are kept
   // out of the optimization itself so timing collection does not affect control.

@@ -1,10 +1,7 @@
 #include <algorithm>
 #include <array>
-#include <chrono>
 #include <cmath>
-#include <exception>
 #include <limits>
-#include <mutex>
 #include <utility>
 
 #include <costmap_2d/cost_values.h>
@@ -28,12 +25,6 @@ DoubleNMPCController::DoubleNMPCController(std::string name, tf2_ros::Buffer* tf
                                            costmap_2d::Costmap2DROS* costmap_ros)
     : DoubleNMPCController() {
   initialize(std::move(name), tf, costmap_ros);
-}
-
-DoubleNMPCController::~DoubleNMPCController() {
-  if (long_plan_running_) {
-    long_plan_future_.wait();
-  }
 }
 
 void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
@@ -136,13 +127,6 @@ bool DoubleNMPCController::setPlan(const std::vector<geometry_msgs::PoseStamped>
     ROS_WARN("DoubleNMPCController received an empty plan");
     return false;
   }
-  // The worker reads the current global plan while building a snapshot. A new
-  // move_base plan is rare, so wait here rather than racing the vector update.
-  if (long_plan_running_) {
-    ROS_INFO("DoubleNMPC long plan: waiting for in-flight worker before replacing global plan");
-    long_plan_future_.wait();
-    long_plan_running_ = false;
-  }
   global_plan_ = plan;
   global_plan_length_ = 0.0;
   for (std::size_t i = 1; i < global_plan_.size(); ++i) {
@@ -153,12 +137,6 @@ bool DoubleNMPCController::setPlan(const std::vector<geometry_msgs::PoseStamped>
   path_progress_ = 0.0;
   planner_reference_ = plan.front();
   last_planner_update_ = ros::Time(0);
-  next_planner_activation_ = ros::Time(0);
-  ++plan_version_;
-  has_pending_long_plan_ = false;
-  has_active_long_plan_ = false;
-  pending_long_plan_ = LongPlan{};
-  active_long_plan_ = LongPlan{};
   goal_reached_ = false;
   tracking_risk_ = 0.0;
   tracking_margin_ = nominal_margin_;
@@ -177,8 +155,6 @@ bool DoubleNMPCController::setPlan(const std::vector<geometry_msgs::PoseStamped>
   timing_max_ms_ = 0.0;
   timing_planner_total_ms_ = 0.0;
   timing_planner_max_ms_ = 0.0;
-  ROS_INFO("DoubleNMPC long plan: reset for global plan version=%llu, points=%zu, length=%.3fm",
-           static_cast<unsigned long long>(plan_version_), global_plan_.size(), global_plan_length_);
   return true;
 }
 
@@ -244,46 +220,19 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
               min_curve_speed_, max_linear_velocity_);
 
   const ros::Time now = ros::Time::now();
-  collectLongPlanResult(now);
-  if (!terminal_approach && !long_plan_running_ &&
-      (last_planner_update_.isZero() ||
-       (now - last_planner_update_).toSec() >= planner_update_period_)) {
-    // The feedback margin is frozen into the request. The worker produces an
-    // immutable 6-stage plan, so later 20 Hz feedback cannot mutate a plan in use.
+  double planner_elapsed_ms = 0.0;
+  if (!terminal_approach && (last_planner_update_.isZero() ||
+      (now - last_planner_update_).toSec() >= planner_update_period_)) {
+    planner_reference_ = poseAtPathArcLength(path_progress_ + planner_lookahead);
     planner_margin_snapshot_ = tracking_margin_;
-    LongPlanRequest request;
-    request.id = next_long_plan_id_++;
-    request.plan_version = plan_version_;
-    request.launched_at = now;
-    request.start_pose = robot_pose;
-    request.start_control = current;
-    request.start_arc_length = path_progress_;
-    request.curve_speed_limit = curve_speed_limit;
-    request.margin = planner_margin_snapshot_;
-    launchLongPlan(request);
+    const ros::WallTime planner_started = ros::WallTime::now();
+    planner_command_ = chooseControl(robot_pose, current, planner_reference_,
+                                     planner_horizon_steps_, planner_period_,
+                                     curve_speed_limit, planner_margin_snapshot_, true);
+    planner_elapsed_ms = (ros::WallTime::now() - planner_started).toSec() * 1000.0;
     last_planner_update_ = now;
   }
-  commitPendingLongPlan(now);
-
-  Control cached_plan_command;
-  geometry_msgs::PoseStamped tracker_reference;
-  unsigned int active_plan_stage = 0;
-  double active_plan_age = 0.0;
-  const bool active_plan_available = sampleActiveLongPlan(
-      now, cached_plan_command, tracker_reference, active_plan_stage, active_plan_age);
-  if (active_plan_available) {
-    planner_command_ = cached_plan_command;
-    planner_reference_ = tracker_reference;
-  } else {
-    planner_command_ = Control{};
-    tracker_reference = poseAtPathArcLength(path_progress_ + tracker_lookahead);
-    if (!terminal_approach) {
-      const bool expired = has_active_long_plan_;
-      ROS_WARN_THROTTLE(0.5,
-                        "DoubleNMPC long plan stale: active=%d worker=%d pending=%d; holding zero command",
-                        expired, long_plan_running_, has_pending_long_plan_);
-    }
-  }
+  const auto tracker_reference = poseAtPathArcLength(path_progress_ + tracker_lookahead);
   const double target_heading = std::atan2(
       tracker_reference.pose.position.y - robot_pose.pose.position.y,
       tracker_reference.pose.position.x - robot_pose.pose.position.x);
@@ -321,7 +270,7 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
         ? Control{0.0, planner_command_.w}
         : chooseControl(robot_pose, current, tracker_reference,
                         tracking_horizon_steps_, control_period_,
-                        tracking_speed_cap, tracking_margin_, false, path_progress_);
+                        tracking_speed_cap, tracking_margin_, false);
   }
   const Control bounded = rateLimit(command);
   const double moving_angular_limit = std::min(
@@ -352,14 +301,12 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   previous_command_ = bounded;
   ROS_INFO_THROTTLE(0.5,
                     "DoubleNMPC: terminal=%d goal_dist=%.3f path_s=%.3f/%.3f cte=%.3f lookahead=(%.2f,%.2f) "
-                    "curvature=%.3f  curve_cap=%.3f  plan{id=%llu stage=%u age=%.2f ready=%d} margin=%.3f plan=(%.3f, %.3f) "
+                    "curvature=%.3f  curve_cap=%.3f  plan_margin=%.3f  plan=(%.3f, %.3f) "
                     "track_cap=%.3f  cmd=(%.3f, %.3f)  moving_w_cap=%.3f  heading=%.3f  speed_scale=%.2f "
                     "pred_err=(%.3f, %.3f)  turn=%.2f  risk=%.2f  margin=%.3f  "
                     "min_clearance=%.3f",
                     terminal_approach, goal_distance, path_progress_, global_plan_length_, path_projection.lateral_error,
                     planner_lookahead, tracker_lookahead, path_curvature, curve_speed_limit,
-                    static_cast<unsigned long long>(has_active_long_plan_ ? active_long_plan_.id : 0),
-                    active_plan_stage, active_plan_age, active_plan_available,
                     planner_margin_snapshot_, planner_command_.v,
                     planner_command_.w, tracking_speed_cap, bounded.v, bounded.w,
                     moving_angular_limit, heading_error, tracking_speed_scale,
@@ -375,6 +322,11 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   ++timing_cycle_count_;
   timing_total_ms_ += cycle_elapsed_ms;
   timing_max_ms_ = std::max(timing_max_ms_, cycle_elapsed_ms);
+  if (planner_elapsed_ms > 0.0) {
+    ++timing_planner_count_;
+    timing_planner_total_ms_ += planner_elapsed_ms;
+    timing_planner_max_ms_ = std::max(timing_planner_max_ms_, planner_elapsed_ms);
+  }
   if (cycle_elapsed_ms > budget_ms) {
     ++timing_overrun_count_;
   }
@@ -406,132 +358,6 @@ geometry_msgs::PoseStamped DoubleNMPCController::lookAheadPose(
   const PathProjection projection = projectOntoPath(
       pose, std::max(0.0, path_progress_ - 0.05));
   return poseAtPathArcLength(std::max(path_progress_, projection.arc_length) + distance);
-}
-
-DoubleNMPCController::LongPlan DoubleNMPCController::buildLongPlan(
-    const LongPlanRequest& request) const {
-  const ros::WallTime solve_started = ros::WallTime::now();
-  LongPlan plan;
-  plan.id = request.id;
-  plan.plan_version = request.plan_version;
-  plan.launched_at = request.launched_at;
-  plan.start_arc_length = request.start_arc_length;
-  plan.margin = request.margin;
-
-  geometry_msgs::PoseStamped predicted_pose = request.start_pose;
-  Control predicted_control = request.start_control;
-  plan.states.push_back(predicted_pose);
-  double predicted_arc = request.start_arc_length;
-  for (int stage = 0; stage < planner_horizon_steps_; ++stage) {
-    const double reference_distance = planner_lookahead_ +
-        static_cast<double>(stage) * std::max(0.12, request.curve_speed_limit * planner_period_);
-    const geometry_msgs::PoseStamped reference = poseAtPathArcLength(
-        std::min(global_plan_length_, request.start_arc_length + reference_distance));
-    const Control control = chooseControl(
-        predicted_pose, predicted_control, reference,
-        std::max(1, planner_horizon_steps_ - stage), planner_period_,
-        request.curve_speed_limit, request.margin, true, predicted_arc);
-    plan.controls.push_back(control);
-
-    const double yaw = tf2::getYaw(predicted_pose.pose.orientation);
-    predicted_pose.pose.position.x += control.v * std::cos(yaw) * planner_period_;
-    predicted_pose.pose.position.y += control.v * std::sin(yaw) * planner_period_;
-    const double next_yaw = normalizeAngle(yaw + control.w * planner_period_);
-    predicted_pose.pose.orientation = tf2::toMsg(tf2::Quaternion(
-        0.0, 0.0, std::sin(next_yaw / 2.0), std::cos(next_yaw / 2.0)));
-    predicted_arc = std::min(global_plan_length_, predicted_arc + control.v * planner_period_);
-    predicted_control = control;
-    plan.states.push_back(predicted_pose);
-  }
-  plan.solve_time_ms = (ros::WallTime::now() - solve_started).toSec() * 1000.0;
-  return plan;
-}
-
-void DoubleNMPCController::launchLongPlan(const LongPlanRequest& request) {
-  long_plan_running_ = true;
-  ROS_DEBUG("DoubleNMPC long plan launch: id=%llu version=%llu s=%.3f margin=%.3f cap=%.3f",
-            static_cast<unsigned long long>(request.id),
-            static_cast<unsigned long long>(request.plan_version), request.start_arc_length,
-            request.margin, request.curve_speed_limit);
-  long_plan_future_ = std::async(std::launch::async,
-      [this, request]() { return buildLongPlan(request); });
-}
-
-void DoubleNMPCController::collectLongPlanResult(const ros::Time& now) {
-  if (!long_plan_running_ ||
-      long_plan_future_.wait_for(std::chrono::milliseconds(0)) != std::future_status::ready) {
-    return;
-  }
-  long_plan_running_ = false;
-  LongPlan completed;
-  try {
-    completed = long_plan_future_.get();
-  } catch (const std::exception& exception) {
-    ROS_ERROR("DoubleNMPC long plan worker failed: %s", exception.what());
-    return;
-  }
-  completed.ready_at = now;
-  ++timing_planner_count_;
-  timing_planner_total_ms_ += completed.solve_time_ms;
-  timing_planner_max_ms_ = std::max(timing_planner_max_ms_, completed.solve_time_ms);
-  if (completed.plan_version != plan_version_ || completed.controls.empty()) {
-    ROS_WARN("DoubleNMPC long plan discard: id=%llu version=%llu current_version=%llu stages=%zu",
-             static_cast<unsigned long long>(completed.id),
-             static_cast<unsigned long long>(completed.plan_version),
-             static_cast<unsigned long long>(plan_version_), completed.controls.size());
-    return;
-  }
-  pending_long_plan_ = std::move(completed);
-  has_pending_long_plan_ = true;
-  ROS_DEBUG("DoubleNMPC long plan ready: id=%llu stages=%zu solve=%.2fms; waiting for commit boundary",
-            static_cast<unsigned long long>(pending_long_plan_.id), pending_long_plan_.controls.size(),
-            pending_long_plan_.solve_time_ms);
-}
-
-void DoubleNMPCController::commitPendingLongPlan(const ros::Time& now) {
-  if (!has_pending_long_plan_) {
-    return;
-  }
-  if (has_active_long_plan_ && now < next_planner_activation_) {
-    return;
-  }
-  pending_long_plan_.activated_at = now;
-  active_long_plan_ = std::move(pending_long_plan_);
-  has_pending_long_plan_ = false;
-  has_active_long_plan_ = true;
-  next_planner_activation_ = now + ros::Duration(planner_period_);
-  ROS_INFO("DoubleNMPC long plan commit: id=%llu age=%.3fs solve=%.2fms s=%.3f stages=%zu margin=%.3f "
-           "u0=(%.3f,%.3f) next_boundary=%.3f",
-           static_cast<unsigned long long>(active_long_plan_.id),
-           (now - active_long_plan_.launched_at).toSec(), active_long_plan_.solve_time_ms,
-           active_long_plan_.start_arc_length,
-           active_long_plan_.controls.size(), active_long_plan_.margin,
-           active_long_plan_.controls.front().v, active_long_plan_.controls.front().w,
-           next_planner_activation_.toSec());
-}
-
-bool DoubleNMPCController::sampleActiveLongPlan(const ros::Time& now, Control& control,
-                                                 geometry_msgs::PoseStamped& reference,
-                                                 unsigned int& stage, double& age) const {
-  if (!has_active_long_plan_ || active_long_plan_.controls.empty() ||
-      active_long_plan_.states.empty()) {
-    return false;
-  }
-  age = std::max(0.0, (now - active_long_plan_.activated_at).toSec());
-  stage = static_cast<unsigned int>(age / planner_period_);
-  if (stage >= active_long_plan_.controls.size()) {
-    return false;
-  }
-  control = active_long_plan_.controls[stage];
-  reference = active_long_plan_.states[stage];
-  const double stage_elapsed = age - static_cast<double>(stage) * planner_period_;
-  const double yaw = tf2::getYaw(reference.pose.orientation);
-  reference.pose.position.x += control.v * std::cos(yaw) * stage_elapsed;
-  reference.pose.position.y += control.v * std::sin(yaw) * stage_elapsed;
-  const double reference_yaw = normalizeAngle(yaw + control.w * stage_elapsed);
-  reference.pose.orientation = tf2::toMsg(tf2::Quaternion(
-      0.0, 0.0, std::sin(reference_yaw / 2.0), std::cos(reference_yaw / 2.0)));
-  return true;
 }
 
 DoubleNMPCController::PathProjection DoubleNMPCController::projectOntoPath(
@@ -642,7 +468,7 @@ double DoubleNMPCController::pathCurvatureAhead(
 DoubleNMPCController::Control DoubleNMPCController::chooseControl(
     const geometry_msgs::PoseStamped& pose, const Control& current,
     const geometry_msgs::PoseStamped& reference, int horizon_steps, double step_period,
-    double speed_cap, double margin, bool planner_layer, double path_progress) const {
+    double speed_cap, double margin, bool planner_layer) const {
   const double x = pose.pose.position.x;
   const double y = pose.pose.position.y;
   const double yaw = tf2::getYaw(pose.pose.orientation);
@@ -687,7 +513,7 @@ DoubleNMPCController::Control DoubleNMPCController::chooseControl(
         predicted_pose.pose.orientation = tf2::toMsg(tf2::Quaternion(
             0.0, 0.0, std::sin(pyaw / 2.0), std::cos(pyaw / 2.0)));
         accumulated_cross_track_error += projectOntoPath(
-            predicted_pose, std::max(0.0, path_progress - 0.05)).lateral_error;
+            predicted_pose, std::max(0.0, path_progress_ - 0.05)).lateral_error;
       }
       const double position_cost = std::hypot(px - reference.pose.position.x,
                                               py - reference.pose.position.y);
@@ -735,7 +561,6 @@ bool DoubleNMPCController::poseIsSafe(double x, double y, double margin) const {
   if (costmap == nullptr) {
     return false;
   }
-  std::unique_lock<costmap_2d::Costmap2D::mutex_t> lock(*costmap->getMutex());
   const double radius = robot_radius_ + margin;
   const std::array<std::pair<double, double>, 9> points = {{
       {0.0, 0.0}, {radius, 0.0}, {-radius, 0.0}, {0.0, radius}, {0.0, -radius},
@@ -760,7 +585,6 @@ double DoubleNMPCController::obstacleClearance(double x, double y) const {
   if (costmap == nullptr) {
     return 0.0;
   }
-  std::unique_lock<costmap_2d::Costmap2D::mutex_t> lock(*costmap->getMutex());
   const double resolution = std::max(costmap->getResolution(), 0.01);
   for (double radius = resolution; radius <= obstacle_relevance_distance_; radius += resolution) {
     for (int i = 0; i < 16; ++i) {
