@@ -24,6 +24,9 @@ class EncoderOdometry:
         # 物理参数
         wheel_radius = rospy.get_param("~wheel_radius", 0.1065)
         wheel_base   = rospy.get_param("~wheel_base", 0.8)
+        self.max_wheel_speed = rospy.get_param("~max_wheel_speed", 0.70)
+        self.max_angular_speed = rospy.get_param("~max_angular_speed", 1.50)
+        self.velocity_filter_alpha = rospy.get_param("~velocity_filter_alpha", 0.35)
 
         # 初始位置偏移（让机器人初始位置落在 my_map_two 空闲区）
         initial_x = rospy.get_param("~initial_x", 0.0)
@@ -41,6 +44,8 @@ class EncoderOdometry:
         rospy.loginfo(f"pluse           = {pluse:.6f}")
         rospy.loginfo(f"dist_per_tick   = {self.dist_per_tick:.8f} m")
         rospy.loginfo(f"initial_pose    = ({initial_x}, {initial_y}, {initial_yaw})")
+        rospy.loginfo(f"max_wheel_speed = {self.max_wheel_speed:.2f} m/s")
+        rospy.loginfo(f"max_angular     = {self.max_angular_speed:.2f} rad/s")
         rospy.loginfo("========================")
 
         # 状态
@@ -54,6 +59,8 @@ class EncoderOdometry:
         self.theta = initial_yaw
         self.latest_v = 0.0
         self.latest_omega = 0.0
+        self.filtered_v = 0.0
+        self.filtered_omega = 0.0
         self.have_pose = False
         self.msg_count = 0
 
@@ -94,20 +101,17 @@ class EncoderOdometry:
             rospy.loginfo("里程计开始计算...")
             return
 
-        left_inc = ltick - self.last_ltick
-        right_inc = rtick - self.last_rtick
-
-        self.last_ltick = ltick
-        self.last_rtick = rtick
-
         now = rospy.Time.now()
         dt = (now - self.last_time).to_sec()
-        self.last_time = now
 
-        # read_uart 约 2Hz → dt≈0.5~1.8s，不跳过，直接用 dt 计算位置增量
+        # Keep the last valid tick/time when rejecting a sample. The next accepted
+        # sample then uses the complete displacement over the complete interval.
         if dt <= 0:
             rospy.logwarn_throttle(3, f"时间异常: dt={dt:.4f}s，跳过")
             return
+
+        left_inc = ltick - self.last_ltick
+        right_inc = rtick - self.last_rtick
 
         # ── 核心计算 ──
         d_left  = left_inc * self.dist_per_tick
@@ -119,6 +123,21 @@ class EncoderOdometry:
         v_left  = d_left / dt
         v_right = d_right / dt
 
+        raw_v = (v_left + v_right) / 2.0
+        raw_omega = (v_right - v_left) / self.wheel_base
+        if (abs(v_left) > self.max_wheel_speed or
+                abs(v_right) > self.max_wheel_speed or
+                abs(raw_omega) > self.max_angular_speed):
+            rospy.logwarn_throttle(
+                1.0,
+                "丢弃编码器速度异常帧: dt=%.3fs vl=%.3f vr=%.3f v=%.3f omega=%.3f",
+                dt, v_left, v_right, raw_v, raw_omega)
+            return
+
+        self.last_ltick = ltick
+        self.last_rtick = rtick
+        self.last_time = now
+
         d_center = (d_left + d_right) / 2.0
         d_theta  = (d_right - d_left) / self.wheel_base
 
@@ -127,8 +146,11 @@ class EncoderOdometry:
         self.x += d_center * math.cos(self.theta)
         self.y += d_center * math.sin(self.theta)
 
-        v = (v_left + v_right) / 2.0
-        omega = (v_right - v_left) / self.wheel_base
+        alpha = min(1.0, max(0.0, self.velocity_filter_alpha))
+        self.filtered_v = alpha * raw_v + (1.0 - alpha) * self.filtered_v
+        self.filtered_omega = alpha * raw_omega + (1.0 - alpha) * self.filtered_omega
+        v = self.filtered_v
+        omega = self.filtered_omega
 
         # 保存最新速度供 timer 发布
         self.latest_v = v
