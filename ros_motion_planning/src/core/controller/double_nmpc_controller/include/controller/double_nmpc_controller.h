@@ -179,6 +179,8 @@ private:
   ros::Publisher risk_pub_;
   ros::Publisher margin_pub_;
   ros::Publisher clearance_pub_;
+  ros::Publisher path_blocked_pub_;
+  bool path_blocked_{false};
 };
 
 }  // namespace rmp::controller
