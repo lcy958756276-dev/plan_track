@@ -123,12 +123,13 @@ class GazeboSync:
         """修复 LaserScan 时间戳 + 过滤自检测 + 去除孤点（混合像素）"""
         # new_robot 整车网格在 base_link 下约为
         # x=[-0.280, 0.277], y=[-0.153, 0.153]；base_scan.x=0.165。
-        # 换算到 base_scan 坐标系并留约 2 cm 余量，防止车尾自检点
-        # 落在旧的 x=-0.30 边界之外，被误当成近距离障碍物。
+        # X 边界按新车身的实际前后尺寸设定。Y 边界保留旧 URDF 时
+        # 已验证的 0.35 m 自滤波保护带，再加上新车单侧增宽约 0.021 m，
+        # 避免车身附近的偏移点云进入 costmap 后触发停车/原地转向。
         SELF_MIN_X = -0.47
         SELF_MAX_X = 0.14
-        SELF_MIN_Y = -0.18
-        SELF_MAX_Y = 0.18
+        SELF_MIN_Y = -0.371
+        SELF_MAX_Y = 0.371
 
         ranges = list(msg.ranges)
         angle_min = msg.angle_min
