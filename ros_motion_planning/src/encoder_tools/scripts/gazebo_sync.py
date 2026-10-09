@@ -124,13 +124,13 @@ class GazeboSync:
         # new_robot 整车网格在 base_link 下约为
         # x=[-0.280, 0.277], y=[-0.153, 0.153]；base_scan.x=0.165。
         # X 边界覆盖新车身并在前向保留旧 URDF 已验证的 0.20 m
-        # 自滤波边界，防止偏移至 x=0.15~0.17 m 的车身点漏入。Y 边界保留旧 URDF 时
-        # 已验证的 0.35 m 自滤波保护带，再加上新车单侧增宽约 0.021 m，
-        # 避免车身附近的偏移点云进入 costmap 后触发停车/原地转向。
+        # 自滤波边界，防止偏移至 x=0.15~0.17 m 的车身点漏入。
+        # Y 边界扩至 0.40 m，覆盖日志中确认的 y≈-0.38 m 车身漏点，
+        # 但不过滤 |y|≈0.5 m 以外的真实障碍物。
         SELF_MIN_X = -0.47
         SELF_MAX_X = 0.20
-        SELF_MIN_Y = -0.371
-        SELF_MAX_Y = 0.371
+        SELF_MIN_Y = -0.40
+        SELF_MAX_Y = 0.40
 
         ranges = list(msg.ranges)
         angle_min = msg.angle_min
