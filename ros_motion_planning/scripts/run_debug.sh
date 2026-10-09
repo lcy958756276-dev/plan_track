@@ -225,7 +225,7 @@ echo "  PID=$PID_PREROT"
 sleep 1
 
 # ── 7.6 启动 clear_scheduler ──
-echo "[7.6/8] 启动 clear_scheduler.py (路径持续阻塞 1s 后按需清图，不取消目标)..."
+echo "[7.6/8] 启动 clear_scheduler.py (地图 1s 刷新，和路径重规划解绑)..."
 rosrun encoder_tools clear_scheduler.py \
     > "$LOG_DIR/clear_scheduler.log" 2>&1 &
 PID_CLEAR_SCHED=$!

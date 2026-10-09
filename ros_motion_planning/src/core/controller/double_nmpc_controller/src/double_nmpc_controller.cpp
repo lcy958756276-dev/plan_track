@@ -6,7 +6,6 @@
 
 #include <costmap_2d/cost_values.h>
 #include <pluginlib/class_list_macros.h>
-#include <std_msgs/Bool.h>
 #include <std_msgs/Float64.h>
 #include <nav_msgs/Odometry.h>
 #include <tf2/LinearMath/Quaternion.h>
@@ -116,7 +115,6 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
   risk_pub_ = nh.advertise<std_msgs::Float64>("tracking_risk", 1);
   margin_pub_ = nh.advertise<std_msgs::Float64>("dynamic_safe_margin", 1);
   clearance_pub_ = nh.advertise<std_msgs::Float64>("predicted_min_clearance", 1);
-  path_blocked_pub_ = nh.advertise<std_msgs::Bool>("path_blocked", 1, true);
   initialized_ = true;
 
   ROS_INFO_STREAM("DoubleNMPCController initialized: prediction=" << control_period_
@@ -159,10 +157,6 @@ bool DoubleNMPCController::setPlan(const std::vector<geometry_msgs::PoseStamped>
   cached_long_plan_ = LongPlan{};
   next_long_plan_id_ = 1;
   previous_command_ = Control{};
-  path_blocked_ = false;
-  std_msgs::Bool path_blocked_message;
-  path_blocked_message.data = false;
-  path_blocked_pub_.publish(path_blocked_message);
   timing_window_start_ = ros::WallTime(0);
   timing_cycle_count_ = 0;
   timing_planner_count_ = 0;
@@ -213,10 +207,6 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   if (goal_distance <= goal_tolerance_) {
     goal_reached_ = true;
     previous_command_ = Control{};
-    path_blocked_ = false;
-    std_msgs::Bool path_blocked_message;
-    path_blocked_message.data = false;
-    path_blocked_pub_.publish(path_blocked_message);
     return true;
   }
 
@@ -253,7 +243,6 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
                                       planner_margin_snapshot_, now);
     cached_long_plan_.id = next_long_plan_id_++;
     if (cached_long_plan_.full_valid) {
-      path_blocked_ = false;
       planner_command_ = cached_long_plan_.stages.front().control;
       ROS_INFO("DoubleNMPC long plan: id=%llu full=1 move=6 brake=%d min_clearance=%.3f "
                "u_move=(%.3f,%.3f) u_brake=[(%.3f,%.3f),(%.3f,%.3f),(%.3f,%.3f)]",
@@ -266,7 +255,6 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
                cached_long_plan_.stages[planner_horizon_steps_ + 2].control.v,
                cached_long_plan_.stages[planner_horizon_steps_ + 2].control.w);
     } else {
-      path_blocked_ = true;
       planner_command_ = Control{};
       ROS_WARN("DoubleNMPC long plan: id=%llu full=0 motion=%d brake=%d first_invalid_stage=%d "
                "min_clearance=%.3f; holding zero long-layer command",
@@ -296,9 +284,6 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   // alternating angular commands that the wheel deadband turned into endpoint jitter.
   Control command;
   if (terminal_approach) {
-    // Terminal speed reduction is intentional, not a path blockage. Clear any
-    // stale long-plan state so the map scheduler cannot refresh near the goal.
-    path_blocked_ = false;
     const double terminal_heading = std::atan2(
         goal.pose.position.y - robot_pose.pose.position.y,
         goal.pose.position.x - robot_pose.pose.position.x);
@@ -336,17 +321,10 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   clearance_message.data = predicted_min_clearance;
   clearance_pub_.publish(clearance_message);
 
-  std_msgs::Bool path_blocked_message;
-  path_blocked_message.data = path_blocked_;
-  path_blocked_pub_.publish(path_blocked_message);
-
   if (!rolloutIsSafe(robot_pose.pose.position.x, robot_pose.pose.position.y,
                      tf2::getYaw(robot_pose.pose.orientation), bounded,
                      tracking_horizon_steps_, control_period_, tracking_margin_)) {
     ROS_WARN_THROTTLE(0.5, "DoubleNMPCController safety rollout rejected command; stopping");
-    path_blocked_ = true;
-    path_blocked_message.data = true;
-    path_blocked_pub_.publish(path_blocked_message);
     previous_command_ = Control{};
     return false;
   }
