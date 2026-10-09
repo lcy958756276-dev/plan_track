@@ -4,6 +4,12 @@
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
   name="new_robot">
+
+  <!-- 小车由 gazebo_sync.py 通过 set_model_state 同步，不使用 Gazebo 重力仿真 -->
+  <gazebo>
+    <gravity>0</gravity>
+  </gazebo>
+
   <link
     name="base_link">
     <inertial>
@@ -309,4 +315,37 @@
     <axis
       xyz="0 0 0" />
   </joint>
+
+  <!-- Gazebo 仿真激光雷达：发布 /scan，再由 gazebo_sync.py 转发为 /scan_fixed -->
+  <gazebo reference="base_scan">
+    <sensor type="ray" name="lds_lfcd_sensor">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>true</visualize>
+      <update_rate>7</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>720</samples>
+            <resolution>0.5</resolution>
+            <min_angle>0.0</min_angle>
+            <max_angle>6.28319</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.120</min>
+          <max>7</max>
+          <resolution>0.015</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin name="gazebo_ros_lds_lfcd_controller" filename="libgazebo_ros_laser.so">
+        <topicName>scan</topicName>
+        <frameName>base_scan</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
 </robot>
