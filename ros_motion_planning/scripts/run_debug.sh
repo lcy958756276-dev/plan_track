@@ -58,8 +58,10 @@ echo "  /tmp/.use_encoder_odom → Gazebo diff_drive 将跳过 odom TF"
 echo "[3/8] 加载 robot_description + 启动核心节点 ..."
 echo "[$(date +%H:%M:%S)] [3] loading robot_description" >> "$LOG_DIR/run.log"
 
-# 加载 SolidWorks 导出的自定义车模型 URDF
-ROBOT_URDF="$WORKSPACE_DIR/my_robot/urdf/my_robot.urdf"
+# 加载 SolidWorks 导出的最新自定义车模型 URDF
+NEW_ROBOT_DIR="$WORKSPACE_DIR/../new_robot"
+export ROS_PACKAGE_PATH="$WORKSPACE_DIR/..:${ROS_PACKAGE_PATH:-}"
+ROBOT_URDF="$NEW_ROBOT_DIR/urdf/new_robot.urdf"
 rosparam set robot_description -t "$ROBOT_URDF"
 echo "[$(date +%H:%M:%S)] [3] robot_description loaded" >> "$LOG_DIR/run.log"
 echo "  robot_description 已加载（自定义车模型）"
@@ -94,7 +96,7 @@ PID_TF=$!
 echo "  static_transform_publisher (map→odom) PID=$PID_TF"
 
 # 静态 base_footprint → base_link TF（新模型 URDF 不含 base_footprint，需要补一个）
-# my_robot.urdf 的 base_link 已经是 ROS 坐标系（Z 向上），所以 rpy=(0 0 0)
+# new_robot.urdf 的 base_link 已经是 ROS 坐标系（Z 向上），所以 rpy=(0 0 0)
 # 原来 rpy=(1.5708 0 -1.5708) 会让车体侧躺，已移除
 rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 base_footprint base_link \
     >> "$LOG_DIR/run.log" 2>&1 &
@@ -147,7 +149,7 @@ echo "[$(date +%H:%M:%S)] [4] spawn_model start" >> "$LOG_DIR/run.log"
 echo "  正在生成机器人模型..."
 rosrun gazebo_ros spawn_model -urdf \
     -param robot_description \
-    -model my_robot \
+    -model new_robot \
     -gazebo_namespace /gz_debug \
     -x 0.0 -y -0.8 -z 0.0 \
     >> "$LOG_DIR/run.log" 2>&1
