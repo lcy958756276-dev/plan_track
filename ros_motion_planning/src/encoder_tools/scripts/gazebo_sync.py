@@ -121,14 +121,14 @@ class GazeboSync:
 
     def scan_cb(self, msg):
         """修复 LaserScan 时间戳 + 过滤自检测 + 去除孤点（混合像素）"""
-        # 机器人足迹（相对 base_link）
-        # footprint: [[-0.1, -0.3], [-0.1, 0.3], [0.8, 0.3], [0.8, -0.3]]
-        # base_scan 在 base_link 下的坐标: x=0.19, y=0
-        # 在 base_scan 坐标系内，车身范围大致为一个矩形
-        SELF_MIN_X = -0.3   # 车身在 base_scan 背后的范围
-        SELF_MAX_X = 0.2
-        SELF_MIN_Y = -0.35
-        SELF_MAX_Y = 0.35
+        # new_robot 整车网格在 base_link 下约为
+        # x=[-0.280, 0.277], y=[-0.153, 0.153]；base_scan.x=0.165。
+        # 换算到 base_scan 坐标系并留约 2 cm 余量，防止车尾自检点
+        # 落在旧的 x=-0.30 边界之外，被误当成近距离障碍物。
+        SELF_MIN_X = -0.47
+        SELF_MAX_X = 0.14
+        SELF_MIN_Y = -0.18
+        SELF_MAX_Y = 0.18
 
         ranges = list(msg.ranges)
         angle_min = msg.angle_min

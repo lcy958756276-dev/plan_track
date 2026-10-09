@@ -241,13 +241,8 @@ class SerialBridge:
                 f"[串口发送] {cmd_str.strip()}")
             return
 
-        should_brake = (not in_new_goal_grace) and is_zero_cmd and not self.last_sent_zero
-        if should_brake:
-            self.terminal_stop_latched = True
-            self.terminal_stop_hold_until = (
-                self.last_cmd_time + rospy.Duration(self.terminal_stop_hold_duration)
-            )
-
+        # 零速可能来自安全检查、重规划或短暂旋转切换，不代表到达终点。
+        # 终点锁存只能由显式 terminal_brake 流程触发，不再根据单次零速推断。
         cmd_str = self._write_wheel_command(v_left, v_right, brake_right=False)
         self.last_sent_zero = is_zero_cmd
         if self.last_sent_zero:
