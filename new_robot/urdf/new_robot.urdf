@@ -4,6 +4,19 @@
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
   name="new_robot">
+  <!-- Gazebo 中由 gazebo_sync.py 同步位置，不使用重力仿真 -->
+  <gazebo>
+    <gravity>0</gravity>
+  </gazebo>
+
+  <!-- 补齐导航 TF 链，并校正 SolidWorks 坐标系约 1.14° 的偏角 -->
+  <link name="base_footprint" />
+  <joint name="base_footprint_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 -0.01989" />
+    <parent link="base_footprint" />
+    <child link="base_link" />
+  </joint>
+
   <link
     name="base_link">
     <inertial>
@@ -60,29 +73,6 @@
         iyz="-5.40495010976877E-07"
         izz="0.00282102909184871" />
     </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://new_robot/meshes/left_wheel_front_Link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="1 1 0.949019607843137 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://new_robot/meshes/left_wheel_front_Link.STL" />
-      </geometry>
-    </collision>
   </link>
   <joint
     name="left_wheel_front_joint"
@@ -113,29 +103,6 @@
         iyz="4.52017341591258E-08"
         izz="0.0028202175341339" />
     </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://new_robot/meshes/left_wheel_rear_Link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="1 1 0.949019607843137 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://new_robot/meshes/left_wheel_rear_Link.STL" />
-      </geometry>
-    </collision>
   </link>
   <joint
     name="left_wheel_rear_joint"
@@ -166,29 +133,6 @@
         iyz="4.49216065923695E-07"
         izz="0.00282053749093079" />
     </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://new_robot/meshes/right_wheel_front_Link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="1 1 0.949019607843137 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://new_robot/meshes/right_wheel_front_Link.STL" />
-      </geometry>
-    </collision>
   </link>
   <joint
     name="right_wheel_front_joint"
@@ -219,29 +163,6 @@
         iyz="-9.52023323715059E-08"
         izz="0.00282030327791987" />
     </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://new_robot/meshes/right_wheel_rear_Link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="1 1 0.949019607843137 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://new_robot/meshes/right_wheel_rear_Link.STL" />
-      </geometry>
-    </collision>
   </link>
   <joint
     name="right_wheel_rear_joint"
@@ -272,33 +193,10 @@
         iyz="-2.20046351307178E-08"
         izz="4.50845500377399E-05" />
     </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://new_robot/meshes/base_scan.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.376470588235294 0.376470588235294 0.376470588235294 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://new_robot/meshes/base_scan.STL" />
-      </geometry>
-    </collision>
   </link>
   <joint
     name="base_scan_joint"
-    type="continuous">
+    type="fixed">
     <origin
       xyz="0.16522 0.0014558 0.20949"
       rpy="0 0 0" />
@@ -306,7 +204,38 @@
       link="base_link" />
     <child
       link="base_scan" />
-    <axis
-      xyz="0 0 1" />
   </joint>
+
+  <!-- Gazebo 激光雷达：发布 /scan，由 gazebo_sync.py 转发为 /scan_fixed -->
+  <gazebo reference="base_scan">
+    <sensor type="ray" name="lds_lfcd_sensor">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>true</visualize>
+      <update_rate>7</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>720</samples>
+            <resolution>0.5</resolution>
+            <min_angle>0.0</min_angle>
+            <max_angle>6.28319</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.120</min>
+          <max>7</max>
+          <resolution>0.015</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin name="gazebo_ros_lds_lfcd_controller" filename="libgazebo_ros_laser.so">
+        <topicName>scan</topicName>
+        <frameName>base_scan</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
 </robot>
