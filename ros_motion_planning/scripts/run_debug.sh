@@ -36,6 +36,8 @@ sleep 1
 
 # 清理旧日志
 rm -f "$LOG_DIR"/*.log
+# 新 URDF 已内置 base_footprint 关节，移除旧版静态 TF 的 PID 记录
+rm -f "$LOG_DIR/.pid_footprint"
 
 # 记录启动时间
 echo "=== 启动时间: $(date) ===" > "$LOG_DIR/run.log"
@@ -95,14 +97,6 @@ rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 map odom \
 PID_TF=$!
 echo "  static_transform_publisher (map→odom) PID=$PID_TF"
 
-# 静态 base_footprint → base_link TF（新模型 URDF 不含 base_footprint，需要补一个）
-# new_robot.urdf 的 base_link 已经是 ROS 坐标系（Z 向上），所以 rpy=(0 0 0)
-# 原来 rpy=(1.5708 0 -1.5708) 会让车体侧躺，已移除
-rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 base_footprint base_link \
-    >> "$LOG_DIR/run.log" 2>&1 &
-PID_FP=$!
-echo "  static_transform_publisher (base_footprint→base_link) PID=$PID_FP"
-
 sleep 1
 
 # ── 4. 启动 Gazebo（仓库环境）──
@@ -147,9 +141,12 @@ sleep 2
 # 在 Gazebo 中生成机器人模型（使用已加载的 robot_description）
 echo "[$(date +%H:%M:%S)] [4] spawn_model start" >> "$LOG_DIR/run.log"
 echo "  正在生成机器人模型..."
+# 清理旧名称和新名称的残留实体，确保 Gazebo 中只有一辆车
+rosservice call /gz_debug/delete_model "model_name: 'my_robot'" >/dev/null 2>&1 || true
+rosservice call /gz_debug/delete_model "model_name: 'new_robot'" >/dev/null 2>&1 || true
 rosrun gazebo_ros spawn_model -urdf \
     -param robot_description \
-    -model new_robot \
+    -model my_robot \
     -gazebo_namespace /gz_debug \
     -x 0.0 -y -0.8 -z 0.0 \
     >> "$LOG_DIR/run.log" 2>&1
@@ -317,7 +314,6 @@ echo "$PID_MAP"      > "$LOG_DIR/.pid_map"
 echo "$PID_RSP"      > "$LOG_DIR/.pid_rsp"
 echo "$PID_JSP"      > "$LOG_DIR/.pid_jsp"
 echo "$PID_TF"       > "$LOG_DIR/.pid_tf"
-echo "$PID_FP"       > "$LOG_DIR/.pid_footprint"
 echo "$PID_GZSERVER" > "$LOG_DIR/.pid_gzserver"
 echo "$PID_GZCLIENT" > "$LOG_DIR/.pid_gzclient"
 echo "$PID_RVIZ"     > "$LOG_DIR/.pid_rviz"

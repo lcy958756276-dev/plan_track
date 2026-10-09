@@ -10,6 +10,14 @@
     <gravity>0</gravity>
   </gazebo>
 
+  <!-- SolidWorks 导出坐标系相对车身纵向偏转约 1.14°，在根关节统一校正 -->
+  <link name="base_footprint" />
+  <joint name="base_footprint_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 -0.01989" />
+    <parent link="base_footprint" />
+    <child link="base_link" />
+  </joint>
+
   <link
     name="base_link">
     <inertial>
