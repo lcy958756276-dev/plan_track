@@ -680,14 +680,39 @@ bool DoubleNMPCController::poseIsSafe(double x, double y, double margin) const {
       {0.0, 0.0}, {radius, 0.0}, {-radius, 0.0}, {0.0, radius}, {0.0, -radius},
       {0.707 * radius, 0.707 * radius}, {0.707 * radius, -0.707 * radius},
       {-0.707 * radius, 0.707 * radius}, {-0.707 * radius, -0.707 * radius}}};
-  for (const auto& point : points) {
+  for (std::size_t point_index = 0; point_index < points.size(); ++point_index) {
+    const auto& point = points[point_index];
+    const double sample_x = x + point.first;
+    const double sample_y = y + point.second;
     unsigned int mx = 0;
     unsigned int my = 0;
-    if (!costmap->worldToMap(x + point.first, y + point.second, mx, my)) {
+    if (!costmap->worldToMap(sample_x, sample_y, mx, my)) {
+      ROS_WARN_THROTTLE(
+          0.25,
+          "DoubleNMPC unsafe sample: reason=out_of_map center=(%.3f,%.3f) "
+          "sample_index=%zu offset=(%.3f,%.3f) world=(%.3f,%.3f) "
+          "radius=%.3f robot_radius=%.3f margin=%.3f map_origin=(%.3f,%.3f) "
+          "map_size=(%.3f,%.3f)",
+          x, y, point_index, point.first, point.second, sample_x, sample_y,
+          radius, robot_radius_, margin, costmap->getOriginX(), costmap->getOriginY(),
+          costmap->getSizeInMetersX(), costmap->getSizeInMetersY());
       return false;
     }
     const unsigned char cost = costmap->getCost(mx, my);
     if (cost == costmap_2d::NO_INFORMATION || cost >= costmap_2d::LETHAL_OBSTACLE) {
+      double cell_x = 0.0;
+      double cell_y = 0.0;
+      costmap->mapToWorld(mx, my, cell_x, cell_y);
+      ROS_WARN_THROTTLE(
+          0.25,
+          "DoubleNMPC unsafe sample: reason=%s center=(%.3f,%.3f) "
+          "sample_index=%zu offset=(%.3f,%.3f) world=(%.3f,%.3f) "
+          "cell=(%u,%u) cell_world=(%.3f,%.3f) cost=%u radius=%.3f "
+          "robot_radius=%.3f margin=%.3f",
+          cost == costmap_2d::NO_INFORMATION ? "unknown" : "lethal",
+          x, y, point_index, point.first, point.second, sample_x, sample_y,
+          mx, my, cell_x, cell_y, static_cast<unsigned int>(cost), radius,
+          robot_radius_, margin);
       return false;
     }
   }
