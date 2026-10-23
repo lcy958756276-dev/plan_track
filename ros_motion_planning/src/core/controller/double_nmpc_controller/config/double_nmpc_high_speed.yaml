@@ -39,6 +39,10 @@ nominal_margin: 0.06
 min_margin: 0.05
 max_margin: 0.10
 obstacle_relevance_distance: 1.00
+# Reject short upward clearance jumps caused by an empty costmap immediately
+# after clear_costmaps. Smaller clearances are always accepted immediately.
+clearance_jump_threshold: 0.15
+clearance_jump_confirm_cycles: 5
 # Each feedback component is filtered independently before it contributes to
 # tracking risk. The two risk thresholds form the margin hysteresis band.
 risk_ewma_alpha: 0.22

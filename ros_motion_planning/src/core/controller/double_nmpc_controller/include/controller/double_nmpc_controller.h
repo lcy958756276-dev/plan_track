@@ -46,6 +46,12 @@ private:
     double lateral_error{0.0};
   };
 
+  struct ClearanceFilterState {
+    bool initialized{false};
+    double value{0.0};
+    int pending_upward_cycles{0};
+  };
+
   struct LongPlanStage {
     Control control;
     geometry_msgs::PoseStamped predicted_pose;
@@ -94,6 +100,8 @@ private:
   double predictedMinimumClearance(const geometry_msgs::PoseStamped& pose,
                                    const Control& control, int steps,
                                    double step_period) const;
+  double filterClearance(double measured, ClearanceFilterState& state,
+                         bool* rejected_upward_jump = nullptr);
   void updateTrackingMargin(const TrackingPrediction& prediction,
                             const Control& correction, double clearance);
   Control rateLimit(const Control& desired) const;
@@ -130,6 +138,8 @@ private:
   double heading_error_ewma_{0.0};
   double input_correction_ewma_{0.0};
   double turn_activity_ewma_{0.0};
+  ClearanceFilterState clearance_filter_;
+  ClearanceFilterState predicted_clearance_filter_;
 
   // Parameters. All velocity limits are local-planner parameters so the plugin can be
   // evaluated independently from the legacy APF controller.
@@ -158,6 +168,8 @@ private:
   double min_margin_{0.05};
   double max_margin_{0.10};
   double obstacle_relevance_distance_{1.00};
+  double clearance_jump_threshold_{0.15};
+  int clearance_jump_confirm_cycles_{5};
   double risk_ewma_alpha_{0.22};
   double turn_risk_ewma_alpha_{0.25};
   double position_risk_deadzone_{0.015};
