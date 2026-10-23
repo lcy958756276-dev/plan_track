@@ -157,7 +157,7 @@ private:
   double nominal_margin_{0.06};
   double min_margin_{0.05};
   double max_margin_{0.10};
-  double obstacle_relevance_distance_{0.70};
+  double obstacle_relevance_distance_{1.00};
   double risk_ewma_alpha_{0.22};
   double turn_risk_ewma_alpha_{0.25};
   double position_risk_deadzone_{0.015};

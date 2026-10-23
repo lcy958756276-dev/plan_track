@@ -724,23 +724,43 @@ double DoubleNMPCController::obstacleClearance(double x, double y) const {
   if (costmap == nullptr) {
     return 0.0;
   }
-  const double resolution = std::max(costmap->getResolution(), 0.01);
-  for (double radius = resolution; radius <= obstacle_relevance_distance_; radius += resolution) {
-    for (int i = 0; i < 16; ++i) {
-      const double angle = 2.0 * M_PI * static_cast<double>(i) / 16.0;
-      unsigned int mx = 0;
-      unsigned int my = 0;
-      if (!costmap->worldToMap(x + radius * std::cos(angle), y + radius * std::sin(angle),
-                               mx, my)) {
-        return 0.0;
+  const double resolution = costmap->getResolution();
+  if (resolution <= 0.0) {
+    return 0.0;
+  }
+
+  // Search occupied cells in the relevant square, then measure to each cell's
+  // boundary. Unlike the former concentric-ring search, this produces a
+  // continuous Euclidean distance as the robot moves through the costmap.
+  int min_mx = 0;
+  int min_my = 0;
+  int max_mx = 0;
+  int max_my = 0;
+  costmap->worldToMapEnforceBounds(x - obstacle_relevance_distance_,
+                                   y - obstacle_relevance_distance_, min_mx, min_my);
+  costmap->worldToMapEnforceBounds(x + obstacle_relevance_distance_,
+                                   y + obstacle_relevance_distance_, max_mx, max_my);
+
+  double minimum_clearance = obstacle_relevance_distance_;
+  const double half_cell = 0.5 * resolution;
+  for (int my = min_my; my <= max_my; ++my) {
+    for (int mx = min_mx; mx <= max_mx; ++mx) {
+      const unsigned char cost = costmap->getCost(static_cast<unsigned int>(mx),
+                                                   static_cast<unsigned int>(my));
+      if (cost != costmap_2d::NO_INFORMATION && cost < costmap_2d::LETHAL_OBSTACLE) {
+        continue;
       }
-      const unsigned char cost = costmap->getCost(mx, my);
-      if (cost == costmap_2d::NO_INFORMATION || cost >= costmap_2d::LETHAL_OBSTACLE) {
-        return radius;
-      }
+
+      double cell_x = 0.0;
+      double cell_y = 0.0;
+      costmap->mapToWorld(static_cast<unsigned int>(mx), static_cast<unsigned int>(my),
+                          cell_x, cell_y);
+      const double dx = std::max(std::fabs(x - cell_x) - half_cell, 0.0);
+      const double dy = std::max(std::fabs(y - cell_y) - half_cell, 0.0);
+      minimum_clearance = std::min(minimum_clearance, std::hypot(dx, dy));
     }
   }
-  return obstacle_relevance_distance_;
+  return minimum_clearance;
 }
 
 DoubleNMPCController::TrackingPrediction DoubleNMPCController::evaluateTrackingPrediction(
