@@ -103,7 +103,12 @@ sleep 1
 # ── 4. 启动 Gazebo（仓库环境）──
 echo "[4/8] 启动 Gazebo ..."
 echo "[$(date +%H:%M:%S)] [4] starting gzserver" >> "$LOG_DIR/run.log"
-WORLD_FILE="$WORKSPACE_DIR/../gazebo_create/worlds/final_four.world"
+WORLD_FILE="${WORLD_FILE:-$WORKSPACE_DIR/../gazebo_create/worlds/map_project.world}"
+if [ ! -f "$WORLD_FILE" ]; then
+    echo "错误: Gazebo world 文件不存在: $WORLD_FILE"
+    exit 1
+fi
+echo "  Gazebo world: $WORLD_FILE"
 
 # 禁用所有模型数据库下载（防 libcurl SSL 超时阻塞 ROS 插件初始化）
 # GAZEBO_MODEL_DATABASE_URI 管 Gazebo Fuel，IGN_FUEL_URI 管 Ignition Fuel
