@@ -323,9 +323,16 @@ rostopic list 2>/dev/null | grep -i move 2>&1 >> "$LOG_DIR/run.log" || echo "  [
 echo "  [诊断] rosservice list | grep move_base:" >> "$LOG_DIR/run.log"
 rosservice list 2>/dev/null | grep -i move 2>&1 >> "$LOG_DIR/run.log" || echo "  [诊断] 无 move_base 服务" >> "$LOG_DIR/run.log"
 echo "  [诊断] global inflation_radius:" >> "$LOG_DIR/run.log"
-rosparam get /move_base/global_costmap/inflation_layer/inflation_radius 2>&1 >> "$LOG_DIR/run.log" || true
+rosparam get /move_base/global_costmap/inflation_layer/inflation_radius 2>&1 | tee -a "$LOG_DIR/run.log" || true
 echo "  [诊断] local inflation_radius:" >> "$LOG_DIR/run.log"
-rosparam get /move_base/local_costmap/inflation_layer/inflation_radius 2>&1 >> "$LOG_DIR/run.log" || true
+rosparam get /move_base/local_costmap/inflation_layer/inflation_radius 2>&1 | tee -a "$LOG_DIR/run.log" || true
+echo "  [诊断] global inflation_layer 参数:" >> "$LOG_DIR/run.log"
+rosparam get /move_base/global_costmap/inflation_layer 2>&1 | tee -a "$LOG_DIR/run.log" || true
+echo "  [诊断] global costmap plugins:" >> "$LOG_DIR/run.log"
+rosparam get /move_base/global_costmap/plugins 2>&1 | tee -a "$LOG_DIR/run.log" || true
+echo "  [诊断] global costmap 话题信息:" >> "$LOG_DIR/run.log"
+rostopic info /move_base/global_costmap/costmap 2>&1 | tee -a "$LOG_DIR/run.log" || true
+echo "  [诊断] global costmap 参数结束" >> "$LOG_DIR/run.log"
 
 
 sleep 1
