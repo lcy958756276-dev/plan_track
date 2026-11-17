@@ -7,6 +7,8 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 GAZEBO_DIR="$SCRIPT_DIR"
 LOG_DIR="$GAZEBO_DIR/log"
 WORKSPACE_DIR="$(cd "$SCRIPT_DIR/../ros_motion_planning" && pwd 2>/dev/null)"
+# 可通过 WORLD_FILE=/path/to/world.world 覆盖默认场景
+WORLD_FILE="${WORLD_FILE:-$GAZEBO_DIR/worlds/map_project.world}"
 
 # 自动探测 workspace
 if [ -z "$WORKSPACE_DIR" ] || [ ! -f "$WORKSPACE_DIR/devel/setup.bash" ]; then
@@ -82,7 +84,7 @@ echo "robot_description 已加载"
 
 # ── 2. 启动 Gazebo（使用 gz_debug 命名空间避免冲突1）──
 echo "[2] 启动 Gazebo..."
-rosrun gazebo_ros gzserver "$GAZEBO_DIR/worlds/final_four.world" __name:=gz_debug \
+rosrun gazebo_ros gzserver "$WORLD_FILE" __name:=gz_debug \
     > "$LOG_DIR/gzserver.log" 2>&1 &
 PID_GZ=$!
 echo "gzserver PID=$PID_GZ"
