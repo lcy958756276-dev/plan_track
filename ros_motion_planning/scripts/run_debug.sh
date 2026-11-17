@@ -13,6 +13,7 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 WORKSPACE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 LOG_DIR="$WORKSPACE_DIR/log"
+INFLATION_RADIUS="${INFLATION_RADIUS:-0.1}"
 
 source "$WORKSPACE_DIR/devel/setup.bash"
 mkdir -p "$LOG_DIR"
@@ -280,6 +281,10 @@ cat > "$MB_LAUNCH" << MBEOF
         - {name: obstacle_layer, type: 'costmap_2d::ObstacleLayer'}
         - {name: inflation_layer, type: 'costmap_2d::InflationLayer'}
     </rosparam>
+
+    <!-- 最终显式覆盖，避免参数加载顺序覆盖 YAML 中的值 -->
+    <param name="global_costmap/inflation_layer/inflation_radius" value="$INFLATION_RADIUS"/>
+    <param name="local_costmap/inflation_layer/inflation_radius" value="$INFLATION_RADIUS"/>
 
     <!-- map 重映射 -->
     <remap from="map" to="/map"/>
