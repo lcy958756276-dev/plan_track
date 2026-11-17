@@ -83,7 +83,8 @@ echo "  joint_state_publisher PID=$PID_JSP"
 sleep 1
 
 # map_server（提供背景地图）
-MAP_FILE="$WORKSPACE_DIR/../gazebo_create/maps/my_four_map.yaml"
+# MAP_FILE="$WORKSPACE_DIR/../gazebo_create/maps/my_four_map.yaml"
+MAP_FILE="$WORKSPACE_DIR/../gazebo_create/maps/map_project.yaml"
 rosrun map_server map_server "$MAP_FILE" \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_MAP=$!
