@@ -10,6 +10,11 @@ WORKSPACE_DIR="$(cd "$SCRIPT_DIR/../ros_motion_planning" && pwd 2>/dev/null)"
 # 可通过 WORLD_FILE=/path/to/world.world 覆盖默认场景
 WORLD_FILE="${WORLD_FILE:-$GAZEBO_DIR/worlds/map_project.world}"
 
+if [ ! -f "$WORLD_FILE" ]; then
+    echo "错误: Gazebo world 文件不存在: $WORLD_FILE"
+    exit 1
+fi
+
 # 自动探测 workspace
 if [ -z "$WORKSPACE_DIR" ] || [ ! -f "$WORKSPACE_DIR/devel/setup.bash" ]; then
     for try_dir in \
@@ -81,6 +86,10 @@ else
 fi
 
 echo "robot_description 已加载"
+if ! rosparam get robot_description >/dev/null 2>&1; then
+    echo "错误: robot_description 未成功加载，无法启动 RobotModel/TF"
+    exit 1
+fi
 
 # ── 2. 启动 Gazebo（使用 gz_debug 命名空间避免冲突1）──
 echo "[2] 启动 Gazebo..."
@@ -159,6 +168,10 @@ PYTHONUNBUFFERED=1 python3 "$GAZEBO_DIR/scripts/gazebo_mapper.py" \
 PID_MAPPER=$!
 echo "mapper PID=$PID_MAPPER"
 sleep 2
+
+if ! rostopic list 2>/dev/null | grep -qx "/scan"; then
+    echo "警告: 当前未发现 /scan 话题，RViz LaserScan 将显示错误"
+fi
 
 # ── 5. gmapping ──
 echo "[5] 启动 gmapping..."
