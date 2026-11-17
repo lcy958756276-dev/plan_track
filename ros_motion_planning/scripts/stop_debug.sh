@@ -23,7 +23,8 @@ for pid_file in "$LOG_DIR"/.pid_*; do
 done
 
 # 额外清理可能残留的 ROS 节点和参数
-killall -q roslaunch gzserver gzclient 2>/dev/null
+killall -q roslaunch move_base map_server gzserver gzclient 2>/dev/null
+rosnode kill /move_base 2>/dev/null || true
 
 # 清理物理车模式标志位（run_debug.sh 设置的）
 rm -f /tmp/.use_encoder_odom

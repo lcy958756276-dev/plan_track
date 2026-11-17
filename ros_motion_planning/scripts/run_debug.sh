@@ -20,6 +20,8 @@ mkdir -p "$LOG_DIR"
 # 强制清理残留的 Gazebo、map_server 进程
 killall -9 gzserver gzclient 2>/dev/null
 killall map_server 2>/dev/null
+killall move_base 2>/dev/null
+rosnode kill /move_base 2>/dev/null || true
 sleep 1
 
 # 确保 ROS master 在运行
@@ -311,6 +313,10 @@ echo "  [诊断] rostopic list | grep move_base:" >> "$LOG_DIR/run.log"
 rostopic list 2>/dev/null | grep -i move 2>&1 >> "$LOG_DIR/run.log" || echo "  [诊断] 无 move_base 话题" >> "$LOG_DIR/run.log"
 echo "  [诊断] rosservice list | grep move_base:" >> "$LOG_DIR/run.log"
 rosservice list 2>/dev/null | grep -i move 2>&1 >> "$LOG_DIR/run.log" || echo "  [诊断] 无 move_base 服务" >> "$LOG_DIR/run.log"
+echo "  [诊断] global inflation_radius:" >> "$LOG_DIR/run.log"
+rosparam get /move_base/global_costmap/inflation_layer/inflation_radius 2>&1 >> "$LOG_DIR/run.log" || true
+echo "  [诊断] local inflation_radius:" >> "$LOG_DIR/run.log"
+rosparam get /move_base/local_costmap/inflation_layer/inflation_radius 2>&1 >> "$LOG_DIR/run.log" || true
 
 
 sleep 1
