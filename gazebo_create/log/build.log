@@ -1,6 +1,6 @@
 === build_map.sh 启动 ===
 日志目录: /home/lcy/robot_graduation/gazebo_create/log
-2026年 06月 27日 星期六 12:06:16 CST
+2026年 11月 17日 星期二 15:33:18 CST
 [清理] 杀掉残留进程...
 清理完成
 [1] 加载 robot_description...
@@ -8,36 +8,38 @@ sim_env 路径: /home/lcy/robot_graduation/ros_motion_planning/src/sim_env
 mesh 正常: /home/lcy/robot_graduation/ros_motion_planning/src/sim_env/urdf/my_car/meshes/base_link.STL
 robot_description 已加载
 [2] 启动 Gazebo...
-gzserver PID=63983
-Gazebo 就绪（第 1 秒）
+gzserver PID=23931
+Gazebo 就绪（第 3 秒）
   等待仿真时钟...
-  ✅ 仿真时钟运行中 (t=285s)
-robot_state_publisher PID=64151
-joint_state_publisher PID=64152
-gzclient PID=64188
+  ✅ 仿真时钟运行中 (t=1s)
+robot_state_publisher PID=24105
+joint_state_publisher PID=24106
+gzclient PID=24151
 [3] spawn_model...
-spawn_model exit=1 (朝向 180°)
+spawn_model exit=0 (朝向 180°)
 === 验证模型 ===
 header: 
   seq: 1
   stamp: 
-    secs: 295
-    nsecs: 575000000
+    secs: 11
+    nsecs: 602000000
 model_names: 
   - ground_plane
-  - final_world
-  - new_wall
-  - my_car
-  - walls_seven_new11
-rendering_enabled: True
-success: True
-status_message: "GetWorldProperties: got properties"
+  - boundary_left
+  - boundary_right
+  - boundary_bottom
+  - boundary_top
+  - obstacle_1
+  - obstacle_3
+  - obstacle_4
+  - obstacle_5
+  - obstacle_6
 [4] 启动 gazebo_mapper.py...
-mapper PID=64367
+mapper PID=24358
 [5] 启动 gmapping...
-gmapping PID=64414
+gmapping PID=24411
 [6] 启动 RViz...
-rviz PID=64484
+rviz PID=24500
 
 === 全部启动完毕 ===
 查看日志: cat /home/lcy/robot_graduation/gazebo_create/log/build.log
