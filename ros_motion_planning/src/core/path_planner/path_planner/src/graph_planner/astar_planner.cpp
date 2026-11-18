@@ -113,7 +113,6 @@ bool AStarPathPlanner::plan(const Point3d& start, const Point3d& goal, Points3d*
     for (const auto& motion : motions_) {
       // explore a new node
       auto node_new = current + motion;
-      node_new.set_g(current.g() + motion.g());
       node_new.set_id(grid2Index(node_new.x(), node_new.y()));
 
       // node_new in closed list
@@ -123,15 +122,27 @@ bool AStarPathPlanner::plan(const Point3d& start, const Point3d& goal, Points3d*
 
       node_new.set_pid(current.id());
 
-      // next node hit the boundary or obstacle
-      // prevent planning failed when the current within inflation
-      if ((node_new.id() < 0) || (node_new.id() >= map_size_) ||
-          (costmap_->getCharMap()[node_new.id()] >=
-               costmap_2d::LETHAL_OBSTACLE * config_.obstacle_inflation_factor() &&
-           costmap_->getCharMap()[node_new.id()] >=
-               costmap_->getCharMap()[current.id()])) {
+      // Treat the upper half of the inflation field as non-traversable, then
+      // charge a steep, continuous penalty for every remaining inflated cell.
+      // The old implementation only used a one-sided hard test and assigned
+      // every traversable cell the same cost. Consequently a shortest-path
+      // solution could hug the inflation boundary even when a longer, much
+      // safer corridor existed.
+      if (node_new.id() < 0 || node_new.id() >= map_size_) {
         continue;
       }
+      const unsigned char cell_cost = costmap_->getCharMap()[node_new.id()];
+      const double blocked_cost = costmap_2d::LETHAL_OBSTACLE *
+                                  config_.obstacle_inflation_factor();
+      if (cell_cost >= blocked_cost) {
+        continue;
+      }
+
+      const double normalized_cost = static_cast<double>(cell_cost) / blocked_cost;
+      constexpr double kInflationTraversalWeight = 8.0;
+      const double traversal_cost = motion.g() *
+          (1.0 + kInflationTraversalWeight * normalized_cost * normalized_cost);
+      node_new.set_g(current.g() + traversal_cost);
 
       // if using dijkstra implementation, do not consider heuristics cost
       if (!is_dijkstra_) {

@@ -43,9 +43,28 @@ bool AStarPolylinePathPlanner::plan(const Point3d& start, const Point3d& goal,
   }
   *path = dense_path;
 
+  unsigned int max_cost = 0;
+  double total_cost = 0.0;
+  std::size_t inflated_poses = 0;
+  for (const auto& point : base_path) {
+    unsigned int mx = 0;
+    unsigned int my = 0;
+    if (!costmap_->worldToMap(point.x(), point.y(), mx, my)) {
+      continue;
+    }
+    const unsigned int cost = costmap_->getCost(mx, my);
+    max_cost = std::max(max_cost, cost);
+    total_cost += cost;
+    if (cost != costmap_2d::FREE_SPACE) {
+      ++inflated_poses;
+    }
+  }
   R_INFO << "AStarPolyline: base poses=" << base_path.size()
          << ", polyline vertices=" << polyline.size()
-         << ", dense poses=" << path->size();
+         << ", dense poses=" << path->size()
+         << ", path_cost(max/mean)=" << max_cost << "/"
+         << (base_path.empty() ? 0.0 : total_cost / base_path.size())
+         << ", inflated_poses=" << inflated_poses << "/" << base_path.size();
   return !path->empty();
 }
 
