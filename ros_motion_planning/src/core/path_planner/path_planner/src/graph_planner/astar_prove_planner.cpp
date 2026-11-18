@@ -169,20 +169,9 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
         continue;
       }
 
-      double node_world_x = 0.0;
-      double node_world_y = 0.0;
-      costmap_->mapToWorld(node_new.x(), node_new.y(), node_world_x, node_world_y);
-      const double motion_yaw = std::atan2(static_cast<double>(motion.y()),
-                                           static_cast<double>(motion.x()));
-      if (!footprintFree(node_world_x, node_world_y, motion_yaw)) {
-        ++rejected_footprint;
-        ROS_DEBUG_THROTTLE(
-            0.5,
-            "AStarProve rejected footprint: center=(%.3f,%.3f) yaw=%.3f "
-            "body=0.600x0.300 margin=0.020",
-            node_world_x, node_world_y, motion_yaw);
-        continue;
-      }
+      // Collision clearance belongs to the configured global costmap.  Do not
+      // apply a second, hard-coded footprint test here: it can contradict the
+      // costmap footprint/inflation settings and disconnect otherwise free cells.
 
       node_new.set_h(
           std::hypot(node_new.x() - goal_node.x(), node_new.y() - goal_node.y()));
