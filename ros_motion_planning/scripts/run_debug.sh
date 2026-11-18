@@ -293,6 +293,10 @@ cat > "$MB_LAUNCH" << MBEOF
     <param name="global_costmap/inflation_layer/inflation_radius" value="$INFLATION_RADIUS"/>
     <param name="local_costmap/inflation_layer/inflation_radius" value="$INFLATION_RADIUS"/>
 
+    <!-- 真实车体尺寸：长度 0.60 m，宽度 0.30 m；base_footprint 位于车体中心 -->
+    <rosparam ns="global_costmap" param="footprint">[[-0.30, -0.15], [-0.30, 0.15], [0.30, 0.15], [0.30, -0.15]]</rosparam>
+    <rosparam ns="local_costmap" param="footprint">[[-0.30, -0.15], [-0.30, 0.15], [0.30, 0.15], [0.30, -0.15]]</rosparam>
+
     <!-- map 重映射 -->
     <remap from="map" to="/map"/>
     <!-- goal 重映射（pre_rotate 转发后的话题） -->
