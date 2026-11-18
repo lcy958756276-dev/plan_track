@@ -13,7 +13,7 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 WORKSPACE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 LOG_DIR="$WORKSPACE_DIR/log"
-INFLATION_RADIUS="${INFLATION_RADIUS:-0.1}"
+INFLATION_RADIUS="${INFLATION_RADIUS:-0.2}"
 
 source "$WORKSPACE_DIR/devel/setup.bash"
 mkdir -p "$LOG_DIR"
