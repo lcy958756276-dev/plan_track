@@ -70,6 +70,8 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
   // open list and closed list
   std::priority_queue<Node, std::vector<Node>, Node::compare_cost> open_list;
   std::unordered_map<int, Node> closed_list;
+  std::size_t rejected_boundary_or_cost = 0;
+  std::size_t rejected_footprint = 0;
 
   open_list.push(start_node);
 
@@ -156,12 +158,14 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
       // next node hit the boundary or obstacle
       // prevent planning failed when the current within inflation
       if ((node_new.id() < 0) || (node_new.id() >= map_size_)) {
+        ++rejected_boundary_or_cost;
         continue;
       }
       const auto node_cost = costmap_->getCharMap()[node_new.id()];
       if (node_cost != costmap_2d::NO_INFORMATION &&
           node_cost >= costmap_2d::LETHAL_OBSTACLE * config_.obstacle_inflation_factor() &&
           node_cost >= costmap_->getCharMap()[current.id()]) {
+        ++rejected_boundary_or_cost;
         continue;
       }
 
@@ -171,6 +175,7 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
       const double motion_yaw = std::atan2(static_cast<double>(motion.y()),
                                            static_cast<double>(motion.x()));
       if (!footprintFree(node_world_x, node_world_y, motion_yaw)) {
+        ++rejected_footprint;
         ROS_DEBUG_THROTTLE(
             0.5,
             "AStarProve rejected footprint: center=(%.3f,%.3f) yaw=%.3f "
@@ -186,6 +191,11 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
     }
   }
 
+  R_WARN << "AStarProve: no path; expanded=" << closed_list.size()
+         << ", rejected_boundary_or_cost=" << rejected_boundary_or_cost
+         << ", rejected_footprint=" << rejected_footprint
+         << ", start_grid=(" << m_start_x << ", " << m_start_y << ")"
+         << ", goal_grid=(" << m_goal_x << ", " << m_goal_y << ")";
   return false;
 }
 // ════════════════════════════════════════════════════════════
