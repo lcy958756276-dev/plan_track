@@ -290,7 +290,7 @@ cat > "$MB_LAUNCH" << MBEOF
     </rosparam>
 
     <!-- 最终显式覆盖，避免参数加载顺序覆盖 YAML 中的值 -->
-    <param name="global_costmap/inflation_layer/inflation_radius" value="0.2"/>
+    <param name="global_costmap/inflation_layer/inflation_radius" value="0.4"/>
     <param name="local_costmap/inflation_layer/inflation_radius" value="0.1"/>
 
     <!-- 真实车体尺寸：长度 0.60 m，宽度 0.30 m；base_footprint 位于车体中心 -->
