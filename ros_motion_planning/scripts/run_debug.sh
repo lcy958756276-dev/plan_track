@@ -266,6 +266,8 @@ cat > "$MB_LAUNCH" << MBEOF
     <rosparam command="load"
       file="$WORKSPACE_DIR/src/core/controller/double_nmpc_controller/config/double_nmpc_high_speed.yaml"
       ns="DoubleNMPCController"/>
+    <!-- 真实车体 footprint 约 0.9 m x 0.6 m；用外接圆半径约 0.54 m 做控制器安全模型 -->
+    <param name="DoubleNMPCController/robot_radius" value="0.54"/>
 
     <!-- 禁用恢复行为（实物车速度低，不会大幅偏离路径） -->
     <param name="recovery_behavior_enabled" value="false"/>
