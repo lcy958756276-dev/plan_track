@@ -121,14 +121,13 @@ class GazeboSync:
 
     def scan_cb(self, msg):
         """修复 LaserScan 时间戳 + 过滤自检测 + 去除孤点（混合像素）"""
-        # new_robot 整车网格在 base_link 下约为
-        # x=[-0.280, 0.277], y=[-0.153, 0.153]；base_scan.x=0.165。
-        # X 边界覆盖新车身并在前向保留旧 URDF 已验证的 0.20 m
-        # 自滤波边界，防止偏移至 x=0.15~0.17 m 的车身点漏入。
+        # base_scan 位于 base_footprint 后方约 0.076 m；因此 0.60 m 车体
+        # 在 base_scan 坐标系中向前延伸到约 x=0.376 m。保留少量余量，
+        # 以免车头回波被写入 local costmap 并使控制器误判为 lethal。
         # Y 边界扩至 0.40 m，覆盖日志中确认的 y≈-0.38 m 车身漏点，
         # 但不过滤 |y|≈0.5 m 以外的真实障碍物。
         SELF_MIN_X = -0.47
-        SELF_MAX_X = 0.20
+        SELF_MAX_X = 0.42
         SELF_MIN_Y = -0.40
         SELF_MAX_Y = 0.40
 
