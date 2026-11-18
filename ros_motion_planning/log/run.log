@@ -1,20 +1,20 @@
-=== 启动时间: 2026年 11月 18日 星期三 20:28:14 CST ===
-[20:28:14] [1] main_generate.py start
-[20:28:14] [1] main_generate.py done
-[20:28:14] [2] use_encoder_odom flag set
-[20:28:14] [3] loading robot_description
-[20:28:15] [3] robot_description loaded
-[20:28:18] [4] starting gzserver
-[20:28:24] [4] spawn_model start
-[31m[ERROR] [1795004905.326041878]: DeleteModel: model [my_robot] does not exist[0m
-[31m[ERROR] [1795004906.674800333]: DeleteModel: model [new_robot] does not exist[0m
-[INFO] [1795004908.534821]: Loading model XML from ros parameter robot_description
-[INFO] [1795004908.540968]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1795004908.544897]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1795004909.172006]: Spawn status: SpawnModel: Successfully spawned entity
-[20:28:29] [4] spawn_model exit=0
-[20:28:42] [8] generating move_base launch file
-[20:28:42] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 11月 18日 星期三 20:32:13 CST ===
+[20:32:13] [1] main_generate.py start
+[20:32:13] [1] main_generate.py done
+[20:32:13] [2] use_encoder_odom flag set
+[20:32:13] [3] loading robot_description
+[20:32:14] [3] robot_description loaded
+[20:32:17] [4] starting gzserver
+[20:32:23] [4] spawn_model start
+[31m[ERROR] [1795005144.346755479]: DeleteModel: model [my_robot] does not exist[0m
+[31m[ERROR] [1795005145.743557042]: DeleteModel: model [new_robot] does not exist[0m
+[INFO] [1795005147.542048]: Loading model XML from ros parameter robot_description
+[INFO] [1795005147.549611]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1795005147.555466]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1795005148.074063]: Spawn status: SpawnModel: Successfully spawned entity
+[20:32:28] [4] spawn_model exit=0
+[20:32:41] [8] generating move_base launch file
+[20:32:41] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 double_nmpc_controller/DoubleNMPCController
@@ -46,13 +46,13 @@ global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 rpp_controller /home/lcy/robot_graduation/ros_motion_planning/../ros_motion_planning/src/core/controller/rpp_controller/rpp_controller_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1795004924.404675143]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1795004924.408034547]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1795005163.439738592]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1795005163.441729827]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20261118 20:28:44.924461 83307 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
-I20261118 20:28:44.929240 83307 path_planner_factory.cpp:137] Using path planner: astar_polyline
-[33m[WARN] [1795004924.943422164]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[20:28:45] [8] move_base 启动后状态:
+I20261118 20:32:43.875101 87106 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
+I20261118 20:32:43.880823 87106 path_planner_factory.cpp:137] Using path planner: astar_polyline
+[33m[WARN] [1795005163.892980615]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[20:32:44] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -117,16 +117,40 @@ I20261118 20:28:44.929240 83307 path_planner_factory.cpp:137] Using path planner
 /move_base/set_logger_level
 /move_base/set_parameters
   [诊断] global inflation_radius:
+I20261118 20:32:46.556685 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:46.566177 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=547, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:46.566557 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:46.566640 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
 0.01
   [诊断] local inflation_radius:
+I20261118 20:32:46.678973 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:46.687943 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=547, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:46.688300 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:46.688388 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:46.805454 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:46.815647 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=547, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:46.816000 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:46.816177 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
 0.01
   [诊断] global inflation_layer 参数:
+I20261118 20:32:46.926469 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:46.933729 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=547, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:46.933929 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:46.933979 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
 cost_scaling_factor: 2.0
 enabled: true
 inflate_unknown: false
 inflation_radius: 0.01
 
   [诊断] global costmap plugins:
+I20261118 20:32:47.053653 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:47.060698 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=547, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:47.060874 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:47.060920 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:47.178232 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:47.186177 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=547, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:47.186604 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:47.186782 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
 - name: static_map
   type: costmap_2d::StaticLayer
 - name: obstacle_layer
@@ -137,253 +161,198 @@ inflation_radius: 0.01
   type: costmap_2d::InflationLayer
 
   [诊断] global costmap 话题信息:
-I20261118 20:28:48.911580 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:48.922173 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:48.922340 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:47.304790 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:47.311934 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=547, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:47.312106 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:47.312147 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:47.422849 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:47.430081 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=547, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:47.430258 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:47.430301 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:47.540639 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:47.547672 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=547, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:47.547835 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:47.547869 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:47.656325 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:47.663364 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=547, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:47.663530 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:47.663599 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:47.773666 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:47.780701 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=547, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:47.780870 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:47.780908 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:47.891274 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:47.898880 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=558, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:47.899065 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:47.899106 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
 Type: nav_msgs/OccupancyGrid
 
 Publishers: 
- * /move_base (http://ubuntu:34099/)
+ * /move_base (http://ubuntu:37517/)
 
 Subscribers: 
- * /rviz_1795004912622902896 (http://ubuntu:35991/)
+ * /rviz_1795005151553818673 (http://ubuntu:38007/)
 
 
-I20261118 20:28:49.033263 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:49.042477 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:49.042580 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:49.151423 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:49.159942 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:49.160136 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:48.010562 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:48.017704 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=558, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:48.017877 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:48.017912 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:48.126468 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:48.133546 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=558, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:48.133739 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:48.133775 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
   [诊断] global costmap 参数结束
-I20261118 20:28:49.274377 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:49.282611 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:49.282718 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:49.392988 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:49.400626 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:49.400696 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:49.515595 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:49.522691 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:49.522802 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:49.631763 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:49.642210 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:49.642338 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:49.750332 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:49.757828 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:49.757931 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:49.867817 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:49.875332 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:49.875463 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:49.983816 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:49.990863 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:49.990967 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:50.101804 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:50.109337 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:50.109472 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:50.219952 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:50.227840 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:50.228024 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:50.337138 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:50.344169 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:50.344261 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:50.452834 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:50.460954 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:50.461095 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:50.570255 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:50.577351 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:50.577484 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:50.685911 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:50.693701 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:50.693843 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:50.806109 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:50.818753 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:50.819056 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:50.946897 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:50.955200 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:50.955359 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:51.074863 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:51.081948 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:51.082078 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:51.191499 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:51.202244 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:51.202396 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:51.314819 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:51.322300 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:51.322438 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:51.432016 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:51.440506 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:51.440649 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:51.552810 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:51.565371 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:51.565523 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:51.687817 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:51.697687 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:51.697840 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:51.824635 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.362789, -0.253067)
-E20261118 20:28:51.845156 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:51.845309 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:53.499527 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:53.506918 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:53.507056 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:53.614739 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:53.622783 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:53.622920 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:53.730924 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:53.741544 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:53.741676 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:53.851745 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:53.858865 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:53.858996 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:53.978760 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:53.986946 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:53.987085 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:54.095352 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:54.102808 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:54.102909 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:54.211429 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:54.219518 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:54.219650 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:54.329349 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:54.337178 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:54.337312 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:54.445942 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:54.453445 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:54.453570 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:54.562683 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:54.570089 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:54.570218 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:54.679920 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:54.687417 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:54.687553 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:54.797293 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:54.804704 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:54.804838 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:54.913460 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:54.920905 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:54.921028 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:55.029212 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:55.036582 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:55.036660 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:55.144522 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:55.153780 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:55.153932 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:55.268965 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:55.277735 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:55.277871 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:55.386101 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:55.393707 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:55.393826 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:55.501995 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:55.510476 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:55.510628 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:55.618525 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:55.626122 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:55.626255 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:55.733907 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:55.741437 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:55.741535 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:55.849128 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:55.857293 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:55.857429 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:55.966308 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:55.973969 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:55.974103 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:56.082350 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:56.089934 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:56.090049 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:56.197245 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:56.204645 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:56.204768 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:56.313277 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:56.323166 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:56.323297 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:56.432523 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(1.06683, -0.982477)
-E20261118 20:28:56.441234 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:56.441363 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:57.571130 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:57.578454 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:57.578619 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:57.686656 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:57.695398 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:57.695474 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:57.805019 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:57.812424 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:57.812554 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:57.921963 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:57.930639 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:57.930801 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:58.040592 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:58.047638 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:58.047787 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:58.156131 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:58.163961 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:58.164119 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:58.273335 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:58.282466 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:58.282598 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:58.391187 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:58.398676 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:58.398780 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:58.517881 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:58.529918 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:58.530066 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:58.643543 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:58.650733 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:58.650847 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:58.758659 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:58.766126 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:58.766247 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:58.874564 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:58.882221 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:58.882319 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:58.991266 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:58.998807 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:58.998927 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:59.107348 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:59.117442 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:59.117587 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:59.225942 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:59.234664 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:59.234834 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:59.352351 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:59.361754 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:59.361918 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:59.471427 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:59.483971 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:59.484124 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:59.594067 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:59.605036 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:59.605154 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:59.714293 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:59.726402 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:59.726543 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:59.838618 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:59.848776 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:59.848905 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:28:59.961459 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:28:59.970031 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:28:59.970170 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:29:00.078456 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:29:00.087550 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:29:00.087700 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:29:00.196403 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:29:00.203786 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:29:00.203912 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:29:00.312330 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:29:00.319388 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:29:00.319489 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:29:00.428062 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:29:00.439262 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:29:00.439407 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:29:00.547513 83307 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.937559, -0.761463)
-E20261118 20:29:00.561460 83307 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:29:00.561584 83307 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-... logging to /home/lcy/.ros/log/ca349cda-e33f-11f1-a40d-189341889b90/roslaunch-ubuntu-83276.log
+I20261118 20:32:48.242136 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:48.250370 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=558, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:48.250531 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:48.250562 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:48.359939 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:48.366984 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=549, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:48.367137 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:48.367169 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:48.475262 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:48.484031 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=549, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:48.484211 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:48.484248 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:48.592684 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:48.600165 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=549, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:48.600333 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:48.600368 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:48.708122 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:48.715776 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=549, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:48.715914 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:48.715946 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:48.823736 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:48.831413 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=549, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:48.831615 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:48.831658 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:48.949693 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:48.956689 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=549, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:48.956802 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:48.956832 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:49.067888 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:49.074978 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=549, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:49.075140 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:49.075171 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:49.184702 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:49.192679 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=549, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:49.192866 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:49.192902 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:49.311064 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:49.318359 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=549, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:49.318532 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:49.318567 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:49.437839 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.326151, -0.194742)
+W20261118 20:32:49.445868 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=556, start_grid=(182.8, 225), goal_grid=(206.523, 196.105)
+E20261118 20:32:49.446053 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:49.446090 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:50.600196 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:50.608000 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=547, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:50.608440 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:50.608505 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:50.730094 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:50.737702 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=547, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:50.738042 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:50.738176 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:50.858412 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:50.869419 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=547, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:50.869673 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:50.869724 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:50.987442 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:50.994593 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=547, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:50.994743 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:50.994776 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:51.107254 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:51.114303 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=547, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:51.114497 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:51.114537 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:51.231330 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:51.244976 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=194, rejected_boundary_or_cost=0, rejected_footprint=547, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:51.245204 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:51.245246 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:51.364886 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:51.372316 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=206, rejected_boundary_or_cost=0, rejected_footprint=583, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:51.372512 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:51.372553 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:51.486600 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:51.501204 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=206, rejected_boundary_or_cost=0, rejected_footprint=583, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:51.501477 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:51.501546 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:51.632901 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:51.644810 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=206, rejected_boundary_or_cost=0, rejected_footprint=583, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:51.645102 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:51.645169 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:51.755283 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:51.762626 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=206, rejected_boundary_or_cost=0, rejected_footprint=583, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:51.762770 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:51.762801 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:51.872725 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:51.879961 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=204, rejected_boundary_or_cost=0, rejected_footprint=576, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:51.880126 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:51.880158 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:51.988528 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:51.995888 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=204, rejected_boundary_or_cost=0, rejected_footprint=576, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:51.996008 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:51.996039 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:52.105363 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:52.115602 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=204, rejected_boundary_or_cost=0, rejected_footprint=576, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:52.115804 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:52.115841 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:52.224110 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:52.236583 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=204, rejected_boundary_or_cost=0, rejected_footprint=576, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:52.236770 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:52.236819 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:52.345846 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:52.355412 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=204, rejected_boundary_or_cost=0, rejected_footprint=576, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:52.355609 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:52.355657 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:52.465335 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:52.473258 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=204, rejected_boundary_or_cost=0, rejected_footprint=576, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:52.473438 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:52.473510 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:52.581525 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:52.589133 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=204, rejected_boundary_or_cost=0, rejected_footprint=576, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:52.589275 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:52.589308 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:52.709470 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:52.717049 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=204, rejected_boundary_or_cost=0, rejected_footprint=576, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:52.717223 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:52.717260 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:52.836292 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:52.843538 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=204, rejected_boundary_or_cost=0, rejected_footprint=576, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:52.843716 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:52.843753 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:52.954792 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:52.962056 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=205, rejected_boundary_or_cost=0, rejected_footprint=579, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:52.962216 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:52.962258 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:53.070827 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:53.077838 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=205, rejected_boundary_or_cost=0, rejected_footprint=579, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:53.077943 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:53.077972 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:53.197546 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:53.204610 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=205, rejected_boundary_or_cost=0, rejected_footprint=579, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:53.204798 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:53.204833 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:53.315485 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:53.322674 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=205, rejected_boundary_or_cost=0, rejected_footprint=579, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:53.322788 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:53.322818 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:53.430441 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:53.437631 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=205, rejected_boundary_or_cost=0, rejected_footprint=579, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:53.437843 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:53.437882 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:32:53.554100 87106 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.00520039, -1.28469)
+W20261118 20:32:53.561149 87106 astar_prove_planner.cpp:194] AStarProve: no path; expanded=205, rejected_boundary_or_cost=0, rejected_footprint=579, start_grid=(182.8, 225), goal_grid=(200.104, 174.306)
+E20261118 20:32:53.561313 87106 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:32:53.561347 87106 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+... logging to /home/lcy/.ros/log/ca349cda-e33f-11f1-a40d-189341889b90/roslaunch-ubuntu-87082.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:43627/[0m
+[1mstarted roslaunch server http://ubuntu:35399/[0m
 
 SUMMARY
 ========
@@ -514,7 +483,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [83307][0m
+[1mprocess[move_base-1]: started with pid [87106][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
