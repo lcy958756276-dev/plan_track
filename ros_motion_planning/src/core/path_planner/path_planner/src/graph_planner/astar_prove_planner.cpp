@@ -163,6 +163,20 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
         continue;
       }
 
+      double node_world_x = 0.0;
+      double node_world_y = 0.0;
+      costmap_->mapToWorld(node_new.x(), node_new.y(), node_world_x, node_world_y);
+      const double motion_yaw = std::atan2(static_cast<double>(motion.y()),
+                                           static_cast<double>(motion.x()));
+      if (!footprintFree(node_world_x, node_world_y, motion_yaw)) {
+        ROS_DEBUG_THROTTLE(
+            0.5,
+            "AStarProve rejected footprint: center=(%.3f,%.3f) yaw=%.3f "
+            "body=0.600x0.300 margin=0.060",
+            node_world_x, node_world_y, motion_yaw);
+        continue;
+      }
+
       node_new.set_h(
           std::hypot(node_new.x() - goal_node.x(), node_new.y() - goal_node.y()));
 
@@ -186,6 +200,34 @@ bool AStarProvePathPlanner::pointInCollision(double px, double py) {
   unsigned int idx = iy * nx_ + ix;
   // LETHAL_OBSTACLE = 253; threshold consistent with A* expansion logic
   return costmap_->getCharMap()[idx] >= costmap_2d::LETHAL_OBSTACLE * 0.8;
+}
+
+bool AStarProvePathPlanner::footprintFree(double px, double py, double yaw) const {
+  constexpr double kHalfLength = 0.30 + 0.06;
+  constexpr double kHalfWidth = 0.15 + 0.06;
+  const double step = std::max(0.5 * costmap_->getResolution(), 0.01);
+  const double cos_yaw = std::cos(yaw);
+  const double sin_yaw = std::sin(yaw);
+
+  for (double local_x = -kHalfLength; local_x <= kHalfLength + 1e-9;
+       local_x += step) {
+    for (double local_y = -kHalfWidth; local_y <= kHalfWidth + 1e-9;
+         local_y += step) {
+      const double wx = px + local_x * cos_yaw - local_y * sin_yaw;
+      const double wy = py + local_x * sin_yaw + local_y * cos_yaw;
+      unsigned int mx = 0;
+      unsigned int my = 0;
+      if (!costmap_->worldToMap(wx, wy, mx, my)) {
+        return false;
+      }
+      const unsigned char cost = costmap_->getCost(mx, my);
+      if (cost == costmap_2d::NO_INFORMATION ||
+          cost >= costmap_2d::LETHAL_OBSTACLE) {
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 // ════════════════════════════════════════════════════════════

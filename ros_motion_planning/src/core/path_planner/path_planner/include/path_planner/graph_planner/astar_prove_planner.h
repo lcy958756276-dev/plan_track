@@ -54,6 +54,11 @@ private:
    */
   bool pointInCollision(double px, double py);
 
+  // Check the real rectangular vehicle footprint with the nominal 0.06 m
+  // planning margin. The NMPC controller may still increase this margin
+  // dynamically during tracking.
+  bool footprintFree(double px, double py, double yaw) const;
+
   /**
    * @brief Shortcut optimization: for each pair of non-adjacent points,
    *        check straight-line feasibility and cut out detour waypoints.
