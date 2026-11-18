@@ -33,11 +33,11 @@ robot_radius: 0.16
 max_lateral_acceleration: 0.35
 min_curve_speed: 0.08
 
-# Tracking-margin feedback: never relax below 5 cm. A 10 cm upper bound can be reached
-# only when tracking risk is high and a lethal obstacle is inside the relevance distance.
-nominal_margin: 0.06
-min_margin: 0.05
-max_margin: 0.10
+# Match the 2 cm planning clearance. The safety layer may still enlarge this
+# margin when it observes a real lethal obstacle nearby.
+nominal_margin: 0.02
+min_margin: 0.02
+max_margin: 0.06
 obstacle_relevance_distance: 1.00
 # Reject short upward clearance jumps caused by an empty costmap immediately
 # after clear_costmaps. Smaller clearances are always accepted immediately.
