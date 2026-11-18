@@ -1,24 +1,35 @@
-[WARN] [1794980277.129220]: set_model_state 失败: service [/gz_debug/set_model_state] returned no response
-[INFO] [1794980236.323872]: gazebo_sync 已启动
-[INFO] [1794980236.327316]:   持续尝试连接 /gz_debug/set_model_state ...
-[INFO] [1794980236.537945]:   ✅ 已连接 /gz_debug/set_model_state
-[INFO] [1794980236.558215]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=0.71
-[INFO] [1794980238.739483]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=0.71
-[INFO] [1794980240.740048]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=0.71
-[INFO] [1794980242.930573]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=0.71
-[INFO] [1794980244.933643]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=0.71
-[INFO] [1794980246.944726]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=0.61
-[INFO] [1794980249.130095]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=0.06
-[INFO] [1794980251.330639]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=-0.53
-[INFO] [1794980253.528992]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=-0.71
-[INFO] [1794980255.529015]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=-0.70
-[INFO] [1794980257.728847]: 已同步 Gazebo 位置: x=-1.04 y=1.44 θ=-0.63
-[INFO] [1794980259.854121]: 已同步 Gazebo 位置: x=-1.04 y=1.44 θ=-0.57
-[INFO] [1794980261.926561]: 已同步 Gazebo 位置: x=-1.04 y=1.44 θ=-0.57
-[INFO] [1794980264.130171]: 已同步 Gazebo 位置: x=-1.04 y=1.44 θ=-0.57
-[INFO] [1794980266.333279]: 已同步 Gazebo 位置: x=-1.04 y=1.44 θ=-0.57
-[INFO] [1794980268.526642]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=-0.69
-[INFO] [1794980270.529269]: 已同步 Gazebo 位置: x=-1.04 y=1.44 θ=-0.69
-[INFO] [1794980272.539533]: 已同步 Gazebo 位置: x=-1.04 y=1.44 θ=-0.69
-[INFO] [1794980274.557474]: 已同步 Gazebo 位置: x=-1.04 y=1.44 θ=-0.69
-[INFO] [1794980276.733443]: 已同步 Gazebo 位置: x=-1.04 y=1.44 θ=-0.68
+[ERROR] [1794980411.882683]: bad callback: <bound method GazeboSync.scan_cb of <__main__.GazeboSync object at 0xffff9f9fc250>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/lcy/robot_graduation/ros_motion_planning/../ros_motion_planning/src/encoder_tools/scripts/gazebo_sync.py", line 163, in scan_cb
+    self.scan_pub.publish(msg)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 882, in publish
+    self.impl.publish(data)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 1041, in publish
+    raise ROSException("publish() to a closed topic")
+rospy.exceptions.ROSException: publish() to a closed topic
+
+[WARN] [1794980411.954078]: set_model_state 失败: service [/gz_debug/set_model_state] returned no response
+[INFO] [1794980371.740247]: gazebo_sync 已启动
+[INFO] [1794980371.742759]:   持续尝试连接 /gz_debug/set_model_state ...
+[INFO] [1794980371.943413]:   ✅ 已连接 /gz_debug/set_model_state
+[INFO] [1794980371.961592]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=0.71
+[INFO] [1794980374.147613]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=0.71
+[INFO] [1794980376.153241]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=0.71
+[INFO] [1794980378.351689]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=0.71
+[INFO] [1794980380.359482]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=0.71
+[INFO] [1794980382.553885]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=0.60
+[INFO] [1794980384.600597]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=0.08
+[INFO] [1794980386.749052]: 已同步 Gazebo 位置: x=-1.04 y=1.43 θ=-0.51
+[INFO] [1794980388.751983]: 已同步 Gazebo 位置: x=-1.04 y=1.40 θ=-0.70
+[INFO] [1794980390.954492]: 已同步 Gazebo 位置: x=-1.04 y=1.35 θ=-0.70
+[INFO] [1794980392.969118]: 已同步 Gazebo 位置: x=-1.04 y=1.29 θ=-0.70
+[INFO] [1794980395.151074]: 已同步 Gazebo 位置: x=-1.04 y=1.27 θ=-0.70
+[INFO] [1794980397.153635]: 已同步 Gazebo 位置: x=-1.04 y=1.26 θ=-0.69
+[INFO] [1794980399.362709]: 已同步 Gazebo 位置: x=-1.04 y=1.25 θ=-0.69
+[INFO] [1794980401.546857]: 已同步 Gazebo 位置: x=-1.04 y=1.25 θ=-0.69
+[INFO] [1794980403.562564]: 已同步 Gazebo 位置: x=-1.04 y=1.25 θ=-0.69
+[INFO] [1794980405.763083]: 已同步 Gazebo 位置: x=-1.04 y=1.25 θ=-0.69
+[INFO] [1794980407.946672]: 已同步 Gazebo 位置: x=-1.04 y=1.25 θ=-0.69
+[INFO] [1794980409.951560]: 已同步 Gazebo 位置: x=-1.04 y=1.25 θ=-0.69
