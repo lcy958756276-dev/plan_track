@@ -13,7 +13,8 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 WORKSPACE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 LOG_DIR="$WORKSPACE_DIR/log"
-INFLATION_RADIUS="${INFLATION_RADIUS:-0.2}"
+# 统一控制全局/局部 costmap 的障碍物膨胀范围（单位：米）
+INFLATION_RADIUS="0.2"
 
 source "$WORKSPACE_DIR/devel/setup.bash"
 mkdir -p "$LOG_DIR"
