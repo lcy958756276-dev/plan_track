@@ -1,20 +1,20 @@
-=== 启动时间: 2026年 11月 18日 星期三 20:15:58 CST ===
-[20:15:58] [1] main_generate.py start
-[20:15:58] [1] main_generate.py done
-[20:15:58] [2] use_encoder_odom flag set
-[20:15:58] [3] loading robot_description
-[20:15:59] [3] robot_description loaded
-[20:16:02] [4] starting gzserver
-[20:16:08] [4] spawn_model start
-[31m[ERROR] [1795004169.251679247]: DeleteModel: model [my_robot] does not exist[0m
-[31m[ERROR] [1795004170.674913927]: DeleteModel: model [new_robot] does not exist[0m
-[INFO] [1795004172.515930]: Loading model XML from ros parameter robot_description
-[INFO] [1795004172.523242]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1795004172.529674]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1795004172.991152]: Spawn status: SpawnModel: Successfully spawned entity
-[20:16:13] [4] spawn_model exit=0
-[20:16:25] [8] generating move_base launch file
-[20:16:25] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 11月 18日 星期三 20:22:26 CST ===
+[20:22:26] [1] main_generate.py start
+[20:22:27] [1] main_generate.py done
+[20:22:27] [2] use_encoder_odom flag set
+[20:22:27] [3] loading robot_description
+[20:22:27] [3] robot_description loaded
+[20:22:30] [4] starting gzserver
+[20:22:37] [4] spawn_model start
+[31m[ERROR] [1795004557.721353786]: DeleteModel: model [my_robot] does not exist[0m
+[31m[ERROR] [1795004559.066301286]: DeleteModel: model [new_robot] does not exist[0m
+[INFO] [1795004560.844262]: Loading model XML from ros parameter robot_description
+[INFO] [1795004560.850557]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1795004560.854956]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1795004561.369753]: Spawn status: SpawnModel: Successfully spawned entity
+[20:22:42] [4] spawn_model exit=0
+[20:22:54] [8] generating move_base launch file
+[20:22:54] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 double_nmpc_controller/DoubleNMPCController
@@ -46,13 +46,13 @@ global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 rpp_controller /home/lcy/robot_graduation/ros_motion_planning/../ros_motion_planning/src/core/controller/rpp_controller/rpp_controller_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1795004188.387210539]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1795004188.389468495]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1795004576.756933597]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1795004576.759226267]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20261118 20:16:28.806417 75331 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
-I20261118 20:16:28.810858 75331 path_planner_factory.cpp:137] Using path planner: astar_polyline
-[33m[WARN] [1795004188.833063158]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[20:16:29] [8] move_base 启动后状态:
+I20261118 20:22:57.184813 79484 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
+I20261118 20:22:57.190114 79484 path_planner_factory.cpp:137] Using path planner: astar_polyline
+[33m[WARN] [1795004577.203476168]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[20:22:58] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -121,12 +121,21 @@ I20261118 20:16:28.810858 75331 path_planner_factory.cpp:137] Using path planner
   [诊断] local inflation_radius:
 0.01
   [诊断] global inflation_layer 参数:
+I20261118 20:23:00.229641 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:00.242638 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:00.242817 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
 cost_scaling_factor: 2.0
 enabled: true
 inflate_unknown: false
 inflation_radius: 0.01
 
   [诊断] global costmap plugins:
+I20261118 20:23:00.353238 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:00.363776 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:00.363906 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:00.478868 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:00.486570 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:00.486707 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
 - name: static_map
   type: costmap_2d::StaticLayer
 - name: obstacle_layer
@@ -137,177 +146,319 @@ inflation_radius: 0.01
   type: costmap_2d::InflationLayer
 
   [诊断] global costmap 话题信息:
+I20261118 20:23:00.597918 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:00.605469 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:00.605597 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:00.714838 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:00.723362 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:00.723490 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:00.834887 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:00.846451 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:00.846621 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:00.957135 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:00.966500 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:00.966635 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:01.082756 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:01.090848 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:01.091045 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:01.214015 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:01.227757 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:01.227903 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:01.337922 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:01.344913 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:01.345350 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
 Type: nav_msgs/OccupancyGrid
 
 Publishers: 
- * /move_base (http://ubuntu:35191/)
+ * /move_base (http://ubuntu:45455/)
 
-Subscribers: None
+Subscribers: 
+ * /rviz_1795004564905564989 (http://ubuntu:42561/)
 
 
+I20261118 20:23:01.466135 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:01.475288 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:01.475771 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:01.585966 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:01.593122 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:01.593287 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
   [诊断] global costmap 参数结束
-I20261118 20:16:51.050601 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:51.056677 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:51.056988 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:51.169605 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:51.179239 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:51.179358 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:51.289747 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:51.297107 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:51.297272 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:51.408281 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:51.413316 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:51.413587 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:51.527092 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:51.532279 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:51.532490 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:51.650084 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:51.655023 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:51.655170 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:51.773170 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:51.778752 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:51.779037 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:51.899044 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:51.903992 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:51.904114 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:52.013581 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:52.018537 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:52.018829 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:52.126315 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:52.131246 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:52.131353 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:52.244935 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:52.250447 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:52.250560 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:52.359421 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:52.364574 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:52.364686 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:52.472221 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:52.477159 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:52.477267 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:52.585431 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:52.591903 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:52.592046 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:52.703107 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:52.713322 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:52.713464 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:52.826426 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:52.835990 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:52.836135 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:52.946008 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:52.951399 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:52.951484 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:53.059707 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:53.065825 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:53.065932 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:53.176940 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:53.182030 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:53.182145 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:53.290575 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:53.297855 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:53.298000 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:53.406775 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:53.411698 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:53.411821 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:53.521107 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:53.525985 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:53.526132 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:53.635305 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:53.641281 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:53.641381 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:53.750744 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:53.755661 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:53.755774 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:53.869346 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:53.874370 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:53.874471 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:53.984329 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.31031, -0.152747)
-E20261118 20:16:53.989259 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:53.989367 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:55.117839 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:55.122843 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:55.122968 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:55.233486 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:55.238180 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:55.238281 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:55.347393 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:55.352344 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:55.352447 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:55.471971 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:55.478637 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:55.478822 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:55.614883 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:55.622938 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:55.623095 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:55.734079 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:55.739634 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:55.739740 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:55.856575 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:55.861570 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:55.861706 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:55.971175 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:55.976900 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:55.977660 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:56.096549 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:56.103035 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:56.103178 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:56.220799 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:56.225698 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:56.225795 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:56.334585 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:56.339475 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:56.339546 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:56.448990 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:56.454584 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:56.454710 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:56.564033 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:56.569802 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:56.569923 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:56.678679 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:56.685220 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:56.685359 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:56.795969 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:56.801894 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:56.801976 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:56.911438 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:56.917938 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:56.918082 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:57.027459 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:57.036077 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:57.036191 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:57.147435 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:57.154994 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:57.155130 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:57.263816 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:57.268826 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:57.268923 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:57.377591 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:57.384052 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:57.384164 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:57.493862 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:57.499864 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:57.499961 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:57.609668 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:57.615006 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:57.615146 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:57.723750 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:57.730842 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:57.730963 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:57.839673 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:57.847886 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:57.847987 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:57.957851 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:57.967702 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:57.967823 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-I20261118 20:16:58.083884 75331 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.232332, -0.0866092)
-E20261118 20:16:58.095695 75331 path_planner_node.cpp:277] Failed to get a path.
-W20261118 20:16:58.096096 75331 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
-... logging to /home/lcy/.ros/log/ca349cda-e33f-11f1-a40d-189341889b90/roslaunch-ubuntu-75296.log
+I20261118 20:23:01.702868 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:01.709066 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:01.709146 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:01.818048 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:01.830857 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:01.831001 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:01.942867 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:01.950187 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:01.950304 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:02.062288 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:02.075563 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:02.075732 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:02.185112 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:02.194276 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:02.194440 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:02.312160 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:02.319653 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:02.319779 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:02.436408 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:02.444209 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:02.444366 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:02.561290 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:02.569281 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:02.569424 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:02.688602 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:02.700278 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:02.700390 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:02.809249 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:02.816640 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:02.816749 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:02.926892 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:02.934293 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:02.934408 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:03.042301 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:03.049786 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:03.049911 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:03.161365 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.319588, -0.131841)
+E20261118 20:23:03.171069 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:03.171214 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:05.906548 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:05.915148 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:05.915290 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:06.024573 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:06.033228 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:06.033340 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:06.142200 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:06.149273 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:06.149395 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:06.257689 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:06.265596 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:06.265731 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:06.374047 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:06.381031 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:06.381136 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:06.489408 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:06.496515 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:06.496637 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:06.605818 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:06.612761 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:06.612840 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:06.720613 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:06.727562 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:06.727694 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:06.841223 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:06.849658 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:06.849771 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:06.957921 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:06.965181 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:06.965309 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:07.082752 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:07.089774 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:07.089898 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:07.199438 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:07.215349 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:07.215521 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:07.323961 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:07.336666 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:07.336833 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:07.444388 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:07.451730 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:07.451838 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:07.562049 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:07.570068 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:07.570200 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:07.677924 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:07.684896 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:07.685029 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:07.793454 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:07.801016 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:07.802239 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:07.912875 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:07.919847 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:07.919965 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:08.028131 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:08.035292 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:08.035436 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:08.150035 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:08.160075 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:08.160245 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:08.270526 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:08.277645 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:08.277758 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:08.392405 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:08.399379 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:08.399457 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:08.516906 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:08.523882 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:08.523964 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:08.631842 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:08.639976 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:08.640092 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:08.748037 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:08.756292 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:08.756417 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:08.864670 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0601675, -0.72761)
+E20261118 20:23:08.871655 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:08.871797 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:10.369935 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:10.377199 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:10.377332 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:10.494097 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:10.502055 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:10.502189 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:10.612094 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:10.620873 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:10.621073 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:10.729512 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:10.737350 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:10.737485 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:10.845887 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:10.856053 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:10.856202 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:10.964349 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:10.972329 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:10.972457 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:11.081534 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:11.089093 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:11.089174 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:11.205853 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:11.213083 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:11.213210 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:11.324133 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:11.333732 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:11.333878 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:11.445565 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:11.452726 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:11.453075 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:11.564584 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:11.576551 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:11.576864 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:11.701828 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:11.710371 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:11.710510 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:11.822808 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:11.829810 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:11.829927 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:11.944084 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:11.951143 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:11.951231 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:12.060316 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:12.067830 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:12.068028 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:12.181298 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:12.188359 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:12.188442 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:12.297340 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:12.304425 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:12.304523 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:12.412814 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:12.422797 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:12.422933 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:12.541426 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:12.548370 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:12.548498 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:12.661698 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:12.670584 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:12.670732 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:12.781028 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:12.788620 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:12.788772 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:12.899116 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:12.907166 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:12.907294 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:13.015869 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:13.023343 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:13.023452 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:13.132045 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:13.140668 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:13.140794 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:13.250140 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:13.257368 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:13.257505 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:13.365751 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(-0.0813753, -0.747983)
+E20261118 20:23:13.372877 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:13.372995 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:18.008159 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:18.015968 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:18.016075 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:18.125965 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:18.134217 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:18.134325 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:18.243690 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:18.252120 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:18.252254 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:18.365625 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:18.373567 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:18.373669 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:18.491683 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:18.499405 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:18.499538 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:18.609552 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:18.616799 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:18.616889 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:18.732221 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:18.739543 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:18.739650 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:18.847767 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:18.854998 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:18.855129 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:18.973026 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:18.980167 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:18.980755 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:19.097635 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:19.104889 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:19.105027 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:19.214834 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:19.221963 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:19.222088 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:19.330044 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:19.339941 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:19.340080 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:19.448524 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:19.456692 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:19.456835 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:19.575006 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:19.582697 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:19.582827 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:19.691417 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:19.699046 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:19.699173 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:19.808360 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:19.815834 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:19.815974 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:19.925176 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:19.937609 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:19.937774 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:20.053778 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:20.061211 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:20.061334 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:20.174100 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:20.183203 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:20.183341 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:20.308209 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:20.316442 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:20.316581 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:20.445016 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:20.452256 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:20.452389 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:20.564778 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:20.574574 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:20.574725 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:20.686545 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:20.694446 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:20.694561 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:20.817209 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:20.824473 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:20.824565 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 20:23:20.941244 79484 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.953203, 0.683879)
+E20261118 20:23:20.950510 79484 path_planner_node.cpp:277] Failed to get a path.
+W20261118 20:23:20.950661 79484 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+... logging to /home/lcy/.ros/log/ca349cda-e33f-11f1-a40d-189341889b90/roslaunch-ubuntu-79424.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:44055/[0m
+[1mstarted roslaunch server http://ubuntu:33029/[0m
 
 SUMMARY
 ========
@@ -438,7 +589,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [75331][0m
+[1mprocess[move_base-1]: started with pid [79484][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
