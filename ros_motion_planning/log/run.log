@@ -1,32 +1,24 @@
-=== 启动时间: 2026年 11月 17日 星期二 17:45:07 CST ===
-[17:45:07] [1] main_generate.py start
-[17:45:08] [1] main_generate.py done
-[17:45:08] [2] use_encoder_odom flag set
-[17:45:08] [3] loading robot_description
-[17:45:08] [3] robot_description loaded
-[17:45:11] [4] starting gzserver
-[17:45:17] [4] spawn_model start
-[31m[ERROR] [1794908718.457533532]: DeleteModel: model [my_robot] does not exist[0m
-[31m[ERROR] [1794908719.840484476]: DeleteModel: model [new_robot] does not exist[0m
-[INFO] [1794908721.640777]: Loading model XML from ros parameter robot_description
-[INFO] [1794908721.648468]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1794908721.653249]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1794908722.266152]: Spawn status: SpawnModel: Successfully spawned entity
-[17:45:22] [4] spawn_model exit=0
-[17:45:35] [8] generating move_base launch file
-[17:45:35] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 11月 18日 星期三 13:13:16 CST ===
+[13:13:16] [1] main_generate.py start
+[13:13:17] [1] main_generate.py done
+[13:13:17] [2] use_encoder_odom flag set
+[13:13:17] [3] loading robot_description
+[13:13:17] [3] robot_description loaded
+[13:13:20] [4] starting gzserver
+[13:13:26] [4] spawn_model start
+[31m[ERROR] [1794978807.444001864]: DeleteModel: model [my_robot] does not exist[0m
+[31m[ERROR] [1794978808.786580615]: DeleteModel: model [new_robot] does not exist[0m
+[INFO] [1794978810.617047, 0.000000]: Loading model XML from ros parameter robot_description
+[INFO] [1794978810.624087, 0.000000]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1794978810.628531, 0.000000]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1794978811.276593, 7.512000]: Spawn status: SpawnModel: Successfully spawned entity
+[13:13:32] [4] spawn_model exit=0
+[13:13:44] [8] generating move_base launch file
+[13:13:44] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
-path_planner/PathPlanner
-double_nmpc_controller/DoubleNMPCController
-- name: static_map
-  type: costmap_2d::StaticLayer
-- name: obstacle_layer
-  type: costmap_2d::ObstacleLayer
-- name: voronoi_layer
-  type: costmap_2d::VoronoiLayer
-- name: inflation_layer
-  type: costmap_2d::InflationLayer
-
+  [诊断] base_global_planner 参数未设置
+  [诊断] base_local_planner 参数未设置
+  [诊断] global_costmap/plugins 参数未设置
   [诊断] rospack plugins nav_core:
 path_planner /home/lcy/robot_graduation/ros_motion_planning/../ros_motion_planning/src/core/path_planner/path_planner/path_planner_plugin.xml
 lqr_controller /home/lcy/robot_graduation/ros_motion_planning/../ros_motion_planning/src/core/controller/lqr_controller/lqr_controller_plugin.xml
@@ -46,13 +38,13 @@ global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 rpp_controller /home/lcy/robot_graduation/ros_motion_planning/../ros_motion_planning/src/core/controller/rpp_controller/rpp_controller_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1794908737.495939276]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1794908737.498612611]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1794978826.516575813]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1794978826.518706559]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20261117 17:45:37.916088 19211 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
-I20261117 17:45:37.920097 19211 path_planner_factory.cpp:137] Using path planner: astar_polyline
-[33m[WARN] [1794908737.933200232]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[17:45:38] [8] move_base 启动后状态:
+I20261118 13:13:46.960978  6807 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
+I20261118 13:13:46.966821  6807 path_planner_factory.cpp:137] Using path planner: astar_polyline
+[33m[WARN] [1794978826.984330324]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[13:13:48] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -117,9 +109,6 @@ I20261117 17:45:37.920097 19211 path_planner_factory.cpp:137] Using path planner
 /move_base/set_logger_level
 /move_base/set_parameters
   [诊断] global inflation_radius:
-I20261117 17:45:40.589098 19211 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.04, 1.43) goal=(-0.00783339, -0.0866699)
-I20261117 17:45:40.596792 19211 astar_polyline_planner.cpp:46] AStarPolyline: base poses=42, polyline vertices=7, dense poses=42
-I20261117 17:45:40.599704 19211 path_planner_node.cpp:302] PathPlanner make_plan response: poses=42 end=(-0.00783339, -0.0866699) end_goal_dist=0
 0.1
   [诊断] local inflation_radius:
 0.1
@@ -143,19 +132,352 @@ inflation_radius: 0.1
 Type: nav_msgs/OccupancyGrid
 
 Publishers: 
- * /move_base (http://ubuntu:43257/)
+ * /move_base (http://ubuntu:43339/)
 
 Subscribers: 
- * /rviz_1794908725929143530 (http://ubuntu:33965/)
+ * /rviz_1794978814758832154 (http://ubuntu:45459/)
 
 
   [诊断] global costmap 参数结束
-... logging to /home/lcy/.ros/log/6c33505a-e267-11f1-acd3-189341889b90/roslaunch-ubuntu-19150.log
+I20261118 13:13:51.972754  6807 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.04, 1.43) goal=(-0.790703, -0.03357)
+I20261118 13:13:51.976473  6807 astar_polyline_planner.cpp:46] AStarPolyline: base poses=30, polyline vertices=3, dense poses=30
+I20261118 13:13:51.979511  6807 path_planner_node.cpp:302] PathPlanner make_plan response: poses=30 end=(-0.790703, -0.03357) end_goal_dist=0
+I20261118 13:13:57.774008  6818 astar_polyline_planner.cpp:46] AStarPolyline: base poses=30, polyline vertices=4, dense poses=30
+[33m[WARN] [1794978837.819914920]: DoubleNMPC unsafe sample: reason=lethal center=(-1.256,1.218) sample_index=8 offset=(-0.156,-0.156) world=(-1.412,1.062) cell=(21,22) cell_world=(-1.425,1.075) cost=254 radius=0.220 robot_radius=0.160 margin=0.060[0m
+[33m[WARN] [1794978838.219054335]: DoubleNMPC unsafe sample: reason=lethal center=(-1.179,1.209) sample_index=8 offset=(-0.162,-0.162) world=(-1.341,1.047) cell=(23,21) cell_world=(-1.325,1.025) cost=254 radius=0.229 robot_radius=0.160 margin=0.069[0m
+[33m[WARN] [1794978838.469298762]: DoubleNMPC unsafe sample: reason=lethal center=(-1.179,1.209) sample_index=8 offset=(-0.161,-0.161) world=(-1.340,1.048) cell=(23,21) cell_world=(-1.325,1.025) cost=254 radius=0.228 robot_radius=0.160 margin=0.068[0m
+[33m[WARN] [1794978838.768998598]: DoubleNMPC unsafe sample: reason=lethal center=(-1.246,1.246) sample_index=8 offset=(-0.161,-0.161) world=(-1.407,1.085) cell=(21,22) cell_world=(-1.425,1.075) cost=254 radius=0.228 robot_radius=0.160 margin=0.068[0m
+[33m[WARN] [1794978838.870416020]: DoubleNMPC long plan: id=9 full=0 motion=0 brake=0 first_invalid_stage=3 min_clearance=0.247; holding zero long-layer command[0m
+[0m[INFO] [1794978826.519937435]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1794978826.537699402]: Requesting the map...[0m
+[0m[INFO] [1794978826.741440021]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1794978826.841224416]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1794978826.848467340]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1794978826.852995616]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1794978826.876412351]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1794978826.884987463]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1794978826.986176879]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1794978826.990228323]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1794978827.024485544]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1794978827.084408972]: Created local_planner double_nmpc_controller/DoubleNMPCController[0m
+[0m[INFO] [1794978827.130001910]: DoubleNMPCController initialized: prediction=0.16s x 3, command=0.05s, planner=0.48s x 6 (2.88s motion + 1.44s brake certification, updated every 0.1s), max_angular_velocity=1.5rad/s, margin=[0.05, 0.1] m. Set ~DoubleNMPCController/max_linear_velocity explicitly before high-speed operation.[0m
+[0m[INFO] [1794978827.582371422]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1794978827.594254591]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1794978827.649217360]: odom received![0m
+[0m[INFO] [1794978837.821512627]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.197 u_move=(0.209,-0.174) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978837.822785428]: DoubleNMPC: terminal=0 goal_dist=1.481 path_s=0.000/1.505 cte=0.016 lookahead=(0.92,0.44) curvature=0.028  curve_cap=0.450  plan_margin=0.060  plan=(0.209, -0.174) track_cap=0.209  cmd=(0.013, -0.060)  moving_w_cap=1.500  heading=-0.065  speed_scale=0.95 pred_err=(0.016, 0.101)  turn=0.08  risk=0.10  margin=0.060  min_clearance=0.450[0m
+[0m[INFO] [1794978837.971290293]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=0.205 u_move=(0.208,-0.192) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978838.070562477]: DoubleNMPC long plan: id=3 full=1 move=6 brake=3 min_clearance=0.241 u_move=(0.103,-0.201) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978838.220665572]: DoubleNMPC long plan: id=4 full=1 move=6 brake=3 min_clearance=0.241 u_move=(0.103,-0.201) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978838.370457205]: DoubleNMPC long plan: id=5 full=1 move=6 brake=3 min_clearance=0.241 u_move=(0.103,-0.201) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978838.372240223]: DoubleNMPC: terminal=0 goal_dist=1.482 path_s=0.000/1.505 cte=0.016 lookahead=(0.92,0.44) curvature=0.028  curve_cap=0.450  plan_margin=0.069  plan=(0.103, -0.201) track_cap=0.103  cmd=(0.097, -0.242)  moving_w_cap=1.500  heading=-0.078  speed_scale=0.94 pred_err=(0.027, 0.114)  turn=0.33  risk=0.48  margin=0.068  min_clearance=0.423[0m
+[0m[INFO] [1794978838.471564927]: DoubleNMPC long plan: id=6 full=1 move=6 brake=3 min_clearance=0.241 u_move=(0.103,-0.201) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978838.620523704]: DoubleNMPC long plan: id=7 full=1 move=6 brake=3 min_clearance=0.336 u_move=(0.106,0.173) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978838.770582916]: DoubleNMPC long plan: id=8 full=1 move=6 brake=3 min_clearance=0.240 u_move=(0.216,-0.100) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978838.819744341]: DoubleNMPC timing: calls=21 window=1.00s rate=21.0Hz cycle_ms(avg/max)=2.18/4.16 budget=50.0 over_budget=0 planner_calls=8 planner_ms(avg/max)=2.27/2.83[0m
+[0m[INFO] [1794978838.872431410]: DoubleNMPC: terminal=0 goal_dist=1.435 path_s=0.045/1.505 cte=0.012 lookahead=(0.93,0.44) curvature=0.114 [33m[WARN] [1794978839.019017250]: DoubleNMPC unsafe sample: reason=lethal center=(-1.194,1.192) sample_index=8 offset=(-0.163,-0.163) world=(-1.356,1.030) cell=(22,21) cell_world=(-1.375,1.025) cost=254 radius=0.230 robot_radius=0.160 margin=0.070[0m
+[33m[WARN] [1794978839.020277585]: DoubleNMPC long plan: id=10 full=0 motion=0 brake=0 first_invalid_stage=5 min_clearance=0.230; holding zero long-layer command[0m
+[33m[WARN] [1794978839.319107620]: DoubleNMPC unsafe sample: reason=lethal center=(-1.188,1.173) sample_index=8 offset=(-0.162,-0.162) world=(-1.350,1.011) cell=(22,22) cell_world=(-1.375,1.025) cost=254 radius=0.229 robot_radius=0.160 margin=0.069[0m
+[33m[WARN] [1794978839.619079309]: DoubleNMPC unsafe sample: reason=lethal center=(-1.143,1.069) sample_index=8 offset=(-0.159,-0.159) world=(-1.302,0.911) cell=(23,20) cell_world=(-1.325,0.925) cost=254 radius=0.225 robot_radius=0.160 margin=0.065[0m
+[33m[WARN] [1794978840.069239308]: DoubleNMPC unsafe sample: reason=lethal center=(-1.174,1.053) sample_index=8 offset=(-0.156,-0.156) world=(-1.330,0.897) cell=(23,20) cell_world=(-1.325,0.875) cost=254 radius=0.220 robot_radius=0.160 margin=0.060[0m
+[33m[WARN] [1794978840.369052635]: DoubleNMPC unsafe sample: reason=lethal center=(-1.181,1.056) sample_index=8 offset=(-0.156,-0.156) world=(-1.337,0.900) cell=(23,20) cell_world=(-1.325,0.875) cost=254 radius=0.220 robot_radius=0.160 margin=0.060[0m
+[33m[WARN] [1794978840.519527049]: DoubleNMPC unsafe sample: reason=out_of_map center=(-1.076,0.047) sample_index=4 offset=(0.000,-0.220) world=(-1.076,-0.173) radius=0.220 robot_radius=0.160 margin=0.060 map_origin=(-2.500,-0.150) map_size=(2.975,2.975)[0m
+[33m[WARN] [1794978840.669289699]: DoubleNMPC unsafe sample: reason=lethal center=(-1.308,0.958) sample_index=4 offset=(0.000,-0.220) world=(-1.308,0.738) cell=(23,18) cell_world=(-1.325,0.725) cost=254 radius=0.220 robot_radius=0.160 margin=0.060[0m
+ curve_cap=0.450  plan_margin=0.070  plan=(0.000, 0.000) track_cap=0.000  cmd=(0.094, -0.211)  moving_w_cap=1.500  heading=-0.035  speed_scale=0.97 pred_err=(0.025, 0.063)  turn=0.29  risk=0.58  margin=0.070  min_clearance=0.425[0m
+[0m[INFO] [1794978839.170684528]: DoubleNMPC long plan: id=11 full=1 move=6 brake=3 min_clearance=0.283 u_move=(0.112,0.001) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978839.321854067]: DoubleNMPC long plan: id=12 full=1 move=6 brake=3 min_clearance=0.291 u_move=(0.111,0.033) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978839.419734992]: DoubleNMPC: terminal=0 goal_dist=1.414 path_s=0.067/1.505 cte=0.011 lookahead=(0.93,0.44) curvature=0.180  curve_cap=0.450  plan_margin=0.069  plan=(0.111, 0.033) track_cap=0.111  cmd=(0.075, 0.038)  moving_w_cap=1.500  heading=0.006  speed_scale=0.99 pred_err=(0.028, 0.037)  turn=0.05  risk=0.49  margin=0.068  min_clearance=0.418[0m
+[0m[INFO] [1794978839.470417253]: DoubleNMPC long plan: id=13 full=1 move=6 brake=3 min_clearance=0.286 u_move=(0.112,0.012) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978839.620670787]: DoubleNMPC long plan: id=14 full=1 move=6 brake=3 min_clearance=0.292 u_move=(0.112,0.001) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978839.770469439]: DoubleNMPC long plan: id=15 full=1 move=6 brake=3 min_clearance=0.294 u_move=(0.112,0.022) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978839.869681019]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=2.17/4.66 budget=50.0 over_budget=0 planner_calls=7 planner_ms(avg/max)=2.08/3.27[0m
+[0m[INFO] [1794978839.969669277]: DoubleNMPC: terminal=0 goal_dist=1.358 path_s=0.122/1.505 cte=0.009 lookahead=(0.93,0.44) curvature=0.350  curve_cap=0.450  plan_margin=0.063  plan=(0.112, 0.022) track_cap=0.112  cmd=(0.111, 0.007)  moving_w_cap=1.500  heading=0.001  speed_scale=1.00 pred_err=(0.022, 0.023)  turn=0.01  risk=0.22  margin=0.061  min_clearance=0.416[0m
+[0m[INFO] [1794978840.070507509]: DoubleNMPC long plan: id=16 full=1 move=6 brake=3 min_clearance=0.263 u_move=(0.109,0.083) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978840.170340474]: DoubleNMPC long plan: id=17 full=1 move=6 brake=3 min_clearance=0.254 u_move=(0.108,0.093) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978840.270595191]: DoubleNMPC long plan: id=18 full=1 move=6 brake=3 min_clearance=0.245 u_move=(0.108,0.100) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978840.370664973]: DoubleNMPC long plan: id=19 full=1 move=6 brake=3 min_clearance=0.237 u_move=(0.108,0.106) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978840.469680102]: DoubleNMPC: terminal=0 goal_dist=1.305 path_s=0.176/1.505 cte=0.008 lookahead=(0.93,0.44) curvature=0.522  curve_cap=0.450  plan_margin=0.060  plan=(0.108, 0.106) track_cap=0.108  cmd=(0.108, -0.012)  moving_w_cap=1.500  heading=-0.002  speed_scale=1.00 pred_err=(0.022, 0.021)  turn=0.02  risk=0.20  margin=0.060  min_clearance=0.403[0m
+[0m[INFO] [1794978840.520593961]: DoubleNMPC long plan: id=20 full=1 move=6 brake=3 min_clearance=0.224 u_move=(0.107,0.121) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978840.670629179]: DoubleNMPC long plan: id=21 full=1 move=6 brake=3 min_clearance=0.212 u_move=(0.106,0.138) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978840.820333032]: DoubleNMPC long plan: id=22 full=1 move=6 brake=3 min_clearance=0.249 u_move=(0.105,-0.169) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978840.870331435]: DoubleNMPC timing: calls=20 window=1.00s rate=20.0Hz cycle_ms(avg/max)=1.94/3.75 budget=50.0 over_budget=0 planner_calls=7 planner_ms(avg/max)=1.99/2.10[0m
+[0m[INFO] [1794978840.969770813]: DoubleNMPC: terminal=0 goal_dist=1.253 path_s=0.228/1.505 cte=0.007 lookahead=(0.94,0.44) curvature=0.691  curve_cap=0.450  plan_margin=0.[33m[WARN] [1794978841.069111982]: DoubleNMPC unsafe sample: reason=lethal center=(-0.956,0.923) sample_index=6 offset=(0.156,-0.156) world=(-0.800,0.768) cell=(34,21) cell_world=(-0.775,0.775) cost=254 radius=0.220 robot_radius=0.160 margin=0.060[0m
+[33m[WARN] [1794978841.319218985]: DoubleNMPC unsafe sample: reason=lethal center=(-0.956,0.915) sample_index=6 offset=(0.158,-0.158) world=(-0.797,0.757) cell=(34,21) cell_world=(-0.775,0.775) cost=254 radius=0.224 robot_radius=0.160 margin=0.064[0m
+[33m[WARN] [1794978841.569262775]: DoubleNMPC unsafe sample: reason=lethal center=(-1.152,0.879) sample_index=8 offset=(-0.156,-0.156) world=(-1.307,0.723) cell=(23,21) cell_world=(-1.325,0.725) cost=254 radius=0.220 robot_radius=0.160 margin=0.060[0m
+[33m[WARN] [1794978841.819281985]: DoubleNMPC unsafe sample: reason=lethal center=(-0.951,0.792) sample_index=6 offset=(0.156,-0.156) world=(-0.795,0.636) cell=(34,19) cell_world=(-0.775,0.625) cost=254 radius=0.220 robot_radius=0.160 margin=0.060[0m
+[33m[WARN] [1794978842.069272290]: DoubleNMPC unsafe sample: reason=lethal center=(-1.017,0.649) sample_index=1 offset=(0.220,0.000) world=(-0.797,0.649) cell=(34,20) cell_world=(-0.775,0.625) cost=254 radius=0.220 robot_radius=0.160 margin=0.060[0m
+[33m[WARN] [1794978842.319285256]: DoubleNMPC unsafe sample: reason=lethal center=(-0.750,0.941) sample_index=6 offset=(0.156,-0.156) world=(-0.594,0.785) cell=(38,23) cell_world=(-0.575,0.775) cost=254 radius=0.220 robot_radius=0.160 margin=0.060[0m
+[33m[WARN] [1794978842.619372990]: DoubleNMPC unsafe sample: reason=lethal center=(-1.154,0.713) sample_index=8 offset=(-0.153,-0.153) world=(-1.307,0.560) cell=(23,20) cell_world=(-1.325,0.575) cost=254 radius=0.216 robot_radius=0.160 margin=0.056[0m
+060  plan=(0.105, -0.169) track_cap=0.105  cmd=(0.105, -0.001)  moving_w_cap=1.500  heading=-0.000  speed_scale=1.00 pred_err=(0.022, 0.017)  turn=0.00  risk=0.21  margin=0.060  min_clearance=0.427[0m
+[0m[INFO] [1794978841.070400533]: DoubleNMPC long plan: id=23 full=1 move=6 brake=3 min_clearance=0.224 u_move=(0.313,-0.060) u_brake=[(0.001,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978841.220628845]: DoubleNMPC long plan: id=24 full=1 move=6 brake=3 min_clearance=0.268 u_move=(0.104,-0.127) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978841.320818735]: DoubleNMPC long plan: id=25 full=1 move=6 brake=3 min_clearance=0.265 u_move=(0.103,-0.115) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978841.470224320]: DoubleNMPC long plan: id=26 full=1 move=6 brake=3 min_clearance=0.255 u_move=(0.102,-0.097) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978841.471323040]: DoubleNMPC: terminal=0 goal_dist=1.196 path_s=0.286/1.505 cte=0.006 lookahead=(0.94,0.44) curvature=0.874  curve_cap=0.450  plan_margin=0.061  plan=(0.102, -0.097) track_cap=0.102  cmd=(0.102, -0.012)  moving_w_cap=1.500  heading=-0.002  speed_scale=1.00 pred_err=(0.025, 0.016)  turn=0.02  risk=0.22  margin=0.060  min_clearance=0.367[0m
+[0m[INFO] [1794978841.570707646]: DoubleNMPC long plan: id=27 full=1 move=6 brake=3 min_clearance=0.231 u_move=(0.204,-0.086) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978841.720251787]: DoubleNMPC long plan: id=28 full=1 move=6 brake=3 min_clearance=0.234 u_move=(0.202,-0.069) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978841.820473780]: DoubleNMPC long plan: id=29 full=1 move=6 brake=3 min_clearance=0.229 u_move=(0.201,-0.056) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978841.919656457]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=1.99/3.44 budget=50.0 over_budget=0 planner_calls=7 planner_ms(avg/max)=1.96/2.17[0m
+[0m[INFO] [1794978842.019708791]: DoubleNMPC: terminal=0 goal_dist=1.127 path_s=0.356/1.505 cte=0.005 lookahead=(0.94,0.45) curvature=1.086  curve_cap=0.450  plan_margin=0.060  plan=(0.201, -0.056) track_cap=0.201  cmd=(0.201, -0.005)  moving_w_cap=1.500  heading=-0.001  speed_scale=1.00 pred_err=(0.026, 0.013)  turn=0.01  risk=0.14  margin=0.060  min_clearance=0.381[0m
+[0m[INFO] [1794978842.070588967]: DoubleNMPC long plan: id=30 full=1 move=6 brake=3 min_clearance=0.253 u_move=(0.099,-0.015) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978842.170651349]: DoubleNMPC long plan: id=31 full=1 move=6 brake=3 min_clearance=0.238 u_move=(0.098,0.005) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978842.320592651]: DoubleNMPC long plan: id=32 full=1 move=6 brake=3 min_clearance=0.222 u_move=(0.097,0.028) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978842.470328185]: DoubleNMPC long plan: id=33 full=1 move=6 brake=3 min_clearance=0.214 u_move=(0.096,0.042) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978842.569625231]: DoubleNMPC: terminal=0 goal_dist=1.053 path_s=0.431/1.505 cte=0.004 lookahead=(0.94,0.45) curvature=1.038  curve_cap=0.450  plan_margin=0.059  plan=(0.096, 0.042) track_cap=0.096  cmd=(0.096, -0.002)  moving_w_cap=1.500  heading=-0.000  speed_scale=1.00 pred_err=(0.020, 0.010)  turn=0.00  risk=0.09  margin=0.056  min_clearance=0.412[0m
+[0m[INFO] [1794978842.620676832]: DoubleNMPC long plan: id=34 full=1 move=6 brake=3 min_clearance=0.227 u_move=(0.095,0.057) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978842.770371174]: DoubleNMPC long plan: id=35 full=1 move=6 brake=3 min_clearance=0.217 u_move=(0.095,0.072) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978842.969594607]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=1.82/4.46 budget=50.0 over_budget=0 planner_calls=6 planner_ms(avg/max)=1.[33m[WARN] [1794978843.069402834]: DoubleNMPC unsafe sample: reason=lethal center=(-1.154,0.659) sample_index=8 offset=(-0.148,-0.148) world=(-1.302,0.510) cell=(23,20) cell_world=(-1.325,0.525) cost=254 radius=0.210 robot_radius=0.160 margin=0.050[0m
+[33m[WARN] [1794978843.319401278]: DoubleNMPC unsafe sample: reason=lethal center=(-1.086,0.306) sample_index=2 offset=(-0.215,0.000) world=(-1.301,0.306) cell=(23,16) cell_world=(-1.325,0.325) cost=254 radius=0.215 robot_radius=0.160 margin=0.055[0m
+[33m[WARN] [1794978843.619250153]: DoubleNMPC unsafe sample: reason=lethal center=(-1.145,0.612) sample_index=8 offset=(-0.158,-0.158) world=(-1.303,0.454) cell=(23,20) cell_world=(-1.325,0.475) cost=254 radius=0.224 robot_radius=0.160 margin=0.064[0m
+[33m[WARN] [1794978844.068980486]: DoubleNMPC unsafe sample: reason=lethal center=(-1.133,0.626) sample_index=8 offset=(-0.168,-0.168) world=(-1.301,0.458) cell=(23,21) cell_world=(-1.325,0.475) cost=254 radius=0.237 robot_radius=0.160 margin=0.077[0m
+[33m[WARN] [1794978844.319045359]: DoubleNMPC unsafe sample: reason=lethal center=(-0.948,0.611) sample_index=6 offset=(0.167,-0.167) world=(-0.781,0.443) cell=(34,20) cell_world=(-0.775,0.425) cost=254 radius=0.237 robot_radius=0.160 margin=0.077[0m
+[33m[WARN] [1794978844.569053262]: DoubleNMPC unsafe sample: reason=lethal center=(-0.915,0.510) sample_index=6 offset=(0.166,-0.166) world=(-0.749,0.344) cell=(35,19) cell_world=(-0.725,0.325) cost=254 radius=0.235 robot_radius=0.160 margin=0.075[0m
+[33m[WARN] [1794978844.819057068]: DoubleNMPC unsafe sample: reason=lethal center=(-0.792,0.555) sample_index=4 offset=(0.000,-0.234) world=(-0.792,0.321) cell=(34,19) cell_world=(-0.775,0.325) cost=254 radius=0.234 robot_radius=0.160 margin=0.074[0m
+94/2.06[0m
+[0m[INFO] [1794978843.070788830]: DoubleNMPC long plan: id=36 full=1 move=6 brake=3 min_clearance=0.223 u_move=(0.093,0.099) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978843.072568246]: DoubleNMPC: terminal=0 goal_dist=1.006 path_s=0.479/1.505 cte=0.004 lookahead=(0.94,0.45) curvature=0.887  curve_cap=0.450  plan_margin=0.050  plan=(0.093, 0.099) track_cap=0.093  cmd=(0.093, -0.005)  moving_w_cap=1.500  heading=-0.001  speed_scale=1.00 pred_err=(0.024, 0.010)  turn=0.01  risk=0.09  margin=0.050  min_clearance=0.411[0m
+[0m[INFO] [1794978843.220421035]: DoubleNMPC long plan: id=37 full=1 move=6 brake=3 min_clearance=0.212 u_move=(0.093,0.114) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978843.320557470]: DoubleNMPC long plan: id=38 full=1 move=6 brake=3 min_clearance=0.206 u_move=(0.092,0.122) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978843.472318598]: DoubleNMPC long plan: id=39 full=1 move=6 brake=3 min_clearance=0.199 u_move=(0.093,0.104) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978843.620489304]: DoubleNMPC long plan: id=40 full=1 move=6 brake=3 min_clearance=0.222 u_move=(0.096,0.038) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978843.621487001]: DoubleNMPC: terminal=0 goal_dist=0.956 path_s=0.530/1.505 cte=0.003 lookahead=(0.94,0.45) curvature=0.633  curve_cap=0.450  plan_margin=0.064  plan=(0.096, 0.038) track_cap=0.096  cmd=(0.094, 0.359)  moving_w_cap=1.500  heading=-0.024  speed_scale=0.98 pred_err=(0.025, 0.225)  turn=0.49  risk=0.62  margin=0.065  min_clearance=0.410[0m
+[0m[INFO] [1794978843.770270370]: DoubleNMPC long plan: id=41 full=1 move=6 brake=3 min_clearance=0.227 u_move=(0.101,-0.066) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978844.019665672]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=1.82/4.97 budget=50.0 over_budget=0 planner_calls=6 planner_ms(avg/max)=2.27/3.86[0m
+[0m[INFO] [1794978844.070340614]: DoubleNMPC long plan: id=42 full=1 move=6 brake=3 min_clearance=0.251 u_move=(0.107,-0.193) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978844.170422772]: DoubleNMPC long plan: id=43 full=1 move=6 brake=3 min_clearance=0.257 u_move=(0.109,-0.251) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978844.171576877]: DoubleNMPC: terminal=0 goal_dist=0.909 path_s=0.577/1.505 cte=0.003 lookahead=(0.94,0.45) curvature=0.408  curve_cap=0.450  plan_margin=0.078  plan=(0.109, -0.251) track_cap=0.109  cmd=(0.096, 0.180)  moving_w_cap=1.500  heading=-0.140  speed_scale=0.88 pred_err=(0.023, 0.279)  turn=0.25  risk=0.73  margin=0.078  min_clearance=0.394[0m
+[0m[INFO] [1794978844.320316671]: DoubleNMPC long plan: id=44 full=1 move=6 brake=3 min_clearance=0.252 u_move=(0.111,-0.289) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978844.420139644]: DoubleNMPC long plan: id=45 full=1 move=6 brake=3 min_clearance=0.246 u_move=(0.111,-0.293) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978844.570401804]: DoubleNMPC long plan: id=46 full=1 move=6 brake=3 min_clearance=0.265 u_move=(0.111,-0.282) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978844.670206982]: DoubleNMPC long plan: id=47 full=1 move=6 brake=3 min_clearance=0.267 u_move=(0.110,-0.278) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978844.719612982]: DoubleNMPC: terminal=0 goal_dist=0.852 path_s=0.633/1.505 cte=0.015 lookahead=(0.92,0.44) curvature=0.180  curve_cap=0.450  plan_margin=0.074  plan=(0.110, -0.278) track_cap=0.110  cmd=(0.098, 0.113)  moving_w_cap=1.500  heading=-0.138  speed_scale=0.89 pred_err=(0.031, 0.262)  turn=0.16  risk=0.64  margin=0.074  min_clearance=0.420[0m
+[0m[INFO] [1794978844.820318137]: DoubleNMPC long plan: id=48 full=1 move=6 brake=3 min_clearance=0.265 u_move=(0.111,-0.293) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m[33m[WARN] [1794978845.069096111]: DoubleNMPC unsafe sample: reason=lethal center=(-0.930,0.515) sample_index=6 offset=(0.166,-0.166) world=(-0.764,0.349) cell=(34,20) cell_world=(-0.775,0.325) cost=254 radius=0.234 robot_radius=0.160 margin=0.074[0m
+[33m[WARN] [1794978845.369006207]: DoubleNMPC unsafe sample: reason=lethal center=(-1.138,0.516) sample_index=8 offset=(-0.166,-0.166) world=(-1.304,0.350) cell=(23,20) cell_world=(-1.325,0.325) cost=254 radius=0.235 robot_radius=0.160 margin=0.075[0m
+[33m[WARN] [1794978845.618995955]: DoubleNMPC unsafe sample: reason=lethal center=(-1.141,0.495) sample_index=8 offset=(-0.167,-0.167) world=(-1.308,0.328) cell=(23,21) cell_world=(-1.325,0.325) cost=254 radius=0.236 robot_radius=0.160 margin=0.076[0m
+[33m[WARN] [1794978846.068979258]: DoubleNMPC unsafe sample: reason=lethal center=(-1.139,0.464) sample_index=8 offset=(-0.168,-0.168) world=(-1.307,0.297) cell=(23,21) cell_world=(-1.325,0.275) cost=254 radius=0.237 robot_radius=0.160 margin=0.077[0m
+[33m[WARN] [1794978846.070036567]: DoubleNMPC long plan: id=55 full=0 motion=0 brake=0 first_invalid_stage=4 min_clearance=0.050; holding zero long-layer command[0m
+[33m[WARN] [1794978846.368994191]: DoubleNMPC unsafe sample: reason=lethal center=(-1.134,0.449) sample_index=8 offset=(-0.166,-0.166) world=(-1.300,0.282) cell=(23,21) cell_world=(-1.325,0.275) cost=254 radius=0.235 robot_radius=0.160 margin=0.075[0m
+[33m[WARN] [1794978846.619148992]: DoubleNMPC unsafe sample: reason=lethal center=(-0.905,0.360) sample_index=6 offset=(0.165,-0.165) world=(-0.739,0.195) cell=(34,20) cell_world=(-0.725,0.175) cost=254 radius=0.234 robot_radius=0.160 margin=0.074[0m
+[33m[WARN] [1794978846.620497040]: DoubleNMPC long plan: id=60 full=0 motion=0 brake=0 first_invalid_stage=4 min_clearance=0.059; holding zero long-layer command[0m
+[33m[WARN] [1794978847.069014598]: DoubleNMPC unsafe sample: reason=lethal center=(-1.089,0.412) sample_index=8 offset=(-0.166,-0.166) world=(-1.254,0.246) cell=(23,21) cell_world=(-1.275,0.225) cost=254 radius=0.234 robot_radius=0.160 margin=0.074[0m
+
+[0m[INFO] [1794978845.021336927]: DoubleNMPC timing: calls=20 window=1.00s rate=20.0Hz cycle_ms(avg/max)=1.84/3.13 budget=50.0 over_budget=0 planner_calls=7 planner_ms(avg/max)=1.79/1.90[0m
+[0m[INFO] [1794978845.070385724]: DoubleNMPC long plan: id=49 full=1 move=6 brake=3 min_clearance=0.254 u_move=(0.112,-0.331) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978845.220225311]: DoubleNMPC long plan: id=50 full=1 move=6 brake=3 min_clearance=0.245 u_move=(0.112,-0.340) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978845.221237208]: DoubleNMPC: terminal=0 goal_dist=0.802 path_s=0.681/1.505 cte=0.026 lookahead=(0.90,0.43) curvature=-0.056  curve_cap=0.450  plan_margin=0.074  plan=(0.112, -0.340) track_cap=0.112  cmd=(0.098, 0.021)  moving_w_cap=1.500  heading=-0.153  speed_scale=0.87 pred_err=(0.038, 0.246)  turn=0.03  risk=0.63  margin=0.074  min_clearance=0.390[0m
+[0m[INFO] [1794978845.370350486]: DoubleNMPC long plan: id=51 full=1 move=6 brake=3 min_clearance=0.235 u_move=(0.112,-0.341) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978845.470498854]: DoubleNMPC long plan: id=52 full=1 move=6 brake=3 min_clearance=0.228 u_move=(0.112,-0.343) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978845.620941208]: DoubleNMPC long plan: id=53 full=1 move=6 brake=3 min_clearance=0.276 u_move=(0.111,-0.352) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978845.770209586]: DoubleNMPC long plan: id=54 full=1 move=6 brake=3 min_clearance=0.275 u_move=(0.111,-0.364) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978845.771244368]: DoubleNMPC: terminal=0 goal_dist=0.748 path_s=0.734/1.505 cte=0.039 lookahead=(0.88,0.41) curvature=-0.289  curve_cap=0.450  plan_margin=0.076  plan=(0.111, -0.364) track_cap=0.111  cmd=(0.097, 0.038)  moving_w_cap=1.500  heading=-0.150  speed_scale=0.88 pred_err=(0.051, 0.265)  turn=0.05  risk=0.70  margin=0.076  min_clearance=0.406[0m
+[0m[INFO] [1794978846.071011717]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=1.77/4.19 budget=50.0 over_budget=0 planner_calls=7 planner_ms(avg/max)=1.79/2.41[0m
+[0m[INFO] [1794978846.170267516]: DoubleNMPC long plan: id=56 full=1 move=6 brake=3 min_clearance=0.278 u_move=(0.110,-0.385) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978846.270197099]: DoubleNMPC long plan: id=57 full=1 move=6 brake=3 min_clearance=0.146 u_move=(0.110,0.261) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978846.319577370]: DoubleNMPC: terminal=0 goal_dist=0.700 path_s=0.781/1.505 cte=0.051 lookahead=(0.85,0.40) curvature=-0.475  curve_cap=0.450  plan_margin=0.076  plan=(0.110, 0.261) track_cap=0.110  cmd=(0.082, 0.032)  moving_w_cap=1.500  heading=-0.151  speed_scale=0.87 pred_err=(0.062, 0.274)  turn=0.04  risk=0.67  margin=0.075  min_clearance=0.409[0m
+[0m[INFO] [1794978846.370405899]: DoubleNMPC long plan: id=58 full=1 move=6 brake=3 min_clearance=0.143 u_move=(0.109,0.256) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978846.470211908]: DoubleNMPC long plan: id=59 full=1 move=6 brake=3 min_clearance=0.137 u_move=(0.109,0.251) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978846.770279298]: DoubleNMPC long plan: id=61 full=1 move=6 brake=3 min_clearance=0.155 u_move=(0.109,0.240) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978846.819621099]: DoubleNMPC: terminal=0 goal_dist=0.660 path_s=0.819/1.505 cte=0.062 lookahead=(0.83,0.39) curvature=-0.701  curve_cap=0.450  plan_margin=0.073  plan=(0.109, 0.240) track_cap=0.109  cmd=(0.025, 0.034)  moving_w_cap=1.500  heading=-0.151  speed_scale=0.87 pred_err=(0.065, 0.283)  turn=0.05  risk=0.64  margin=0.074  min_clearance=0.441[0m
+[0m[INFO] [1794978847.070532014]: DoubleNMPC long plan: id=62 full=1 move=6 brake=3 min_clearance=0.148 u_move=(0.108,0.232) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[33m[WARN] [1794978847.319066183]: DoubleNMPC unsafe sample: reason=lethal center=(-0.901,0.364) sample_index=6 offset=(0.166,-0.166) world=(-0.735,0.199) cell=(34,20) cell_world=(-0.725,0.175) cost=254 radius=0.234 robot_radius=0.160 margin=0.074[0m
+[33m[WARN] [1794978847.569236541]: DoubleNMPC unsafe sample: reason=lethal center=(-1.088,0.299) sample_index=2 offset=(-0.234,0.000) world=(-1.323,0.299) cell=(22,23) cell_world=(-1.325,0.275) cost=254 radius=0.234 robot_radius=0.160 margin=0.074[0m
+[33m[WARN] [1794978847.819254169]: DoubleNMPC unsafe sample: reason=lethal center=(-1.064,0.281) sample_index=2 offset=(-0.236,0.000) world=(-1.300,0.281) cell=(22,23) cell_world=(-1.325,0.275) cost=254 radius=0.236 robot_radius=0.160 margin=0.076[0m
+[33m[WARN] [1794978848.069257709]: DoubleNMPC unsafe sample: reason=lethal center=(-1.073,0.003) sample_index=2 offset=(-0.234,0.000) world=(-1.307,0.003) cell=(22,19) cell_world=(-1.325,0.025) cost=254 radius=0.234 robot_radius=0.160 margin=0.074[0m
+[33m[WARN] [1794978848.319393860]: DoubleNMPC unsafe sample: reason=lethal center=(-1.015,0.096) sample_index=2 offset=(-0.236,0.000) world=(-1.251,0.096) cell=(23,20) cell_world=(-1.275,0.075) cost=254 radius=0.236 robot_radius=0.160 margin=0.076[0m
+[33m[WARN] [1794978848.470050176]: DoubleNMPC long plan: id=72 full=0 motion=0 brake=0 first_invalid_stage=5 min_clearance=0.274; holding zero long-layer command[0m
+[33m[WARN] [1794978848.570004459]: DoubleNMPC unsafe sample: reason=lethal center=(-1.089,0.229) sample_index=8 offset=(-0.166,-0.166) world=(-1.255,0.063) cell=(22,21) cell_world=(-1.275,0.075) cost=254 radius=0.235 robot_radius=0.160 margin=0.075[0m
+[33m[WARN] [1794978848.571147693]: DoubleNMPC long plan: id=73 full=0 motion=0 brake=0 first_invalid_stage=5 min_clearance=0.316; holding zero long-layer command[0m
+[33m[WARN] [1794978848.671259859]: DoubleNMPC long plan: id=74 full=0 motion=0 brake=0 first_invalid_stage=5 min_clearance=0.313; holding zero long-layer command[0m
+[33m[WARN] [1794978849.069231597]: DoubleNMPC unsafe sample: reason=lethal center=(-1.038,0.238) sample_index=8 offset=(-0.168,-0.168) world=(-1.206,0.070) cell=(23,21) cell_world=(-1.225,0.075) cost=254 radius=0.238 robot_radius=0.160 margin=0.078[0m
+[0m[INFO] [1794978847.074386700]: DoubleNMPC timing: calls=20 window=1.00s rate=19.9Hz cycle_ms(avg/max)=1.91/5.84 budget=50.0 over_budget=0 planner_calls=7 planner_ms(avg/max)=1.83/1.99[0m
+[0m[INFO] [1794978847.220262279]: DoubleNMPC long plan: id=63 full=1 move=6 brake=3 min_clearance=0.139 u_move=(0.108,0.224) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978847.320432661]: DoubleNMPC long plan: id=64 full=1 move=6 brake=3 min_clearance=0.129 u_move=(0.108,0.220) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978847.321395388]: DoubleNMPC: terminal=0 goal_dist=0.636 path_s=0.842/1.505 cte=0.068 lookahead=(0.82,0.39) curvature=-0.918  curve_cap=0.450  plan_margin=0.074  plan=(0.108, 0.220) track_cap=0.108  cmd=(0.094, 0.017)  moving_w_cap=1.500  heading=-0.153  speed_scale=0.87 pred_err=(0.080, 0.281)  turn=0.02  risk=0.62  margin=0.074  min_clearance=0.385[0m
+[0m[INFO] [1794978847.470226873]: DoubleNMPC long plan: id=65 full=1 move=6 brake=3 min_clearance=0.112 u_move=(0.108,0.214) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978847.570640689]: DoubleNMPC long plan: id=66 full=1 move=6 brake=3 min_clearance=0.244 u_move=(0.215,-0.115) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978847.672383921]: DoubleNMPC long plan: id=67 full=1 move=6 brake=3 min_clearance=0.238 u_move=(0.214,-0.119) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978847.820642442]: DoubleNMPC long plan: id=68 full=1 move=6 brake=3 min_clearance=0.365 u_move=(0.107,-0.128) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978847.821586318]: DoubleNMPC: terminal=0 goal_dist=0.584 path_s=0.892/1.505 cte=0.082 lookahead=(0.79,0.38) curvature=-1.657  curve_cap=0.450  plan_margin=0.076  plan=(0.107, -0.128) track_cap=0.107  cmd=(0.124, 0.034)  moving_w_cap=1.500  heading=-0.151  speed_scale=0.87 pred_err=(0.094, 0.280)  turn=0.05  risk=0.65  margin=0.075  min_clearance=0.410[0m
+[0m[INFO] [1794978848.070638711]: DoubleNMPC long plan: id=69 full=1 move=6 brake=3 min_clearance=0.373 u_move=(0.106,-0.147) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978848.119583678]: DoubleNMPC timing: calls=21 window=1.04s rate=20.1Hz cycle_ms(avg/max)=1.80/4.65 budget=50.0 over_budget=0 planner_calls=7 planner_ms(avg/max)=2.11/3.27[0m
+[0m[INFO] [1794978848.171015498]: DoubleNMPC long plan: id=70 full=1 move=6 brake=3 min_clearance=0.373 u_move=(0.106,-0.154) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978848.320588270]: DoubleNMPC long plan: id=71 full=1 move=6 brake=3 min_clearance=0.370 u_move=(0.105,-0.176) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978848.321594681]: DoubleNMPC: terminal=0 goal_dist=0.530 path_s=0.965/1.505 cte=0.093 lookahead=(0.77,0.37) curvature=0.000  curve_cap=0.450  plan_margin=0.076  plan=(0.105, -0.176) track_cap=0.105  cmd=(0.093, 0.114)  moving_w_cap=1.500  heading=-0.138  speed_scale=0.89 pred_err=(0.095, 0.097)  turn=0.16  risk=0.69  margin=0.076  min_clearance=0.446[0m
+[0m[INFO] [1794978848.820469434]: DoubleNMPC long plan: id=75 full=1 move=6 brake=3 min_clearance=0.232 u_move=(0.200,0.048) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978848.870088627]: DoubleNMPC: terminal=0 goal_dist=0.507 path_s=1.011/1.505 cte=0.092 lookahead=(0.77,0.37) curvature=0.000  curve_cap=0.450  plan_margin=0.071  plan=(0.200, 0.048) track_cap=0.200  cmd=(0.025, -0.047)  moving_w_cap=1.500  heading=-0.164  speed_scale=0.86 pred_err=(0.095, 0.106)  turn=0.06  risk=0.72  margin=0.074  min_clearance=0.465[0m
+[0m[INFO] [1794978849.070747079]: DoubleNMPC long plan: id=76 full=1 move=6 brake=3 min_clearance=0.412 u_move=(0.100,0.040) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978849.169562920]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=1.80/3.78 budget=50.0 over_budget=0 planner_calls=7 planner_ms(avg/max)=1.93/2.19[0[33m[WARN] [1794978849.369820379]: DoubleNMPC unsafe sample: reason=lethal center=(-1.047,0.208) sample_index=8 offset=(-0.165,-0.165) world=(-1.212,0.043) cell=(23,20) cell_world=(-1.225,0.025) cost=254 radius=0.234 robot_radius=0.160 margin=0.074[0m
+[33m[WARN] [1794978849.769213159]: DoubleNMPC unsafe sample: reason=lethal center=(-1.048,0.194) sample_index=8 offset=(-0.163,-0.163) world=(-1.211,0.030) cell=(23,21) cell_world=(-1.225,0.025) cost=254 radius=0.231 robot_radius=0.160 margin=0.071[0m
+[33m[WARN] [1794978850.069244006]: DoubleNMPC unsafe sample: reason=lethal center=(-1.039,0.106) sample_index=8 offset=(-0.165,-0.165) world=(-1.204,-0.059) cell=(23,20) cell_world=(-1.225,-0.075) cost=254 radius=0.234 robot_radius=0.160 margin=0.074[0m
+[33m[WARN] [1794978850.369223083]: DoubleNMPC unsafe sample: reason=lethal center=(-1.042,0.127) sample_index=8 offset=(-0.169,-0.169) world=(-1.211,-0.042) cell=(23,21) cell_world=(-1.225,-0.025) cost=254 radius=0.239 robot_radius=0.160 margin=0.079[0m
+[33m[WARN] [1794978850.619228547]: DoubleNMPC unsafe sample: reason=lethal center=(-0.808,-0.074) sample_index=4 offset=(0.000,-0.234) world=(-0.808,-0.308) cell=(30,16) cell_world=(-0.825,-0.325) cost=254 radius=0.234 robot_radius=0.160 margin=0.074[0m
+m
+[0m[INFO] [1794978849.220480034]: DoubleNMPC long plan: id=77 full=1 move=6 brake=3 min_clearance=0.412 u_move=(0.101,0.065) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978849.371165177]: DoubleNMPC long plan: id=78 full=1 move=6 brake=3 min_clearance=0.409 u_move=(0.101,0.065) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978849.372145659]: DoubleNMPC: terminal=0 goal_dist=0.478 path_s=1.033/1.505 cte=0.090 lookahead=(0.78,0.37) curvature=0.000  curve_cap=0.450  plan_margin=0.074  plan=(0.101, 0.065) track_cap=0.101  cmd=(0.089, 0.108)  moving_w_cap=1.500  heading=-0.139  speed_scale=0.88 pred_err=(0.090, 0.104)  turn=0.15  risk=0.57  margin=0.073  min_clearance=0.419[0m
+[0m[INFO] [1794978849.520451273]: DoubleNMPC long plan: id=79 full=1 move=6 brake=3 min_clearance=0.407 u_move=(0.100,0.039) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978849.620524634]: DoubleNMPC long plan: id=80 full=1 move=6 brake=3 min_clearance=0.424 u_move=(0.099,0.015) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978849.770578985]: DoubleNMPC long plan: id=81 full=1 move=6 brake=3 min_clearance=0.420 u_move=(0.097,-0.015) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978849.877364206]: DoubleNMPC: terminal=0 goal_dist=0.433 path_s=1.082/1.505 cte=0.086 lookahead=(0.79,0.37) curvature=0.000  curve_cap=0.450  plan_margin=0.071  plan=(0.097, -0.015) track_cap=0.097  cmd=(0.084, -0.103)  moving_w_cap=1.500  heading=-0.158  speed_scale=0.87 pred_err=(0.087, 0.124)  turn=0.14  risk=0.53  margin=0.071  min_clearance=0.437[0m
+[0m[INFO] [1794978850.070539575]: DoubleNMPC long plan: id=82 full=1 move=6 brake=3 min_clearance=0.412 u_move=(0.097,-0.026) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978850.220318311]: DoubleNMPC long plan: id=83 full=1 move=6 brake=3 min_clearance=0.398 u_move=(0.099,0.014) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978850.221250141]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=1.69/3.12 budget=50.0 over_budget=0 planner_calls=7 planner_ms(avg/max)=1.95/2.02[0m
+[0m[INFO] [1794978850.370503289]: DoubleNMPC long plan: id=84 full=1 move=6 brake=3 min_clearance=0.346 u_move=(0.102,-0.229) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978850.419519884]: DoubleNMPC: terminal=0 goal_dist=0.389 path_s=1.126/1.505 cte=0.082 lookahead=(0.79,0.38) curvature=0.000  curve_cap=0.450  plan_margin=0.079  plan=(0.102, -0.229) track_cap=0.102  cmd=(0.094, -0.377)  moving_w_cap=1.500  heading=-0.099  speed_scale=0.92 pred_err=(0.083, 0.340)  turn=0.52  risk=0.76  margin=0.077  min_clearance=0.462[0m
+[0m[INFO] [1794978850.470312765]: DoubleNMPC long plan: id=85 full=1 move=6 brake=3 min_clearance=0.349 u_move=(0.104,-0.188) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978850.620491630]: DoubleNMPC long plan: id=86 full=1 move=6 brake=3 min_clearance=0.327 u_move=(0.106,-0.138) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978850.720254090]: DoubleNMPC long plan: id=87 full=1 move=6 brake=3 min_clearance=0.314 u_move=(0.107,-0.114) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978850.968758768]: DoubleNMPC: terminal=1 goal_dist=0.334 path_s=1.180/1.505 cte=0.070 lookahead=(0.82,0.39) curvature=0.000  curve_cap=0.450  plan_margin=0.073  plan=(0.120, -0.048) track_cap=0.120  cmd=(0.120, -0.074)  moving_w_cap=1.500  heading=-0.027  speed_scale=0.98 pred_err=(0.071, 0.276)  turn=0.10  risk=0.59  margin=0.072  min_clearance=0.439[0m
+[0m[INFO] [1794978851.268784715]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=1.02/2.93 budget=50.0 over_budget=0 planner_calls=4 planner_ms(avg/max)=1.86/1.97[0m
+[0m[INFO] [1794978851.468814092]: DoubleNMPC: terminal=1 goal_dist=0.274 path_s=1.239/1.505 cte=0.055 lookahead=(0.85,0.40) curvature=0.000  curve_cap=0.450  plan_margin=0.073  plan=(0.I20261118 13:14:18.119692  6807 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.803284, 0.0392228) goal=(0.318789, -0.46644)
+I20261118 13:14:18.121179  6807 astar_polyline_planner.cpp:46] AStarPolyline: base poses=26, polyline vertices=6, dense poses=26
+I20261118 13:14:18.122714  6807 path_planner_node.cpp:302] PathPlanner make_plan response: poses=26 end=(0.318789, -0.46644) end_goal_dist=0
+I20261118 13:14:20.934933  6818 astar_polyline_planner.cpp:46] AStarPolyline: base poses=26, polyline vertices=6, dense poses=26
+[33m[WARN] [1794978860.984430605]: DoubleNMPC unsafe sample: reason=lethal center=(-0.598,-0.097) sample_index=6 offset=(0.156,-0.156) world=(-0.443,-0.252) cell=(37,22) cell_world=(-0.425,-0.275) cost=254 radius=0.220 robot_radius=0.160 margin=0.060[0m
+[33m[WARN] [1794978861.234692376]: DoubleNMPC unsafe sample: reason=lethal center=(-0.606,-0.133) sample_index=6 offset=(0.157,-0.157) world=(-0.450,-0.290) cell=(37,22) cell_world=(-0.425,-0.275) cost=254 radius=0.221 robot_radius=0.160 margin=0.061[0m
+120, -0.026) track_cap=0.120  cmd=(0.120, -0.026)  moving_w_cap=1.500  heading=-0.014  speed_scale=0.99 pred_err=(0.055, 0.268)  turn=0.04  risk=0.50  margin=0.070  min_clearance=0.413[0m
+[0m[INFO] [1794978852.018770967]: DoubleNMPC: terminal=1 goal_dist=0.212 path_s=1.298/1.505 cte=0.039 lookahead=(0.88,0.41) curvature=0.000  curve_cap=0.450  plan_margin=0.073  plan=(0.086, -0.012) track_cap=0.089  cmd=(0.086, -0.012)  moving_w_cap=1.500  heading=-0.007  speed_scale=0.99 pred_err=(0.040, 0.272)  turn=0.02  risk=0.44  margin=0.068  min_clearance=0.427[0m
+[0m[INFO] [1794978852.318782027]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.27/0.53 budget=50.0 over_budget=0 planner_calls=0 planner_ms(avg/max)=0.00/0.00[0m
+[0m[INFO] [1794978852.518811420]: DoubleNMPC: terminal=1 goal_dist=0.173 path_s=1.336/1.505 cte=0.029 lookahead=(0.90,0.42) curvature=0.000  curve_cap=0.450  plan_margin=0.073  plan=(0.060, -0.005) track_cap=0.063  cmd=(0.060, -0.005)  moving_w_cap=1.500  heading=-0.003  speed_scale=1.00 pred_err=(0.031, 0.273)  turn=0.01  risk=0.41  margin=0.067  min_clearance=0.408[0m
+[0m[INFO] [1794978853.068854477]: DoubleNMPC: terminal=1 goal_dist=0.143 path_s=1.365/1.505 cte=0.021 lookahead=(0.91,0.43) curvature=0.000  curve_cap=0.450  plan_margin=0.073  plan=(0.041, -0.002) track_cap=0.042  cmd=(0.041, -0.002)  moving_w_cap=1.500  heading=-0.001  speed_scale=1.00 pred_err=(0.031, 0.274)  turn=0.00  risk=0.39  margin=0.066  min_clearance=0.442[0m
+[0m[INFO] [1794978853.368806054]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.27/0.68 budget=50.0 over_budget=0 planner_calls=0 planner_ms(avg/max)=0.00/0.00[0m
+[0m[INFO] [1794978853.618816450]: DoubleNMPC: terminal=1 goal_dist=0.122 path_s=1.385/1.505 cte=0.015 lookahead=(0.92,0.44) curvature=0.000  curve_cap=0.450  plan_margin=0.073  plan=(0.035, -0.001) track_cap=0.035  cmd=(0.035, -0.001)  moving_w_cap=1.500  heading=-0.000  speed_scale=1.00 pred_err=(0.020, 0.274)  turn=0.00  risk=0.37  margin=0.065  min_clearance=0.452[0m
+[0m[INFO] [1794978854.171920526]: DoubleNMPC: terminal=1 goal_dist=0.102 path_s=1.404/1.505 cte=0.010 lookahead=(0.93,0.44) curvature=0.000  curve_cap=0.450  plan_margin=0.073  plan=(0.035, -0.002) track_cap=0.035  cmd=(0.035, -0.002)  moving_w_cap=1.500  heading=-0.001  speed_scale=1.00 pred_err=(0.023, 0.274)  turn=0.00  risk=0.36  margin=0.065  min_clearance=0.434[0m
+[0m[INFO] [1794978854.418740963]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.26/0.44 budget=50.0 over_budget=0 planner_calls=0 planner_ms(avg/max)=0.00/0.00[0m
+[0m[INFO] [1794978854.718796635]: DoubleNMPC: terminal=1 goal_dist=0.083 path_s=1.422/1.505 cte=0.005 lookahead=(0.94,0.45) curvature=0.000  curve_cap=0.450  plan_margin=0.073  plan=(0.035, -0.002) track_cap=0.035  cmd=(0.035, -0.002)  moving_w_cap=1.500  heading=-0.001  speed_scale=1.00 pred_err=(0.025, 0.273)  turn=0.00  risk=0.37  margin=0.066  min_clearance=0.432[0m
+[0m[INFO] [1794978860.985942987]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.224 u_move=(0.112,-0.020) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978860.986943305]: DoubleNMPC: terminal=0 goal_dist=1.236 path_s=0.015/1.320 cte=0.024 lookahead=(0.90,0.43) curvature=-0.180  curve_cap=0.450  plan_margin=0.060  plan=(0.112, -0.020) track_cap=0.112  cmd=(0.013, 0.038)  moving_w_cap=1.500  heading=-0.033  speed_scale=0.97 pred_err=(0.031, 0.022)  turn=0.05  risk=0.04  margin=0.059  min_clearance=0.454[0m
+[0m[INFO] [1794978861.135762880]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=0.210 u_move=(0.107,-0.130) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978861.236277595]: DoubleNMPC long plan: id=3 full=1 move=6 brake=3 min_clearance=0.211 u_move=(0.107,-0.115) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978861.336148998]: DoubleNMPC long plan: id=4 full=1 move=6 brake=3 min_clearance=0.212 u_move=(0.108,-0.110) u_brake=[(0.000,-0.000),([33m[WARN] [1794978861.484687978]: DoubleNMPC unsafe sample: reason=lethal center=(-0.545,-0.107) sample_index=6 offset=(0.157,-0.157) world=(-0.388,-0.264) cell=(38,22) cell_world=(-0.375,-0.275) cost=254 radius=0.222 robot_radius=0.160 margin=0.062[0m
+[33m[WARN] [1794978861.734691390]: DoubleNMPC unsafe sample: reason=lethal center=(-0.454,-0.083) sample_index=4 offset=(0.000,-0.222) world=(-0.454,-0.305) cell=(36,21) cell_world=(-0.475,-0.325) cost=254 radius=0.222 robot_radius=0.160 margin=0.062[0m
+[33m[WARN] [1794978862.034411988]: DoubleNMPC unsafe sample: reason=lethal center=(-0.655,-0.148) sample_index=6 offset=(0.157,-0.157) world=(-0.498,-0.305) cell=(36,21) cell_world=(-0.475,-0.325) cost=254 radius=0.222 robot_radius=0.160 margin=0.062[0m
+[33m[WARN] [1794978862.334428719]: DoubleNMPC unsafe sample: reason=lethal center=(-0.557,-0.146) sample_index=6 offset=(0.159,-0.159) world=(-0.398,-0.304) cell=(37,22) cell_world=(-0.375,-0.325) cost=254 radius=0.225 robot_radius=0.160 margin=0.065[0m
+[33m[WARN] [1794978862.634615518]: DoubleNMPC unsafe sample: reason=lethal center=(-0.555,-0.149) sample_index=6 offset=(0.159,-0.159) world=(-0.396,-0.308) cell=(37,22) cell_world=(-0.375,-0.325) cost=254 radius=0.225 robot_radius=0.160 margin=0.065[0m
+[33m[WARN] [1794978862.884826913]: DoubleNMPC unsafe sample: reason=lethal center=(-0.538,-0.149) sample_index=6 offset=(0.158,-0.158) world=(-0.381,-0.306) cell=(37,22) cell_world=(-0.375,-0.325) cost=254 radius=0.223 robot_radius=0.160 margin=0.063[0m
+0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978861.485943397]: DoubleNMPC long plan: id=5 full=1 move=6 brake=3 min_clearance=0.212 u_move=(0.108,-0.110) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978861.534970379]: DoubleNMPC: terminal=0 goal_dist=1.235 path_s=0.015/1.320 cte=0.024 lookahead=(0.90,0.43) curvature=-0.184  curve_cap=0.450  plan_margin=0.062  plan=(0.108, -0.110) track_cap=0.108  cmd=(0.101, 0.016)  moving_w_cap=1.500  heading=-0.075  speed_scale=0.94 pred_err=(0.032, 0.028)  turn=0.02  risk=0.29  margin=0.062  min_clearance=0.421[0m
+[0m[INFO] [1794978861.635800075]: DoubleNMPC long plan: id=6 full=1 move=6 brake=3 min_clearance=0.204 u_move=(0.107,-0.124) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978861.735991838]: DoubleNMPC long plan: id=7 full=1 move=6 brake=3 min_clearance=0.199 u_move=(0.107,-0.132) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978861.886650535]: DoubleNMPC long plan: id=8 full=1 move=6 brake=3 min_clearance=0.184 u_move=(0.105,-0.161) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978861.985466768]: DoubleNMPC timing: calls=21 window=1.00s rate=21.0Hz cycle_ms(avg/max)=2.01/4.37 budget=50.0 over_budget=0 planner_calls=8 planner_ms(avg/max)=2.14/2.71[0m
+[0m[INFO] [1794978862.036048280]: DoubleNMPC long plan: id=9 full=1 move=6 brake=3 min_clearance=0.416 u_move=(0.000,-0.173) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978862.036228014]: DoubleNMPC: terminal=0 goal_dist=1.182 path_s=0.070/1.320 cte=0.025 lookahead=(0.90,0.43) curvature=-0.408  curve_cap=0.450  plan_margin=0.062  plan=(0.000, -0.173) track_cap=0.000  cmd=(0.066, -0.087)  moving_w_cap=1.500  heading=-0.082  speed_scale=0.93 pred_err=(0.036, 0.024)  turn=0.12  risk=0.30  margin=0.063  min_clearance=0.390[0m
+[0m[INFO] [1794978862.185851053]: DoubleNMPC long plan: id=10 full=1 move=6 brake=3 min_clearance=0.202 u_move=(0.104,-0.188) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978862.336047377]: DoubleNMPC long plan: id=11 full=1 move=6 brake=3 min_clearance=0.201 u_move=(0.105,-0.170) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978862.485784286]: DoubleNMPC long plan: id=12 full=1 move=6 brake=3 min_clearance=0.198 u_move=(0.105,-0.172) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978862.585096265]: DoubleNMPC: terminal=0 goal_dist=1.154 path_s=0.100/1.320 cte=0.026 lookahead=(0.90,0.43) curvature=-0.542  curve_cap=0.450  plan_margin=0.067  plan=(0.105, -0.172) track_cap=0.105  cmd=(0.098, -0.001)  moving_w_cap=1.500  heading=-0.078  speed_scale=0.93 pred_err=(0.036, 0.018)  turn=0.00  risk=0.38  margin=0.065  min_clearance=0.416[0m
+[0m[INFO] [1794978862.637016670]: DoubleNMPC long plan: id=13 full=1 move=6 brake=3 min_clearance=0.214 u_move=(0.104,0.128) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978862.785745394]: DoubleNMPC long plan: id=14 full=1 move=6 brake=3 min_clearance=0.218 u_move=(0.102,0.090) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978862.886443395]: DoubleNMPC long plan: id=15 full=1 move=6 brake=3 min_clearance=0.219 u_move=(0.102,0.081) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978863.035785639]: DoubleNMPC long plan: id=16 full=1 move=6 brake=3 min_clearance=0.220 u_move=(0.101,0.070) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978863.036873830]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=2.09/5.37 budget=50.0 over_budget=0 planner_calls=8 planner_ms(avg/max)=2.15/2.96[0m
+[0m[INFO] [1794978863.135012501]: DoubleNMPC: terminal=0 goal_dist=1.100 path_s=0.156/1.320 cte=0.027 lookahead=(0.90,0.43) curvature=-0.831  curve_cap=0.450  plan_margin=0.062  plan=(0.101, 0.070) track_cap=0.101  cmd=(0.095, 0.005)  moving_w_cap=1.500  heading=-0.077  speed_scale=0.94 pred_err=(0.038, 0.017)  turn=0.01  risk=0.22  marg[33m[WARN] [1794978863.184416084]: DoubleNMPC unsafe sample: reason=lethal center=(-0.527,-0.195) sample_index=6 offset=(0.156,-0.156) world=(-0.371,-0.351) cell=(36,21) cell_world=(-0.375,-0.375) cost=254 radius=0.221 robot_radius=0.160 margin=0.061[0m
+[33m[WARN] [1794978863.434417707]: DoubleNMPC unsafe sample: reason=lethal center=(-0.446,-0.094) sample_index=6 offset=(0.156,-0.156) world=(-0.290,-0.250) cell=(38,23) cell_world=(-0.275,-0.275) cost=254 radius=0.220 robot_radius=0.160 margin=0.060[0m
+[33m[WARN] [1794978863.585503384]: DoubleNMPC long plan: id=20 full=0 motion=0 brake=0 first_invalid_stage=5 min_clearance=0.238; holding zero long-layer command[0m
+[33m[WARN] [1794978863.684492619]: DoubleNMPC unsafe sample: reason=lethal center=(-0.405,-0.150) sample_index=6 offset=(0.156,-0.156) world=(-0.249,-0.306) cell=(38,22) cell_world=(-0.225,-0.325) cost=254 radius=0.220 robot_radius=0.160 margin=0.060[0m
+[33m[WARN] [1794978864.184429229]: DoubleNMPC unsafe sample: reason=lethal center=(-0.405,-0.130) sample_index=6 offset=(0.158,-0.158) world=(-0.248,-0.288) cell=(37,23) cell_world=(-0.225,-0.275) cost=254 radius=0.223 robot_radius=0.160 margin=0.063[0m
+[33m[WARN] [1794978864.434440808]: DoubleNMPC unsafe sample: reason=lethal center=(-0.404,-0.113) sample_index=6 offset=(0.157,-0.157) world=(-0.247,-0.270) cell=(37,23) cell_world=(-0.225,-0.275) cost=254 radius=0.222 robot_radius=0.160 margin=0.062[0m
+[33m[WARN] [1794978864.684483654]: DoubleNMPC unsafe sample: reason=lethal center=(-0.306,-0.100) sample_index=6 offset=(0.156,-0.156) world=(-0.150,-0.256) cell=(38,23) cell_world=(-0.125,-0.275) cost=254 radius=0.221 robot_radius=0.160 margin=0.061[0m
+[33m[WARN] [1794978865.084706115]: DoubleNMPC unsafe sample: reason=lethal center=(-0.365,-0.301) sample_index=1 offset=(0.226,0.000) world=(-0.140,-0.301) cell=(37,22) cell_world=(-0.125,-0.325) cost=254 radius=0.226 robot_radius=0.160 margin=0.066[0m
+in=0.061  min_clearance=0.415[0m
+[0m[INFO] [1794978863.185931814]: DoubleNMPC long plan: id=17 full=1 move=6 brake=3 min_clearance=0.245 u_move=(0.100,0.054) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978863.285843845]: DoubleNMPC long plan: id=18 full=1 move=6 brake=3 min_clearance=0.246 u_move=(0.100,0.048) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978863.435937117]: DoubleNMPC long plan: id=19 full=1 move=6 brake=3 min_clearance=0.231 u_move=(0.099,0.016) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978863.635027333]: DoubleNMPC: terminal=0 goal_dist=1.060 path_s=0.197/1.320 cte=0.027 lookahead=(0.90,0.43) curvature=-1.088  curve_cap=0.450  plan_margin=0.060  plan=(0.000, 0.000) track_cap=0.000  cmd=(0.027, -0.011)  moving_w_cap=1.500  heading=-0.080  speed_scale=0.93 pred_err=(0.032, 0.016)  turn=0.02  risk=0.19  margin=0.060  min_clearance=0.442[0m
+[0m[INFO] [1794978863.685964728]: DoubleNMPC long plan: id=21 full=1 move=6 brake=3 min_clearance=0.229 u_move=(0.097,-0.017) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978864.036156887]: DoubleNMPC long plan: id=22 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.287,-0.107) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978864.037211343]: DoubleNMPC timing: calls=20 window=1.00s rate=20.0Hz cycle_ms(avg/max)=1.70/3.36 budget=50.0 over_budget=0 planner_calls=6 planner_ms(avg/max)=2.00/2.30[0m
+[0m[INFO] [1794978864.186831104]: DoubleNMPC long plan: id=23 full=1 move=6 brake=3 min_clearance=0.198 u_move=(0.095,-0.073) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978864.188364464]: DoubleNMPC: terminal=0 goal_dist=1.019 path_s=0.240/1.320 cte=0.028 lookahead=(0.90,0.42) curvature=-1.367  curve_cap=0.450  plan_margin=0.063  plan=(0.095, -0.073) track_cap=0.095  cmd=(0.096, -0.009)  moving_w_cap=1.500  heading=-0.078  speed_scale=0.94 pred_err=(0.038, 0.012)  turn=0.01  risk=0.36  margin=0.065  min_clearance=0.381[0m
+[0m[INFO] [1794978864.285558412]: DoubleNMPC long plan: id=24 full=1 move=6 brake=3 min_clearance=0.193 u_move=(0.094,-0.081) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978864.435749854]: DoubleNMPC long plan: id=25 full=1 move=6 brake=3 min_clearance=0.176 u_move=(0.093,-0.119) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978864.535696885]: DoubleNMPC long plan: id=26 full=1 move=6 brake=3 min_clearance=0.232 u_move=(0.092,0.187) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978864.685775994]: DoubleNMPC long plan: id=27 full=1 move=6 brake=3 min_clearance=0.211 u_move=(0.090,-0.490) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978864.734969181]: DoubleNMPC: terminal=0 goal_dist=0.974 path_s=0.288/1.320 cte=0.028 lookahead=(0.90,0.42) curvature=-1.654  curve_cap=0.450  plan_margin=0.061  plan=(0.090, -0.490) track_cap=0.090  cmd=(0.084, -0.008)  moving_w_cap=1.500  heading=-0.079  speed_scale=0.93 pred_err=(0.035, 0.012)  turn=0.01  risk=0.32  margin=0.063  min_clearance=0.416[0m
+[0m[INFO] [1794978864.785612325]: DoubleNMPC long plan: id=28 full=1 move=6 brake=3 min_clearance=0.207 u_move=(0.090,-0.507) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978865.085923691]: DoubleNMPC long plan: id=29 full=1 move=6 brake=3 min_clearance=0.234 u_move=(0.086,-0.218) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978865.086886103]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=1.78/4.97 budget=50.0 over_budget=0 planner_calls=7 planner_ms(avg/max)=1.97/2.96[0m
+[0m[INFO] [1794978865.235742446]: DoubleNMPC long plan: id=30 full=1 move=6 brake=3 min_clearance=0.229 u_move=(0.083,-0.243) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978865.236746494]: DoubleNMPC: terminal=0 goal_dist=0.934 path_s=0.329/1.320 cte=0.029 lookahead=(0.90,0.42) curvature=-1.885  curve_[33m[WARN] [1794978865.384735892]: DoubleNMPC unsafe sample: reason=lethal center=(-0.286,-0.149) sample_index=6 offset=(0.157,-0.157) world=(-0.128,-0.306) cell=(37,22) cell_world=(-0.125,-0.325) cost=254 radius=0.223 robot_radius=0.160 margin=0.063[0m
+[33m[WARN] [1794978865.684708351]: DoubleNMPC unsafe sample: reason=lethal center=(-0.251,-0.253) sample_index=1 offset=(0.222,0.000) world=(-0.028,-0.253) cell=(39,24) cell_world=(-0.025,-0.275) cost=254 radius=0.222 robot_radius=0.160 margin=0.062[0m
+[33m[WARN] [1794978866.084731678]: DoubleNMPC unsafe sample: reason=lethal center=(-0.258,-0.303) sample_index=1 offset=(0.223,0.000) world=(-0.035,-0.303) cell=(38,23) cell_world=(-0.025,-0.325) cost=254 radius=0.223 robot_radius=0.160 margin=0.063[0m
+[33m[WARN] [1794978866.334797634]: DoubleNMPC unsafe sample: reason=lethal center=(-0.259,-0.304) sample_index=1 offset=(0.224,0.000) world=(-0.035,-0.304) cell=(38,23) cell_world=(-0.025,-0.325) cost=254 radius=0.224 robot_radius=0.160 margin=0.064[0m
+[33m[WARN] [1794978866.335839828]: DoubleNMPC long plan: id=37 full=0 motion=0 brake=0 first_invalid_stage=5 min_clearance=0.184; holding zero long-layer command[0m
+[33m[WARN] [1794978866.584832803]: DoubleNMPC unsafe sample: reason=lethal center=(-0.243,-0.304) sample_index=1 offset=(0.223,0.000) world=(-0.020,-0.304) cell=(37,23) cell_world=(-0.025,-0.325) cost=254 radius=0.223 robot_radius=0.160 margin=0.063[0m
+[33m[WARN] [1794978867.135345587]: DoubleNMPC unsafe sample: reason=lethal center=(-0.159,-0.175) sample_index=6 offset=(0.159,-0.159) world=(0.001,-0.334) cell=(38,23) cell_world=(0.025,-0.325) cost=254 radius=0.225 robot_radius=0.160 margin=0.065[0m
+[33m[WARN] [1794978867.285548634]: DoubleNMPC long plan: id=43 full=0 motion=0 brake=0 first_invalid_stage=4 min_clearance=0.105; holding zero long-layer command[0m
+[33m[WARN] [1794978867.385546661]: DoubleNMPC unsafe sample: reason=lethal center=(0.238,-0.316) sample_index=2 offset=(-0.226,0.000) world=(0.011,-0.316) cell=(38,23) cell_world=(0.025,-0.325) cost=254 radius=0.226 robot_radius=0.160 margin=0.066[0m
+[33m[WARN] [1794978867.385703478]: DoubleNMPC long plan: id=44 full=0 motion=0 brake=0 first_invalid_stage=4 min_clearance=0.106; holding zero long-layer command[0m
+cap=0.431  plan_margin=0.064  plan=(0.083, -0.243) track_cap=0.083  cmd=(0.078, 0.002)  moving_w_cap=1.500  heading=-0.078  speed_scale=0.94 pred_err=(0.037, 0.011)  turn=0.00  risk=0.31  margin=0.063  min_clearance=0.419[0m
+[0m[INFO] [1794978865.385958173]: DoubleNMPC long plan: id=31 full=1 move=6 brake=3 min_clearance=0.220 u_move=(0.081,-0.276) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978865.535767519]: DoubleNMPC long plan: id=32 full=1 move=6 brake=3 min_clearance=0.216 u_move=(0.080,-0.291) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978865.685939945]: DoubleNMPC long plan: id=33 full=1 move=6 brake=3 min_clearance=0.239 u_move=(0.079,-0.319) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978865.786238629]: DoubleNMPC long plan: id=34 full=1 move=6 brake=3 min_clearance=0.235 u_move=(0.078,-0.333) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978865.787484272]: DoubleNMPC: terminal=0 goal_dist=0.891 path_s=0.375/1.320 cte=0.029 lookahead=(0.89,0.42) curvature=-1.938  curve_cap=0.425  plan_margin=0.063  plan=(0.078, -0.333) track_cap=0.078  cmd=(0.073, -0.001)  moving_w_cap=1.500  heading=-0.078  speed_scale=0.93 pred_err=(0.039, 0.009)  turn=0.00  risk=0.30  margin=0.063  min_clearance=0.420[0m
+[0m[INFO] [1794978866.085940258]: DoubleNMPC long plan: id=35 full=1 move=6 brake=3 min_clearance=0.265 u_move=(0.076,-0.372) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978866.135150443]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=1.75/3.96 budget=50.0 over_budget=0 planner_calls=6 planner_ms(avg/max)=2.02/2.23[0m
+[0m[INFO] [1794978866.185819828]: DoubleNMPC long plan: id=36 full=1 move=6 brake=3 min_clearance=0.261 u_move=(0.075,-0.387) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978866.337032983]: DoubleNMPC: terminal=0 goal_dist=0.857 path_s=0.412/1.320 cte=0.030 lookahead=(0.89,0.42) curvature=-1.973  curve_cap=0.421  plan_margin=0.064  plan=(0.000, 0.000) track_cap=0.000  cmd=(0.038, -0.003)  moving_w_cap=1.500  heading=-0.079  speed_scale=0.93 pred_err=(0.033, 0.009)  turn=0.00  risk=0.29  margin=0.063  min_clearance=0.441[0m
+[0m[INFO] [1794978866.435891352]: DoubleNMPC long plan: id=38 full=1 move=6 brake=3 min_clearance=0.149 u_move=(0.148,-0.096) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978866.585884758]: DoubleNMPC long plan: id=39 full=1 move=6 brake=3 min_clearance=0.249 u_move=(0.073,-0.434) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978866.735743525]: DoubleNMPC long plan: id=40 full=1 move=6 brake=3 min_clearance=0.248 u_move=(0.073,-0.440) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978866.860766102]: DoubleNMPC: terminal=0 goal_dist=0.834 path_s=0.437/1.320 cte=0.030 lookahead=(0.89,0.42) curvature=-1.988  curve_cap=0.420  plan_margin=0.065  plan=(0.073, -0.440) track_cap=0.073  cmd=(0.068, -0.005)  moving_w_cap=1.500  heading=-0.079  speed_scale=0.93 pred_err=(0.037, 0.008)  turn=0.01  risk=0.35  margin=0.065  min_clearance=0.413[0m
+[0m[INFO] [1794978867.036098296]: DoubleNMPC long plan: id=41 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.288,-0.256) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978867.136700228]: DoubleNMPC long plan: id=42 full=1 move=6 brake=3 min_clearance=0.125 u_move=(0.215,-0.139) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978867.138427197]: DoubleNMPC timing: calls=20 window=1.00s rate=19.9Hz cycle_ms(avg/max)=1.81/4.16 budget=50.0 over_budget=0 planner_calls=7 planner_ms(avg/max)=2.03/2.23[0m
+[0m[INFO] [1794978867.386683263]: DoubleNMPC: terminal=0 goal_dist=0.793 path_s=0.480/1.320 cte=0.030 lookahead=(0.89,0.42) curvature=-1.988  curve_cap=0.420  plan_margin=0.066  plan=(0.000, 0.000) track_cap=0.000  cmd=(0.033, 0.025)  moving_w_cap=1.500  heading=-0.074  speed_scale=0.94 pred_err=(0.034, 0.015) [33m[WARN] [1794978867.685139003]: DoubleNMPC unsafe sample: reason=lethal center=(0.206,-0.028) sample_index=3 offset=(0.000,0.228) world=(0.206,0.200) cell=(41,34) cell_world=(0.225,0.225) cost=254 radius=0.228 robot_radius=0.160 margin=0.068[0m
+[33m[WARN] [1794978868.184877740]: DoubleNMPC unsafe sample: reason=lethal center=(0.091,0.037) sample_index=5 offset=(0.170,0.170) world=(0.261,0.208) cell=(42,34) cell_world=(0.275,0.225) cost=254 radius=0.241 robot_radius=0.160 margin=0.081[0m
+[33m[WARN] [1794978868.435083569]: DoubleNMPC unsafe sample: reason=lethal center=(0.309,-0.233) sample_index=1 offset=(0.241,0.000) world=(0.550,-0.233) cell=(48,25) cell_world=(0.575,-0.225) cost=254 radius=0.241 robot_radius=0.160 margin=0.081[0m
+[33m[WARN] [1794978868.685221422]: DoubleNMPC unsafe sample: reason=lethal center=(0.407,-0.362) sample_index=5 offset=(0.168,0.168) world=(0.575,-0.194) cell=(46,27) cell_world=(0.575,-0.175) cost=254 radius=0.238 robot_radius=0.160 margin=0.078[0m
+[33m[WARN] [1794978869.035378692]: DoubleNMPC unsafe sample: reason=out_of_map center=(1.024,-0.450) sample_index=1 offset=(0.236,0.000) world=(1.260,-0.450) radius=0.236 robot_radius=0.160 margin=0.076 map_origin=(-1.750,-1.550) map_size=(2.975,2.975)[0m
+[33m[WARN] [1794978869.134755007]: DoubleNMPC unsafe sample: reason=lethal center=(0.317,-0.303) sample_index=1 offset=(0.235,0.000) world=(0.552,-0.303) cell=(44,25) cell_world=(0.575,-0.325) cost=254 radius=0.235 robot_radius=0.160 margin=0.075[0m
+[33m[WARN] [1794978869.384755635]: DoubleNMPC unsafe sample: reason=lethal center=(0.332,-0.185) sample_index=1 offset=(0.233,0.000) world=(0.565,-0.185) cell=(44,28) cell_world=(0.575,-0.175) cost=254 radius=0.233 robot_radius=0.160 margin=0.073[0m
+ turn=0.03  risk=0.36  margin=0.065  min_clearance=0.422[0m
+[0m[INFO] [1794978867.537365049]: DoubleNMPC long plan: id=45 full=1 move=6 brake=3 min_clearance=0.119 u_move=(0.211,-0.173) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978867.686309177]: DoubleNMPC long plan: id=46 full=1 move=6 brake=3 min_clearance=0.265 u_move=(0.285,-0.270) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978867.934981991]: DoubleNMPC: terminal=0 goal_dist=0.778 path_s=0.497/1.320 cte=0.030 lookahead=(0.89,0.42) curvature=-1.988  curve_cap=0.420  plan_margin=0.068  plan=(0.285, -0.270) track_cap=0.285  cmd=(0.112, -0.635)  moving_w_cap=1.500  heading=-0.026  speed_scale=0.98 pred_err=(0.034, 0.362)  turn=0.87  risk=0.84  margin=0.077  min_clearance=0.473[0m
+[0m[INFO] [1794978868.036152610]: DoubleNMPC long plan: id=47 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.240,-0.289) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978868.186273150]: DoubleNMPC long plan: id=48 full=1 move=6 brake=3 min_clearance=0.316 u_move=(0.250,-0.231) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978868.187302506]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=1.86/5.51 budget=50.0 over_budget=0 planner_calls=6 planner_ms(avg/max)=2.34/3.44[0m
+[0m[INFO] [1794978868.286472051]: DoubleNMPC long plan: id=49 full=1 move=6 brake=3 min_clearance=0.282 u_move=(0.259,-0.190) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978868.436251563]: DoubleNMPC long plan: id=50 full=1 move=6 brake=3 min_clearance=0.245 u_move=(0.282,-0.145) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978868.437241779]: DoubleNMPC: terminal=0 goal_dist=0.695 path_s=0.581/1.320 cte=0.016 lookahead=(0.92,0.44) curvature=-1.697  curve_cap=0.450  plan_margin=0.081  plan=(0.282, -0.145) track_cap=0.282  cmd=(0.238, -0.494)  moving_w_cap=1.474  heading=0.062  speed_scale=0.95 pred_err=(0.023, 0.456)  turn=0.68  risk=0.83  margin=0.081  min_clearance=0.409[0m
+[0m[INFO] [1794978868.536904847]: DoubleNMPC long plan: id=51 full=1 move=6 brake=3 min_clearance=0.234 u_move=(0.285,-0.126) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978868.686136014]: DoubleNMPC long plan: id=52 full=1 move=6 brake=3 min_clearance=0.429 u_move=(0.197,-0.315) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978868.786288509]: DoubleNMPC long plan: id=53 full=1 move=6 brake=3 min_clearance=0.420 u_move=(0.198,-0.299) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978868.984912172]: DoubleNMPC: terminal=0 goal_dist=0.572 path_s=0.700/1.320 cte=0.020 lookahead=(0.91,0.43) curvature=-0.877  curve_cap=0.450  plan_margin=0.078  plan=(0.198, -0.299) track_cap=0.198  cmd=(0.181, -0.386)  moving_w_cap=1.500  heading=0.105  speed_scale=0.91 pred_err=(0.059, 0.547)  turn=0.53  risk=0.68  margin=0.076  min_clearance=0.437[0m
+[0m[INFO] [1794978869.036207353]: DoubleNMPC long plan: id=54 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.212,-0.145) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978869.136198483]: DoubleNMPC long plan: id=55 full=1 move=6 brake=3 min_clearance=0.291 u_move=(0.214,-0.121) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978869.236413156]: DoubleNMPC long plan: id=56 full=1 move=6 brake=3 min_clearance=0.271 u_move=(0.217,-0.084) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978869.237610526]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=2.09/4.12 budget=50.0 over_budget=0 planner_calls=8 planner_ms(avg/max)=2.40/2.99[0m
+[0m[INFO] [1794978869.386166211]: DoubleNMPC long plan: id=57 full=1 move=6 brake=3 min_clearance=0.254 u_move=(0.220,-0.055) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978869.535987146]: DoubleNMPC long plan: id=58 full=1 move=6 brake=3 min_clearance=0.249 u_[33m[WARN] [1794978869.684531053]: DoubleNMPC unsafe sample: reason=lethal center=(0.144,-0.061) sample_index=5 offset=(0.164,0.164) world=(0.308,0.103) cell=(37,35) cell_world=(0.325,0.125) cost=254 radius=0.232 robot_radius=0.160 margin=0.072[0m
+[33m[WARN] [1794978870.084693398]: DoubleNMPC unsafe sample: reason=lethal center=(0.392,-0.502) sample_index=5 offset=(0.164,0.164) world=(0.555,-0.338) cell=(41,27) cell_world=(0.575,-0.325) cost=254 radius=0.232 robot_radius=0.160 margin=0.072[0m
+[33m[WARN] [1794978870.334708674]: DoubleNMPC unsafe sample: reason=lethal center=(0.395,-0.498) sample_index=5 offset=(0.163,0.163) world=(0.558,-0.336) cell=(41,27) cell_world=(0.575,-0.325) cost=254 radius=0.230 robot_radius=0.160 margin=0.070[0m
+move=(0.221,-0.046) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978869.537059511]: DoubleNMPC: terminal=0 goal_dist=0.480 path_s=0.784/1.320 cte=0.056 lookahead=(0.84,0.40) curvature=0.000  curve_cap=0.450  plan_margin=0.072  plan=(0.221, -0.046) track_cap=0.221  cmd=(0.197, -0.149)  moving_w_cap=1.500  heading=0.132  speed_scale=0.89 pred_err=(0.099, 0.501)  turn=0.20  risk=0.58  margin=0.072  min_clearance=0.444[0m
+[0m[INFO] [1794978869.686050697]: DoubleNMPC long plan: id=59 full=1 move=6 brake=3 min_clearance=0.332 u_move=(0.112,-0.014) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978869.786184209]: DoubleNMPC long plan: id=60 full=1 move=6 brake=3 min_clearance=0.322 u_move=(0.112,-0.004) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
+[0m[INFO] [1794978870.086046078]: DoubleNMPC long plan: id=61 full=1 move=6 brake=3 min_clearance=0.292 u_move=(0.110,0.057) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978870.086923350]: DoubleNMPC: terminal=0 goal_dist=0.395 path_s=0.861/1.320 cte=0.094 lookahead=(0.77,0.37) curvature=0.000  curve_cap=0.450  plan_margin=0.072  plan=(0.110, 0.057) track_cap=0.110  cmd=(0.096, -0.039)  moving_w_cap=1.500  heading=0.150  speed_scale=0.88 pred_err=(0.109, 0.485)  turn=0.05  risk=0.55  margin=0.071  min_clearance=0.483[0m
+[0m[INFO] [1794978870.185859689]: DoubleNMPC long plan: id=62 full=1 move=6 brake=3 min_clearance=0.285 u_move=(0.109,0.073) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978870.284869571]: DoubleNMPC timing: calls=21 window=1.05s rate=20.1Hz cycle_ms(avg/max)=1.62/3.27 budget=50.0 over_budget=0 planner_calls=6 planner_ms(avg/max)=2.17/2.31[0m
+[0m[INFO] [1794978870.336046216]: DoubleNMPC long plan: id=63 full=1 move=6 brake=3 min_clearance=0.275 u_move=(0.109,0.084) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978870.438042702]: DoubleNMPC long plan: id=64 full=1 move=6 brake=3 min_clearance=0.268 u_move=(0.109,0.087) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
+[0m[INFO] [1794978870.634149348]: DoubleNMPC: terminal=1 goal_dist=0.334 path_s=0.977/1.320 cte=0.108 lookahead=(0.75,0.35) curvature=0.000  curve_cap=0.450  plan_margin=0.071  plan=(0.120, 0.107) track_cap=0.120  cmd=(0.120, -0.129)  moving_w_cap=1.500  heading=0.060  speed_scale=0.95 pred_err=(0.109, 0.132)  turn=0.18  risk=0.66  margin=0.075  min_clearance=0.445[0m
+[0m[INFO] [1794978871.134363093]: DoubleNMPC: terminal=1 goal_dist=0.279 path_s=1.038/1.320 cte=0.105 lookahead=(0.75,0.36) curvature=0.000  curve_cap=0.450  plan_margin=0.071  plan=(0.120, 0.136) track_cap=0.120  cmd=(0.120, 0.136)  moving_w_cap=1.500  heading=0.076  speed_scale=0.94 pred_err=(0.108, 0.416)  turn=0.19  risk=0.53  margin=0.070  min_clearance=0.465[0m
+[0m[INFO] [1794978871.334418921]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.74/5.18 budget=50.0 over_budget=0 planner_calls=2 planner_ms(avg/max)=3.10/4.07[0m
+[0m[INFO] [1794978871.684156745]: DoubleNMPC: terminal=1 goal_dist=0.216 path_s=1.125/1.320 cte=0.093 lookahead=(0.77,0.37) curvature=0.000  curve_cap=0.450  plan_margin=0.071  plan=(0.088, 0.097) track_cap=0.088  cmd=(0.088, 0.097)  moving_w_cap=1.500  heading=0.054  speed_scale=0.96 pred_err=(0.094, 0.435)  turn=0.13  risk=0.52  margin=0.071  min_clearance=0.422[0m
+[0m[INFO] [1794978872.184160279]: DoubleNMPC: terminal=1 goal_dist=0.172 path_s=1.165/1.320 cte=0.076 lookahead=(0.80,0.38) curvature=0.000  curve_cap=0.450  plan_margin=0.071  plan=(0.060, 0.068) track_cap=0.065  cmd=(0.060, 0.068)  moving_w_cap=1.500  heading=0.038  speed_scale=0.97 pred_err=(0.077, 0.447)  turn=0.09  risk=0.52  margin=0.070  min_clearance=0.459[0m
+[0m[INFO] [1794978872.384137893]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.25/0.40 budget=50.0 over_budget=0 planner_calls=0 planner_ms(avg/max)=0.00/0.00[0m
+[0m[INFO] [1794978872.734155657]: DoubleNMPC: terminal=1 goal_dist=0.145 path_s=1.190/1.320 cte=0.065 lo... logging to /home/lcy/.ros/log/c04b9aba-e30e-11f1-9f22-189341889b90/roslaunch-ubuntu-6741.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:46497/[0m
+[1mstarted roslaunch server http://ubuntu:44677/[0m
 
 SUMMARY
 ========
@@ -285,7 +607,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [19211][0m
+[1mprocess[move_base-1]: started with pid [6807][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
