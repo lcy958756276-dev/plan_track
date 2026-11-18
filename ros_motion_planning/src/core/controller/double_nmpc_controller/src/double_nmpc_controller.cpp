@@ -608,7 +608,7 @@ bool DoubleNMPCController::appendCertifiedStage(LongPlan& plan,
   double subyaw = yaw;
   double minimum_clearance = obstacleClearance(x, y);
   for (int substep = 0; substep < substeps; ++substep) {
-    if (!poseIsSafe(x, y, margin)) {
+    if (!poseIsSafe(x, y, subyaw, margin)) {
       return false;
     }
     x += control.v * std::cos(subyaw) * subperiod;
@@ -616,7 +616,7 @@ bool DoubleNMPCController::appendCertifiedStage(LongPlan& plan,
     subyaw = normalizeAngle(subyaw + control.w * subperiod);
     minimum_clearance = std::min(minimum_clearance, obstacleClearance(x, y));
   }
-  if (!poseIsSafe(x, y, margin)) {
+  if (!poseIsSafe(x, y, subyaw, margin)) {
     return false;
   }
   LongPlanStage stage;
@@ -672,7 +672,7 @@ bool DoubleNMPCController::rolloutIsSafe(double x, double y, double yaw,
   const double subperiod = step_period / static_cast<double>(substeps);
   for (int step = 0; step < steps; ++step) {
     for (int substep = 0; substep < substeps; ++substep) {
-      if (!poseIsSafe(x, y, margin)) {
+      if (!poseIsSafe(x, y, yaw, margin)) {
         return false;
       }
       x += control.v * std::cos(yaw) * subperiod;
@@ -680,53 +680,69 @@ bool DoubleNMPCController::rolloutIsSafe(double x, double y, double yaw,
       yaw = normalizeAngle(yaw + control.w * subperiod);
     }
   }
-  return poseIsSafe(x, y, margin);
+  return poseIsSafe(x, y, yaw, margin);
 }
 
-bool DoubleNMPCController::poseIsSafe(double x, double y, double margin) const {
+bool DoubleNMPCController::poseIsSafe(double x, double y, double yaw, double margin) const {
   auto* costmap = costmap_ros_->getCostmap();
   if (costmap == nullptr) {
     return false;
   }
-  const double radius = robot_radius_ + margin;
-  const std::array<std::pair<double, double>, 9> points = {{
-      {0.0, 0.0}, {radius, 0.0}, {-radius, 0.0}, {0.0, radius}, {0.0, -radius},
-      {0.707 * radius, 0.707 * radius}, {0.707 * radius, -0.707 * radius},
-      {-0.707 * radius, 0.707 * radius}, {-0.707 * radius, -0.707 * radius}}};
-  for (std::size_t point_index = 0; point_index < points.size(); ++point_index) {
-    const auto& point = points[point_index];
-    const double sample_x = x + point.first;
-    const double sample_y = y + point.second;
-    unsigned int mx = 0;
-    unsigned int my = 0;
-    if (!costmap->worldToMap(sample_x, sample_y, mx, my)) {
-      ROS_WARN_THROTTLE(
-          0.25,
-          "DoubleNMPC unsafe sample: reason=out_of_map center=(%.3f,%.3f) "
-          "sample_index=%zu offset=(%.3f,%.3f) world=(%.3f,%.3f) "
-          "radius=%.3f robot_radius=%.3f margin=%.3f map_origin=(%.3f,%.3f) "
-          "map_size=(%.3f,%.3f)",
-          x, y, point_index, point.first, point.second, sample_x, sample_y,
-          radius, robot_radius_, margin, costmap->getOriginX(), costmap->getOriginY(),
-          costmap->getSizeInMetersX(), costmap->getSizeInMetersY());
-      return false;
-    }
-    const unsigned char cost = costmap->getCost(mx, my);
-    if (cost == costmap_2d::NO_INFORMATION || cost >= costmap_2d::LETHAL_OBSTACLE) {
-      double cell_x = 0.0;
-      double cell_y = 0.0;
-      costmap->mapToWorld(mx, my, cell_x, cell_y);
-      ROS_WARN_THROTTLE(
-          0.25,
-          "DoubleNMPC unsafe sample: reason=%s center=(%.3f,%.3f) "
-          "sample_index=%zu offset=(%.3f,%.3f) world=(%.3f,%.3f) "
-          "cell=(%u,%u) cell_world=(%.3f,%.3f) cost=%u radius=%.3f "
-          "robot_radius=%.3f margin=%.3f",
-          cost == costmap_2d::NO_INFORMATION ? "unknown" : "lethal",
-          x, y, point_index, point.first, point.second, sample_x, sample_y,
-          mx, my, cell_x, cell_y, static_cast<unsigned int>(cost), radius,
-          robot_radius_, margin);
-      return false;
+
+  // The real vehicle is 0.60 m long by 0.30 m wide.  Check the rectangular
+  // body in its current heading instead of using a conservative circular
+  // envelope (robot_radius_ + margin).  Sampling at half-cell spacing keeps
+  // this check aligned with the costmap resolution while remaining small.
+  const double half_length = 0.30 + margin;
+  const double half_width = 0.15 + margin;
+  const double resolution = std::max(costmap->getResolution(), 1e-3);
+  const double sample_step = 0.5 * resolution;
+  const double cos_yaw = std::cos(yaw);
+  const double sin_yaw = std::sin(yaw);
+  ROS_INFO_ONCE(
+      "DoubleNMPC footprint safety check enabled: body=0.600x0.300m "
+      "margin=runtime sample_step=%.3fm robot_radius_param=%.3fm",
+      sample_step, robot_radius_);
+  std::size_t sample_index = 0;
+  for (double local_x = -half_length; local_x <= half_length + 1e-9;
+       local_x += sample_step) {
+    for (double local_y = -half_width; local_y <= half_width + 1e-9;
+         local_y += sample_step) {
+      const double sample_x = x + local_x * cos_yaw - local_y * sin_yaw;
+      const double sample_y = y + local_x * sin_yaw + local_y * cos_yaw;
+      unsigned int mx = 0;
+      unsigned int my = 0;
+      if (!costmap->worldToMap(sample_x, sample_y, mx, my)) {
+        ROS_WARN_THROTTLE(
+            0.25,
+            "DoubleNMPC footprint unsafe: reason=out_of_map center=(%.3f,%.3f) "
+            "yaw=%.3f local=(%.3f,%.3f) world=(%.3f,%.3f) "
+            "body=(%.3f x %.3f) margin=%.3f sample=%zu "
+            "map_origin=(%.3f,%.3f) map_size=(%.3f,%.3f)",
+            x, y, yaw, local_x, local_y, sample_x, sample_y,
+            2.0 * half_length, 2.0 * half_width, margin, sample_index,
+            costmap->getOriginX(), costmap->getOriginY(),
+            costmap->getSizeInMetersX(), costmap->getSizeInMetersY());
+        return false;
+      }
+      const unsigned char cost = costmap->getCost(mx, my);
+      if (cost == costmap_2d::NO_INFORMATION || cost >= costmap_2d::LETHAL_OBSTACLE) {
+        double cell_x = 0.0;
+        double cell_y = 0.0;
+        costmap->mapToWorld(mx, my, cell_x, cell_y);
+        ROS_WARN_THROTTLE(
+            0.25,
+            "DoubleNMPC footprint unsafe: reason=%s center=(%.3f,%.3f) "
+            "yaw=%.3f local=(%.3f,%.3f) world=(%.3f,%.3f) "
+            "cell=(%u,%u) cell_world=(%.3f,%.3f) cost=%u "
+            "body=(%.3f x %.3f) margin=%.3f sample=%zu",
+            cost == costmap_2d::NO_INFORMATION ? "unknown" : "lethal",
+            x, y, yaw, local_x, local_y, sample_x, sample_y,
+            mx, my, cell_x, cell_y, static_cast<unsigned int>(cost),
+            2.0 * half_length, 2.0 * half_width, margin, sample_index);
+        return false;
+      }
+      ++sample_index;
     }
   }
   return true;

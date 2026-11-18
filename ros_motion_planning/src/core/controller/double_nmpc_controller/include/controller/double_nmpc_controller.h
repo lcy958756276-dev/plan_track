@@ -91,7 +91,7 @@ private:
                                                 const Control& control, double period);
   bool rolloutIsSafe(double x, double y, double yaw, const Control& control,
                      int steps, double step_period, double margin) const;
-  bool poseIsSafe(double x, double y, double margin) const;
+  bool poseIsSafe(double x, double y, double yaw, double margin) const;
   double obstacleClearance(double x, double y) const;
   double pathCurvatureAhead(const geometry_msgs::PoseStamped& pose) const;
   TrackingPrediction evaluateTrackingPrediction(
