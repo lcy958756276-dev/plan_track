@@ -203,8 +203,8 @@ bool AStarProvePathPlanner::pointInCollision(double px, double py) {
 }
 
 bool AStarProvePathPlanner::footprintFree(double px, double py, double yaw) const {
-  constexpr double kHalfLength = 0.30 + 0.06;
-  constexpr double kHalfWidth = 0.15 + 0.06;
+  constexpr double kHalfLength = 0.30 + 0.02;
+  constexpr double kHalfWidth = 0.15 + 0.02;
   const double step = std::max(0.5 * costmap_->getResolution(), 0.01);
   const double cos_yaw = std::cos(yaw);
   const double sin_yaw = std::sin(yaw);
