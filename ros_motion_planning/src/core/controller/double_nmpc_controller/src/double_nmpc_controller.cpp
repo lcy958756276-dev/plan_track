@@ -337,7 +337,18 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   if (!rolloutIsSafe(robot_pose.pose.position.x, robot_pose.pose.position.y,
                      tf2::getYaw(robot_pose.pose.orientation), bounded,
                      tracking_horizon_steps_, control_period_, tracking_margin_)) {
-    ROS_WARN_THROTTLE(0.5, "DoubleNMPCController safety rollout rejected command; stopping");
+    ROS_WARN_THROTTLE(
+        0.5,
+        "[DOUBLE_NMPC_DIAG] SAFETY_STOP: pose=(%.3f,%.3f,%.1fdeg) "
+        "goal_dist=%.3f path_s=%.3f/%.3f cte=%.3f command=(v=%.3f,w=%.3f) "
+        "plan=(v=%.3f,w=%.3f) margins=(tracking=%.3f, nominal=%.3f) "
+        "clearance=(measured=%.3f,predicted=%.3f) horizon=%dx%.3fs",
+        robot_pose.pose.position.x, robot_pose.pose.position.y,
+        tf2::getYaw(robot_pose.pose.orientation) * 180.0 / M_PI, goal_distance,
+        path_progress_, global_plan_length_, path_projection.lateral_error,
+        bounded.v, bounded.w, planner_command_.v, planner_command_.w,
+        tracking_margin_, nominal_margin_, clearance, predicted_clearance,
+        tracking_horizon_steps_, control_period_);
     previous_command_ = Control{};
     return false;
   }
@@ -673,6 +684,13 @@ bool DoubleNMPCController::rolloutIsSafe(double x, double y, double yaw,
   for (int step = 0; step < steps; ++step) {
     for (int substep = 0; substep < substeps; ++substep) {
       if (!poseIsSafe(x, y, yaw, margin)) {
+        ROS_WARN_THROTTLE(
+            0.25,
+            "[DOUBLE_NMPC_DIAG] rollout rejected: step=%d/%d substep=%d/%d "
+            "t=%.3fs pose=(%.3f,%.3f,%.1fdeg) command=(v=%.3f,w=%.3f) margin=%.3f",
+            step + 1, steps, substep + 1, substeps,
+            (step * substeps + substep) * subperiod, x, y, yaw * 180.0 / M_PI,
+            control.v, control.w, margin);
         return false;
       }
       x += control.v * std::cos(yaw) * subperiod;
@@ -680,7 +698,15 @@ bool DoubleNMPCController::rolloutIsSafe(double x, double y, double yaw,
       yaw = normalizeAngle(yaw + control.w * subperiod);
     }
   }
-  return poseIsSafe(x, y, yaw, margin);
+  const bool final_pose_safe = poseIsSafe(x, y, yaw, margin);
+  if (!final_pose_safe) {
+    ROS_WARN_THROTTLE(
+        0.25,
+        "[DOUBLE_NMPC_DIAG] rollout rejected at final pose: t=%.3fs "
+        "pose=(%.3f,%.3f,%.1fdeg) command=(v=%.3f,w=%.3f) margin=%.3f",
+        steps * step_period, x, y, yaw * 180.0 / M_PI, control.v, control.w, margin);
+  }
+  return final_pose_safe;
 }
 
 bool DoubleNMPCController::poseIsSafe(double x, double y, double yaw, double margin) const {
