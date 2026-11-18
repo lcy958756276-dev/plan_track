@@ -155,11 +155,13 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
 
       // next node hit the boundary or obstacle
       // prevent planning failed when the current within inflation
-      if ((node_new.id() < 0) || (node_new.id() >= map_size_) ||
-          (costmap_->getCharMap()[node_new.id()] >=
-               costmap_2d::LETHAL_OBSTACLE * config_.obstacle_inflation_factor() &&
-           costmap_->getCharMap()[node_new.id()] >=
-               costmap_->getCharMap()[current.id()])) {
+      if ((node_new.id() < 0) || (node_new.id() >= map_size_)) {
+        continue;
+      }
+      const auto node_cost = costmap_->getCharMap()[node_new.id()];
+      if (node_cost != costmap_2d::NO_INFORMATION &&
+          node_cost >= costmap_2d::LETHAL_OBSTACLE * config_.obstacle_inflation_factor() &&
+          node_cost >= costmap_->getCharMap()[current.id()]) {
         continue;
       }
 
@@ -172,7 +174,7 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
         ROS_DEBUG_THROTTLE(
             0.5,
             "AStarProve rejected footprint: center=(%.3f,%.3f) yaw=%.3f "
-            "body=0.600x0.300 margin=0.060",
+            "body=0.600x0.300 margin=0.020",
             node_world_x, node_world_y, motion_yaw);
         continue;
       }
@@ -198,8 +200,10 @@ bool AStarProvePathPlanner::pointInCollision(double px, double py) {
   if (ix < 0 || ix >= nx_ || iy < 0 || iy >= ny_)
     return true;
   unsigned int idx = iy * nx_ + ix;
-  // LETHAL_OBSTACLE = 253; threshold consistent with A* expansion logic
-  return costmap_->getCharMap()[idx] >= costmap_2d::LETHAL_OBSTACLE * 0.8;
+  // Unknown cells are traversable in the static-map debug mode; lethal cells are not.
+  const auto cost = costmap_->getCharMap()[idx];
+  return cost != costmap_2d::NO_INFORMATION &&
+         cost >= costmap_2d::LETHAL_OBSTACLE * 0.8;
 }
 
 bool AStarProvePathPlanner::footprintFree(double px, double py, double yaw) const {
@@ -221,7 +225,7 @@ bool AStarProvePathPlanner::footprintFree(double px, double py, double yaw) cons
         return false;
       }
       const unsigned char cost = costmap_->getCost(mx, my);
-      if (cost == costmap_2d::NO_INFORMATION ||
+      if (cost != costmap_2d::NO_INFORMATION &&
           cost >= costmap_2d::LETHAL_OBSTACLE) {
         return false;
       }
