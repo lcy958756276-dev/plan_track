@@ -1,20 +1,20 @@
-=== 启动时间: 2026年 11月 18日 星期三 14:25:49 CST ===
-[14:25:49] [1] main_generate.py start
-[14:25:50] [1] main_generate.py done
-[14:25:50] [2] use_encoder_odom flag set
-[14:25:50] [3] loading robot_description
-[14:25:50] [3] robot_description loaded
-[14:25:53] [4] starting gzserver
-[14:26:00] [4] spawn_model start
-[31m[ERROR] [1794983160.719285276]: DeleteModel: model [my_robot] does not exist[0m
-[31m[ERROR] [1794983162.134449705]: DeleteModel: model [new_robot] does not exist[0m
-[INFO] [1794983163.934506]: Loading model XML from ros parameter robot_description
-[INFO] [1794983163.942485]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1794983163.946924]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1794983164.504765]: Spawn status: SpawnModel: Successfully spawned entity
-[14:26:05] [4] spawn_model exit=0
-[14:26:17] [8] generating move_base launch file
-[14:26:17] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 11月 18日 星期三 19:22:17 CST ===
+[19:22:17] [1] main_generate.py start
+[19:22:18] [1] main_generate.py done
+[19:22:18] [2] use_encoder_odom flag set
+[19:22:18] [3] loading robot_description
+[19:22:18] [3] robot_description loaded
+[19:22:21] [4] starting gzserver
+[19:22:28] [4] spawn_model start
+[31m[ERROR] [1795000948.950641225]: DeleteModel: model [my_robot] does not exist[0m
+[31m[ERROR] [1795000950.324445018]: DeleteModel: model [new_robot] does not exist[0m
+[INFO] [1795000952.206630]: Loading model XML from ros parameter robot_description
+[INFO] [1795000952.214134]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1795000952.218918]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1795000952.765413]: Spawn status: SpawnModel: Successfully spawned entity
+[19:22:33] [4] spawn_model exit=0
+[19:22:45] [8] generating move_base launch file
+[19:22:45] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 double_nmpc_controller/DoubleNMPCController
@@ -46,13 +46,13 @@ global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 rpp_controller /home/lcy/robot_graduation/ros_motion_planning/../ros_motion_planning/src/core/controller/rpp_controller/rpp_controller_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-[33m[WARN] [1794983179.720721566]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1794983179.722599028]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1795000968.247157952]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1795000968.249363658]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20261118 14:26:20.166409 40196 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
-I20261118 14:26:20.170878 40196 path_planner_factory.cpp:137] Using path planner: astar_polyline
-[33m[WARN] [1794983180.192399120]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[14:26:21] [8] move_base 启动后状态:
+I20261118 19:22:48.666642 42422 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
+I20261118 19:22:48.671449 42422 path_planner_factory.cpp:137] Using path planner: astar_polyline
+[33m[WARN] [1795000968.686466602]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[19:22:49] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
@@ -117,14 +117,14 @@ I20261118 14:26:20.170878 40196 path_planner_factory.cpp:137] Using path planner
 /move_base/set_logger_level
 /move_base/set_parameters
   [诊断] global inflation_radius:
-0.2
+0.15
   [诊断] local inflation_radius:
 0.1
   [诊断] global inflation_layer 参数:
 cost_scaling_factor: 2.0
 enabled: true
 inflate_unknown: false
-inflation_radius: 0.2
+inflation_radius: 0.15
 
   [诊断] global costmap plugins:
 - name: static_map
@@ -140,527 +140,175 @@ inflation_radius: 0.2
 Type: nav_msgs/OccupancyGrid
 
 Publishers: 
- * /move_base (http://ubuntu:42345/)
+ * /move_base (http://ubuntu:35909/)
 
 Subscribers: 
- * /rviz_1794983168000614150 (http://ubuntu:38099/)
+ * /rviz_1795000956235100919 (http://ubuntu:43675/)
 
 
   [诊断] global costmap 参数结束
-I20261118 14:26:54.562106 40196 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.277731, -0.116382)
-I20261118 14:26:54.568149 40196 astar_polyline_planner.cpp:46] AStarPolyline: base poses=47, polyline vertices=11, dense poses=47
-W20261118 14:26:54.568424 40196 path_planner_node.cpp:215] Path heading change 108.172 deg > 90 deg, accepting new plan for pre-rotation
-I20261118 14:26:54.570516 40196 path_planner_node.cpp:302] PathPlanner make_plan response: poses=47 end=(0.277731, -0.116382) end_goal_dist=0
-I20261118 14:27:00.011713 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=47, polyline vertices=12, dense poses=47
-[33m[WARN] [1794983220.061441813]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.860,1.249) yaw=-0.263 local=(-0.360,-0.210) world=(-1.262,1.140) cell=(20,26) cell_world=(-1.275,1.125) cost=254 body=(0.720 x 0.420) margin=0.060 sample=0[0m
-[33m[WARN] [1794983220.068182004]: DoubleNMPC footprint unsafe: reason=out_of_map center=(-0.888,0.168) yaw=-1.318 local=(0.340,-0.210) world=(-1.006,-0.214) body=(0.720 x 0.420) margin=0.060 sample=476 map_origin=(-2.300,-0.200) map_size=(2.975,2.975)[0m
-[33m[WARN] [1794983220.217155339]: DoubleNMPC long plan: id=2 full=0 motion=0 brake=0 first_invalid_stage=5 min_clearance=0.233; holding zero long-layer command[0m
-[33m[WARN] [1794983220.308728747]: DoubleNMPC long plan: id=3 full=0 motion=0 brake=0 first_invalid_stage=0 min_clearance=1.000; holding zero long-layer command[0m
-[33m[WARN] [1794983220.309397950]: DoubleNMPCController safety rollout rejected command; stopping[0m
-I20261118 14:27:00.317270 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=68, polyline vertices=25, dense poses=68
-W20261118 14:27:00.317690 40206 path_planner_node.cpp:215] Path heading change 90.451 deg > 90 deg, accepting new plan for pre-rotation
-[33m[WARN] [1794983220.358950168]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.860,1.248) yaw=-0.950 local=(-0.360,0.190) world=(-0.915,1.651) cell=(27,37) cell_world=(-0.925,1.675) cost=254 body=(0.720 x 0.420) margin=0.060 sample=16[0m
-I20261118 14:27:00.536505 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=68, polyline vertices=25, dense poses=68
-W20261118 14:27:00.536854 40206 path_planner_node.cpp:215] Path heading change 90.4973 deg > 90 deg, accepting new plan for pre-rotation
-[33m[WARN] [1794983220.709145613]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.860,1.248) yaw=-0.992 local=(-0.361,0.188) world=(-0.900,1.654) cell=(27,37) cell_world=(-0.925,1.675) cost=254 body=(0.723 x 0.423) margin=0.061 sample=16[0m
-I20261118 14:27:00.724562 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=68, polyline vertices=25, dense poses=68
-W20261118 14:27:00.724751 40206 path_planner_node.cpp:215] Path heading change 90.4973 deg > 90 deg, accepting new plan for pre-rotation
-[33m[WARN] [1794983220.920382374]: DoubleNMPCController safety rollout rejected command; stopping[0m
-I20261118 14:27:00.928236 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=68, polyline vertices=25, dense poses=68
-W20261118 14:27:00.928447 40206 path_planner_node.cpp:215] Path heading change 90.4973 deg > 90 deg, accepting new plan for pre-rotation
-[33m[WARN] [1794983220.958941609]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.860,1.248) yaw=-0.950 local=(-0.360,0.190) world=(-0.915,1.651) cell=(27,37) cell_world=(-0.925,1.675) cost=254 body=(0.720 x 0.420) margin=0.060 sample=16[0m
-I20261118 14:27:01.124662 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=68, polyline vertices=25, dense poses=68
-W20261118 14:27:01.125164 40206 path_planner_node.cpp:215] Path heading change 90.2515 deg > 90 deg, accepting new plan for pre-rotation
-[0m[INFO] [1794983179.723590640]: global_costmap: Using plugin "static_map"[0m
-[0m[INFO] [1794983179.735923471]: Requesting the map...[0m
-[0m[INFO] [1794983179.941342790]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
-[0m[INFO] [1794983180.041150527]: Received a 384 X 384 map at 0.050000 m/pix[0m
-[0m[INFO] [1794983180.048689558]: global_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1794983180.054551133]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1794983180.093077125]: global_costmap: Using plugin "voronoi_layer"[0m
-[0m[INFO] [1794983180.100020747]: global_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1794983180.193973661]: local_costmap: Using plugin "obstacle_layer"[0m
-[0m[INFO] [1794983180.197902605]:     Subscribed to Topics: scan[0m
-[0m[INFO] [1794983180.223458884]: local_costmap: Using plugin "inflation_layer"[0m
-[0m[INFO] [1794983180.291794269]: Created local_planner double_nmpc_controller/DoubleNMPCController[0m
-[0m[INFO] [1794983180.351115477]: DoubleNMPCController initialized: prediction=0.16s x 3, command=0.05s, planner=0.48s x 6 (2.88s motion + 1.44s brake certification, updated every 0.1s), max_angular_velocity=1.5rad/s, margin=[0.05, 0.1] m. Set ~DoubleNMPCController/max_linear_velocity explicitly before high-speed operation.[0m
-[0m[INFO] [1794983180.790090531]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1794983180.806165773]: Recovery behavior will clear layer 'obstacles'[0m
-[0m[INFO] [1794983180.861155050]: odom received![0m
-[0m[INFO] [1794983220.059246039]: DoubleNMPC footprint safety check enabled: body=0.600x0.300m margin=runtime sample_step=0.025m robot_radius_param=0.300m[0m
-[0m[INFO] [1794983220.070884129]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.254 u_move=(0.095,0.063) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983220.077495484]: DoubleNMPC: terminal=0 goal_dist=1.777 path_s=0.000/2.354 cte=0.028 lookahead=(0.90,0.42) curvature=0.466  curve_cap=0.450  plan_margin=0.060  plan=(0.095, 0.063) track_cap=0.095  cmd=(0.013, 0.060)  moving_w_cap=1.500  heading=0.058  speed_scale=0.95 pred_err=(0.028, 0.080)  turn=0.08  risk=0.10  margin=0.060  min_clearance=0.399[0m
-[0m[INFO] [1794983220.368350146]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.404 u_move=(0.000,0.850) u_brake=[(0.000,0.274),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983220.525610244]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=0.404 u_move=(0.000,1.500) u_brake=[(0.000,0.924),(0.000,0.348),(0.000,0.000)][0m
-[0m[INFO] [1794983220.575967668]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.404 u_move=(0.000,0.850) u_brake=[(0.000,0.274),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983220.610632489]: DoubleNMPC: terminal=0 goal_dist=1.777 path_s=0.010/3.605 cte=0.026 lookahead=(0.90,0.43) curvature=-1.053  curve_cap=0.450  plan_margin=0.060  plan=(0.000, 0.850) track_cap=0.000  cmd=(0.000, 0.120)  moving_w_cap=1.500  heading=1.601  speed_scale=0.15 pred_err=(0.027, 1.661)  turn=0.16  risk=0.20  margin=0.060  min_clearance=0.404[0m
-[0m[INFO] [1794983220.718826239]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=0.404 u_move=(0.000,1.500) u_brake=[(0.000,0.924),(0.000,0.348),(0.000,0.000)][0m
-[0m[INFO] [1794983220.767530273]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.404 u_move=(0.000,0.850) u_brake=[(0.000,0.274),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983220.920127359]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=0.404 u_move=(0.000,1.500) u_brake=[(0.000,0.924),(0.000,0.348),(0.000,0.000)][0m
-[0m[INFO] [1794983220.967476795]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.404 u_move=(0.000,0.850) u_brake=[(0.000,0.274),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983221.117287241]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=0.404 u_move=(0.000,1.500) u_brake=[(0.000,0.924),(0.000,0.348),(0.000,0.000)][0m
-[0m[INFO] [1794983221.16[33m[WARN] [1794983221.309830577]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.860,1.248) yaw=1.336 local=(-0.361,-0.211) world=(-0.739,0.847) cell=(31,20) cell_world=(-0.725,0.825) cost=254 body=(0.723 x 0.423) margin=0.061 sample=0[0m
-E20261118 14:27:01.321171 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.325501 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.329231 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.332646 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.335652 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.338689 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.341703 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.345127 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.348767 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.352177 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.355214 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.359225 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.362843 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.366597 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.369735 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.372761 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.376039 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.379361 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.382362 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.385332 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.388335 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.391417 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.394430 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.397428 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.400734 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.404233 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.408670 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.412364 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.415393 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.418430 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.421418 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.424492 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.427529 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.430486 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.433707 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.436869 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.439881 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.442889 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.446089 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.449420 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.453816 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.456848 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.460788 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.464140 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.467259 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.470237 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.473212 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.476233 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.479689 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.483120 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.486119 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.489130 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.492111 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.495427 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.499396 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.502753 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.506034 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.509604 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.513018 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.516026 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.518965 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.521907 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.524958 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.527997 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.530979 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.533910 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.537349 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.540453 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.544507 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.547577 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.550575 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.553802 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.557242 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.560365 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.563336 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.566308 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.569272 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.572594 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.575989 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.578960 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.582057 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.585089 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.588766 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.592032 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.595048 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.598026 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.600984 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.604168 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.607527 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.610970 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.614277 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.617229 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.620215 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.623237 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.626251 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.629201 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.632126 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.635043 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.638533 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.641821 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.644825 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.647845 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.650785 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.654091 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.657173 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.660204 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.663578 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.666913 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.670560 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.673712 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.676800 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.679800 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.682801 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.686250 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.689320 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.692435 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.695703 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.698957 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.702557 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.705605 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.708674 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.711650 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.714583 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.718181 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.721342 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.724463 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.727500 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.730504 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.733436 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.736734 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.740254 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.743248 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.746233 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.749167 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.752517 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.755532 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.758503 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.761590 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.764810 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.768303 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.771615 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.774889 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.777953 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.781092 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.784296 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.787300 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.790280 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.793265 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.797801 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.801122 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.804220 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.807385 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.810402 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.813378 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.816341 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.819486 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.822477 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.825444 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.828409 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.831353 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.834301 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.837343 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.840308 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.843287 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.847666 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.850914 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.853950 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.856920 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.859894 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.862875 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.865846 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.868824 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.871788 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.874760 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.877931 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.881187 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.884207 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.887171 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.890139 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.893098 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.896140 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.899114 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.902068 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.905030 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.907985 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.910931 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.913902 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.916934 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.920215 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.923218 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.926251 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.929234 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.932210 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.935173 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.938133 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.941098 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.944051 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.946991 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.949945 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.952950 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.955906 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.958851 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.961807 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.964757 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.967741 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.970695 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.973658 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.976658 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.979650 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.982585 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.985602 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.988584 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.991547 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.994524 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:01.997552 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.004467 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.007546 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.013252 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.018327 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.021596 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.024911 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.027988 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.031641 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.034902 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.038156 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.041260 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.044991 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.048910 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.052276 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.055308 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.058475 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.062748 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.065980 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.069024 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.072194 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.075843 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.079191 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.082449 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.085608 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.088697 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.091737 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.095077 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.098217 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.101495 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.105005 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.108300 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.111709 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.115226 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.118256 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.121273 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.124348 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.127743 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.130730 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.133683 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.136721 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.139834 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.143126 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.146464 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.149745 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.153092 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.156392 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.159405 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.162496 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.165493 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.168929 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.171988 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.174968 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.178272 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.182097 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.185483 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.188531 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.191520 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.194540 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.198108 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.201305 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.204342 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.207285 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.210301 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.213387 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.217027 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.220183 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.223217 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.226248 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.229360 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.232640 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.235761 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.238745 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.241802 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.245306 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.248586 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.251583 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.254689 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.257673 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.261004 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.264065 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.267223 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.270263 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.273653 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.276865 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.283543 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.286618 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.289631 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.292701 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.295828 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.300693 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.303814 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.306870 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.309897 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.312966 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.316099 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.319135 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.322167 40206 path_planner_node.cpp:277] Failed to get a path.
-E20261118 14:27:02.325168 40206 path_planner_node.cpp:277] Failed to get a path.
-I20261118 14:27:02.346520 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=28, polyline vertices=2, dense poses=28
-[33m[WARN] [1794983222.811542340]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.851,1.201) yaw=-0.852 local=(0.340,-0.160) world=(-0.748,0.840) cell=(31,20) cell_world=(-0.725,0.825) cost=254 body=(0.720 x 0.420) margin=0.060 sample=478[0m
-[33m[WARN] [1794983222.858771260]: DoubleNMPCController safety rollout rejected command; stopping[0m
-I20261118 14:27:02.862325 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=47, polyline vertices=13, dense poses=47
-[33m[WARN] [1794983223.061639079]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.912,1.144) yaw=-2.373 local=(0.339,-0.211) world=(-1.303,1.061) cell=(19,25) cell_world=(-1.325,1.075) cost=254 body=(0.723 x 0.423) margin=0.061 sample=476[0m
-I20261118 14:27:03.068634 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=47, polyline vertices=13, dense poses=47
-I20261118 14:27:03.269167 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=47, polyline vertices=13, dense poses=47
-[33m[WARN] [1794983223.327209086]: DoubleNMPC footprint unsafe: reason=out_of_map center=(-1.209,0.186) yaw=-2.017 local=(0.340,0.190) world=(-1.184,-0.203) body=(0.720 x 0.420) margin=0.060 sample=492 map_origin=(-2.300,-0.200) map_size=(2.975,2.975)[0m
-[33m[WARN] [1794983223.627099648]: DoubleNMPC footprint unsafe: reason=out_of_map center=(-1.196,0.185) yaw=-1.988 local=(0.340,0.190) world=(-1.159,-0.203) body=(0.720 x 0.420) margin=0.060 sample=492 map_origin=(-2.300,-0.200) map_size=(2.975,2.975)[0m
-[33m[WARN] [1794983223.809961909]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.869,1.210) yaw=-1.764 local=(0.340,0.190) world=(-0.748,0.840) cell=(32,21) cell_world=(-0.725,0.825) cost=254 body=(0.720 x 0.420) margin=0.060 sample=492[0m
-7668539]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.404 u_move=(0.000,1.500) u_brake=[(0.000,0.924),(0.000,0.348),(0.000,0.000)][0m
-[0m[INFO] [1794983221.168120327]: DoubleNMPC: terminal=0 goal_dist=1.777 path_s=0.010/3.605 cte=0.026 lookahead=(0.90,0.43) curvature=-1.053  curve_cap=0.450  plan_margin=0.060  plan=(0.000, 1.500) track_cap=0.000  cmd=(0.000, 0.060)  moving_w_cap=1.500  heading=1.597  speed_scale=0.15 pred_err=(0.027, 1.657)  turn=0.08  risk=0.10  margin=0.060  min_clearance=0.404[0m
-[0m[INFO] [1794983221.317728176]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=0.413 u_move=(0.000,0.525) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983222.375385458]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.088,0.525) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983222.380658567]: DoubleNMPC: terminal=0 goal_dist=1.777 path_s=0.000/1.769 cte=0.027 lookahead=(0.90,0.43) curvature=0.000  curve_cap=0.450  plan_margin=0.060  plan=(0.088, 0.525) track_cap=0.088  cmd=(0.013, 0.060)  moving_w_cap=1.500  heading=0.934  speed_scale=0.22 pred_err=(0.027, 0.995)  turn=0.08  risk=0.10  margin=0.060  min_clearance=1.000[0m
-[0m[INFO] [1794983222.523155462]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.088,0.525) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983222.674130229]: DoubleNMPC long plan: id=3 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.088,0.525) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983222.816182056]: DoubleNMPC long plan: id=4 full=1 move=6 brake=3 min_clearance=0.411 u_move=(0.000,0.525) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983222.920597969]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.410 u_move=(0.000,0.143) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983222.921401928]: DoubleNMPC: terminal=0 goal_dist=1.774 path_s=0.000/2.377 cte=0.024 lookahead=(0.90,0.43) curvature=0.684  curve_cap=0.450  plan_margin=0.060  plan=(0.000, 0.143) track_cap=0.000  cmd=(0.000, 0.060)  moving_w_cap=1.500  heading=-0.051  speed_scale=0.96 pred_err=(0.024, 0.061)  turn=0.08  risk=0.08  margin=0.059  min_clearance=0.410[0m
-[0m[INFO] [1794983223.065070920]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=0.410 u_move=(0.000,0.061) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983223.114921802]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.410 u_move=(0.000,0.061) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983223.265455532]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=0.410 u_move=(0.000,0.073) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983223.330875046]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.327,0.077) u_brake=[(0.015,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983223.474777676]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.327,0.077) u_brake=[(0.015,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983223.480320777]: DoubleNMPC: terminal=0 goal_dist=1.774 path_s=0.000/2.377 cte=0.024 lookahead=(0.90,0.43) curvature=0.684  curve_cap=0.450  plan_margin=0.060  plan=(0.327, 0.077) track_cap=0.327  cmd=(0.050, -0.142)  moving_w_cap=1.500  heading=-0.082  speed_scale=0.93 pred_err=(0.024, 0.064)  turn=0.19  risk=0.40  margin=0.060  min_clearance=1.000[0m
-[0m[INFO] [1794983223.630332252]: DoubleNMPC long plan: id=3 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.325,0.091) u_brake=[(0.013,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983223.773543374]: DoubleNMPC long plan: id=4 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.318,0.148) u_brake=[(0.006,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983223.863400060]: DoubleNMPC long plan: id=5 full=1 move=6 brake=3 min_clearan[33m[WARN] [1794983223.863732677]: DoubleNMPCController safety rollout rejected command; stopping[0m
-I20261118 14:27:03.867102 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=47, polyline vertices=13, dense poses=47
-[33m[WARN] [1794983224.059998100]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.911,1.128) yaw=-2.421 local=(0.341,-0.209) world=(-1.305,1.060) cell=(20,26) cell_world=(-1.325,1.075) cost=254 body=(0.719 x 0.419) margin=0.059 sample=476[0m
-[33m[WARN] [1794983224.524570055]: DoubleNMPC footprint unsafe: reason=out_of_map center=(-1.324,0.156) yaw=-2.124 local=(0.359,0.209) world=(-1.334,-0.259) body=(0.733 x 0.433) margin=0.066 sample=539 map_origin=(-2.350,-0.250) map_size=(2.975,2.975)[0m
-[33m[WARN] [1794983224.809824778]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.878,1.177) yaw=-1.862 local=(0.340,0.190) world=(-0.794,0.798) cell=(31,20) cell_world=(-0.775,0.775) cost=254 body=(0.721 x 0.421) margin=0.060 sample=492[0m
-[33m[WARN] [1794983224.813139271]: DoubleNMPCController safety rollout rejected command; stopping[0m
-I20261118 14:27:04.816996 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=13, dense poses=46
-I20261118 14:27:05.018038 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=13, dense poses=46
-[33m[WARN] [1794983225.061296145]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.873,1.194) yaw=1.253 local=(-0.360,-0.210) world=(-0.786,0.787) cell=(31,20) cell_world=(-0.775,0.775) cost=254 body=(0.720 x 0.420) margin=0.060 sample=0[0m
-I20261118 14:27:05.218600 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=11, dense poses=46
-[33m[WARN] [1794983225.521442500]: DoubleNMPC footprint unsafe: reason=out_of_map center=(-1.293,0.141) yaw=-2.062 local=(0.337,0.212) world=(-1.265,-0.256) body=(0.727 x 0.427) margin=0.063 sample=521 map_origin=(-2.350,-0.250) map_size=(2.975,2.975)[0m
-ce=0.383 u_move=(0.000,-0.151) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
-[0m[INFO] [1794983223.913962706]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.383 u_move=(0.000,-0.151) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
-[0m[INFO] [1794983224.008873455]: DoubleNMPC: terminal=0 goal_dist=1.747 path_s=0.024/2.377 cte=0.010 lookahead=(0.93,0.44) curvature=0.746  curve_cap=0.450  plan_margin=0.060  plan=(0.000, -0.151) track_cap=0.000  cmd=(0.000, -0.151)  moving_w_cap=1.500  heading=-0.053  speed_scale=0.96 pred_err=(0.026, 0.043)  turn=0.21  risk=0.13  margin=0.059  min_clearance=0.369[0m
-[0m[INFO] [1794983224.064565398]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=0.369 u_move=(0.000,-0.124) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
-[0m[INFO] [1794983224.163224636]: DoubleNMPC long plan: id=3 full=1 move=6 brake=3 min_clearance=0.371 u_move=(0.000,-0.128) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
-[0m[INFO] [1794983224.534445470]: DoubleNMPC long plan: id=4 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.299,0.029) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983224.540883284]: DoubleNMPC: terminal=0 goal_dist=1.752 path_s=0.024/2.377 cte=0.010 lookahead=(0.93,0.44) curvature=0.746  curve_cap=0.450  plan_margin=0.066  plan=(0.299, 0.029) track_cap=0.299  cmd=(0.013, -0.077)  moving_w_cap=1.500  heading=-0.012  speed_scale=0.99 pred_err=(0.023, 0.047)  turn=0.11  risk=0.48  margin=0.065  min_clearance=1.000[0m
-[0m[INFO] [1794983224.626650446]: DoubleNMPC long plan: id=5 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.297,0.044) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983224.774505091]: DoubleNMPC long plan: id=6 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.296,0.050) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983224.877181339]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.406 u_move=(0.000,0.311) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983225.014141308]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=0.401 u_move=(0.000,0.316) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983225.064303110]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.401 u_move=(0.000,0.316) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983225.064563438]: DoubleNMPC: terminal=0 goal_dist=1.744 path_s=0.000/2.327 cte=0.019 lookahead=(0.91,0.43) curvature=1.045  curve_cap=0.450  plan_margin=0.060  plan=(0.000, 0.316) track_cap=0.000  cmd=(0.000, 0.060)  moving_w_cap=1.500  heading=-0.006  speed_scale=0.99 pred_err=(0.019, 0.043)  turn=0.08  risk=0.05  margin=0.059  min_clearance=0.401[0m
-[0m[INFO] [1794983225.214643201]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=0.401 u_move=(0.000,0.315) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983225.264557125]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.401 u_move=(0.000,0.309) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983225.525161934]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.296,0.053) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983225.623681231]: DoubleNMPC long plan: id=3 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.299,0.034) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983225.629374032]: DoubleNMPC: terminal=0 goal_dist=1.745 path_s=0.000/2.327 cte=0.020 lookahead=(0.91,0.43) curvature=1.106  curve_cap=0.450  plan_margin=0.061  plan=(0.299, 0.034) track_cap=0.299  cmd=(0.038, 0.120)  moving_w_cap=1.500  heading=0.006  speed_scale=0.99 pred_err=(0.020, 0.059)  turn=0.16  risk=0.65  margin=0.060  min_clearance=1.000[0m
-[0m[INFO] [1794983225.773879302]: DoubleNMPC long plan: id=4 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.308,0.218) u_brake=[(0.000,0.000)[33m[WARN] [1794983225.809895553]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.878,1.176) yaw=-1.857 local=(0.340,0.190) world=(-0.792,0.796) cell=(31,20) cell_world=(-0.775,0.775) cost=254 body=(0.720 x 0.420) margin=0.060 sample=492[0m
-[33m[WARN] [1794983225.812796627]: DoubleNMPCController safety rollout rejected command; stopping[0m
-I20261118 14:27:05.817176 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=11, dense poses=46
-I20261118 14:27:06.018600 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=11, dense poses=46
-[33m[WARN] [1794983226.060475342]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.875,1.185) yaw=-0.808 local=(0.340,-0.210) world=(-0.792,0.795) cell=(31,20) cell_world=(-0.775,0.775) cost=254 body=(0.720 x 0.420) margin=0.060 sample=476[0m
-I20261118 14:27:06.217289 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=13, dense poses=46
-[33m[WARN] [1794983226.721581937]: DoubleNMPC footprint unsafe: reason=out_of_map center=(-0.953,0.056) yaw=-1.474 local=(0.340,-0.210) world=(-1.129,-0.303) body=(0.720 x 0.420) margin=0.060 sample=476 map_origin=(-2.350,-0.300) map_size=(2.975,2.975)[0m
-[33m[WARN] [1794983226.810472066]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.875,1.185) yaw=-0.820 local=(0.340,-0.210) world=(-0.797,0.793) cell=(31,21) cell_world=(-0.775,0.775) cost=254 body=(0.720 x 0.420) margin=0.060 sample=476[0m
-[33m[WARN] [1794983226.858772344]: DoubleNMPCController safety rollout rejected command; stopping[0m
-I20261118 14:27:06.862627 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=13, dense poses=46
-[33m[WARN] [1794983227.060500703]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.883,1.145) yaw=-1.763 local=(0.339,0.164) world=(-0.786,0.781) cell=(31,21) cell_world=(-0.775,0.775) cost=254 body=(0.721 x 0.421) margin=0.061 sample=491[0m
-I20261118 14:27:07.112082 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=13, dense poses=46
-[33m[WARN] [1794983227.521605194]: DoubleNMPC footprint unsafe: reason=out_of_map center=(-1.328,0.095) yaw=-2.192 local=(0.359,0.184) world=(-1.387,-0.304) body=(0.732 x 0.432) margin=0.066 sample=538 map_origin=(-2.350,-0.300) map_size=(2.975,2.975)[0m
-,(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983225.864888948]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.398 u_move=(0.000,0.223) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983226.014553468]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=0.392 u_move=(0.000,0.241) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983226.064311771]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.393 u_move=(0.000,0.242) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983226.158816074]: DoubleNMPC: terminal=0 goal_dist=1.739 path_s=0.000/2.327 cte=0.011 lookahead=(0.93,0.44) curvature=1.106  curve_cap=0.450  plan_margin=0.060  plan=(0.000, 0.242) track_cap=0.000  cmd=(0.000, 0.180)  moving_w_cap=1.500  heading=-0.022  speed_scale=0.98 pred_err=(0.011, 0.115)  turn=0.25  risk=0.27  margin=0.061  min_clearance=0.393[0m
-[0m[INFO] [1794983226.213688762]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=0.393 u_move=(0.000,0.244) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983226.263091023]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.393 u_move=(0.000,0.002) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983226.524229318]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.293,0.068) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983226.627263367]: DoubleNMPC long plan: id=3 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.294,0.064) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983226.664332927]: DoubleNMPC: terminal=0 goal_dist=1.740 path_s=0.000/2.302 cte=0.012 lookahead=(0.93,0.44) curvature=0.270  curve_cap=0.450  plan_margin=0.060  plan=(0.294, 0.064) track_cap=0.294  cmd=(0.050, 0.242)  moving_w_cap=1.500  heading=0.061  speed_scale=0.95 pred_err=(0.012, 0.087)  turn=0.33  risk=0.56  margin=0.060  min_clearance=1.000[0m
-[0m[INFO] [1794983226.724656808]: DoubleNMPC long plan: id=4 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.297,0.048) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983226.813339315]: DoubleNMPC long plan: id=5 full=1 move=6 brake=3 min_clearance=0.392 u_move=(0.000,0.277) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983226.913131577]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.390 u_move=(0.000,0.260) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983227.062700317]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=0.385 u_move=(0.000,0.220) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983227.162009781]: DoubleNMPC long plan: id=1 full=1 move=6 brake=3 min_clearance=0.386 u_move=(0.000,0.221) u_brake=[(0.000,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983227.208895010]: DoubleNMPC: terminal=0 goal_dist=1.735 path_s=0.000/2.302 cte=0.004 lookahead=(0.94,0.45) curvature=0.270  curve_cap=0.450  plan_margin=0.060  plan=(0.000, 0.221) track_cap=0.000  cmd=(0.000, 0.120)  moving_w_cap=1.500  heading=0.016  speed_scale=0.99 pred_err=(0.004, 0.076)  turn=0.16  risk=0.16  margin=0.060  min_clearance=0.386[0m
-[0m[INFO] [1794983227.525955301]: DoubleNMPC long plan: id=2 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.308,-0.031) u_brake=[(0.000,-0.000),(0.000,-0.000),(0.000,-0.000)][0m
-[0m[INFO] [1794983227.626668228]: DoubleNMPC long plan: id=3 full=1 move=6 brake=3 min_clearance=1.000 u_move=(0.313,0.184) u_brake=[(0.001,0.000),(0.000,0.000),(0.000,0.000)][0m
-[0m[INFO] [1794983227.714287185]: DoubleNMPC: terminal=0 goal_dist=1.735 path_s=0.000/2.302 cte=0.004 lookahead=(0.94,0.45) curvature=0.270  curve_cap=0.450  plan_margin=0.064  plan=(0.313, 0.184) track_cap=0.313  cmd=(0.062, 0.243)  moving_w_cap=1.500  heading=-0.020  speed_scale=0.98 pred_err=(0.025, 0.171)  turn=0.33  risk=0.69  margin=0.061  min_clearance=1.000[0m
-[0m[INFO] [1794983227.773444249]:[33m[WARN] [1794983227.808781152]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.877,1.174) yaw=-1.854 local=(0.340,0.190) world=(-0.790,0.795) cell=(31,21) cell_world=(-0.775,0.775) cost=254 body=(0.720 x 0.420) margin=0.060 sample=492[0m
-[33m[WARN] [1794983227.864623018]: DoubleNMPCController safety rollout rejected command; stopping[0m
-I20261118 14:27:07.868177 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=13, dense poses=46
-I20261118 14:27:08.062175 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=13, dense poses=46
-[33m[WARN] [1794983228.108718174]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.878,1.163) yaw=-1.757 local=(0.340,0.165) world=(-0.779,0.799) cell=(31,21) cell_world=(-0.775,0.775) cost=254 body=(0.720 x 0.420) margin=0.060 sample=491[0m
-I20261118 14:27:08.266752 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=13, dense poses=46
-[33m[WARN] [1794983228.333091908]: DoubleNMPC footprint unsafe: reason=out_of_map center=(-1.180,0.080) yaw=-2.008 local=(0.340,0.190) world=(-1.152,-0.308) body=(0.720 x 0.420) margin=0.060 sample=492 map_origin=(-2.350,-0.300) map_size=(2.975,2.975)[0m
-[33m[WARN] [1794983228.620790952]: DoubleNMPC footprint unsafe: reason=out_of_map center=(-1.180,0.080) yaw=-2.008 local=(0.340,0.190) world=(-1.152,-0.308) body=(0.720 x 0.420) margin=0.060 sample=492 map_origin=(-2.350,-0.300) map_size=(2.975,2.975)[0m
-[33m[WARN] [1794983228.809121523]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.880,1.152) yaw=-1.725 local=(0.340,0.140) world=(-0.794,0.794) cell=(31,21) cell_world=(-0.775,0.775) cost=254 body=(0.720 x 0.420) margin=0.060 sample=490[0m
-[33m[WARN] [1794983228.810105871]: DoubleNMPCController safety rollout rejected command; stopping[0m
-I20261118 14:27:08.813813 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=47, polyline vertices=12, dense poses=47
-[33m[WARN] [1794983228.860072819]: DoubleNMPC long plan: id=1 full=0 motion=0 brake=0 first_invalid_stage=0 min_clearance=1.000; holding zero long-layer command[0m
-I20261118 14:27:08.864364 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=47, polyline vertices=12, dense poses=47
-[33m[WARN] [1794983228.910123865]: DoubleNMPC long plan: id=1 full=0 motion=0 brake=0 first_invalid_stage=0 min_clearance=1.000; holding zero long-layer command[0m
-I20261118 14:27:08.914921 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=13, dense poses=46
-[33m[WARN] [1794983228.959284455]: DoubleNMPC long plan: id=1 full=0 motion=0 brake=0 first_invalid_stage=0 min_clearance=1.000; holding zero long-layer command[0m
-I20261118 14:27:08.964488 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=13, dense poses=46
-[33m[WARN] [1794983229.009058854]: DoubleNMPC long plan: id=1 full=0 motion=0 brake=0 first_invalid_stage=0 min_clearance=1.000; holding zero long-layer command[0m
-I20261118 14:27:09.014629 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=13, dense poses=46
-[33m[WARN] [1794983229.059054059]: DoubleNMPC long plan: id=1 full=0 motion=0 brake=0 first_invalid_stage=0 min_clearance=1.000; holding zero long-layer command[0m
-[33m[WARN] [1794983229.059224720]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.881,1.144) yaw=-1.736 local=(0.340,0.140) world=(-0.799,0.785) cell=(31,21) cell_world=(-0.775,0.775) cost=254 body=(0.720 x 0.420) margin=0.060 sample=490[0m
-I20261118 14:27:09.065423 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=13, dense poses=46
-[33m[WARN] [1794983229.109070480]: DoubleNMPC long plan: id=1 full=0 motion=0 brake=0 first_invalid_stage=0 min_clearance=1.000; holding zero long-layer command[0m
-I20261118 14:27:09.113195 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=13, dense poses=46
-[33m[WARN] [1794983229.159067221]: DoubleNMPC long plan: id=1 full=0 motion=0 brake=0 first_invalid_stage=0 min_clearance=1.000; holding zero long-layer command[0m
-I20261118 14:27:09.163213 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=13, dense poses=46
-[33m[WARN] [1794983229.209037817]: DoubleNMPC long plan: id=1 full=0 motion=0 brake=0 first_invalid_stage=0 min_clearance=1.000; holding zero long-layer command[0m
-I20261118 14:27:09.213215 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=13, dense poses=46
-[33m[WARN] [1794983229.259167138]: DoubleNMPC long plan: id=1 full=0 motion=0 brake=0 first_invalid_stage=0 min_clearance=1.000; holding zero long-layer command[0m
-I20261118 14:27:09.263862 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=13, dense poses=46
-[33m[WARN] [1794983229.326352461]: DoubleNMPC footprint unsafe: reason=out_of_map center=(-1.196,0.075) yaw=-1.988 local=(0.340,0.165) world=(-1.183,-0.303) body=(0.720 x 0.420) margin=0.060 sample=491 map_origin=(-2.350,-0.300) map_size=(2.975,2.975)[0m
-[33m[WARN] [1794983229.621640774]: DoubleNMPC footprint unsafe: reason=out_of_map center=(-1.184,0.074) yaw=-1.962 local=(0.340,0.165) world=(-1.161,-0.303) body=(0.720 x 0.420) margin=0.060 sample=491 map_origin=(-2.350,-0.300) map_size=(2.975,2.975)[0m
-[33m[WARN] [1794983229.808769582]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.885,1.123) yaw=-1.856 local=(0.340,0.190) world=(-0.799,0.743) cell=(31,21) cell_world=(-0.775,0.725) cost=254 body=(0.720 x 0.420) margin=0.060 sample=492[0m
-[33m[WARN] [1794983229.811074127]: DoubleNMPCController safety rollout rejected command; stopping[0m
-I20261118 14:27:09.814347 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=45, polyline vertices=14, dense poses=45
-I20261118 14:27:09.911959 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=45, polyline vertices=14, dense poses=45
-[33m[WARN] [1794983229.959015044]: DoubleNMPC long plan: id=1 full=0 motion=0 brake=0 first_invalid_stage=0 min_clearance=1.000; holding zero long-layer command[0m
-I20261118 14:27:09.963958 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=45, polyline vertices=14, dense poses=45
-[33m[WARN] [1794983230.009070347]: DoubleNMPC long plan: id=1 full=0 motion=0 brake=0 first_invalid_stage=0 min_clearance=1.000; holding zero long-layer command[0m
-I20261118 14:27:10.015727 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=45, polyline vertices=14, dense poses=45
-[33m[WARN] [1794983230.058779911]: DoubleNMPC footprint unsafe: reason=lethal center=(-0.886,1.118) yaw=-1.766 local=(0.340,0.190) world=(-0.766,0.747) cell=(31,21) cell_world=(-0.775,0.725) cost=254 body=(0.720 x 0.420) margin=0.060 sample=492[0m
-[33m[WARN] [1794983230.059229524]: DoubleNMPC long plan: id=1 full=0 motion=0 brake=0 first_invalid_stage=0 min_clearance=1.000; holding zero long-layer command[0m
-I20261118 14:27:10.063232 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=45, polyline vertices=14, dense poses=45
-[33m[WARN] [1794983230.109068852]: DoubleNMPC long plan: id=1 full=0 motion=0 brake=0 first_invalid_stage=0 min_clearance=1.000; holding zero long-layer command[0m
-I20261118 14:27:10.113260 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=45, polyline vertices=14, dense poses=45
-[33m[WARN] [1794983230.159061113]: DoubleNMPC long plan: id=1 full=0 motion=0 brake=0 first_invalid_stage=0 min_clearance=1.000; holding zero long-layer command[0m
-I20261118 14:27:10.163199 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=12, dense poses=46
-[33m[WARN] [1794983230.209086783]: DoubleNMPC long plan: id=1 full=0 motion=0 brake=0 first_invalid_stage=0 min_clearance=1.000; holding zero long-layer command[0m
-I20261118 14:27:10.213125 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=12, dense poses=46
-[33m[WARN] [1794983230.259051106]: DoubleNMPC long plan: id=1 full=0 motion=0 brake=0 first_invalid_stage=0 min_clearance=1.000; holding zero long-layer command[0m
-I20261118 14:27:10.263149 40206 astar_polyline_planner.cpp:46] AStarPolyline: base poses=46, polyline vertices=12, dense poses=46
-[33m[WARN] [1794983230.328092929]: DoubleNMPC footprint unsafe: reason=out_of_map center=(-1.127,0.002) yaw=-1.804 local=(0.340,0.115) world=(-1.094,-0.356) body=(0.720 x 0.420) margin=0.060 sample=489 map_origin=(-2.350,-0.350) map_size=(2.975,2.975)[0m
-[31m[ERROR] [1794983230.358922024]: Aborting because the robot appears to be oscillating over and over. Even after executing all recovery behaviors[0m
-... logging to /home/lcy/.ros/log/c04b9aba-e30e-11f1-9f22-189341889b90/roslaunch-ubuntu-40162.log
+I20261118 19:23:18.071964 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:18.079135 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:18.079278 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:18.190057 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:18.196506 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:18.196651 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:18.305631 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:18.311493 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:18.311663 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:18.423669 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:18.429754 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:18.429872 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:18.539156 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:18.544617 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:18.544749 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:18.654048 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:18.659060 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:18.659181 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:18.767449 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:18.772403 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:18.772537 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:18.880824 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:18.885996 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:18.886118 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:18.999680 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:19.004702 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:19.005517 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:19.113698 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:19.118669 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:19.118785 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:19.227236 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:19.232281 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:19.232352 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:19.341115 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:19.346060 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:19.346199 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:19.454553 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:19.459522 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:19.459645 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:19.567408 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:19.572428 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:19.572556 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:19.685343 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:19.690563 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:19.690650 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:19.799108 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:19.803951 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:19.804044 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:19.915180 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:19.920334 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:19.920454 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:20.033618 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:20.038403 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:20.038516 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:20.147392 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:20.155799 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:20.155941 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:20.263947 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:20.268811 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:20.268920 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:20.379143 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:20.385154 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:20.385278 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:20.497022 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:20.501827 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:20.501938 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:20.610002 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:20.616429 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:20.616544 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:20.725826 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:20.730844 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:20.730947 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:20.839282 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:20.844199 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:20.844301 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:20.954020 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.395733, -0.338146)
+E20261118 19:23:20.962401 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:20.962494 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:22.952786 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:22.957727 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:22.960289 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:23.070837 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:23.075755 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:23.075863 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:23.183715 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:23.190706 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:23.190845 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:23.300483 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:23.307458 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:23.307571 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:23.416750 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:23.422264 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:23.422381 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:23.530397 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:23.535336 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:23.535461 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:23.643877 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:23.648898 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:23.648989 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:23.757452 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:23.764477 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:23.764591 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:23.873461 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:23.879110 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:23.879244 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:23.987870 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:23.993945 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:23.994063 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:24.102684 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:24.107719 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:24.107810 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:24.216167 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:24.222936 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:24.223032 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:24.330842 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:24.335544 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:24.335618 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:24.444002 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:24.448808 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:24.448907 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:24.559640 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:24.564324 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:24.564429 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:24.672600 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:24.679564 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:24.679673 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:24.788143 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:24.793103 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:24.793203 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:24.907820 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:24.914428 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:24.914588 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:25.023087 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:25.028371 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:25.028482 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:25.136279 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:25.142606 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:25.142774 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:25.253067 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:25.257987 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:25.258081 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:25.368232 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:25.373723 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:25.373884 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:25.486271 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:25.491323 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:25.491410 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:25.599148 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:25.604080 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:25.604161 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:25.717963 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:25.722900 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:25.722960 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+I20261118 19:23:25.839730 42422 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-0.86, 1.25) goal=(0.313935, -0.217326)
+E20261118 19:23:25.844693 42422 path_planner_node.cpp:277] Failed to get a path.
+W20261118 19:23:25.844812 42422 path_planner_node.cpp:306] PathPlanner make_plan response: empty plan
+... logging to /home/lcy/.ros/log/ca349cda-e33f-11f1-a40d-189341889b90/roslaunch-ubuntu-42355.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 Done checking log file disk usage. Usage is <1GB.
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:39609/[0m
+[1mstarted roslaunch server http://ubuntu:41287/[0m
 
 SUMMARY
 ========
@@ -719,8 +367,8 @@ PARAMETERS
  * /move_base/global_costmap/global_frame: map
  * /move_base/global_costmap/inflation_layer/cost_scaling_factor: 2.0
  * /move_base/global_costmap/inflation_layer/enabled: True
- * /move_base/global_costmap/inflation_layer/inflation_radius: 0.1
- * /move_base/global_costmap/inflation_radius: 0.2
+ * /move_base/global_costmap/inflation_layer/inflation_radius: 0.15
+ * /move_base/global_costmap/inflation_radius: 0.15
  * /move_base/global_costmap/map_type: costmap
  * /move_base/global_costmap/meter_scoring: True
  * /move_base/global_costmap/obstacle_layer/observation_sources: scan
@@ -791,7 +439,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [40196][0m
+[1mprocess[move_base-1]: started with pid [42422][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete

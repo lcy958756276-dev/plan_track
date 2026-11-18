@@ -14,7 +14,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 WORKSPACE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 LOG_DIR="$WORKSPACE_DIR/log"
 # 统一控制全局/局部 costmap 的障碍物膨胀范围（单位：米）
-INFLATION_RADIUS="0.1"
+INFLATION_RADIUS="0.1"#local!!!!!!!!!!!!!!!!!!!!
 
 source "$WORKSPACE_DIR/devel/setup.bash"
 mkdir -p "$LOG_DIR"
@@ -290,8 +290,8 @@ cat > "$MB_LAUNCH" << MBEOF
     </rosparam>
 
     <!-- 最终显式覆盖，避免参数加载顺序覆盖 YAML 中的值 -->
-    <param name="global_costmap/inflation_layer/inflation_radius" value="$INFLATION_RADIUS"/>
-    <param name="local_costmap/inflation_layer/inflation_radius" value="$INFLATION_RADIUS"/>
+    <param name="global_costmap/inflation_layer/inflation_radius" value="0.15"/>
+    <param name="local_costmap/inflation_layer/inflation_radius" value="0.1"/>
 
     <!-- 真实车体尺寸：长度 0.60 m，宽度 0.30 m；base_footprint 位于车体中心 -->
     <rosparam ns="global_costmap" param="footprint">[[-0.30, -0.15], [-0.30, 0.15], [0.30, 0.15], [0.30, -0.15]]</rosparam>
