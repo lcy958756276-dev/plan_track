@@ -47,18 +47,21 @@ rm -f "$LOG_DIR/.pid_footprint"
 # 记录启动时间
 echo "=== 启动时间: $(date) ===" > "$LOG_DIR/run.log"
 
-# Rebuild the global planner when the existing plugin predates its sources.
-PATH_PLANNER_DIR="$WORKSPACE_DIR/src/core/path_planner/path_planner"
-PATH_PLANNER_LIBRARY="$WORKSPACE_DIR/devel/lib/libpath_planner.so"
-if [[ ! -f "$PATH_PLANNER_LIBRARY" ||
-      -n "$(find "$PATH_PLANNER_DIR/src" "$PATH_PLANNER_DIR/include" -type f -newer "$PATH_PLANNER_LIBRARY" -print -quit)" ||
-      "$PATH_PLANNER_DIR/CMakeLists.txt" -nt "$PATH_PLANNER_LIBRARY" ]]; then
-    echo "  检测到全局规划源码更新，正在编译 path_planner..."
-    if ! (cd "$WORKSPACE_DIR" && catkin_make --pkg path_planner) >> "$LOG_DIR/run.log" 2>&1; then
-        echo "  全局规划器编译失败，导航未启动。详见 log/run.log" | tee -a "$LOG_DIR/run.log"
-        exit 1
+# Rebuild a navigation plugin when the existing library predates its sources.
+for PACKAGE_PATH in path_planner/path_planner controller/double_nmpc_controller; do
+    PACKAGE_NAME="${PACKAGE_PATH##*/}"
+    PACKAGE_DIR="$WORKSPACE_DIR/src/core/$PACKAGE_PATH"
+    PACKAGE_LIBRARY="$WORKSPACE_DIR/devel/lib/lib$PACKAGE_NAME.so"
+    if [[ ! -f "$PACKAGE_LIBRARY" ||
+          -n "$(find "$PACKAGE_DIR/src" "$PACKAGE_DIR/include" -type f -newer "$PACKAGE_LIBRARY" -print -quit)" ||
+          "$PACKAGE_DIR/CMakeLists.txt" -nt "$PACKAGE_LIBRARY" ]]; then
+        echo "  检测到 $PACKAGE_NAME 源码更新，正在编译..."
+        if ! (cd "$WORKSPACE_DIR" && catkin_make --pkg "$PACKAGE_NAME") >> "$LOG_DIR/run.log" 2>&1; then
+            echo "  $PACKAGE_NAME 编译失败，导航未启动。详见 log/run.log" | tee -a "$LOG_DIR/run.log"
+            exit 1
+        fi
     fi
-fi
+done
 
 # ── 1. 生成动态启动文件 ──
 echo "[1/8] 生成动态启动文件..."

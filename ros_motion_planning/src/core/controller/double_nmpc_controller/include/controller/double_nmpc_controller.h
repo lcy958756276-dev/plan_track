@@ -52,9 +52,13 @@ private:
     int pending_upward_cycles{0};
   };
 
+  struct RolloutPose {
+    double x, y, yaw;
+  };
+
   struct LongPlanStage {
     Control control;
-    geometry_msgs::PoseStamped predicted_pose;
+    RolloutPose predicted_pose;
     double minimum_clearance{0.0};
   };
 
@@ -92,14 +96,14 @@ private:
   Control chooseControl(const geometry_msgs::PoseStamped& pose, const Control& current,
                         const geometry_msgs::PoseStamped& reference, int horizon_steps,
                         double step_period, double speed_cap, double margin,
-                        bool planner_layer) const;
+                        bool planner_layer, bool* found_safe_control = nullptr) const;
   LongPlan buildLongPlan(const geometry_msgs::PoseStamped& pose,
                          const Control& first_control, double margin,
                          const ros::Time& created_at) const;
-  bool appendCertifiedStage(LongPlan& plan, geometry_msgs::PoseStamped& pose,
+  bool appendCertifiedStage(LongPlan& plan, RolloutPose& pose,
                             const Control& control, double margin) const;
-  static geometry_msgs::PoseStamped advancePose(const geometry_msgs::PoseStamped& pose,
-                                                const Control& control, double period);
+  static void advanceRolloutPose(RolloutPose& pose, const Control& control, double period);
+  int safetySubsteps(double period) const;
   bool rolloutIsSafe(double x, double y, double yaw, const Control& control,
                      int steps, double step_period, double margin,
                      SafetyFailure* failure = nullptr) const;

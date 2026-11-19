@@ -134,6 +134,11 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
                   << "rad/s, margin=[" << min_margin_ << ", "
                   << max_margin_ << "] m. Set ~" << name
                   << "/max_linear_velocity explicitly before high-speed operation.");
+  const int long_substeps = safetySubsteps(planner_period_);
+  ROS_INFO("[NMPC_LONG_MODEL] integration=continuous_substeps stage_s=%.3f substeps=%d "
+           "substep_s=%.3f motion_stages=%d brake_stages=%d",
+           planner_period_, long_substeps, planner_period_ / long_substeps,
+           planner_horizon_steps_, planner_brake_stages_);
 }
 
 bool DoubleNMPCController::setPlan(const std::vector<geometry_msgs::PoseStamped>& plan) {
@@ -249,16 +254,21 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
     planner_reference_ = poseAtPathArcLength(path_progress_ + planner_lookahead);
     planner_margin_snapshot_ = tracking_margin_;
     const ros::WallTime planner_started = ros::WallTime::now();
+    bool found_safe_control = false;
     const Control first_control = chooseControl(robot_pose, current, planner_reference_,
                                                 planner_horizon_steps_, planner_period_,
-                                                curve_speed_limit, planner_margin_snapshot_, true);
+                                                curve_speed_limit, planner_margin_snapshot_, true,
+                                                &found_safe_control);
     cached_long_plan_ = buildLongPlan(robot_pose, first_control,
                                       planner_margin_snapshot_, now);
     cached_long_plan_.id = next_long_plan_id_++;
     if (cached_long_plan_.full_valid) {
       planner_command_ = cached_long_plan_.stages.front().control;
+      const auto& motion_end = cached_long_plan_.stages[planner_horizon_steps_ - 1].predicted_pose;
+      const auto& brake_end = cached_long_plan_.stages.back().predicted_pose;
       ROS_INFO("DoubleNMPC long plan: id=%llu full=1 move=6 brake=%d min_clearance=%.3f "
-               "u_move=(%.3f,%.3f) u_brake=[(%.3f,%.3f),(%.3f,%.3f),(%.3f,%.3f)]",
+               "u_move=(%.3f,%.3f) u_brake=[(%.3f,%.3f),(%.3f,%.3f),(%.3f,%.3f)] "
+               "motion_end=(%.3f,%.3f,%.3frad) brake_end=(%.3f,%.3f,%.3frad)",
                static_cast<unsigned long long>(cached_long_plan_.id), planner_brake_stages_,
                cached_long_plan_.minimum_clearance, planner_command_.v, planner_command_.w,
                cached_long_plan_.stages[planner_horizon_steps_].control.v,
@@ -266,23 +276,25 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
                cached_long_plan_.stages[planner_horizon_steps_ + 1].control.v,
                cached_long_plan_.stages[planner_horizon_steps_ + 1].control.w,
                cached_long_plan_.stages[planner_horizon_steps_ + 2].control.v,
-               cached_long_plan_.stages[planner_horizon_steps_ + 2].control.w);
+               cached_long_plan_.stages[planner_horizon_steps_ + 2].control.w,
+               motion_end.x, motion_end.y, motion_end.yaw, brake_end.x, brake_end.y, brake_end.yaw);
     } else {
       planner_command_ = Control{};
       ROS_WARN("DoubleNMPC long plan: id=%llu full=0 motion=%d brake=%d first_invalid_stage=%d "
-               "min_clearance=%.3f; holding zero long-layer command",
+               "min_clearance=%.3f selected_safe=%d prediction_s=%.3f; holding zero long-layer command",
                static_cast<unsigned long long>(cached_long_plan_.id),
                cached_long_plan_.motion_valid, cached_long_plan_.brake_valid,
-               cached_long_plan_.first_invalid_stage, cached_long_plan_.minimum_clearance);
+               cached_long_plan_.first_invalid_stage, cached_long_plan_.minimum_clearance,
+               found_safe_control, cached_long_plan_.failure.prediction_s);
       const auto& hit = cached_long_plan_.failure;
       ROS_WARN_THROTTLE(0.5,
           "[NMPC_LONG_REJECT] t=%.6f frame=%s id=%llu phase=%s stage=%d prediction_s=%.3f "
-          "reason=%s hit_pose=(%.3f,%.3f,%.3frad) hit_command=(%.3f,%.3f) margin_m=%.3f "
+          "selected_safe=%d reason=%s hit_pose=(%.3f,%.3f,%.3frad) hit_command=(%.3f,%.3f) margin_m=%.3f "
           "sample=(%.3f,%.3f) cell=(%d,%d) cell_world=(%.3f,%.3f) cost=%d",
           now.toSec(), robot_pose.header.frame_id.c_str(),
           static_cast<unsigned long long>(cached_long_plan_.id),
           cached_long_plan_.motion_valid ? "brake" : "motion", cached_long_plan_.first_invalid_stage,
-          hit.prediction_s, hit.reason, hit.x, hit.y, hit.yaw, hit.control.v, hit.control.w,
+          hit.prediction_s, found_safe_control, hit.reason, hit.x, hit.y, hit.yaw, hit.control.v, hit.control.w,
           cached_long_plan_.margin, hit.sample_x, hit.sample_y, hit.mx, hit.my,
           hit.cell_x, hit.cell_y, hit.cost);
     }
@@ -552,7 +564,7 @@ double DoubleNMPCController::pathCurvatureAhead(
 DoubleNMPCController::Control DoubleNMPCController::chooseControl(
     const geometry_msgs::PoseStamped& pose, const Control& current,
     const geometry_msgs::PoseStamped& reference, int horizon_steps, double step_period,
-    double speed_cap, double margin, bool planner_layer) const {
+    double speed_cap, double margin, bool planner_layer, bool* found_safe_control) const {
   const double x = pose.pose.position.x;
   const double y = pose.pose.position.y;
   const double yaw = tf2::getYaw(pose.pose.orientation);
@@ -618,57 +630,46 @@ DoubleNMPCController::Control DoubleNMPCController::chooseControl(
       }
     }
   }
+  if (found_safe_control) *found_safe_control = std::isfinite(best_cost);
   return best;
 }
 
-geometry_msgs::PoseStamped DoubleNMPCController::advancePose(
-    const geometry_msgs::PoseStamped& pose, const Control& control, double period) {
-  geometry_msgs::PoseStamped advanced = pose;
-  const double yaw = tf2::getYaw(pose.pose.orientation);
-  advanced.pose.position.x += control.v * std::cos(yaw) * period;
-  advanced.pose.position.y += control.v * std::sin(yaw) * period;
-  const double next_yaw = normalizeAngle(yaw + control.w * period);
-  advanced.pose.orientation = tf2::toMsg(tf2::Quaternion(
-      0.0, 0.0, std::sin(next_yaw / 2.0), std::cos(next_yaw / 2.0)));
-  return advanced;
+void DoubleNMPCController::advanceRolloutPose(RolloutPose& pose, const Control& control,
+                                              double period) {
+  pose.x += control.v * std::cos(pose.yaw) * period;
+  pose.y += control.v * std::sin(pose.yaw) * period;
+  pose.yaw = normalizeAngle(pose.yaw + control.w * period);
+}
+
+int DoubleNMPCController::safetySubsteps(double period) const {
+  return std::max(1, static_cast<int>(std::ceil(period / safety_check_period_)));
 }
 
 bool DoubleNMPCController::appendCertifiedStage(LongPlan& plan,
-                                                geometry_msgs::PoseStamped& pose,
+                                                RolloutPose& pose,
                                                 const Control& control,
                                                 double margin) const {
-  const double yaw = tf2::getYaw(pose.pose.orientation);
-  const int substeps = std::max(1, static_cast<int>(std::ceil(
-      planner_period_ / safety_check_period_)));
+  const int substeps = safetySubsteps(planner_period_);
   const double subperiod = planner_period_ / static_cast<double>(substeps);
-  double x = pose.pose.position.x;
-  double y = pose.pose.position.y;
-  double subyaw = yaw;
-  double minimum_clearance = obstacleClearance(x, y);
+  double minimum_clearance = obstacleClearance(pose.x, pose.y);
   const double stage_start_s = plan.stages.size() * planner_period_;
   for (int substep = 0; substep < substeps; ++substep) {
-    if (!poseIsSafe(x, y, subyaw, margin, &plan.failure)) {
+    if (!poseIsSafe(pose.x, pose.y, pose.yaw, margin, &plan.failure)) {
       plan.failure.prediction_s = stage_start_s + substep * subperiod;
       plan.failure.control = control;
       return false;
     }
-    x += control.v * std::cos(subyaw) * subperiod;
-    y += control.v * std::sin(subyaw) * subperiod;
-    subyaw = normalizeAngle(subyaw + control.w * subperiod);
-    minimum_clearance = std::min(minimum_clearance, obstacleClearance(x, y));
+    advanceRolloutPose(pose, control, subperiod);
+    minimum_clearance = std::min(minimum_clearance, obstacleClearance(pose.x, pose.y));
   }
-  if (!poseIsSafe(x, y, subyaw, margin, &plan.failure)) {
+  if (!poseIsSafe(pose.x, pose.y, pose.yaw, margin, &plan.failure)) {
     plan.failure.prediction_s = stage_start_s + planner_period_;
     plan.failure.control = control;
     return false;
   }
-  LongPlanStage stage;
-  stage.control = control;
-  stage.predicted_pose = advancePose(pose, control, planner_period_);
-  stage.minimum_clearance = minimum_clearance;
+  // The next stage starts at the actual endpoint of the certified substeps.
   plan.minimum_clearance = std::min(plan.minimum_clearance, minimum_clearance);
-  plan.stages.push_back(stage);
-  pose = stage.predicted_pose;
+  plan.stages.push_back({control, pose, minimum_clearance});
   return true;
 }
 
@@ -680,7 +681,8 @@ DoubleNMPCController::LongPlan DoubleNMPCController::buildLongPlan(
   plan.margin = margin;
   plan.minimum_clearance = obstacle_relevance_distance_;
 
-  geometry_msgs::PoseStamped predicted_pose = pose;
+  RolloutPose predicted_pose{pose.pose.position.x, pose.pose.position.y,
+                             tf2::getYaw(pose.pose.orientation)};
   for (int stage = 0; stage < planner_horizon_steps_; ++stage) {
     if (!appendCertifiedStage(plan, predicted_pose, first_control, margin)) {
       plan.first_invalid_stage = stage;
@@ -711,35 +713,33 @@ bool DoubleNMPCController::rolloutIsSafe(double x, double y, double yaw,
                                           const Control& control, int steps,
                                           double step_period, double margin,
                                           SafetyFailure* failure) const {
-  const int substeps = std::max(1, static_cast<int>(std::ceil(
-      step_period / safety_check_period_)));
+  const int substeps = safetySubsteps(step_period);
   const double subperiod = step_period / static_cast<double>(substeps);
+  RolloutPose pose{x, y, yaw};
   for (int step = 0; step < steps; ++step) {
     for (int substep = 0; substep < substeps; ++substep) {
-      if (!poseIsSafe(x, y, yaw, margin, failure)) {
+      if (!poseIsSafe(pose.x, pose.y, pose.yaw, margin, failure)) {
         if (failure) failure->prediction_s = (step * substeps + substep) * subperiod;
         ROS_WARN_THROTTLE(
             0.25,
             "[DOUBLE_NMPC_DIAG] rollout rejected: step=%d/%d substep=%d/%d "
             "t=%.3fs pose=(%.3f,%.3f,%.1fdeg) command=(v=%.3f,w=%.3f) margin=%.3f",
             step + 1, steps, substep + 1, substeps,
-            (step * substeps + substep) * subperiod, x, y, yaw * 180.0 / M_PI,
+            (step * substeps + substep) * subperiod, pose.x, pose.y, pose.yaw * 180.0 / M_PI,
             control.v, control.w, margin);
         return false;
       }
-      x += control.v * std::cos(yaw) * subperiod;
-      y += control.v * std::sin(yaw) * subperiod;
-      yaw = normalizeAngle(yaw + control.w * subperiod);
+      advanceRolloutPose(pose, control, subperiod);
     }
   }
-  const bool final_pose_safe = poseIsSafe(x, y, yaw, margin, failure);
+  const bool final_pose_safe = poseIsSafe(pose.x, pose.y, pose.yaw, margin, failure);
   if (!final_pose_safe) {
     if (failure) failure->prediction_s = steps * step_period;
     ROS_WARN_THROTTLE(
         0.25,
         "[DOUBLE_NMPC_DIAG] rollout rejected at final pose: t=%.3fs "
         "pose=(%.3f,%.3f,%.1fdeg) command=(v=%.3f,w=%.3f) margin=%.3f",
-        steps * step_period, x, y, yaw * 180.0 / M_PI, control.v, control.w, margin);
+        steps * step_period, pose.x, pose.y, pose.yaw * 180.0 / M_PI, control.v, control.w, margin);
   }
   return final_pose_safe;
 }
