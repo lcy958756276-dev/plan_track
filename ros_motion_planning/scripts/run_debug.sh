@@ -88,7 +88,7 @@ sleep 1
 
 # map_server（提供背景地图）
 # MAP_FILE="$WORKSPACE_DIR/../gazebo_create/maps/my_four_map.yaml"
-MAP_FILE="$WORKSPACE_DIR/../gazebo_create/maps/map_project2.yaml"
+MAP_FILE="$WORKSPACE_DIR/../gazebo_create/maps/map_project.yaml"
 if [ ! -f "$MAP_FILE" ]; then
     echo "错误: 地图 YAML 不存在: $MAP_FILE"
     exit 1
