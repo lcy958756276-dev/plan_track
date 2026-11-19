@@ -134,6 +134,8 @@ class GazeboSync:
         ranges = list(msg.ranges)
         angle_min = msg.angle_min
         angle_increment = msg.angle_increment
+        self_filtered = 0
+        isolated_filtered = 0
 
         for i in range(len(ranges)):
             r = ranges[i]
@@ -145,7 +147,11 @@ class GazeboSync:
             px = r * math.cos(theta)
             py = r * math.sin(theta)
             if SELF_MIN_X <= px <= SELF_MAX_X and SELF_MIN_Y <= py <= SELF_MAX_Y:
-                ranges[i] = msg.range_max + 1.0  # 设为无效
+                # inf_is_valid=true in both costmaps: publish +inf rather
+                # than an out-of-range value, so ObstacleLayer emits a
+                # clearing ray and removes any previous false obstacle here.
+                ranges[i] = float("inf")
+                self_filtered += 1
                 continue
 
             # (2) 混合像素过滤：与左右邻居对比（用原始数据 msg.ranges，避免被自过滤影响）
@@ -154,12 +160,21 @@ class GazeboSync:
                 r_next = msg.ranges[i + 1]
                 if r_prev < msg.range_max and r_next < msg.range_max:
                     if abs(r - r_prev) > 0.07 and abs(r - r_next) > 0.07:
-                        ranges[i] = msg.range_max + 1.0  # 设为无效
+                        # Same as self-filtering: an infinite valid ray clears
+                        # stale cells instead of leaving them in the costmap.
+                        ranges[i] = float("inf")
+                        isolated_filtered += 1
 
         msg.ranges = tuple(ranges)
         msg.header.stamp = rospy.Time.now()
         msg.header.frame_id = "base_scan"
         self.scan_pub.publish(msg)
+        rospy.loginfo_throttle(
+            5.0,
+            "scan_fixed: published clearing rays for self=%d, isolated=%d",
+            self_filtered,
+            isolated_filtered,
+        )
 
 
 if __name__ == "__main__":
