@@ -5,20 +5,45 @@ gazebo_sync.py
 桥接节点：不断尝试通过 /gz_debug/set_model_state 将 encoder_odom 的位置同步到 Gazebo。
 如果服务不可用，持续重试直至成功（不依赖 /cmd_vel）。
 
-同时修复 LaserScan 时间戳。
+同时将 Gazebo 激光与采样时的仿真雷达位姿配对后转发给导航。
 
 用法:
     rosrun encoder_tools gazebo_sync.py
 """
 
+from bisect import bisect_left
+from collections import deque
+from copy import deepcopy
 import math
+from threading import Lock
+from time import monotonic
+
 import rospy
-import sys
-import os
+import tf2_ros
+from geometry_msgs.msg import TransformStamped
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import LaserScan
 from gazebo_msgs.srv import SetModelState
 from gazebo_msgs.msg import ModelState
+from tf.transformations import quaternion_slerp
+
+
+def interpolate_scan_pose(samples, stamp):
+    """Return position, orientation, and bracket width in Gazebo sim time."""
+    index = bisect_left([sample[0] for sample in samples], stamp)
+    if index < len(samples) and samples[index][0] == stamp:
+        _, position, orientation = samples[index]
+        return position, orientation, 0.0
+    if index == 0 or index == len(samples):
+        return None
+    before, p0, q0 = samples[index - 1]
+    after, p1, q1 = samples[index]
+    span = after - before
+    if span > 0.15:
+        return None
+    fraction = (stamp - before) / span
+    position = tuple(a + fraction * (b - a) for a, b in zip(p0, p1))
+    return position, quaternion_slerp(q0, q1, fraction), span
 
 
 class GazeboSync:
@@ -28,13 +53,22 @@ class GazeboSync:
         self.have_service = False
         self.set_state = None
         self.service_retry_delay = 0.5  # 初始重试间隔（指数退避）
+        self.model_synced = False
+        self.scan_lock = Lock()
+        self.scan_poses = deque(maxlen=128)
+        self.pending_scans = deque(maxlen=4)
+        self.previous_scan_arrival = None
 
         # ── 订阅 /odom ──
         rospy.Subscriber("/odom", Odometry, self.odom_cb, queue_size=10)
 
-        # ── LaserScan 时间戳修复 ──
+        # Pair Gazebo samples in sim time, then publish the matched scan and TF
+        # together on the navigation stack's wall-clock timeline.
+        self.scan_tf = tf2_ros.TransformBroadcaster()
         self.scan_pub = rospy.Publisher("/scan_fixed", LaserScan, queue_size=10)
-        rospy.Subscriber("/scan", LaserScan, self.scan_cb, queue_size=10)
+        rospy.Subscriber("/gazebo_scan_pose", Odometry, self.scan_pose_cb, queue_size=100)
+        rospy.Subscriber("/scan", LaserScan, self.scan_cb, queue_size=4)
+        rospy.Timer(rospy.Duration(0.05), self.publish_aligned_scans)
 
         # 注：clear_costmaps 由 clear_scheduler 同步调度，不再在此异步定时
         # ── 主循环（5Hz）：不断尝试服务 + 同步位置 ──
@@ -90,8 +124,8 @@ class GazeboSync:
             return
 
         try:
-            pose = self.latest_odom.pose.pose
-            twist = self.latest_odom.twist.twist
+            odom = self.latest_odom
+            pose = deepcopy(odom.pose.pose)
 
             wheel_radius = 0.1065    # 与 encoder_odom.py 保持一致
             joint_z = 0.03            # 轮子 joint 在 base_link 下的 z 偏移
@@ -102,10 +136,17 @@ class GazeboSync:
             state.model_name = "my_robot"
             state.pose = pose
             state.pose.position.z = model_z
-            state.twist = twist
+            state.twist = odom.twist.twist
             state.reference_frame = ""
 
-            self.set_state(state)
+            response = self.set_state(state)
+            if not response.success:
+                rospy.logwarn_throttle(2.0, "Gazebo model sync declined: %s", response.status_message)
+                return
+            if not self.model_synced:
+                with self.scan_lock:
+                    self.scan_poses.clear()
+                    self.model_synced = True
 
             rospy.loginfo_throttle(
                 2.0,
@@ -119,13 +160,47 @@ class GazeboSync:
             self.service_retry_delay = min(self.service_retry_delay * 2, 10.0)
             self._next_retry = rospy.Time.now().to_sec() + self.service_retry_delay
 
+    def scan_pose_cb(self, msg):
+        stamp = msg.header.stamp.to_sec()
+        if not self.model_synced or stamp <= 0.0:
+            return
+        p = msg.pose.pose.position
+        q = msg.pose.pose.orientation
+        with self.scan_lock:
+            if self.scan_poses and stamp < self.scan_poses[-1][0]:
+                self.scan_poses.clear()
+                self.pending_scans.clear()
+                rospy.logwarn("Gazebo scan clock reset; cleared pending samples")
+            self.scan_poses.append((stamp, (p.x, p.y, p.z), (q.x, q.y, q.z, q.w)))
+
     def scan_cb(self, msg):
-        """修复 LaserScan 时间戳 + 过滤自检测 + 去除孤点（混合像素）"""
-        # base_scan 位于 base_footprint 后方约 0.076 m；因此 0.60 m 车体
-        # 在 base_scan 坐标系中向前延伸到约 x=0.376 m。保留少量余量，
-        # 以免车头回波被写入 local costmap 并使控制器误判为 lethal。
-        # Y 边界扩至 0.40 m，覆盖日志中确认的 y≈-0.38 m 车身漏点，
-        # 但不过滤 |y|≈0.5 m 以外的真实障碍物。
+        if self.model_synced and msg.header.stamp.to_sec() > 0.0:
+            with self.scan_lock:
+                self.pending_scans.append((monotonic(), msg))
+
+    def publish_aligned_scans(self, _event):
+        ready = []
+        now = monotonic()
+        with self.scan_lock:
+            samples = list(self.scan_poses)
+            while self.pending_scans:
+                arrived, msg = self.pending_scans[0]
+                sim_stamp = msg.header.stamp.to_sec()
+                pose = interpolate_scan_pose(samples, sim_stamp)
+                if now - arrived > 0.75:
+                    self.pending_scans.popleft()
+                    rospy.logwarn_throttle(2.0, "[SCAN_ALIGN] dropped sim_stamp=%.3f: pose unavailable or scan too old", sim_stamp)
+                    continue
+                if pose is None:
+                    break
+                self.pending_scans.popleft()
+                ready.append((arrived, msg, pose))
+        for arrived, msg, pose in ready:
+            self.publish_scan(arrived, msg, pose)
+
+    def publish_scan(self, arrived, msg, pose):
+        """Publish the scan from its captured Gazebo origin for marking and clearing."""
+        # Keep the existing self-return mask in laser coordinates.
         SELF_MIN_X = -0.47
         SELF_MAX_X = 0.42
         SELF_MIN_Y = -0.40
@@ -165,15 +240,37 @@ class GazeboSync:
                         ranges[i] = float("inf")
                         isolated_filtered += 1
 
+        position, orientation, bracket_s = pose
+        sim_stamp = msg.header.stamp.to_sec()
+        transform = TransformStamped()
+        transform.header.stamp = rospy.Time.now()
+        # set_model_state places the encoder odometry pose in Gazebo world.
+        transform.header.frame_id = "odom"
+        transform.child_frame_id = "gazebo_scan_capture"
+        transform.transform.translation.x, transform.transform.translation.y, transform.transform.translation.z = position
+        rotation = transform.transform.rotation
+        rotation.x, rotation.y, rotation.z, rotation.w = map(float, orientation)
+        # ObstacleLayer also asks for TF 50 ms beyond each LaserScan stamp.
+        # Hold the captured origin for that interval so a slow next scan
+        # cannot delay processing of this one.
+        end_transform = deepcopy(transform)
+        end_transform.header.stamp += rospy.Duration(0.05)
+        self.scan_tf.sendTransform([transform, end_transform])
+
         msg.ranges = tuple(ranges)
-        msg.header.stamp = rospy.Time.now()
-        msg.header.frame_id = "base_scan"
+        msg.header.stamp = transform.header.stamp
+        msg.header.frame_id = transform.child_frame_id
+        # Gazebo ray scans are snapshots and this TF describes that snapshot.
+        msg.time_increment = 0.0
         self.scan_pub.publish(msg)
+        period = 0.0 if self.previous_scan_arrival is None else arrived - self.previous_scan_arrival
+        self.previous_scan_arrival = arrived
         rospy.loginfo_throttle(
             5.0,
-            "scan_fixed: published clearing rays for self=%d, isolated=%d",
-            self_filtered,
-            isolated_filtered,
+            "[SCAN_ALIGN] sim_stamp=%.3f wall_stamp=%.3f scan_period_s=%.3f "
+            "pair_wait_s=%.3f sim_bracket_s=%.3f scan_origin=(%.3f,%.3f,%.3f) self=%d isolated=%d",
+            sim_stamp, msg.header.stamp.to_sec(), period, monotonic() - arrived,
+            bracket_s, *position, self_filtered, isolated_filtered,
         )
 
 

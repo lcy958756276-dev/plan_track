@@ -222,7 +222,7 @@ echo "  PID=$PID_VEL_PLOT → log/velocity_plotter.log"
 sleep 1
 
 # ── 7. 启动 Gazebo 同步桥接 ──
-echo "[7/8] 启动 gazebo_sync.py (里程计→Gazebo 同步 + LaserScan 时间戳修复)..."
+echo "[7/8] 启动 gazebo_sync.py (里程计→Gazebo 同步 + 激光采样位姿对齐)..."
 rosrun encoder_tools gazebo_sync.py \
     > "$LOG_DIR/gazebo_sync.log" 2>&1 &
 PID_SYNC=$!
@@ -284,6 +284,8 @@ cat > "$MB_LAUNCH" << MBEOF
     <!-- 全局 costmap 插件（含 global_costmap: 外层键 → 加载后自动在 /move_base/global_costmap/ 下） -->
     <rosparam command="load" file="$SIM_ENV_DIR/config/costmap/global_costmap_plugins.yaml"/>
     <param name="global_costmap/obstacle_layer/scan/topic" value="/scan_fixed"/>
+    <param name="global_costmap/obstacle_layer/scan/sensor_frame" value="gazebo_scan_capture"/>
+    <param name="global_costmap/obstacle_layer/scan/expected_update_rate" value="2.5"/>
 
     <!-- 局部 costmap（用 robot-specific 文件） -->
     <rosparam command="load" file="$SIM_ENV_DIR/config/robots/my_car/local_costmap_params_my_car.yaml" ns="local_costmap"/>
@@ -292,6 +294,8 @@ cat > "$MB_LAUNCH" << MBEOF
         - {name: obstacle_layer, type: 'costmap_2d::ObstacleLayer'}
         - {name: inflation_layer, type: 'costmap_2d::InflationLayer'}
     </rosparam>
+    <param name="local_costmap/obstacle_layer/scan/sensor_frame" value="gazebo_scan_capture"/>
+    <param name="local_costmap/obstacle_layer/scan/expected_update_rate" value="2.5"/>
 
     <!-- 最终显式覆盖，避免参数加载顺序覆盖 YAML 中的值 -->
     <param name="global_costmap/inflation_layer/inflation_radius" value="0.25"/>
@@ -317,15 +321,38 @@ rosparam get /move_base/global_costmap/plugins 2>&1 >> "$LOG_DIR/run.log" || ech
 echo "  [诊断] rospack plugins nav_core:" >> "$LOG_DIR/run.log"
 rospack plugins --attrib=plugin nav_core 2>&1 >> "$LOG_DIR/run.log"
 
+# Register the processes before waiting so they can be cleaned up on failure.
+echo "$PID_MAP"      > "$LOG_DIR/.pid_map"
+echo "$PID_RSP"      > "$LOG_DIR/.pid_rsp"
+echo "$PID_JSP"      > "$LOG_DIR/.pid_jsp"
+echo "$PID_TF"       > "$LOG_DIR/.pid_tf"
+echo "$PID_GZSERVER" > "$LOG_DIR/.pid_gzserver"
+echo "$PID_GZCLIENT" > "$LOG_DIR/.pid_gzclient"
+echo "$PID_RVIZ"     > "$LOG_DIR/.pid_rviz"
+echo "$PID_READ"     > "$LOG_DIR/.pid_read"
+echo "$PID_ODOM"     > "$LOG_DIR/.pid_odom"
+echo "$PID_VEL_PLOT" > "$LOG_DIR/.pid_velocity_plotter"
+echo "$PID_SYNC"     > "$LOG_DIR/.pid_sync"
+echo "$PID_PREROT"   > "$LOG_DIR/.pid_prerot"
+echo "$PID_CLEAR_SCHED" > "$LOG_DIR/.pid_clear_sched"
+
+echo "  等待首帧完成位姿对齐的 Gazebo 激光..."
+if ! timeout 20 rostopic echo -n 1 /scan_fixed/header >> "$LOG_DIR/run.log" 2>&1; then
+    echo "  启动失败：未收到对齐的 Gazebo 激光，请查看 log/gazebo_sync.log" | tee -a "$LOG_DIR/run.log"
+    bash "$SCRIPT_DIR/stop_debug.sh" >> "$LOG_DIR/run.log" 2>&1
+    exit 1
+fi
+
 roslaunch "$MB_LAUNCH" \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_MB=$!
+echo "$PID_MB" > "$LOG_DIR/.pid_move_base"
 if [ "${NMPC_DIAG_BAG:-1}" = "1" ]; then
     DIAG_BAG="$LOG_DIR/nmpc_diag_$(date +%Y%m%d_%H%M%S).bag"
     DIAG_DURATION="${NMPC_DIAG_BAG_DURATION:-300}"
     # Record ROS events in the same bag so it remains usable after run.log is replaced.
     rosbag record --duration="$DIAG_DURATION" --buffsize=64 -O "$DIAG_BAG" \
-        /scan /scan_fixed /tf /tf_static /odom /cmd_vel \
+        /scan /scan_fixed /gazebo_scan_pose /tf /tf_static /odom /cmd_vel \
         /move_base/local_costmap/costmap /move_base/local_costmap/costmap_updates \
         /move_base/status /rosout_agg \
         __name:=nmpc_stop_diagnostics >> "$LOG_DIR/nmpc_diag_record.log" 2>&1 &
@@ -370,22 +397,6 @@ echo "  [诊断] global costmap 参数结束" >> "$LOG_DIR/run.log"
 
 
 sleep 1
-
-# 保存 PID
-echo "$PID_MAP"      > "$LOG_DIR/.pid_map"
-echo "$PID_RSP"      > "$LOG_DIR/.pid_rsp"
-echo "$PID_JSP"      > "$LOG_DIR/.pid_jsp"
-echo "$PID_TF"       > "$LOG_DIR/.pid_tf"
-echo "$PID_GZSERVER" > "$LOG_DIR/.pid_gzserver"
-echo "$PID_GZCLIENT" > "$LOG_DIR/.pid_gzclient"
-echo "$PID_RVIZ"     > "$LOG_DIR/.pid_rviz"
-echo "$PID_READ"     > "$LOG_DIR/.pid_read"
-echo "$PID_ODOM"     > "$LOG_DIR/.pid_odom"
-echo "$PID_VEL_PLOT" > "$LOG_DIR/.pid_velocity_plotter"
-echo "$PID_SYNC"     > "$LOG_DIR/.pid_sync"
-echo "$PID_PREROT"     > "$LOG_DIR/.pid_prerot"
-echo "$PID_CLEAR_SCHED" > "$LOG_DIR/.pid_clear_sched"
-echo "$PID_MB"          > "$LOG_DIR/.pid_move_base"
 
 echo ""
 echo "========================================"

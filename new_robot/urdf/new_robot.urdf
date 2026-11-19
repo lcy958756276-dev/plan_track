@@ -206,11 +206,25 @@
       link="base_scan" />
   </joint>
 
+  <!-- Keep the sensor link available to the Gazebo pose publisher. -->
+  <gazebo reference="base_scan_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+  <gazebo>
+    <plugin name="gazebo_scan_pose" filename="libgazebo_ros_p3d.so">
+      <bodyName>base_scan</bodyName>
+      <topicName>/gazebo_scan_pose</topicName>
+      <frameName>world</frameName>
+      <updateRate>50.0</updateRate>
+      <gaussianNoise>0.0</gaussianNoise>
+    </plugin>
+  </gazebo>
+
   <!-- Gazebo 激光雷达：发布 /scan，由 gazebo_sync.py 转发为 /scan_fixed -->
   <gazebo reference="base_scan">
     <sensor type="ray" name="lds_lfcd_sensor">
       <pose>0 0 0 0 0 0</pose>
-      <visualize>true</visualize>
+      <visualize>false</visualize>
       <update_rate>7</update_rate>
       <ray>
         <scan>
