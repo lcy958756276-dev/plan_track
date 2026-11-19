@@ -68,10 +68,6 @@ private:
     Control control;
   };
 
-  struct RolloutPose {
-    double x, y, yaw;
-  };
-
   // The cache is a safety certificate for the long layer, not a delayed pose
   // reference for the tracker. This deliberately avoids the stale-reference
   // behavior observed with the previous asynchronous experiment.
@@ -102,13 +98,11 @@ private:
                          const ros::Time& created_at) const;
   bool appendCertifiedStage(LongPlan& plan, geometry_msgs::PoseStamped& pose,
                             const Control& control, double margin) const;
-  bool reuseLongPlan(const geometry_msgs::PoseStamped& pose, const ros::Time& now,
-                     Control& command) const;
   static geometry_msgs::PoseStamped advancePose(const geometry_msgs::PoseStamped& pose,
                                                 const Control& control, double period);
   bool rolloutIsSafe(double x, double y, double yaw, const Control& control,
                      int steps, double step_period, double margin,
-                     SafetyFailure* failure = nullptr, RolloutPose* end_pose = nullptr) const;
+                     SafetyFailure* failure = nullptr) const;
   bool poseIsSafe(double x, double y, double yaw, double margin,
                   SafetyFailure* failure = nullptr) const;
   double obstacleClearance(double x, double y) const;

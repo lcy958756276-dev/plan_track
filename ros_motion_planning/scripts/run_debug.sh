@@ -47,19 +47,6 @@ rm -f "$LOG_DIR/.pid_footprint"
 # 记录启动时间
 echo "=== 启动时间: $(date) ===" > "$LOG_DIR/run.log"
 
-# Rebuild the changed controller before move_base can load an older library.
-NMPC_PACKAGE_DIR="$WORKSPACE_DIR/src/core/controller/double_nmpc_controller"
-NMPC_LIBRARY="$WORKSPACE_DIR/devel/lib/libdouble_nmpc_controller.so"
-if [[ ! -f "$NMPC_LIBRARY" ||
-      -n "$(find "$NMPC_PACKAGE_DIR/src" "$NMPC_PACKAGE_DIR/include" -type f -newer "$NMPC_LIBRARY" -print -quit)" ||
-      "$NMPC_PACKAGE_DIR/CMakeLists.txt" -nt "$NMPC_LIBRARY" ]]; then
-    echo "  检测到 DoubleNMPC 源码更新，正在编译控制器..."
-    if ! (cd "$WORKSPACE_DIR" && catkin_make --pkg double_nmpc_controller) >> "$LOG_DIR/run.log" 2>&1; then
-        echo "  DoubleNMPC 编译失败，导航未启动。详见 log/run.log" | tee -a "$LOG_DIR/run.log"
-        exit 1
-    fi
-fi
-
 # ── 1. 生成动态启动文件 ──
 echo "[1/8] 生成动态启动文件..."
 echo "[$(date +%H:%M:%S)] [1] main_generate.py start" >> "$LOG_DIR/run.log"
@@ -369,6 +356,17 @@ if [ "${NMPC_DIAG_BAG:-1}" = "1" ]; then
         /move_base/local_costmap/costmap /move_base/local_costmap/costmap_updates \
         /move_base/status /rosout_agg \
         __name:=nmpc_stop_diagnostics >> "$LOG_DIR/nmpc_diag_record.log" 2>&1 &
+    PID_NMPC_DIAG=$!
+    # Keep the stop and settling data, then finalize the bag without operator input.
+    (
+        if timeout "$DIAG_DURATION" rostopic echo -n 1 \
+            --filter 'any(status.status == 3 for status in m.status_list)' /move_base/status >/dev/null; then
+            sleep 3
+            if kill -0 "$PID_NMPC_DIAG" 2>/dev/null; then
+                rosnode kill /nmpc_stop_diagnostics
+            fi
+        fi
+    ) >> "$LOG_DIR/nmpc_diag_record.log" 2>&1 &
     echo "  NMPC 诊断录包: $DIAG_BAG"
     echo "  NMPC diagnostic bag: $DIAG_BAG" >> "$LOG_DIR/run.log"
 fi

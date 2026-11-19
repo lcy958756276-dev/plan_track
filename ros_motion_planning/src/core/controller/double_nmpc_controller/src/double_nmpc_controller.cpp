@@ -252,10 +252,10 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
     const Control first_control = chooseControl(robot_pose, current, planner_reference_,
                                                 planner_horizon_steps_, planner_period_,
                                                 curve_speed_limit, planner_margin_snapshot_, true);
-    auto candidate_plan = buildLongPlan(robot_pose, first_control, planner_margin_snapshot_, now);
-    candidate_plan.id = next_long_plan_id_++;
-    if (candidate_plan.full_valid) {
-      cached_long_plan_ = std::move(candidate_plan);
+    cached_long_plan_ = buildLongPlan(robot_pose, first_control,
+                                      planner_margin_snapshot_, now);
+    cached_long_plan_.id = next_long_plan_id_++;
+    if (cached_long_plan_.full_valid) {
       planner_command_ = cached_long_plan_.stages.front().control;
       ROS_INFO("DoubleNMPC long plan: id=%llu full=1 move=6 brake=%d min_clearance=%.3f "
                "u_move=(%.3f,%.3f) u_brake=[(%.3f,%.3f),(%.3f,%.3f),(%.3f,%.3f)]",
@@ -268,33 +268,26 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
                cached_long_plan_.stages[planner_horizon_steps_ + 2].control.v,
                cached_long_plan_.stages[planner_horizon_steps_ + 2].control.w);
     } else {
+      planner_command_ = Control{};
       ROS_WARN("DoubleNMPC long plan: id=%llu full=0 motion=%d brake=%d first_invalid_stage=%d "
-               "min_clearance=%.3f; checking remaining certified plan",
-               static_cast<unsigned long long>(candidate_plan.id),
-               candidate_plan.motion_valid, candidate_plan.brake_valid,
-               candidate_plan.first_invalid_stage, candidate_plan.minimum_clearance);
-      const auto& hit = candidate_plan.failure;
+               "min_clearance=%.3f; holding zero long-layer command",
+               static_cast<unsigned long long>(cached_long_plan_.id),
+               cached_long_plan_.motion_valid, cached_long_plan_.brake_valid,
+               cached_long_plan_.first_invalid_stage, cached_long_plan_.minimum_clearance);
+      const auto& hit = cached_long_plan_.failure;
       ROS_WARN_THROTTLE(0.5,
           "[NMPC_LONG_REJECT] t=%.6f frame=%s id=%llu phase=%s stage=%d prediction_s=%.3f "
           "reason=%s hit_pose=(%.3f,%.3f,%.3frad) hit_command=(%.3f,%.3f) margin_m=%.3f "
           "sample=(%.3f,%.3f) cell=(%d,%d) cell_world=(%.3f,%.3f) cost=%d",
           now.toSec(), robot_pose.header.frame_id.c_str(),
-          static_cast<unsigned long long>(candidate_plan.id),
-          candidate_plan.motion_valid ? "brake" : "motion", candidate_plan.first_invalid_stage,
+          static_cast<unsigned long long>(cached_long_plan_.id),
+          cached_long_plan_.motion_valid ? "brake" : "motion", cached_long_plan_.first_invalid_stage,
           hit.prediction_s, hit.reason, hit.x, hit.y, hit.yaw, hit.control.v, hit.control.w,
           cached_long_plan_.margin, hit.sample_x, hit.sample_y, hit.mx, hit.my,
           hit.cell_x, hit.cell_y, hit.cost);
     }
     planner_elapsed_ms = (ros::WallTime::now() - planner_started).toSec() * 1000.0;
     last_planner_update_ = now;
-  }
-  std::uint64_t active_long_plan_id = terminal_approach ? 0 : cached_long_plan_.id;
-  // A failed update leaves the last successful plan available. Recheck its
-  // remaining stages on each tracking cycle until the next successful update.
-  if (!terminal_approach && cached_long_plan_.created_at != last_planner_update_ &&
-      !reuseLongPlan(robot_pose, now, planner_command_)) {
-    planner_command_ = Control{};
-    active_long_plan_id = 0;
   }
   const auto tracker_reference = poseAtPathArcLength(path_progress_ + tracker_lookahead);
   const double target_heading = std::atan2(
@@ -364,7 +357,7 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
         "curve_cap=%.3f track_cap=%.3f center_now_raw_m=%.3f "
         "center_pred_raw_m=%.3f center_pred_filtered_m=%.3f",
         ros::Time::now().toSec(), robot_pose.header.frame_id.c_str(),
-        static_cast<unsigned long long>(active_long_plan_id), terminal_approach,
+        static_cast<unsigned long long>(cached_long_plan_.id), terminal_approach,
         failure.reason, failure.prediction_s, failure.x, failure.y, failure.yaw,
         failure.sample_x, failure.sample_y, failure.mx, failure.my,
         failure.cell_x, failure.cell_y, failure.cost, tracking_margin_,
@@ -714,50 +707,10 @@ DoubleNMPCController::LongPlan DoubleNMPCController::buildLongPlan(
   return plan;
 }
 
-bool DoubleNMPCController::reuseLongPlan(const geometry_msgs::PoseStamped& pose,
-                                        const ros::Time& now, Control& command) const {
-  const auto& plan = cached_long_plan_;
-  const auto id = static_cast<unsigned long long>(plan.id);
-  if (!plan.full_valid || now < plan.created_at) {
-    ROS_WARN_THROTTLE(0.5, "[NMPC_LONG_FALLBACK] result=no_valid_plan cached_id=%llu", id);
-    return false;
-  }
-  const double age = (now - plan.created_at).toSec();
-  const double stage_position = age / planner_period_;
-  if (stage_position >= plan.stages.size()) {
-    ROS_WARN_THROTTLE(0.5, "[NMPC_LONG_FALLBACK] result=expired cached_id=%llu age_s=%.3f", id, age);
-    return false;
-  }
-  const auto first_stage = static_cast<std::size_t>(stage_position);
-  const double first_remaining = (first_stage + 1) * planner_period_ - age;
-  const double margin = std::max(plan.margin, tracking_margin_);
-  RolloutPose predicted{pose.pose.position.x, pose.pose.position.y, tf2::getYaw(pose.pose.orientation)};
-  for (std::size_t i = first_stage; i < plan.stages.size(); ++i) {
-    const double duration = i == first_stage ? first_remaining : planner_period_;
-    SafetyFailure hit;
-    if (!rolloutIsSafe(predicted.x, predicted.y, predicted.yaw, plan.stages[i].control,
-                       1, duration, margin, &hit, &predicted)) {
-      const double prediction_s = hit.prediction_s +
-          (i == first_stage ? 0.0 : first_remaining + (i - first_stage - 1) * planner_period_);
-      ROS_WARN_THROTTLE(0.5,
-          "[NMPC_LONG_FALLBACK] result=unsafe cached_id=%llu age_s=%.3f stage=%zu "
-          "prediction_s=%.3f reason=%s cell_world=(%.3f,%.3f) cost=%d",
-          id, age, i, prediction_s, hit.reason, hit.cell_x, hit.cell_y, hit.cost);
-      return false;
-    }
-  }
-  command = plan.stages[first_stage].control;
-  ROS_INFO_THROTTLE(0.5,
-      "[NMPC_LONG_FALLBACK] result=reused cached_id=%llu age_s=%.3f stage=%zu "
-      "stage_remaining_s=%.3f command=(%.3f,%.3f) margin_m=%.3f",
-      id, age, first_stage, first_remaining, command.v, command.w, margin);
-  return true;
-}
-
 bool DoubleNMPCController::rolloutIsSafe(double x, double y, double yaw,
                                           const Control& control, int steps,
                                           double step_period, double margin,
-                                          SafetyFailure* failure, RolloutPose* end_pose) const {
+                                          SafetyFailure* failure) const {
   const int substeps = std::max(1, static_cast<int>(std::ceil(
       step_period / safety_check_period_)));
   const double subperiod = step_period / static_cast<double>(substeps);
@@ -787,8 +740,6 @@ bool DoubleNMPCController::rolloutIsSafe(double x, double y, double yaw,
         "[DOUBLE_NMPC_DIAG] rollout rejected at final pose: t=%.3fs "
         "pose=(%.3f,%.3f,%.1fdeg) command=(v=%.3f,w=%.3f) margin=%.3f",
         steps * step_period, x, y, yaw * 180.0 / M_PI, control.v, control.w, margin);
-  } else if (end_pose) {
-    *end_pose = {x, y, yaw};
   }
   return final_pose_safe;
 }
