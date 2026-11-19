@@ -3,10 +3,13 @@
 clear_scheduler.py
 地图刷新调度器。
 
-现在 clear_costmaps 和全局路径规划解绑：
-  1. 新 goal 规划路径期间，pre_rotate 会通过 /clear_scheduler/pause 暂停 clear
-  2. 路径生成完成后恢复 clear
-  3. 有 active goal 后，每 1s 独立 clear 一次 costmap，不 cancel goal，不重发 goal
+静态地图和动态激光障碍必须分开处理：
+  1. 不能周期调用 /move_base/clear_costmaps；该服务会 reset 所有 layer，
+     包括 static layer。static layer 重新接收 /map 前，重规划可能短暂看不到
+     墙和固定障碍。
+  2. 红色点云对应的 ObstacleLayer 已配置 clearing=true 和
+     observation_persistence=0，由每帧 /scan_fixed 自动标记和射线清除。
+  3. 本节点保留 pause/goal 状态和诊断日志，但绝不重置 static layer。
 
 用法：rosrun encoder_tools clear_scheduler.py
 """
@@ -14,7 +17,6 @@ clear_scheduler.py
 import rospy
 from std_msgs.msg import Bool
 from geometry_msgs.msg import PoseStamped
-from std_srvs.srv import Empty
 
 
 class ClearScheduler:
@@ -22,14 +24,14 @@ class ClearScheduler:
         self.refresh_period = rospy.get_param("~refresh_period", 1.0)
         self.paused = False
         self.have_goal = False
-        self.clear_srv = None
 
         rospy.Subscriber("/clear_scheduler/pause", Bool, self.pause_cb, queue_size=10)
         rospy.Subscriber("/goal_rotated", PoseStamped, self.goal_cb, queue_size=10)
         rospy.Timer(rospy.Duration(self.refresh_period), self.timer_cb)
 
         rospy.loginfo(
-            "clear_scheduler: started, clear_costmaps every %.2fs after goal, no replanning",
+            "clear_scheduler: started; static costmap is never reset, "
+            "dynamic obstacle layer refreshes from /scan_fixed (period %.2fs diagnostic)",
             self.refresh_period,
         )
 
@@ -51,19 +53,15 @@ class ClearScheduler:
         self._call_clear()
 
     def _call_clear(self):
-        if self.clear_srv is None:
-            try:
-                rospy.wait_for_service("/move_base/clear_costmaps", timeout=0.2)
-                self.clear_srv = rospy.ServiceProxy("/move_base/clear_costmaps", Empty)
-            except (rospy.ROSException, rospy.ServiceException):
-                rospy.logwarn_throttle(2.0, "clear_scheduler: clear_costmaps service unavailable")
-                return
-        try:
-            self.clear_srv()
-            rospy.loginfo_throttle(1.0, "clear_scheduler: clear_costmaps called")
-        except rospy.ServiceException as e:
-            self.clear_srv = None
-            rospy.logwarn_throttle(2.0, "clear_scheduler: clear_costmaps failed: %s", e)
+        # Do not call /move_base/clear_costmaps here.  It resets StaticLayer as
+        # well as ObstacleLayer and creates a planning window with no static
+        # obstacles.  Dynamic red point-cloud cells are refreshed by the laser
+        # obstacle layer itself (clearing=true, observation_persistence=0).
+        rospy.loginfo_throttle(
+            5.0,
+            "clear_scheduler: preserving static costmap; dynamic obstacle layer "
+            "is refreshed only by incoming /scan_fixed",
+        )
 
 
 if __name__ == "__main__":
