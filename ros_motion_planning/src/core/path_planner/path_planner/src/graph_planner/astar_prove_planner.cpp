@@ -57,7 +57,7 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
 }
 
 bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Points3d* path,
-                                Points3d* expand, const PathClearance* clearance) {
+                                Points3d* expand, const PathClearance* clearance, bool smooth) {
   double m_start_x, m_start_y, m_goal_x, m_goal_y;
   if ((!validityCheck(start.x(), start.y(), m_start_x, m_start_y)) ||
       (!validityCheck(goal.x(), goal.y(), m_goal_x, m_goal_y))) {
@@ -105,6 +105,10 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
         double wx, wy;
         costmap_->mapToWorld(iter->x(), iter->y(), wx, wy);
         raw_path.emplace_back(wx, wy);
+      }
+      if (!smooth || raw_path.size() < 3) {
+        path->swap(raw_path);
+        return !path->empty();
       }
 
       // smooth path using inertial smoothing (from matlab.txt)

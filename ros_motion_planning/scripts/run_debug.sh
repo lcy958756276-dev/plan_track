@@ -47,6 +47,19 @@ rm -f "$LOG_DIR/.pid_footprint"
 # 记录启动时间
 echo "=== 启动时间: $(date) ===" > "$LOG_DIR/run.log"
 
+# Rebuild the global planner when the existing plugin predates its sources.
+PATH_PLANNER_DIR="$WORKSPACE_DIR/src/core/path_planner/path_planner"
+PATH_PLANNER_LIBRARY="$WORKSPACE_DIR/devel/lib/libpath_planner.so"
+if [[ ! -f "$PATH_PLANNER_LIBRARY" ||
+      -n "$(find "$PATH_PLANNER_DIR/src" "$PATH_PLANNER_DIR/include" -type f -newer "$PATH_PLANNER_LIBRARY" -print -quit)" ||
+      "$PATH_PLANNER_DIR/CMakeLists.txt" -nt "$PATH_PLANNER_LIBRARY" ]]; then
+    echo "  检测到全局规划源码更新，正在编译 path_planner..."
+    if ! (cd "$WORKSPACE_DIR" && catkin_make --pkg path_planner) >> "$LOG_DIR/run.log" 2>&1; then
+        echo "  全局规划器编译失败，导航未启动。详见 log/run.log" | tee -a "$LOG_DIR/run.log"
+        exit 1
+    fi
+fi
+
 # ── 1. 生成动态启动文件 ──
 echo "[1/8] 生成动态启动文件..."
 echo "[$(date +%H:%M:%S)] [1] main_generate.py start" >> "$LOG_DIR/run.log"

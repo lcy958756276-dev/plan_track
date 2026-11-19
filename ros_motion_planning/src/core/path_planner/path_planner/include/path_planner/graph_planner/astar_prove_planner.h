@@ -45,7 +45,7 @@ public:
 
   bool plan(const common::geometry::Point3d& start, const common::geometry::Point3d& goal,
             common::geometry::Points3d* path, common::geometry::Points3d* expand,
-            const PathClearance* clearance);
+            const PathClearance* clearance, bool smooth = true);
 
 private:
   using Node = rmp::common::structure::Node<int>;
