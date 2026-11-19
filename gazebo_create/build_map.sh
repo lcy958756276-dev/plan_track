@@ -8,7 +8,7 @@ GAZEBO_DIR="$SCRIPT_DIR"
 LOG_DIR="$GAZEBO_DIR/log"
 WORKSPACE_DIR="$(cd "$SCRIPT_DIR/../ros_motion_planning" && pwd 2>/dev/null)"
 # 可通过 WORLD_FILE=/path/to/world.world 覆盖默认场景
-WORLD_FILE="${WORLD_FILE:-$GAZEBO_DIR/worlds/map_project2.world}"
+WORLD_FILE="${WORLD_FILE:-$GAZEBO_DIR/worlds/map_project3.world}"
 
 if [ ! -f "$WORLD_FILE" ]; then
     echo "错误: Gazebo world 文件不存在: $WORLD_FILE"
