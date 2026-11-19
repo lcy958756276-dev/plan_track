@@ -58,6 +58,16 @@ private:
     double minimum_clearance{0.0};
   };
 
+  struct SafetyFailure {
+    const char* reason{"none"};
+    double prediction_s{0.0};
+    double x{0.0}, y{0.0}, yaw{0.0};
+    double sample_x{0.0}, sample_y{0.0};
+    double cell_x{0.0}, cell_y{0.0};
+    int mx{-1}, my{-1}, cost{-1};
+    Control control;
+  };
+
   // The cache is a safety certificate for the long layer, not a delayed pose
   // reference for the tracker. This deliberately avoids the stale-reference
   // behavior observed with the previous asynchronous experiment.
@@ -71,6 +81,7 @@ private:
     int first_invalid_stage{-1};
     double minimum_clearance{0.0};
     std::vector<LongPlanStage> stages;
+    SafetyFailure failure;
   };
 
   geometry_msgs::PoseStamped lookAheadPose(
@@ -90,8 +101,10 @@ private:
   static geometry_msgs::PoseStamped advancePose(const geometry_msgs::PoseStamped& pose,
                                                 const Control& control, double period);
   bool rolloutIsSafe(double x, double y, double yaw, const Control& control,
-                     int steps, double step_period, double margin) const;
-  bool poseIsSafe(double x, double y, double yaw, double margin) const;
+                     int steps, double step_period, double margin,
+                     SafetyFailure* failure = nullptr) const;
+  bool poseIsSafe(double x, double y, double yaw, double margin,
+                  SafetyFailure* failure = nullptr) const;
   double obstacleClearance(double x, double y) const;
   double pathCurvatureAhead(const geometry_msgs::PoseStamped& pose) const;
   TrackingPrediction evaluateTrackingPrediction(

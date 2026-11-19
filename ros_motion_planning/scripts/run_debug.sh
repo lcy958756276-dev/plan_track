@@ -319,6 +319,15 @@ rospack plugins --attrib=plugin nav_core 2>&1 >> "$LOG_DIR/run.log"
 roslaunch "$MB_LAUNCH" \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_MB=$!
+if [ "${NMPC_DIAG_BAG:-0}" = "1" ]; then
+    DIAG_BAG="$LOG_DIR/nmpc_diag_$(date +%Y%m%d_%H%M%S).bag"
+    rosbag record --duration="${NMPC_DIAG_BAG_DURATION:-120}" --buffsize=64 -O "$DIAG_BAG" \
+        /scan /scan_fixed /tf /tf_static /odom /cmd_vel \
+        /move_base/local_costmap/costmap /move_base/local_costmap/costmap_updates \
+        __name:=nmpc_stop_diagnostics >> "$LOG_DIR/nmpc_diag_record.log" 2>&1 &
+    echo "  NMPC 诊断录包: $DIAG_BAG"
+    echo "  NMPC diagnostic bag: $DIAG_BAG" >> "$LOG_DIR/run.log"
+fi
 echo "  move_base PID=$PID_MB (roslaunch)"
 echo "  全局规划器: A* Polyline (折线化后补密)"
 echo "  局部规划器: Double NMPC"

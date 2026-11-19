@@ -8,6 +8,11 @@ LOG_DIR="$WORKSPACE_DIR/log"
 
 echo "正在停止所有进程..."
 
+# Let the optional recorder finalize the .bag before stopping its publishers.
+if rosnode kill /nmpc_stop_diagnostics >/dev/null 2>&1; then
+    echo "  已通知 NMPC 诊断录包停止"
+fi
+
 for pid_file in "$LOG_DIR"/.pid_*; do
     if [ -f "$pid_file" ]; then
         pid=$(cat "$pid_file")

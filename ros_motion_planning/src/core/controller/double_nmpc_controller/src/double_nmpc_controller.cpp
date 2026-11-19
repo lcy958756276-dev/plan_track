@@ -274,6 +274,17 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
                static_cast<unsigned long long>(cached_long_plan_.id),
                cached_long_plan_.motion_valid, cached_long_plan_.brake_valid,
                cached_long_plan_.first_invalid_stage, cached_long_plan_.minimum_clearance);
+      const auto& hit = cached_long_plan_.failure;
+      ROS_WARN_THROTTLE(0.5,
+          "[NMPC_LONG_REJECT] t=%.6f frame=%s id=%llu phase=%s stage=%d prediction_s=%.3f "
+          "reason=%s hit_pose=(%.3f,%.3f,%.3frad) hit_command=(%.3f,%.3f) margin_m=%.3f "
+          "sample=(%.3f,%.3f) cell=(%d,%d) cell_world=(%.3f,%.3f) cost=%d",
+          now.toSec(), robot_pose.header.frame_id.c_str(),
+          static_cast<unsigned long long>(cached_long_plan_.id),
+          cached_long_plan_.motion_valid ? "brake" : "motion", cached_long_plan_.first_invalid_stage,
+          hit.prediction_s, hit.reason, hit.x, hit.y, hit.yaw, hit.control.v, hit.control.w,
+          cached_long_plan_.margin, hit.sample_x, hit.sample_y, hit.mx, hit.my,
+          hit.cell_x, hit.cell_y, hit.cost);
     }
     planner_elapsed_ms = (ros::WallTime::now() - planner_started).toSec() * 1000.0;
     last_planner_update_ = now;
@@ -334,9 +345,25 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   clearance_message.data = predicted_clearance;
   clearance_pub_.publish(clearance_message);
 
+  SafetyFailure failure;
   if (!rolloutIsSafe(robot_pose.pose.position.x, robot_pose.pose.position.y,
                      tf2::getYaw(robot_pose.pose.orientation), bounded,
-                     tracking_horizon_steps_, control_period_, tracking_margin_)) {
+                     tracking_horizon_steps_, control_period_, tracking_margin_, &failure)) {
+    ROS_WARN_THROTTLE(0.5,
+        "[NMPC_OUTPUT_REJECT] t=%.6f frame=%s long_id=%llu terminal=%d reason=%s prediction_s=%.3f "
+        "hit_pose=(%.3f,%.3f,%.3frad) sample=(%.3f,%.3f) cell=(%d,%d) "
+        "cell_world=(%.3f,%.3f) cost=%d margin_m=%.3f "
+        "odom=(%.3f,%.3f) previous=(%.3f,%.3f) desired=(%.3f,%.3f) bounded=(%.3f,%.3f) "
+        "curve_cap=%.3f track_cap=%.3f center_now_raw_m=%.3f "
+        "center_pred_raw_m=%.3f center_pred_filtered_m=%.3f",
+        ros::Time::now().toSec(), robot_pose.header.frame_id.c_str(),
+        static_cast<unsigned long long>(cached_long_plan_.id), terminal_approach,
+        failure.reason, failure.prediction_s, failure.x, failure.y, failure.yaw,
+        failure.sample_x, failure.sample_y, failure.mx, failure.my,
+        failure.cell_x, failure.cell_y, failure.cost, tracking_margin_,
+        current.v, current.w, previous_command_.v, previous_command_.w,
+        command.v, command.w, bounded.v, bounded.w, curve_speed_limit, tracking_speed_cap,
+        measured_clearance, measured_predicted_clearance, predicted_clearance);
     ROS_WARN_THROTTLE(
         0.5,
         "[DOUBLE_NMPC_DIAG] SAFETY_STOP: pose=(%.3f,%.3f,%.1fdeg) "
@@ -618,8 +645,11 @@ bool DoubleNMPCController::appendCertifiedStage(LongPlan& plan,
   double y = pose.pose.position.y;
   double subyaw = yaw;
   double minimum_clearance = obstacleClearance(x, y);
+  const double stage_start_s = plan.stages.size() * planner_period_;
   for (int substep = 0; substep < substeps; ++substep) {
-    if (!poseIsSafe(x, y, subyaw, margin)) {
+    if (!poseIsSafe(x, y, subyaw, margin, &plan.failure)) {
+      plan.failure.prediction_s = stage_start_s + substep * subperiod;
+      plan.failure.control = control;
       return false;
     }
     x += control.v * std::cos(subyaw) * subperiod;
@@ -627,7 +657,9 @@ bool DoubleNMPCController::appendCertifiedStage(LongPlan& plan,
     subyaw = normalizeAngle(subyaw + control.w * subperiod);
     minimum_clearance = std::min(minimum_clearance, obstacleClearance(x, y));
   }
-  if (!poseIsSafe(x, y, subyaw, margin)) {
+  if (!poseIsSafe(x, y, subyaw, margin, &plan.failure)) {
+    plan.failure.prediction_s = stage_start_s + planner_period_;
+    plan.failure.control = control;
     return false;
   }
   LongPlanStage stage;
@@ -677,13 +709,15 @@ DoubleNMPCController::LongPlan DoubleNMPCController::buildLongPlan(
 
 bool DoubleNMPCController::rolloutIsSafe(double x, double y, double yaw,
                                           const Control& control, int steps,
-                                          double step_period, double margin) const {
+                                          double step_period, double margin,
+                                          SafetyFailure* failure) const {
   const int substeps = std::max(1, static_cast<int>(std::ceil(
       step_period / safety_check_period_)));
   const double subperiod = step_period / static_cast<double>(substeps);
   for (int step = 0; step < steps; ++step) {
     for (int substep = 0; substep < substeps; ++substep) {
-      if (!poseIsSafe(x, y, yaw, margin)) {
+      if (!poseIsSafe(x, y, yaw, margin, failure)) {
+        if (failure) failure->prediction_s = (step * substeps + substep) * subperiod;
         ROS_WARN_THROTTLE(
             0.25,
             "[DOUBLE_NMPC_DIAG] rollout rejected: step=%d/%d substep=%d/%d "
@@ -698,8 +732,9 @@ bool DoubleNMPCController::rolloutIsSafe(double x, double y, double yaw,
       yaw = normalizeAngle(yaw + control.w * subperiod);
     }
   }
-  const bool final_pose_safe = poseIsSafe(x, y, yaw, margin);
+  const bool final_pose_safe = poseIsSafe(x, y, yaw, margin, failure);
   if (!final_pose_safe) {
+    if (failure) failure->prediction_s = steps * step_period;
     ROS_WARN_THROTTLE(
         0.25,
         "[DOUBLE_NMPC_DIAG] rollout rejected at final pose: t=%.3fs "
@@ -709,9 +744,20 @@ bool DoubleNMPCController::rolloutIsSafe(double x, double y, double yaw,
   return final_pose_safe;
 }
 
-bool DoubleNMPCController::poseIsSafe(double x, double y, double yaw, double margin) const {
+bool DoubleNMPCController::poseIsSafe(double x, double y, double yaw, double margin,
+                                      SafetyFailure* failure) const {
+  const auto record_failure = [&](const char* reason, double sample_x, double sample_y) {
+    if (!failure) return;
+    failure->reason = reason;
+    failure->x = x;
+    failure->y = y;
+    failure->yaw = yaw;
+    failure->sample_x = sample_x;
+    failure->sample_y = sample_y;
+  };
   auto* costmap = costmap_ros_->getCostmap();
   if (costmap == nullptr) {
+    record_failure("no_costmap", x, y);
     return false;
   }
 
@@ -739,6 +785,7 @@ bool DoubleNMPCController::poseIsSafe(double x, double y, double yaw, double mar
       unsigned int mx = 0;
       unsigned int my = 0;
       if (!costmap->worldToMap(sample_x, sample_y, mx, my)) {
+        record_failure("out_of_map", sample_x, sample_y);
         ROS_WARN_THROTTLE(
             0.25,
             "DoubleNMPC footprint unsafe: reason=out_of_map center=(%.3f,%.3f) "
@@ -756,13 +803,22 @@ bool DoubleNMPCController::poseIsSafe(double x, double y, double yaw, double mar
         double cell_x = 0.0;
         double cell_y = 0.0;
         costmap->mapToWorld(mx, my, cell_x, cell_y);
+        const char* reason = cost == costmap_2d::NO_INFORMATION ? "unknown" : "lethal";
+        record_failure(reason, sample_x, sample_y);
+        if (failure) {
+          failure->mx = static_cast<int>(mx);
+          failure->my = static_cast<int>(my);
+          failure->cell_x = cell_x;
+          failure->cell_y = cell_y;
+          failure->cost = cost;
+        }
         ROS_WARN_THROTTLE(
             0.25,
             "DoubleNMPC footprint unsafe: reason=%s center=(%.3f,%.3f) "
             "yaw=%.3f local=(%.3f,%.3f) world=(%.3f,%.3f) "
             "cell=(%u,%u) cell_world=(%.3f,%.3f) cost=%u "
             "body=(%.3f x %.3f) margin=%.3f sample=%zu",
-            cost == costmap_2d::NO_INFORMATION ? "unknown" : "lethal",
+            reason,
             x, y, yaw, local_x, local_y, sample_x, sample_y,
             mx, my, cell_x, cell_y, static_cast<unsigned int>(cost),
             2.0 * half_length, 2.0 * half_width, margin, sample_index);
