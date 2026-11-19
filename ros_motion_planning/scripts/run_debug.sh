@@ -88,7 +88,7 @@ sleep 1
 
 # map_server（提供背景地图）
 # MAP_FILE="$WORKSPACE_DIR/../gazebo_create/maps/my_four_map.yaml"
-MAP_FILE="$WORKSPACE_DIR/../gazebo_create/maps/map_project.yaml"
+MAP_FILE="$WORKSPACE_DIR/../gazebo_create/maps/map_project2.yaml"
 if [ ! -f "$MAP_FILE" ]; then
     echo "错误: 地图 YAML 不存在: $MAP_FILE"
     exit 1
@@ -111,7 +111,7 @@ sleep 1
 # ── 4. 启动 Gazebo（仓库环境）──
 echo "[4/8] 启动 Gazebo ..."
 echo "[$(date +%H:%M:%S)] [4] starting gzserver" >> "$LOG_DIR/run.log"
-WORLD_FILE="${WORLD_FILE:-$WORKSPACE_DIR/../gazebo_create/worlds/map_project.world}"
+WORLD_FILE="${WORLD_FILE:-$WORKSPACE_DIR/../gazebo_create/worlds/map_project2.world}"
 if [ ! -f "$WORLD_FILE" ]; then
     echo "错误: Gazebo world 文件不存在: $WORLD_FILE"
     exit 1
@@ -162,7 +162,7 @@ rosrun gazebo_ros spawn_model -urdf \
     -param robot_description \
     -model my_robot \
     -gazebo_namespace /gz_debug \
-    -x -0.86 -y 1.25 -z 0.0 -Y 1.5708 \
+    -x -0.9 -y 1.45 -z 0.0 -Y 1.5708 \
     >> "$LOG_DIR/run.log" 2>&1
 SPAWN_EXIT=$?
 echo "[$(date +%H:%M:%S)] [4] spawn_model exit=$SPAWN_EXIT" >> "$LOG_DIR/run.log"
@@ -203,7 +203,7 @@ sleep 2
 # ── 6. 启动里程计 ──
 echo "[6/8] 启动 encoder_odom.py (里程计)..."
 rosrun encoder_tools encoder_odom.py \
-    _initial_x:=-0.86 _initial_y:=1.25 _initial_yaw:=1.5708 _wheel_base:=0.8 \
+    _initial_x:=-0.9 _initial_y:=1.45 _initial_yaw:=1.5708 _wheel_base:=0.8 \
     > "$LOG_DIR/encoder_odom.log" 2>&1 &
 PID_ODOM=$!
 echo "  PID=$PID_ODOM → log/encoder_odom.log"
@@ -290,7 +290,7 @@ cat > "$MB_LAUNCH" << MBEOF
     </rosparam>
 
     <!-- 最终显式覆盖，避免参数加载顺序覆盖 YAML 中的值 -->
-    <param name="global_costmap/inflation_layer/inflation_radius" value="0.4"/>
+    <param name="global_costmap/inflation_layer/inflation_radius" value="0.25"/>
     <param name="local_costmap/inflation_layer/inflation_radius" value="0.1"/>
 
     <!-- 真实车体尺寸：长度 0.60 m，宽度 0.30 m；base_footprint 位于车体中心 -->
