@@ -65,7 +65,11 @@ bool PathPlannerFactory::createPlanner(ros::NodeHandle& nh,
     planner_props.planner_ptr = std::make_shared<AStarProvePathPlanner>(costmap_ros);
     planner_props.planner_type = GRAPH_PLANNER;
   } else if (planner_name == "astar_polyline") {
-    planner_props.planner_ptr = std::make_shared<AStarPolylinePathPlanner>(costmap_ros);
+    double clearance_target_m, clearance_weight;
+    nh.param("clearance_target_m", clearance_target_m, 0.15);
+    nh.param("clearance_weight", clearance_weight, 4.0);
+    planner_props.planner_ptr = std::make_shared<AStarPolylinePathPlanner>(
+        costmap_ros, clearance_target_m, clearance_weight);
     planner_props.planner_type = GRAPH_PLANNER;
   } else if (planner_name == "dijkstra") {
     planner_props.planner_ptr = std::make_shared<AStarPathPlanner>(costmap_ros, true);

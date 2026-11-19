@@ -20,6 +20,7 @@
 #include "path_planner/path_planner.h"
 
 namespace rmp::path_planner {
+class PathClearance;
 /**
  * @brief Class for objects that plan using the A* algorithm with path smoothing
  */
@@ -40,7 +41,11 @@ public:
    * @return true if path found, else false
    */
   bool plan(const common::geometry::Point3d& start, const common::geometry::Point3d& goal,
-            common::geometry::Points3d* path, common::geometry::Points3d* expand);
+            common::geometry::Points3d* path, common::geometry::Points3d* expand) override;
+
+  bool plan(const common::geometry::Point3d& start, const common::geometry::Point3d& goal,
+            common::geometry::Points3d* path, common::geometry::Points3d* expand,
+            const PathClearance* clearance);
 
 private:
   using Node = rmp::common::structure::Node<int>;

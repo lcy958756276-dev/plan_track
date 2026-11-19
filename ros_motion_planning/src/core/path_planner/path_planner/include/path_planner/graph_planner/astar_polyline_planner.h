@@ -18,7 +18,8 @@ namespace rmp::path_planner {
  */
 class AStarPolylinePathPlanner : public PathPlanner {
 public:
-  explicit AStarPolylinePathPlanner(costmap_2d::Costmap2DROS* costmap_ros);
+  explicit AStarPolylinePathPlanner(costmap_2d::Costmap2DROS* costmap_ros,
+                                   double clearance_target_m = 0.15, double clearance_weight = 4.0);
 
   bool plan(const common::geometry::Point3d& start,
             const common::geometry::Point3d& goal,
@@ -30,12 +31,14 @@ private:
                             const common::geometry::Point3d& b) const;
   bool _worldPointFree(double wx, double wy) const;
   common::geometry::Points3d _polylineShortcut(
-      const common::geometry::Points3d& path) const;
+      const common::geometry::Points3d& path, const PathClearance& clearance) const;
   double _pathLength(const common::geometry::Points3d& path) const;
   void _assignSegmentHeadings(common::geometry::Points3d* path) const;
 
 private:
   AStarProvePathPlanner base_planner_;
+  double clearance_target_m_;
+  double clearance_weight_;
 };
 }  // namespace rmp::path_planner
 

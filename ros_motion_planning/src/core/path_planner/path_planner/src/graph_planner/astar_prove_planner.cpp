@@ -24,6 +24,7 @@
 
 #include "common/structure/node.h"
 #include "path_planner/graph_planner/astar_prove_planner.h"
+#include "path_planner/graph_planner/path_clearance.h"
 
 using namespace rmp::common::geometry;
 
@@ -52,6 +53,11 @@ AStarProvePathPlanner::AStarProvePathPlanner(costmap_2d::Costmap2DROS* costmap_r
  */
 bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Points3d* path,
                                   Points3d* expand) {
+  return plan(start, goal, path, expand, nullptr);
+}
+
+bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Points3d* path,
+                                Points3d* expand, const PathClearance* clearance) {
   double m_start_x, m_start_y, m_goal_x, m_goal_y;
   if ((!validityCheck(start.x(), start.y(), m_start_x, m_start_y)) ||
       (!validityCheck(goal.x(), goal.y(), m_goal_x, m_goal_y))) {
@@ -107,7 +113,6 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
       Points3d smooth_path = raw_path;
       const double alpha = 0.6;       // 平滑权重
       const int iterations = 5;       // 迭代次数
-      const double safe_dist = 0.3;   // 安全距离（米）
 
       for (int iter = 0; iter < iterations; ++iter) {
         for (size_t i = 1; i < smooth_path.size() - 1; ++i) {
@@ -126,6 +131,19 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
             if (idx >= 0 && idx < map_size_ &&
                 costmap_->getCharMap()[idx] <
                     costmap_2d::LETHAL_OBSTACLE * config_.obstacle_inflation_factor()) {
+              if (clearance) {
+                const Point3d candidate(new_x, new_y);
+                const auto old_in = clearance->measure(smooth_path[i-1], smooth_path[i]);
+                const auto old_out = clearance->measure(smooth_path[i], smooth_path[i+1]);
+                const auto new_in = clearance->measure(smooth_path[i-1], candidate);
+                const auto new_out = clearance->measure(candidate, smooth_path[i+1]);
+                if (costmap_->getCharMap()[idx] != costmap_2d::FREE_SPACE ||
+                    !new_in.free_interior || !new_out.free_interior ||
+                    std::min(new_in.min_m, new_out.min_m) < std::min(old_in.min_m, old_out.min_m) ||
+                    new_in.cost_m + new_out.cost_m > old_in.cost_m + old_out.cost_m + 1e-6) {
+                  continue;
+                }
+              }
               smooth_path[i].setX(new_x);
               smooth_path[i].setY(new_y);
             }
@@ -145,7 +163,12 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
     for (const auto& motion : motions_) {
       // explore a new node
       auto node_new = current + motion;
-      node_new.set_g(current.g() + motion.g());
+      if (node_new.x() < 0 || node_new.y() < 0 ||
+          node_new.x() >= static_cast<int>(costmap_->getSizeInCellsX()) ||
+          node_new.y() >= static_cast<int>(costmap_->getSizeInCellsY())) {
+        ++rejected_boundary_or_cost;
+        continue;
+      }
       node_new.set_id(grid2Index(node_new.x(), node_new.y()));
 
       // node_new in closed list
@@ -173,6 +196,8 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
       // apply a second, hard-coded footprint test here: it can contradict the
       // costmap footprint/inflation settings and disconnect otherwise free cells.
 
+      const double multiplier = clearance ? clearance->multiplier(clearance->distance(node_new.id())) : 1.0;
+      node_new.set_g(current.g() + motion.g() * multiplier);
       node_new.set_h(
           std::hypot(node_new.x() - goal_node.x(), node_new.y() - goal_node.y()));
 

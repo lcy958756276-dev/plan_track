@@ -260,6 +260,8 @@ cat > "$MB_LAUNCH" << MBEOF
     <!-- 全局规划器 -->
     <param name="base_global_planner" value="path_planner/PathPlanner"/>
     <param name="PathPlanner/planner_name" value="astar_polyline"/>
+    <param name="PathPlanner/clearance_target_m" type="double" value="${ASTAR_CLEARANCE_TARGET_M:-0.15}"/>
+    <param name="PathPlanner/clearance_weight" type="double" value="${ASTAR_CLEARANCE_WEIGHT:-4.0}"/>
 
     <!-- 局部规划器：双层 NMPC -->
     <param name="base_local_planner" value="double_nmpc_controller/DoubleNMPCController"/>
