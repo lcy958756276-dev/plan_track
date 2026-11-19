@@ -24,6 +24,7 @@ killall -9 gzserver gzclient 2>/dev/null
 killall map_server 2>/dev/null
 killall move_base 2>/dev/null
 rosnode kill /move_base 2>/dev/null || true
+rosnode kill /nmpc_stop_diagnostics >/dev/null 2>&1 || true
 sleep 1
 
 # 确保 ROS master 在运行
@@ -319,12 +320,26 @@ rospack plugins --attrib=plugin nav_core 2>&1 >> "$LOG_DIR/run.log"
 roslaunch "$MB_LAUNCH" \
     >> "$LOG_DIR/run.log" 2>&1 &
 PID_MB=$!
-if [ "${NMPC_DIAG_BAG:-0}" = "1" ]; then
+if [ "${NMPC_DIAG_BAG:-1}" = "1" ]; then
     DIAG_BAG="$LOG_DIR/nmpc_diag_$(date +%Y%m%d_%H%M%S).bag"
-    rosbag record --duration="${NMPC_DIAG_BAG_DURATION:-120}" --buffsize=64 -O "$DIAG_BAG" \
+    DIAG_DURATION="${NMPC_DIAG_BAG_DURATION:-300}"
+    # Record ROS events in the same bag so it remains usable after run.log is replaced.
+    rosbag record --duration="$DIAG_DURATION" --buffsize=64 -O "$DIAG_BAG" \
         /scan /scan_fixed /tf /tf_static /odom /cmd_vel \
         /move_base/local_costmap/costmap /move_base/local_costmap/costmap_updates \
+        /move_base/status /rosout_agg \
         __name:=nmpc_stop_diagnostics >> "$LOG_DIR/nmpc_diag_record.log" 2>&1 &
+    PID_NMPC_DIAG=$!
+    # Keep the stop and settling data, then finalize the bag without operator input.
+    (
+        if timeout "$DIAG_DURATION" rostopic echo -n 1 \
+            --filter 'any(status.status == 3 for status in m.status_list)' /move_base/status >/dev/null; then
+            sleep 3
+            if kill -0 "$PID_NMPC_DIAG" 2>/dev/null; then
+                rosnode kill /nmpc_stop_diagnostics
+            fi
+        fi
+    ) >> "$LOG_DIR/nmpc_diag_record.log" 2>&1 &
     echo "  NMPC 诊断录包: $DIAG_BAG"
     echo "  NMPC diagnostic bag: $DIAG_BAG" >> "$LOG_DIR/run.log"
 fi
