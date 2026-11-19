@@ -21,6 +21,7 @@
 
 namespace rmp::path_planner {
 class PathClearance;
+class FootprintClearance;
 /**
  * @brief Class for objects that plan using the A* algorithm with path smoothing
  */
@@ -45,7 +46,8 @@ public:
 
   bool plan(const common::geometry::Point3d& start, const common::geometry::Point3d& goal,
             common::geometry::Points3d* path, common::geometry::Points3d* expand,
-            const PathClearance* clearance, bool smooth = true);
+            const PathClearance* clearance, bool smooth = true,
+            const FootprintClearance* footprint = nullptr);
 
 private:
   using Node = rmp::common::structure::Node<int>;

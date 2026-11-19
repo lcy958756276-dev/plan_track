@@ -15,6 +15,7 @@
 #include "common/geometry/curve/bezier_curve.h"
 #include "common/util/log.h"
 #include "path_planner/graph_planner/astar_polyline_planner.h"
+#include "path_planner/graph_planner/footprint_clearance.h"
 #include "path_planner/graph_planner/path_clearance.h"
 
 using namespace rmp::common::geometry;
@@ -25,12 +26,14 @@ struct RoundedPath {
   Points3d points;
   size_t attempted_corners = 0;
   size_t rounded_corners = 0;
+  size_t footprint_rejected_attempts = 0;
   double curved_length_m = 0.0;
   double max_unrounded_turn_rad = 0.0;
 };
 
 RoundedPath roundCorners(const Points3d& path, const PathClearance& clearance,
-                         double max_trim_m, double cell_m, double sample_step) {
+                         const FootprintClearance& footprint, double max_trim_m,
+                         double cell_m, double sample_step) {
   RoundedPath result;
   result.points.push_back(path.front());
   BezierCurve bezier;
@@ -64,6 +67,11 @@ RoundedPath roundCorners(const Points3d& path, const PathClearance& clearance,
       const auto original_out = clearance.measure(b, exit);
       const double minimum = std::min(original_in.min_m, original_out.min_m);
       const double cost_limit = original_in.cost_m + original_out.cost_m;
+      const double footprint_min = footprint.enabled()
+          ? std::min({footprint.measureStraight(entry, b).min_margin_m,
+                      footprint.measure(b, b, entry.theta(), exit.theta()).min_margin_m,
+                      footprint.measureStraight(b, exit).min_margin_m})
+          : footprint.targetMargin();
 
       // Equally spaced control triples on each straight yield zero endpoint
       // acceleration and curvature. Only the corner receives a quintic curve.
@@ -94,6 +102,12 @@ RoundedPath roundCorners(const Points3d& path, const PathClearance& clearance,
         cost += segment.cost_m;
         if (!segment.free_interior || segment.nonfree_m > 0.0 || segment.min_m < minimum ||
             cost > cost_limit + 1e-6) {
+          break;
+        }
+        if (footprint.enabled() &&
+            footprint.measure(arc.back(), next, arc.back().theta(), next.theta()).min_margin_m + 1e-6 <
+                footprint_min) {
+          ++result.footprint_rejected_attempts;
           break;
         }
         length += std::hypot(next.x() - arc.back().x(), next.y() - arc.back().y());
@@ -130,11 +144,13 @@ double maxTurnDegrees(const Points3d& path) {
 
 AStarPolylinePathPlanner::AStarPolylinePathPlanner(
     costmap_2d::Costmap2DROS* costmap_ros, double clearance_target_m, double clearance_weight,
-    double corner_trim_m)
+    double corner_trim_m, double footprint_margin_m, double footprint_weight)
   : PathPlanner(costmap_ros), base_planner_(costmap_ros),
     clearance_target_m_(std::isfinite(clearance_target_m) ? std::max(0.0, clearance_target_m) : 0.15),
     clearance_weight_(std::isfinite(clearance_weight) ? std::max(0.0, clearance_weight) : 4.0),
-    corner_trim_m_(std::isfinite(corner_trim_m) ? std::max(0.0, corner_trim_m) : 0.20) {
+    corner_trim_m_(std::isfinite(corner_trim_m) ? std::max(0.0, corner_trim_m) : 0.20),
+    footprint_margin_m_(std::isfinite(footprint_margin_m) ? std::max(0.0, footprint_margin_m) : 0.09),
+    footprint_weight_(std::isfinite(footprint_weight) ? std::max(0.0, footprint_weight) : 6.0) {
 }
 
 bool AStarPolylinePathPlanner::plan(const Point3d& start, const Point3d& goal,
@@ -143,9 +159,11 @@ bool AStarPolylinePathPlanner::plan(const Point3d& start, const Point3d& goal,
   const auto begin = std::chrono::steady_clock::now();
   const PathClearance clearance(*costmap_, clearance_target_m_, clearance_weight_);
   const bool clearance_enabled = clearance.enabled();
+  const FootprintClearance footprint(*costmap_, costmap_ros_->getUnpaddedRobotFootprint(),
+                                      footprint_margin_m_, clearance_enabled ? footprint_weight_ : 0.0);
   const double stamp = ros::Time::now().toSec();
   if (!base_planner_.plan(start, goal, &base_path, expand, clearance_enabled ? &clearance : nullptr,
-                         !clearance_enabled) ||
+                         !clearance_enabled, footprint.enabled() ? &footprint : nullptr) ||
       base_path.empty()) {
     ROS_WARN("[ASTAR_CLEARANCE] t=%.3f result=no_path start=(%.3f,%.3f) goal=(%.3f,%.3f) "
              "target_m=%.3f weight=%.2f expanded=%zu",
@@ -176,7 +194,7 @@ bool AStarPolylinePathPlanner::plan(const Point3d& start, const Point3d& goal,
       }
     }
   }
-  Points3d polyline = _polylineShortcut(shortcut_input, clearance);
+  Points3d polyline = _polylineShortcut(shortcut_input, clearance, footprint);
   _assignSegmentHeadings(&polyline);
 
   const double polyline_length = _pathLength(polyline);
@@ -186,7 +204,8 @@ bool AStarPolylinePathPlanner::plan(const Point3d& start, const Point3d& goal,
   }
   const bool smooth_corners = clearance_enabled && corner_trim_m_ > 0.0;
   const auto rounded = smooth_corners
-      ? roundCorners(polyline, clearance, corner_trim_m_, costmap_->getResolution(), sample_step)
+      ? roundCorners(polyline, clearance, footprint, corner_trim_m_, costmap_->getResolution(),
+                     sample_step)
       : RoundedPath{};
   const auto& reference = smooth_corners ? rounded.points : polyline;
 
@@ -250,6 +269,27 @@ bool AStarPolylinePathPlanner::plan(const Point3d& start, const Point3d& goal,
   const Point3d last_pose = dense_path.back();
   dense_path.back() = goal;
   const auto output = summarize(dense_path);
+  if (footprint.available()) {
+    Point3d tight_point = dense_path.front();
+    double min_margin = footprint.margin(tight_point.x(), tight_point.y(), tight_point.theta());
+    double tight_length = 0.0;
+    for (size_t i = 1; i < dense_path.size(); ++i) {
+      const auto& a = dense_path[i - 1];
+      const auto& b = i + 1 == dense_path.size() ? last_pose : dense_path[i];
+      const auto sample = footprint.measure(a, b, a.theta(), b.theta());
+      if (sample.min_margin_m < min_margin) {
+        min_margin = sample.min_margin_m;
+        tight_point = sample.tight_pose;
+      }
+      tight_length += sample.below_target_m;
+    }
+    ROS_INFO("[ASTAR_FOOTPRINT] t=%.3f target_margin_m=%.3f weight=%.2f "
+             "min_margin_m=%.3f below_target_m=%.3f tight_pose=(%.3f,%.3f,%.3frad) "
+             "rejected_curve_attempts=%zu",
+             stamp, footprint.targetMargin(), footprint.enabled() ? footprint_weight_ : 0.0,
+             min_margin, tight_length, tight_point.x(), tight_point.y(), tight_point.theta(),
+             rounded.footprint_rejected_attempts);
+  }
   const double elapsed_ms = std::chrono::duration<double, std::milli>(
       std::chrono::steady_clock::now() - begin).count();
   ROS_INFO("[ASTAR_CLEARANCE] t=%.3f result=ok start=(%.3f,%.3f) goal=(%.3f,%.3f) "
@@ -271,7 +311,8 @@ bool AStarPolylinePathPlanner::plan(const Point3d& start, const Point3d& goal,
 }
 
 Points3d AStarPolylinePathPlanner::_polylineShortcut(const Points3d& path,
-                                                     const PathClearance& clearance) const {
+                                                     const PathClearance& clearance,
+                                                     const FootprintClearance& footprint) const {
   if (path.size() < 3) {
     return path;
   }
@@ -283,12 +324,22 @@ Points3d AStarPolylinePathPlanner::_polylineShortcut(const Points3d& path,
   std::vector<double> prefix_cost(path.size(), 0.0);
   std::vector<double> segment_min(path.size());
   std::vector<double> span_min(path.size());
+  std::vector<double> footprint_prefix(path.size(), 0.0);
+  std::vector<double> footprint_segment_min(path.size());
+  std::vector<double> footprint_span_min(path.size());
   const double cell_m = costmap_->getResolution();
   if (clearance.enabled()) {
     for (size_t j = 1; j < path.size(); ++j) {
       const auto segment = clearance.measure(path[j - 1], path[j]);
       prefix_cost[j] = prefix_cost[j - 1] + segment.cost_m;
       segment_min[j] = segment.min_m;
+    }
+  }
+  if (footprint.enabled()) {
+    for (size_t j = 1; j < path.size(); ++j) {
+      const auto segment = footprint.measureStraight(path[j - 1], path[j]);
+      footprint_prefix[j] = footprint_prefix[j - 1] + segment.penalty_m;
+      footprint_segment_min[j] = segment.min_margin_m;
     }
   }
 
@@ -298,6 +349,12 @@ Points3d AStarPolylinePathPlanner::_polylineShortcut(const Points3d& path,
       span_min[i + 1] = segment_min[i + 1];
       for (size_t j = i + 2; j < path.size(); ++j) {
         span_min[j] = std::min(span_min[j - 1], segment_min[j]);
+      }
+    }
+    if (footprint.enabled()) {
+      footprint_span_min[i + 1] = footprint_segment_min[i + 1];
+      for (size_t j = i + 2; j < path.size(); ++j) {
+        footprint_span_min[j] = std::min(footprint_span_min[j - 1], footprint_segment_min[j]);
       }
     }
 
@@ -314,6 +371,13 @@ Points3d AStarPolylinePathPlanner::_polylineShortcut(const Points3d& path,
         }
       } else if (!_lineFreeOfInflation(path[i], path[j])) {
         continue;
+      }
+      if (footprint.enabled()) {
+        const auto candidate = footprint.measureStraight(path[i], path[j]);
+        if (candidate.min_margin_m + 1e-6 < footprint_span_min[j] ||
+            candidate.penalty_m > footprint_prefix[j] - footprint_prefix[i] + 0.5 * cell_m) {
+          continue;
+        }
       }
       best = j;
       break;

@@ -280,6 +280,8 @@ cat > "$MB_LAUNCH" << MBEOF
     <param name="PathPlanner/clearance_target_m" type="double" value="${ASTAR_CLEARANCE_TARGET_M:-0.15}"/>
     <param name="PathPlanner/clearance_weight" type="double" value="${ASTAR_CLEARANCE_WEIGHT:-4.0}"/>
     <param name="PathPlanner/corner_trim_m" type="double" value="${ASTAR_CORNER_TRIM_M:-0.20}"/>
+    <param name="PathPlanner/footprint_margin_m" type="double" value="${ASTAR_FOOTPRINT_MARGIN_M:-0.09}"/>
+    <param name="PathPlanner/footprint_weight" type="double" value="${ASTAR_FOOTPRINT_WEIGHT:-6.0}"/>
 
     <!-- 局部规划器：双层 NMPC -->
     <param name="base_local_planner" value="double_nmpc_controller/DoubleNMPCController"/>

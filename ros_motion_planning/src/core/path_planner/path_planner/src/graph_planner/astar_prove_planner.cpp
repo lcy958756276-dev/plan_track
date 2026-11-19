@@ -24,6 +24,7 @@
 
 #include "common/structure/node.h"
 #include "path_planner/graph_planner/astar_prove_planner.h"
+#include "path_planner/graph_planner/footprint_clearance.h"
 #include "path_planner/graph_planner/path_clearance.h"
 
 using namespace rmp::common::geometry;
@@ -57,7 +58,8 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
 }
 
 bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Points3d* path,
-                                Points3d* expand, const PathClearance* clearance, bool smooth) {
+                                Points3d* expand, const PathClearance* clearance, bool smooth,
+                                const FootprintClearance* footprint) {
   double m_start_x, m_start_y, m_goal_x, m_goal_y;
   if ((!validityCheck(start.x(), start.y(), m_start_x, m_start_y)) ||
       (!validityCheck(goal.x(), goal.y(), m_goal_x, m_goal_y))) {
@@ -196,11 +198,13 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
         continue;
       }
 
-      // Collision clearance belongs to the configured global costmap.  Do not
-      // apply a second, hard-coded footprint test here: it can contradict the
-      // costmap footprint/inflation settings and disconnect otherwise free cells.
-
-      const double multiplier = clearance ? clearance->multiplier(clearance->distance(node_new.id())) : 1.0;
+      double multiplier = clearance ? clearance->multiplier(clearance->distance(node_new.id())) : 1.0;
+      if (footprint) {
+        double wx, wy;
+        costmap_->mapToWorld(node_new.x(), node_new.y(), wx, wy);
+        const double yaw = std::atan2(motion.y(), motion.x());
+        multiplier += footprint->penalty(footprint->margin(wx, wy, yaw));
+      }
       node_new.set_g(current.g() + motion.g() * multiplier);
       node_new.set_h(
           std::hypot(node_new.x() - goal_node.x(), node_new.y() - goal_node.y()));
