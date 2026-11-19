@@ -19,7 +19,8 @@ namespace rmp::path_planner {
 class AStarPolylinePathPlanner : public PathPlanner {
 public:
   explicit AStarPolylinePathPlanner(costmap_2d::Costmap2DROS* costmap_ros,
-                                   double clearance_target_m = 0.15, double clearance_weight = 4.0);
+                                   double clearance_target_m = 0.15, double clearance_weight = 4.0,
+                                   double corner_trim_m = 0.20);
 
   bool plan(const common::geometry::Point3d& start,
             const common::geometry::Point3d& goal,
@@ -39,6 +40,7 @@ private:
   AStarProvePathPlanner base_planner_;
   double clearance_target_m_;
   double clearance_weight_;
+  double corner_trim_m_;
 };
 }  // namespace rmp::path_planner
 

@@ -2,7 +2,7 @@
  * *********************************************************
  *
  * @file: astar_polyline_planner.cpp
- * @brief: A* planner followed by strict polyline shortcutting
+ * @brief: A* planner with clearance-aware shortcutting and corner rounding
  *
  * ********************************************************
  */
@@ -12,6 +12,7 @@
 
 #include <costmap_2d/cost_values.h>
 
+#include "common/geometry/curve/bezier_curve.h"
 #include "common/util/log.h"
 #include "path_planner/graph_planner/astar_polyline_planner.h"
 #include "path_planner/graph_planner/path_clearance.h"
@@ -19,11 +20,91 @@
 using namespace rmp::common::geometry;
 
 namespace rmp::path_planner {
+namespace {
+struct RoundedPath {
+  Points3d points;
+  size_t attempted_corners = 0;
+  size_t rounded_corners = 0;
+};
+
+RoundedPath roundCorners(const Points3d& path, const PathClearance& clearance,
+                         double max_trim_m, double cell_m) {
+  RoundedPath result;
+  result.points.push_back(path.front());
+  BezierCurve bezier;
+
+  for (size_t i = 1; i + 1 < path.size(); ++i) {
+    const auto& a = path[i - 1];
+    const auto& b = path[i];
+    const auto& c = path[i + 1];
+    const double in_x = b.x() - a.x(), in_y = b.y() - a.y();
+    const double out_x = c.x() - b.x(), out_y = c.y() - b.y();
+    const double in_length = std::hypot(in_x, in_y);
+    const double out_length = std::hypot(out_x, out_y);
+    const double turn = std::abs(std::atan2(in_x * out_y - in_y * out_x,
+                                            in_x * out_x + in_y * out_y));
+    // Leave an untouched part of each straight segment even when both ends round.
+    double trim = std::min({max_trim_m, 0.45 * in_length, 0.45 * out_length});
+    const double min_trim = 0.25 * cell_m;
+    const bool can_round = turn > 0.05 && turn < 3.05 && trim >= min_trim;
+    if (can_round) ++result.attempted_corners;
+
+    bool accepted = false;
+    for (; can_round && trim >= min_trim; trim *= 0.5) {
+      const Point3d entry(b.x() - trim * in_x / in_length, b.y() - trim * in_y / in_length);
+      const Point3d exit(b.x() + trim * out_x / out_length, b.y() + trim * out_y / out_length);
+      const auto original_in = clearance.measure(entry, b);
+      const auto original_out = clearance.measure(b, exit);
+      const double minimum = std::min(original_in.min_m, original_out.min_m);
+      const double cost_limit = original_in.cost_m + original_out.cost_m;
+
+      const Points2d controls{{entry.x(), entry.y()}, {b.x(), b.y()}, {exit.x(), exit.y()}};
+      const int samples = std::max(4, static_cast<int>(std::ceil(2.0 * trim / (0.5 * cell_m))));
+      Points3d arc{entry};
+      double cost = 0.0;
+      for (int j = 1; j <= samples; ++j) {
+        const auto p = bezier.bezier(static_cast<double>(j) / samples, controls);
+        const Point3d next = j == samples ? exit : Point3d(p.x(), p.y());
+        const auto segment = clearance.measure(arc.back(), next, minimum);
+        cost += segment.cost_m;
+        if (!segment.free_interior || segment.nonfree_m > 0.0 || segment.min_m < minimum ||
+            cost > cost_limit + 1e-6) {
+          break;
+        }
+        arc.push_back(next);
+      }
+      if (arc.size() == static_cast<size_t>(samples + 1)) {
+        result.points.insert(result.points.end(), arc.begin(), arc.end());
+        ++result.rounded_corners;
+        accepted = true;
+        break;
+      }
+    }
+    if (!accepted) result.points.push_back(b);
+  }
+
+  if (path.size() > 1) result.points.push_back(path.back());
+  return result;
+}
+
+double maxTurnDegrees(const Points3d& path) {
+  double maximum = 0.0;
+  for (size_t i = 1; i + 1 < path.size(); ++i) {
+    const double ax = path[i].x() - path[i - 1].x(), ay = path[i].y() - path[i - 1].y();
+    const double bx = path[i + 1].x() - path[i].x(), by = path[i + 1].y() - path[i].y();
+    maximum = std::max(maximum, std::abs(std::atan2(ax * by - ay * bx, ax * bx + ay * by)));
+  }
+  return maximum * 180.0 / std::acos(-1.0);
+}
+}  // namespace
+
 AStarPolylinePathPlanner::AStarPolylinePathPlanner(
-    costmap_2d::Costmap2DROS* costmap_ros, double clearance_target_m, double clearance_weight)
+    costmap_2d::Costmap2DROS* costmap_ros, double clearance_target_m, double clearance_weight,
+    double corner_trim_m)
   : PathPlanner(costmap_ros), base_planner_(costmap_ros),
     clearance_target_m_(std::isfinite(clearance_target_m) ? std::max(0.0, clearance_target_m) : 0.15),
-    clearance_weight_(std::isfinite(clearance_weight) ? std::max(0.0, clearance_weight) : 4.0) {
+    clearance_weight_(std::isfinite(clearance_weight) ? std::max(0.0, clearance_weight) : 4.0),
+    corner_trim_m_(std::isfinite(corner_trim_m) ? std::max(0.0, corner_trim_m) : 0.20) {
 }
 
 bool AStarPolylinePathPlanner::plan(const Point3d& start, const Point3d& goal,
@@ -42,7 +123,11 @@ bool AStarPolylinePathPlanner::plan(const Point3d& start, const Point3d& goal,
   }
 
   Points3d polyline = _polylineShortcut(base_path, clearance);
-  _assignSegmentHeadings(&polyline);
+  const bool smooth_corners = clearance.enabled() && corner_trim_m_ > 0.0;
+  const auto rounded = smooth_corners
+      ? roundCorners(polyline, clearance, corner_trim_m_, costmap_->getResolution())
+      : RoundedPath{};
+  const auto& reference = smooth_corners ? rounded.points : polyline;
 
   Points3d dense_path;
   const double polyline_length = _pathLength(polyline);
@@ -53,10 +138,10 @@ bool AStarPolylinePathPlanner::plan(const Point3d& start, const Point3d& goal,
   if (clearance.enabled()) {
     // Keep every vertex so a downstream consumer cannot cut across a bend
     // by connecting uniform samples from different segments.
-    dense_path.push_back(polyline.front());
-    for (size_t i = 1; i < polyline.size(); ++i) {
-      const auto& a = polyline[i - 1];
-      const auto& b = polyline[i];
+    dense_path.push_back(reference.front());
+    for (size_t i = 1; i < reference.size(); ++i) {
+      const auto& a = reference[i - 1];
+      const auto& b = reference[i];
       const double dx = b.x() - a.x();
       const double dy = b.y() - a.y();
       const int count = std::max(1, static_cast<int>(std::ceil(std::hypot(dx, dy) / sample_step)));
@@ -71,8 +156,11 @@ bool AStarPolylinePathPlanner::plan(const Point3d& start, const Point3d& goal,
       dense_path.push_back(goal);
     }
     _assignSegmentHeadings(&dense_path);
-  } else if (!PathPlanner::resample(polyline, &dense_path, sample_step)) {
-    dense_path = polyline;
+  } else {
+    _assignSegmentHeadings(&polyline);
+    if (!PathPlanner::resample(polyline, &dense_path, sample_step)) {
+      dense_path = polyline;
+    }
   }
   unsigned int max_cost = 0;
   double total_cost = 0.0;
@@ -117,11 +205,14 @@ bool AStarPolylinePathPlanner::plan(const Point3d& start, const Point3d& goal,
   ROS_INFO("[ASTAR_CLEARANCE] t=%.3f result=ok start=(%.3f,%.3f) goal=(%.3f,%.3f) "
            "target_m=%.3f weight=%.2f cell_m=%.3f expanded=%zu elapsed_ms=%.1f "
            "base_min_m=%.3f output_min_m=%.3f base_below_target_m=%.3f output_below_target_m=%.3f "
-           "output_nonfree_m=%.3f base_length_m=%.3f output_length_m=%.3f vertices=%zu poses=%zu",
+           "output_nonfree_m=%.3f base_length_m=%.3f output_length_m=%.3f vertices=%zu poses=%zu "
+           "corner_trim_m=%.3f rounded=%zu/%zu polyline_max_turn_deg=%.1f rounded_max_turn_deg=%.1f",
            stamp, start.x(), start.y(), goal.x(), goal.y(),
            clearance_target_m_, clearance_weight_, costmap_->getResolution(), expand->size(), elapsed_ms,
            base.min_m, output.min_m, base.below_target_m, output.below_target_m,
-           output.nonfree_m, _pathLength(base_path), _pathLength(dense_path), polyline.size(), dense_path.size());
+           output.nonfree_m, _pathLength(base_path), _pathLength(dense_path), polyline.size(), dense_path.size(),
+           smooth_corners ? corner_trim_m_ : 0.0, rounded.rounded_corners, rounded.attempted_corners,
+           maxTurnDegrees(polyline), maxTurnDegrees(reference));
   dense_path.back() = last_pose;
   path->swap(dense_path);
   return true;
