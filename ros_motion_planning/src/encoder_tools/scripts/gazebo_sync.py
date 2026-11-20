@@ -201,46 +201,8 @@ class GazeboSync:
 
     def publish_scan(self, arrived, msg, pose):
         """Publish the scan from its captured Gazebo origin for marking and clearing."""
-        # Keep the existing self-return mask in laser coordinates.
-        SELF_MIN_X = -0.47
-        SELF_MAX_X = 0.42
-        SELF_MIN_Y = -0.40
-        SELF_MAX_Y = 0.40
-
-        ranges = list(msg.ranges)
-        angle_min = msg.angle_min
-        angle_increment = msg.angle_increment
-        self_filtered = 0
-        isolated_filtered = 0
-
-        for i in range(len(ranges)):
-            r = ranges[i]
-            if r < msg.range_min or r > msg.range_max:
-                continue
-
-            # (1) 过滤自检测：计算该点在 base_scan 坐标系下的 (x, y)
-            theta = angle_min + i * angle_increment
-            px = r * math.cos(theta)
-            py = r * math.sin(theta)
-            if SELF_MIN_X <= px <= SELF_MAX_X and SELF_MIN_Y <= py <= SELF_MAX_Y:
-                # inf_is_valid=true in both costmaps: publish +inf rather
-                # than an out-of-range value, so ObstacleLayer emits a
-                # clearing ray and removes any previous false obstacle here.
-                ranges[i] = float("inf")
-                self_filtered += 1
-                continue
-
-            # (2) 混合像素过滤：与左右邻居对比（用原始数据 msg.ranges，避免被自过滤影响）
-            if 0 < i < len(ranges) - 1:
-                r_prev = msg.ranges[i - 1]
-                r_next = msg.ranges[i + 1]
-                if r_prev < msg.range_max and r_next < msg.range_max:
-                    if abs(r - r_prev) > 0.07 and abs(r - r_next) > 0.07:
-                        # Same as self-filtering: an infinite valid ray clears
-                        # stale cells instead of leaving them in the costmap.
-                        ranges[i] = float("inf")
-                        isolated_filtered += 1
-
+        # The new_robot collision mesh is below the laser plane. Forward its
+        # ranges as measured so nearby returns and clearing rays keep their meaning.
         position, orientation, bracket_s = pose
         sim_stamp = msg.header.stamp.to_sec()
         transform = TransformStamped()
@@ -258,7 +220,6 @@ class GazeboSync:
         end_transform.header.stamp += rospy.Duration(0.05)
         self.scan_tf.sendTransform([transform, end_transform])
 
-        msg.ranges = tuple(ranges)
         msg.header.stamp = transform.header.stamp
         msg.header.frame_id = transform.child_frame_id
         # Gazebo ray scans are snapshots and this TF describes that snapshot.
@@ -279,14 +240,17 @@ class GazeboSync:
         sim_hz = intervals / sim_span if sim_span > 0.0 else 0.0
         fixed_hz = intervals / publish_span if publish_span > 0.0 else 0.0
         sim_wall_ratio = sim_span / publish_span if publish_span > 0.0 else 0.0
+        valid_returns = sum(msg.range_min <= r <= msg.range_max for r in msg.ranges)
+        no_returns = sum(r == math.inf for r in msg.ranges)
         rospy.loginfo_throttle(
             5.0,
             "[SCAN_ALIGN] sim_stamp=%.3f wall_stamp=%.3f scan_period_s=%.3f "
             "scan_sim_hz=%.2f scan_fixed_hz=%.2f sim_wall_ratio=%.3f "
-            "pair_wait_s=%.3f sim_bracket_s=%.3f scan_origin=(%.3f,%.3f,%.3f) self=%d isolated=%d",
+            "pair_wait_s=%.3f sim_bracket_s=%.3f scan_origin=(%.3f,%.3f,%.3f) "
+            "rays=%d valid_returns=%d no_returns=%d",
             sim_stamp, msg.header.stamp.to_sec(), period, sim_hz, fixed_hz, sim_wall_ratio,
             published_at - arrived,
-            bracket_s, *position, self_filtered, isolated_filtered,
+            bracket_s, *position, len(msg.ranges), valid_returns, no_returns,
         )
 
 
