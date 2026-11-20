@@ -111,6 +111,7 @@ private:
                   SafetyFailure* failure = nullptr) const;
   double obstacleClearance(double x, double y) const;
   double pathCurvatureAhead(const geometry_msgs::PoseStamped& pose) const;
+  bool hasStraightPathAhead(double start_arc, double distance) const;
   TrackingPrediction evaluateTrackingPrediction(
       const geometry_msgs::PoseStamped& pose, const Control& control,
       int steps, double step_period) const;
@@ -168,6 +169,7 @@ private:
   int planner_horizon_steps_{6};
   int planner_brake_stages_{3};
   double max_linear_velocity_{0.40};
+  double straight_cruise_speed_{0.0};
   double max_angular_velocity_{1.5};
   double max_linear_acceleration_{0.25};
   double max_linear_deceleration_{0.65};

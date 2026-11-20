@@ -45,6 +45,7 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
   nh.param("planner_horizon_steps", planner_horizon_steps_, planner_horizon_steps_);
   nh.param("planner_brake_stages", planner_brake_stages_, planner_brake_stages_);
   nh.param("max_linear_velocity", max_linear_velocity_, max_linear_velocity_);
+  nh.param("straight_cruise_speed", straight_cruise_speed_, straight_cruise_speed_);
   nh.param("max_angular_velocity", max_angular_velocity_, config_.max_angular_velocity());
   nh.param("max_linear_acceleration", max_linear_acceleration_, max_linear_acceleration_);
   nh.param("max_linear_deceleration", max_linear_deceleration_, max_linear_deceleration_);
@@ -101,6 +102,8 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
   terminal_approach_distance_ = std::max(goal_tolerance_, terminal_approach_distance_);
   terminal_max_linear_velocity_ = clamp(terminal_max_linear_velocity_, 0.01,
                                         max_linear_velocity_);
+  straight_cruise_speed_ = std::isfinite(straight_cruise_speed_)
+      ? clamp(straight_cruise_speed_, 0.0, max_linear_velocity_) : 0.0;
   terminal_heading_threshold_ = clamp(terminal_heading_threshold_, 0.01, M_PI);
   risk_ewma_alpha_ = clamp(risk_ewma_alpha_, 0.0, 1.0);
   turn_risk_ewma_alpha_ = clamp(turn_risk_ewma_alpha_, 0.0, 1.0);
@@ -139,6 +142,8 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
            "substep_s=%.3f motion_stages=%d brake_stages=%d",
            planner_period_, long_substeps, planner_period_ / long_substeps,
            planner_horizon_steps_, planner_brake_stages_);
+  ROS_INFO("[NMPC_CRUISE] configured_target_mps=%.3f max_linear_mps=%.3f",
+           straight_cruise_speed_, max_linear_velocity_);
 }
 
 bool DoubleNMPCController::setPlan(const std::vector<geometry_msgs::PoseStamped>& plan) {
@@ -251,16 +256,60 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   double planner_elapsed_ms = 0.0;
   if (!terminal_approach && !clearance_jump_rejected && (last_planner_update_.isZero() ||
       (now - last_planner_update_).toSec() >= planner_update_period_)) {
-    planner_reference_ = poseAtPathArcLength(path_progress_ + planner_lookahead);
     planner_margin_snapshot_ = tracking_margin_;
     const ros::WallTime planner_started = ros::WallTime::now();
+    const double motion_time = planner_period_ * planner_horizon_steps_;
+    const double cruise_lookahead = std::max(planner_lookahead, straight_cruise_speed_ * motion_time);
+    const double brake_reserve = straight_cruise_speed_ * std::max(command_period_, planner_update_period_) +
+        straight_cruise_speed_ * straight_cruise_speed_ / (2.0 * std::max(0.01, max_linear_deceleration_));
+    const double straight_required = cruise_lookahead + brake_reserve;
+    const char* cruise_status = "disabled";
+    bool try_cruise = false;
+    if (straight_cruise_speed_ > 0.0) {
+      const double path_heading = tf2::getYaw(path_projection.pose.pose.orientation);
+      const double heading_error = normalizeAngle(path_heading - tf2::getYaw(robot_pose.pose.orientation));
+      if (curve_speed_limit < straight_cruise_speed_) {
+        cruise_status = "curvature_cap";
+      } else if (path_projection.lateral_error > 0.06 || std::fabs(heading_error) > 0.12) {
+        cruise_status = "tracking_error";
+      } else if (global_plan_length_ - path_progress_ < straight_required + terminal_approach_distance_) {
+        cruise_status = "near_goal";
+      } else if (!hasStraightPathAhead(path_progress_, straight_required)) {
+        cruise_status = "bend_ahead";
+      } else {
+        try_cruise = true;
+      }
+    }
+
     bool found_safe_control = false;
-    const Control first_control = chooseControl(robot_pose, current, planner_reference_,
-                                                planner_horizon_steps_, planner_period_,
-                                                curve_speed_limit, planner_margin_snapshot_, true,
-                                                &found_safe_control);
-    cached_long_plan_ = buildLongPlan(robot_pose, first_control,
-                                      planner_margin_snapshot_, now);
+    double used_lookahead = planner_lookahead;
+    const auto plan_at = [&](double lookahead, double speed_cap) {
+      used_lookahead = lookahead;
+      planner_reference_ = poseAtPathArcLength(path_progress_ + lookahead);
+      const Control control = chooseControl(robot_pose, current, planner_reference_,
+                                            planner_horizon_steps_, planner_period_,
+                                            speed_cap, planner_margin_snapshot_, true,
+                                            &found_safe_control);
+      return buildLongPlan(robot_pose, control, planner_margin_snapshot_, now);
+    };
+    if (try_cruise) {
+      cached_long_plan_ = plan_at(cruise_lookahead, straight_cruise_speed_);
+      if (cached_long_plan_.full_valid && cached_long_plan_.stages.front().control.v > 1e-4) {
+        cruise_status = "active";
+      } else {
+        cruise_status = "cruise_rejected";
+        ROS_INFO_THROTTLE(0.5,
+            "[NMPC_CRUISE] result=fallback target_mps=%.3f required_straight_m=%.3f "
+            "selected_safe=%d motion_valid=%d brake_valid=%d prediction_s=%.3f",
+            straight_cruise_speed_, straight_required, found_safe_control,
+            cached_long_plan_.motion_valid, cached_long_plan_.brake_valid,
+            cached_long_plan_.failure.prediction_s);
+        try_cruise = false;
+      }
+    }
+    if (!try_cruise) {
+      cached_long_plan_ = plan_at(planner_lookahead, curve_speed_limit);
+    }
     cached_long_plan_.id = next_long_plan_id_++;
     if (cached_long_plan_.full_valid) {
       planner_command_ = cached_long_plan_.stages.front().control;
@@ -268,7 +317,8 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
       const auto& brake_end = cached_long_plan_.stages.back().predicted_pose;
       ROS_INFO("DoubleNMPC long plan: id=%llu full=1 move=6 brake=%d min_clearance=%.3f "
                "u_move=(%.3f,%.3f) u_brake=[(%.3f,%.3f),(%.3f,%.3f),(%.3f,%.3f)] "
-               "motion_end=(%.3f,%.3f,%.3frad) brake_end=(%.3f,%.3f,%.3frad)",
+               "motion_end=(%.3f,%.3f,%.3frad) brake_end=(%.3f,%.3f,%.3frad) "
+               "cruise=%s lookahead_m=%.3f",
                static_cast<unsigned long long>(cached_long_plan_.id), planner_brake_stages_,
                cached_long_plan_.minimum_clearance, planner_command_.v, planner_command_.w,
                cached_long_plan_.stages[planner_horizon_steps_].control.v,
@@ -277,15 +327,17 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
                cached_long_plan_.stages[planner_horizon_steps_ + 1].control.w,
                cached_long_plan_.stages[planner_horizon_steps_ + 2].control.v,
                cached_long_plan_.stages[planner_horizon_steps_ + 2].control.w,
-               motion_end.x, motion_end.y, motion_end.yaw, brake_end.x, brake_end.y, brake_end.yaw);
+               motion_end.x, motion_end.y, motion_end.yaw, brake_end.x, brake_end.y, brake_end.yaw,
+               cruise_status, used_lookahead);
     } else {
       planner_command_ = Control{};
       ROS_WARN("DoubleNMPC long plan: id=%llu full=0 motion=%d brake=%d first_invalid_stage=%d "
-               "min_clearance=%.3f selected_safe=%d prediction_s=%.3f; holding zero long-layer command",
+               "min_clearance=%.3f selected_safe=%d prediction_s=%.3f "
+               "cruise=%s lookahead_m=%.3f; holding zero long-layer command",
                static_cast<unsigned long long>(cached_long_plan_.id),
                cached_long_plan_.motion_valid, cached_long_plan_.brake_valid,
                cached_long_plan_.first_invalid_stage, cached_long_plan_.minimum_clearance,
-               found_safe_control, cached_long_plan_.failure.prediction_s);
+               found_safe_control, cached_long_plan_.failure.prediction_s, cruise_status, used_lookahead);
       const auto& hit = cached_long_plan_.failure;
       ROS_WARN_THROTTLE(0.5,
           "[NMPC_LONG_REJECT] t=%.6f frame=%s id=%llu phase=%s stage=%d prediction_s=%.3f "
@@ -540,6 +592,35 @@ geometry_msgs::PoseStamped DoubleNMPCController::poseAtPathArcLength(double arc_
     accumulated += length;
   }
   return result;
+}
+
+bool DoubleNMPCController::hasStraightPathAhead(double start_arc, double distance) const {
+  const auto start = poseAtPathArcLength(start_arc);
+  const double heading = tf2::getYaw(start.pose.orientation);
+  const double end_arc = start_arc + distance;
+  const double normal_x = -std::sin(heading);
+  const double normal_y = std::cos(heading);
+  double accumulated = 0.0;
+  for (std::size_t i = 0; i + 1 < global_plan_.size(); ++i) {
+    const auto& a = global_plan_[i].pose.position;
+    const auto& b = global_plan_[i + 1].pose.position;
+    const double dx = b.x - a.x, dy = b.y - a.y;
+    const double length = std::hypot(dx, dy);
+    if (length < 1e-6) continue;
+    const double next = accumulated + length;
+    if (next > start_arc) {
+      const double ratio = std::min(1.0, (end_arc - accumulated) / length);
+      const double lateral = (a.x + ratio * dx - start.pose.position.x) * normal_x +
+                             (a.y + ratio * dy - start.pose.position.y) * normal_y;
+      if (std::fabs(normalizeAngle(std::atan2(dy, dx) - heading)) > 0.12 ||
+          std::fabs(lateral) > 0.04) {
+        return false;
+      }
+      if (next >= end_arc) return true;
+    }
+    accumulated = next;
+  }
+  return false;
 }
 
 double DoubleNMPCController::pathCurvatureAhead(
