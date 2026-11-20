@@ -44,6 +44,17 @@ private:
     geometry_msgs::PoseStamped pose;
     double arc_length{0.0};
     double lateral_error{0.0};
+    bool has_tangent{false};
+  };
+
+  struct ControlSearchStats {
+    double steering_error_rad{0.0};
+    double speed_heading_error_rad{0.0};
+    double sampled_speed_max{0.0};
+    double motion_safe_speed_max{0.0};
+    double selected_speed{0.0};
+    int motion_safe_count{0};
+    bool selected{false};
   };
 
   struct PathSpeed {
@@ -104,7 +115,8 @@ private:
   Control chooseControl(const geometry_msgs::PoseStamped& pose, const Control& current,
                         const geometry_msgs::PoseStamped& reference, int horizon_steps,
                         double step_period, double speed_cap, double margin,
-                        bool planner_layer, bool* found_safe_control = nullptr) const;
+                        bool planner_layer, const PathProjection* speed_projection = nullptr,
+                        ControlSearchStats* stats = nullptr) const;
   LongPlan buildLongPlan(const geometry_msgs::PoseStamped& pose,
                          const Control& first_control, double margin,
                          const ros::Time& created_at) const;

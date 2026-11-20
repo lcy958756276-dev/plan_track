@@ -263,7 +263,7 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
       (now - last_planner_update_).toSec() >= planner_update_period_)) {
     planner_margin_snapshot_ = tracking_margin_;
     const ros::WallTime planner_started = ros::WallTime::now();
-    bool found_safe_control = false;
+    ControlSearchStats search;
     double used_lookahead = planner_lookahead;
     const auto plan_at = [&](double lookahead) {
       used_lookahead = lookahead;
@@ -271,7 +271,7 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
       const Control control = chooseControl(robot_pose, current, planner_reference_,
                                             planner_horizon_steps_, planner_period_,
                                             path_speed_cap, planner_margin_snapshot_, true,
-                                            &found_safe_control);
+                                            &path_projection, &search);
       return buildLongPlan(robot_pose, control, planner_margin_snapshot_, now);
     };
     const char* profile_mode = use_speed_profile ? "profile" : "disabled";
@@ -294,13 +294,24 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
       profile_mode = "fallback";
       ROS_INFO_THROTTLE(0.5,
           "[NMPC_SPEED_PROFILE] result=fallback path_s=%.3f cap_mps=%.3f rejected_lookahead_m=%.3f "
-          "selected_safe=%d motion_valid=%d brake_valid=%d prediction_s=%.3f",
-          path_progress_, path_speed_cap, reference_distance, found_safe_control,
+          "selected_safe=%d motion_valid=%d brake_valid=%d prediction_s=%.3f "
+          "sample_max_mps=%.3f motion_safe_count=%d motion_safe_max_mps=%.3f selected_mps=%.3f",
+          path_progress_, path_speed_cap, reference_distance, search.selected,
           cached_long_plan_.motion_valid, cached_long_plan_.brake_valid,
-          cached_long_plan_.failure.prediction_s);
+          cached_long_plan_.failure.prediction_s, search.sampled_speed_max,
+          search.motion_safe_count, search.motion_safe_speed_max, search.selected_speed);
       cached_long_plan_ = plan_at(planner_lookahead);
     }
     cached_long_plan_.id = next_long_plan_id_++;
+    ROS_INFO("[NMPC_LONG_SPEED] id=%llu path_s=%.3f speed_mode=%s heading_source=%s "
+             "steering_error_rad=%.3f speed_heading_error_rad=%.3f applied_cap_mps=%.3f "
+             "sample_max_mps=%.3f motion_safe_count=%d motion_safe_max_mps=%.3f "
+             "selected_mps=%.3f full_valid=%d",
+             static_cast<unsigned long long>(cached_long_plan_.id), path_progress_, profile_mode,
+             path_projection.has_tangent ? "path_tangent" : "lookahead",
+             search.steering_error_rad, search.speed_heading_error_rad, path_speed_cap,
+             search.sampled_speed_max, search.motion_safe_count, search.motion_safe_speed_max,
+             search.selected_speed, cached_long_plan_.full_valid);
     if (cached_long_plan_.full_valid) {
       planner_command_ = cached_long_plan_.stages.front().control;
       const auto& motion_end = cached_long_plan_.stages[planner_horizon_steps_ - 1].predicted_pose;
@@ -331,7 +342,7 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
                static_cast<unsigned long long>(cached_long_plan_.id),
                cached_long_plan_.motion_valid, cached_long_plan_.brake_valid,
                cached_long_plan_.first_invalid_stage, cached_long_plan_.minimum_clearance,
-               found_safe_control, cached_long_plan_.failure.prediction_s,
+               search.selected, cached_long_plan_.failure.prediction_s,
                profile_mode, used_lookahead, path_speed_cap);
       const auto& hit = cached_long_plan_.failure;
       ROS_WARN_THROTTLE(0.5,
@@ -341,7 +352,7 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
           now.toSec(), robot_pose.header.frame_id.c_str(),
           static_cast<unsigned long long>(cached_long_plan_.id),
           cached_long_plan_.motion_valid ? "brake" : "motion", cached_long_plan_.first_invalid_stage,
-          hit.prediction_s, found_safe_control, hit.reason, hit.x, hit.y, hit.yaw, hit.control.v, hit.control.w,
+          hit.prediction_s, search.selected, hit.reason, hit.x, hit.y, hit.yaw, hit.control.v, hit.control.w,
           cached_long_plan_.margin, hit.sample_x, hit.sample_y, hit.mx, hit.my,
           hit.cell_x, hit.cell_y, hit.cost);
     }
@@ -574,6 +585,7 @@ DoubleNMPCController::PathProjection DoubleNMPCController::projectOntoPath(
             0.0, 0.0, std::sin(yaw / 2.0), std::cos(yaw / 2.0)));
         result.arc_length = accumulated + ratio * length;
         result.lateral_error = error;
+        result.has_tangent = true;
       }
     }
     accumulated = segment_end;
@@ -710,7 +722,8 @@ double DoubleNMPCController::pathCurvatureAhead(
 DoubleNMPCController::Control DoubleNMPCController::chooseControl(
     const geometry_msgs::PoseStamped& pose, const Control& current,
     const geometry_msgs::PoseStamped& reference, int horizon_steps, double step_period,
-    double speed_cap, double margin, bool planner_layer, bool* found_safe_control) const {
+    double speed_cap, double margin, bool planner_layer, const PathProjection* speed_projection,
+    ControlSearchStats* stats) const {
   const double x = pose.pose.position.x;
   const double y = pose.pose.position.y;
   const double yaw = tf2::getYaw(pose.pose.orientation);
@@ -719,8 +732,17 @@ DoubleNMPCController::Control DoubleNMPCController::chooseControl(
   const double heading_error = normalizeAngle(desired_heading - yaw);
   const double nominal_w = clamp(heading_error / std::max(step_period, 1e-3),
                                  -max_angular_velocity_, max_angular_velocity_);
-  const double heading_speed_scale = clamp(1.0 - std::fabs(heading_error) / 1.2, 0.15, 1.0);
+  // A distant lookahead across a bend can have a large bearing error even
+  // when the robot is aligned with the local path.
+  const double speed_heading_error = speed_projection && speed_projection->has_tangent
+      ? normalizeAngle(tf2::getYaw(speed_projection->pose.pose.orientation) - yaw)
+      : heading_error;
+  const double heading_speed_scale = clamp(1.0 - std::fabs(speed_heading_error) / 1.2, 0.15, 1.0);
   const double nominal_v = std::max(0.0, speed_cap) * heading_speed_scale;
+  ControlSearchStats search;
+  search.steering_error_rad = heading_error;
+  search.speed_heading_error_rad = speed_heading_error;
+  search.sampled_speed_max = nominal_v;
 
   const int speed_samples = planner_layer ? 5 : 7;
   const int turn_samples = planner_layer ? 7 : 9;
@@ -740,6 +762,10 @@ DoubleNMPCController::Control DoubleNMPCController::chooseControl(
                                        -candidate_w_limit, candidate_w_limit)};
       if (!rolloutIsSafe(x, y, yaw, candidate, horizon_steps, step_period, margin)) {
         continue;
+      }
+      if (stats) {
+        ++search.motion_safe_count;
+        search.motion_safe_speed_max = std::max(search.motion_safe_speed_max, candidate.v);
       }
       double px = x;
       double py = y;
@@ -776,7 +802,11 @@ DoubleNMPCController::Control DoubleNMPCController::chooseControl(
       }
     }
   }
-  if (found_safe_control) *found_safe_control = std::isfinite(best_cost);
+  if (stats) {
+    search.selected = std::isfinite(best_cost);
+    search.selected_speed = best.v;
+    *stats = search;
+  }
   return best;
 }
 
