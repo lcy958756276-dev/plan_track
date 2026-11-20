@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <limits>
 #include <vector>
 
 #include <costmap_2d/cost_values.h>
@@ -99,12 +100,14 @@ public:
     return result;
   }
 
-  Segment measureStraight(const Point3d& a, const Point3d& b) const {
+  Segment measureStraight(const Point3d& a, const Point3d& b,
+                          double required_min_m = -std::numeric_limits<double>::infinity()) const {
     const double yaw = std::atan2(b.y() - a.y(), b.x() - a.x());
-    return measure(a, b, yaw, yaw);
+    return measure(a, b, yaw, yaw, required_min_m);
   }
 
-  Segment measure(const Point3d& a, const Point3d& b, double yaw0, double yaw1) const {
+  Segment measure(const Point3d& a, const Point3d& b, double yaw0, double yaw1,
+                  double required_min_m = -std::numeric_limits<double>::infinity()) const {
     Segment result{target_m_};
     if (!available()) return result;
     const double dx = b.x() - a.x(), dy = b.y() - a.y();
@@ -122,6 +125,7 @@ public:
         result.min_margin_m = gap;
         result.tight_pose = pose;
       }
+      if (gap < required_min_m) break;
       result.penalty_m += ds * penalty(gap);
       if (gap + 1e-6 < target_m_) result.below_target_m += ds;
     }
