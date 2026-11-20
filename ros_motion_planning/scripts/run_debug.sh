@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # run_debug.sh
-# 启动所有节点（含 Gazebo，但 Gazebo 不发布 odom TF，由 encoder_odom.py 接管）
+# 启动所有的节点（含 Gazebo，但 Gazebo 不发布 odom TF，由 encoder_odom.py 接管）
 # 输出写入 log/ 目录
 #
 # 与 main.sh 的关系:
