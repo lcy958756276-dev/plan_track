@@ -213,11 +213,33 @@ bool AStarProvePathPlanner::plan(const Point3d& start, const Point3d& goal, Poin
     }
   }
 
+  const auto goal_distance_sq = [&](const Point3d& cell) {
+    const double dx = static_cast<int>(cell.x()) + 0.5 - m_goal_x;
+    const double dy = static_cast<int>(cell.y()) + 0.5 - m_goal_y;
+    return dx * dx + dy * dy;
+  };
+  const auto closest = std::min_element(expand->begin(), expand->end(),
+                                        [&](const Point3d& a, const Point3d& b) {
+                                          return goal_distance_sq(a) < goal_distance_sq(b);
+                                        });
+  double closest_x, closest_y;
+  const auto closest_mx = static_cast<unsigned int>(closest->x());
+  const auto closest_my = static_cast<unsigned int>(closest->y());
+  costmap_->mapToWorld(closest_mx, closest_my, closest_x, closest_y);
+  const auto* cell_costs = costmap_->getCharMap();
   R_WARN << "AStarProve: no path; expanded=" << closed_list.size()
          << ", rejected_boundary_or_cost=" << rejected_boundary_or_cost
          << ", rejected_footprint=" << rejected_footprint
          << ", start_grid=(" << m_start_x << ", " << m_start_y << ")"
-         << ", goal_grid=(" << m_goal_x << ", " << m_goal_y << ")";
+         << ", goal_grid=(" << m_goal_x << ", " << m_goal_y << ")"
+         << ", start_cost=" << static_cast<int>(cell_costs[start_node.id()])
+         << ", goal_cost=" << static_cast<int>(cell_costs[goal_node.id()])
+         << ", closest_reached_world=(" << closest_x << ", " << closest_y << ")"
+         << ", closest_reached_cost="
+         << static_cast<int>(costmap_->getCost(closest_mx, closest_my))
+         << ", closest_goal_distance_m=" << std::hypot(closest_x - goal.x(), closest_y - goal.y())
+         << ", obstacle_cost_threshold="
+         << costmap_2d::LETHAL_OBSTACLE * config_.obstacle_inflation_factor();
   return false;
 }
 // ════════════════════════════════════════════════════════════

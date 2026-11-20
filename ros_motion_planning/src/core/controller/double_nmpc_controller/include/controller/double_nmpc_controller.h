@@ -1,6 +1,7 @@
 #ifndef RMP_CONTROLLER_DOUBLE_NMPC_CONTROLLER_H_
 #define RMP_CONTROLLER_DOUBLE_NMPC_CONTROLLER_H_
 
+#include <array>
 #include <cstdint>
 #include <vector>
 #include <ros/ros.h>
@@ -89,8 +90,10 @@ private:
     double prediction_s{0.0};
     double x{0.0}, y{0.0}, yaw{0.0};
     double sample_x{0.0}, sample_y{0.0};
+    double sample_body_x{0.0}, sample_body_y{0.0};
     double cell_x{0.0}, cell_y{0.0};
     int mx{-1}, my{-1}, cost{-1};
+    std::array<int, 9> neighbor_costs{{-1, -1, -1, -1, -1, -1, -1, -1, -1}};
     Control control;
   };
 

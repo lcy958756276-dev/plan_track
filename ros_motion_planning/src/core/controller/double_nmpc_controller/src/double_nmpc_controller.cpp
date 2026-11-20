@@ -464,6 +464,7 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   }
 
   if (!output_safe) {
+    const auto& neighbors = failure.neighbor_costs;
     ROS_WARN_THROTTLE(0.5,
         "[NMPC_OUTPUT_REJECT] t=%.6f frame=%s long_id=%llu terminal=%d reason=%s prediction_s=%.3f "
         "hit_pose=(%.3f,%.3f,%.3frad) sample=(%.3f,%.3f) cell=(%d,%d) "
@@ -471,7 +472,8 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
         "odom=(%.3f,%.3f) previous=(%.3f,%.3f) desired=(%.3f,%.3f) bounded=(%.3f,%.3f) "
         "curve_cap=%.3f track_cap=%.3f center_now_raw_m=%.3f "
         "center_pred_raw_m=%.3f center_pred_filtered_m=%.3f fallback=%s "
-        "long_turn_reference_used=%d long_w_radps=%.3f",
+        "long_turn_reference_used=%d long_w_radps=%.3f sample_body_m=(%.3f,%.3f) "
+        "neighbor_costs_y_asc=[%d,%d,%d/%d,%d,%d/%d,%d,%d]",
         ros::Time::now().toSec(), robot_pose.header.frame_id.c_str(),
         static_cast<unsigned long long>(cached_long_plan_.id), terminal_approach,
         failure.reason, failure.prediction_s, failure.x, failure.y, failure.yaw,
@@ -482,7 +484,9 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
         measured_clearance, measured_predicted_clearance, predicted_clearance,
         try_reachable_fallback ? "no_safe_candidate" :
             (terminal_approach ? "terminal" : "current_pose_unsafe"),
-        use_tracking_turn_reference, planner_command_.w);
+        use_tracking_turn_reference, planner_command_.w, failure.sample_body_x, failure.sample_body_y,
+        neighbors[0], neighbors[1], neighbors[2], neighbors[3], neighbors[4], neighbors[5],
+        neighbors[6], neighbors[7], neighbors[8]);
     ROS_WARN_THROTTLE(
         0.5,
         "[DOUBLE_NMPC_DIAG] SAFETY_STOP: pose=(%.3f,%.3f,%.1fdeg) "
@@ -1010,6 +1014,10 @@ bool DoubleNMPCController::poseIsSafe(double x, double y, double yaw, double mar
       unsigned int my = 0;
       if (!costmap->worldToMap(sample_x, sample_y, mx, my)) {
         record_failure("out_of_map", sample_x, sample_y);
+        if (failure) {
+          failure->sample_body_x = local_x;
+          failure->sample_body_y = local_y;
+        }
         ROS_WARN_THROTTLE(
             0.25,
             "DoubleNMPC footprint unsafe: reason=out_of_map center=(%.3f,%.3f) "
@@ -1030,11 +1038,24 @@ bool DoubleNMPCController::poseIsSafe(double x, double y, double yaw, double mar
         const char* reason = cost == costmap_2d::NO_INFORMATION ? "unknown" : "lethal";
         record_failure(reason, sample_x, sample_y);
         if (failure) {
+          failure->sample_body_x = local_x;
+          failure->sample_body_y = local_y;
           failure->mx = static_cast<int>(mx);
           failure->my = static_cast<int>(my);
           failure->cell_x = cell_x;
           failure->cell_y = cell_y;
           failure->cost = cost;
+          for (int dy = -1; dy <= 1; ++dy) {
+            for (int dx = -1; dx <= 1; ++dx) {
+              const int ix = failure->mx + dx;
+              const int iy = failure->my + dy;
+              if (ix >= 0 && iy >= 0 && ix < static_cast<int>(costmap->getSizeInCellsX()) &&
+                  iy < static_cast<int>(costmap->getSizeInCellsY())) {
+                failure->neighbor_costs[(dy + 1) * 3 + dx + 1] =
+                    dx == 0 && dy == 0 ? cost : costmap->getCost(ix, iy);
+              }
+            }
+          }
         }
         ROS_WARN_THROTTLE(
             0.25,
