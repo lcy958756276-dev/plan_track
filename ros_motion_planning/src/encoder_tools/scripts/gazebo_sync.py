@@ -58,6 +58,7 @@ class GazeboSync:
         self.scan_poses = deque(maxlen=128)
         self.pending_scans = deque(maxlen=4)
         self.previous_scan_arrival = None
+        self.scan_publish_times = deque(maxlen=12)
 
         # ── 订阅 /odom ──
         rospy.Subscriber("/odom", Odometry, self.odom_cb, queue_size=10)
@@ -263,13 +264,28 @@ class GazeboSync:
         # Gazebo ray scans are snapshots and this TF describes that snapshot.
         msg.time_increment = 0.0
         self.scan_pub.publish(msg)
+        published_at = monotonic()
         period = 0.0 if self.previous_scan_arrival is None else arrived - self.previous_scan_arrival
         self.previous_scan_arrival = arrived
+
+        # Measure the same delivered scans in Gazebo time and wall time.
+        if self.scan_publish_times and sim_stamp <= self.scan_publish_times[-1][0]:
+            self.scan_publish_times.clear()
+        self.scan_publish_times.append((sim_stamp, published_at))
+        first_sim, first_publish = self.scan_publish_times[0]
+        sim_span = sim_stamp - first_sim
+        publish_span = published_at - first_publish
+        intervals = len(self.scan_publish_times) - 1
+        sim_hz = intervals / sim_span if sim_span > 0.0 else 0.0
+        fixed_hz = intervals / publish_span if publish_span > 0.0 else 0.0
+        sim_wall_ratio = sim_span / publish_span if publish_span > 0.0 else 0.0
         rospy.loginfo_throttle(
             5.0,
             "[SCAN_ALIGN] sim_stamp=%.3f wall_stamp=%.3f scan_period_s=%.3f "
+            "scan_sim_hz=%.2f scan_fixed_hz=%.2f sim_wall_ratio=%.3f "
             "pair_wait_s=%.3f sim_bracket_s=%.3f scan_origin=(%.3f,%.3f,%.3f) self=%d isolated=%d",
-            sim_stamp, msg.header.stamp.to_sec(), period, monotonic() - arrived,
+            sim_stamp, msg.header.stamp.to_sec(), period, sim_hz, fixed_hz, sim_wall_ratio,
+            published_at - arrived,
             bracket_s, *position, self_filtered, isolated_filtered,
         )
 
