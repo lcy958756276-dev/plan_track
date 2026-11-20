@@ -375,6 +375,9 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   const double tracking_speed_cap = std::min(path_speed_cap, planner_command_.v);
   const bool planner_requests_in_place_turn =
       planner_command_.v <= 1e-4 && std::fabs(planner_command_.w) > 1e-3;
+  const bool search_tracking_command = !terminal_approach && !planner_requests_in_place_turn;
+  const double search_margin = tracking_margin_;
+  ControlSearchStats short_search;
   // If the long layer has selected a safe in-place turn, preserve that decision.
   // Letting the short layer re-optimize with a zero linear-speed cap produced tiny,
   // alternating angular commands that the wheel deadband turned into endpoint jitter.
@@ -399,9 +402,10 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
         ? Control{0.0, planner_command_.w}
         : chooseControl(robot_pose, current, tracker_reference,
                         tracking_horizon_steps_, control_period_,
-                        tracking_speed_cap, tracking_margin_, false);
+                        tracking_speed_cap, search_margin, false, nullptr, &short_search);
   }
   Control bounded = rateLimit(command);
+  const Control rate_limited = bounded;
   const Control correction{bounded.v - planner_command_.v,
                            bounded.w - planner_command_.w};
   TrackingPrediction prediction = evaluateTrackingPrediction(
@@ -443,6 +447,20 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   std_msgs::Float64 clearance_message;
   clearance_message.data = predicted_clearance;
   clearance_pub_.publish(clearance_message);
+
+  if (search_tracking_command) {
+    ROS_INFO_THROTTLE(
+        0.5, "[NMPC_SHORT_SPEED] long_id=%llu path_s=%.3f track_cap_mps=%.3f "
+        "heading_cap_mps=%.3f reachable_min_mps=%.3f sample_max_mps=%.3f "
+        "sample_count=%d motion_safe_count=%d motion_safe_max_mps=%.3f selected=%d "
+        "selected_mps=%.3f rate_limited_mps=%.3f checked_mps=%.3f output_safe=%d fallback=%d "
+        "search_margin_m=%.3f final_margin_m=%.3f",
+        static_cast<unsigned long long>(cached_long_plan_.id), path_progress_, tracking_speed_cap,
+        short_search.heading_limited_speed, short_search.reachable_speed_min,
+        short_search.sampled_speed_max, short_search.sampled_count, short_search.motion_safe_count,
+        short_search.motion_safe_speed_max, short_search.selected, short_search.selected_speed,
+        rate_limited.v, bounded.v, output_safe, try_reachable_fallback, search_margin, tracking_margin_);
+  }
 
   if (!output_safe) {
     ROS_WARN_THROTTLE(0.5,
@@ -746,20 +764,34 @@ DoubleNMPCController::Control DoubleNMPCController::chooseControl(
   ControlSearchStats search;
   search.steering_error_rad = heading_error;
   search.speed_heading_error_rad = speed_heading_error;
-  search.sampled_speed_max = nominal_v;
+  search.heading_limited_speed = nominal_v;
+
+  // Search commands the tracker can send this cycle. If the cap drops below
+  // the reachable range, the speed interval collapses to maximum braking.
+  const Control lower = planner_layer ? Control{0.0, -max_angular_velocity_}
+                                      : rateLimit({0.0, -max_angular_velocity_});
+  const Control upper = planner_layer ? Control{nominal_v, max_angular_velocity_}
+                                      : rateLimit({nominal_v, max_angular_velocity_});
+  search.reachable_speed_min = lower.v;
 
   const int speed_samples = planner_layer ? 5 : 7;
   const int turn_samples = planner_layer ? 7 : 9;
   double best_cost = std::numeric_limits<double>::infinity();
   Control best{0.0, 0.0};
   for (int i = 0; i < speed_samples; ++i) {
-    const double v = nominal_v * static_cast<double>(i) / (speed_samples - 1);
+    if (!planner_layer && i > 0 && upper.v == lower.v) break;
+    const bool max_speed_sample = i == speed_samples - 1 || (!planner_layer && upper.v == lower.v);
+    const double v = !planner_layer && max_speed_sample ? upper.v :
+        lower.v + (upper.v - lower.v) * static_cast<double>(i) / (speed_samples - 1);
     // There is no separate low navigation angular-speed ceiling.  The only
     // angular-velocity bound is the platform maximum; at speed, the lateral
     // acceleration model additionally keeps a candidate dynamically feasible.
     const double candidate_w_limit = std::min(
         max_angular_velocity_,
         std::max(0.0, max_lateral_acceleration_) / std::max(v, 0.05));
+    const double w_min = std::max(lower.w, -candidate_w_limit);
+    const double w_max = std::min(upper.w, candidate_w_limit);
+    if (w_min > w_max) continue;
     const double turn_radius = 0.65 * candidate_w_limit;
     const double turn_center_limit = candidate_w_limit - turn_radius;
     // Shift the long-layer grid as a whole so its samples remain distinct at
@@ -767,17 +799,19 @@ DoubleNMPCController::Control DoubleNMPCController::chooseControl(
     const double turn_center = planner_layer
         ? clamp(nominal_w, -turn_center_limit, turn_center_limit)
         : nominal_w;
-    const bool max_speed_sample = i == speed_samples - 1;
     if (stats && max_speed_sample) {
-      search.max_speed_w_min = clamp(turn_center - turn_radius,
-                                     -candidate_w_limit, candidate_w_limit);
-      search.max_speed_w_max = clamp(turn_center + turn_radius,
-                                     -candidate_w_limit, candidate_w_limit);
+      search.max_speed_w_min = planner_layer ? clamp(turn_center - turn_radius, w_min, w_max) : w_min;
+      search.max_speed_w_max = planner_layer ? clamp(turn_center + turn_radius, w_min, w_max) : w_max;
     }
+    if (stats) search.sampled_speed_max = std::max(search.sampled_speed_max, v);
     for (int j = 0; j < turn_samples; ++j) {
+      if (!planner_layer && j > 0 && w_min == w_max) break;
       const double spread = -1.0 + 2.0 * static_cast<double>(j) / (turn_samples - 1);
-      const Control candidate{v, clamp(turn_center + spread * 0.65 * candidate_w_limit,
-                                       -candidate_w_limit, candidate_w_limit)};
+      const double w = planner_layer
+          ? clamp(turn_center + spread * 0.65 * candidate_w_limit, w_min, w_max)
+          : w_min + (w_max - w_min) * (static_cast<double>(j) / (turn_samples - 1));
+      const Control candidate{v, w};
+      if (stats) ++search.sampled_count;
       if (!rolloutIsSafe(x, y, yaw, candidate, horizon_steps, step_period, margin)) {
         continue;
       }
