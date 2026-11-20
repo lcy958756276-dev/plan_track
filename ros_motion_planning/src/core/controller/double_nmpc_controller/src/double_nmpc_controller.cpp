@@ -391,35 +391,57 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
                         tracking_horizon_steps_, control_period_,
                         tracking_speed_cap, tracking_margin_, false);
   }
-  const Control bounded = rateLimit(command);
-  const double moving_angular_limit = std::min(
-      max_angular_velocity_,
-      std::max(0.0, max_lateral_acceleration_) / std::max(bounded.v, 0.05));
+  Control bounded = rateLimit(command);
   const Control correction{bounded.v - planner_command_.v,
                            bounded.w - planner_command_.w};
-  const TrackingPrediction prediction = evaluateTrackingPrediction(
+  TrackingPrediction prediction = evaluateTrackingPrediction(
       robot_pose, bounded, tracking_horizon_steps_, control_period_);
+  updateTrackingMargin(prediction, correction, clearance);
+
+  SafetyFailure failure;
+  const double robot_yaw = tf2::getYaw(robot_pose.pose.orientation);
+  bool output_safe = rolloutIsSafe(robot_pose.pose.position.x, robot_pose.pose.position.y,
+                                  robot_yaw, bounded, tracking_horizon_steps_, control_period_,
+                                  tracking_margin_, &failure);
+  const bool try_reachable_fallback = !output_safe && !terminal_approach &&
+                                     failure.prediction_s > 0.0;
+  if (try_reachable_fallback) {
+    const ros::WallTime search_begin = ros::WallTime::now();
+    Control replacement;
+    int tested = 0;
+    output_safe = findSafeReachableCommand(robot_pose, bounded, tracking_speed_cap,
+                                           replacement, tested);
+    ROS_INFO("[NMPC_SHORT_FALLBACK] t=%.6f result=%s long_id=%llu tested=%d search_ms=%.2f "
+             "prediction_s=%.3f cell_world=(%.3f,%.3f) margin_m=%.3f "
+             "previous=(%.3f,%.3f) rejected=(%.3f,%.3f) replacement=(%.3f,%.3f)",
+             ros::Time::now().toSec(), output_safe ? "applied" : "no_safe_candidate",
+             static_cast<unsigned long long>(cached_long_plan_.id), tested,
+             (ros::WallTime::now() - search_begin).toSec() * 1000.0,
+             failure.prediction_s, failure.cell_x, failure.cell_y, tracking_margin_,
+             previous_command_.v, previous_command_.w, bounded.v, bounded.w,
+             replacement.v, replacement.w);
+    if (output_safe) {
+      bounded = replacement;
+      prediction = evaluateTrackingPrediction(robot_pose, bounded, tracking_horizon_steps_, control_period_);
+    }
+  }
   const double measured_predicted_clearance = predictedMinimumClearance(
       robot_pose, bounded, tracking_horizon_steps_, control_period_);
   const double predicted_clearance = filterClearance(
       measured_predicted_clearance, predicted_clearance_filter_);
-  updateTrackingMargin(prediction, correction, clearance);
 
   std_msgs::Float64 clearance_message;
   clearance_message.data = predicted_clearance;
   clearance_pub_.publish(clearance_message);
 
-  SafetyFailure failure;
-  if (!rolloutIsSafe(robot_pose.pose.position.x, robot_pose.pose.position.y,
-                     tf2::getYaw(robot_pose.pose.orientation), bounded,
-                     tracking_horizon_steps_, control_period_, tracking_margin_, &failure)) {
+  if (!output_safe) {
     ROS_WARN_THROTTLE(0.5,
         "[NMPC_OUTPUT_REJECT] t=%.6f frame=%s long_id=%llu terminal=%d reason=%s prediction_s=%.3f "
         "hit_pose=(%.3f,%.3f,%.3frad) sample=(%.3f,%.3f) cell=(%d,%d) "
         "cell_world=(%.3f,%.3f) cost=%d margin_m=%.3f "
         "odom=(%.3f,%.3f) previous=(%.3f,%.3f) desired=(%.3f,%.3f) bounded=(%.3f,%.3f) "
         "curve_cap=%.3f track_cap=%.3f center_now_raw_m=%.3f "
-        "center_pred_raw_m=%.3f center_pred_filtered_m=%.3f",
+        "center_pred_raw_m=%.3f center_pred_filtered_m=%.3f fallback=%s",
         ros::Time::now().toSec(), robot_pose.header.frame_id.c_str(),
         static_cast<unsigned long long>(cached_long_plan_.id), terminal_approach,
         failure.reason, failure.prediction_s, failure.x, failure.y, failure.yaw,
@@ -427,7 +449,9 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
         failure.cell_x, failure.cell_y, failure.cost, tracking_margin_,
         current.v, current.w, previous_command_.v, previous_command_.w,
         command.v, command.w, bounded.v, bounded.w, curve_speed_limit, tracking_speed_cap,
-        measured_clearance, measured_predicted_clearance, predicted_clearance);
+        measured_clearance, measured_predicted_clearance, predicted_clearance,
+        try_reachable_fallback ? "no_safe_candidate" :
+            (terminal_approach ? "terminal" : "current_pose_unsafe"));
     ROS_WARN_THROTTLE(
         0.5,
         "[DOUBLE_NMPC_DIAG] SAFETY_STOP: pose=(%.3f,%.3f,%.1fdeg) "
@@ -447,6 +471,9 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   cmd_vel.linear.x = bounded.v;
   cmd_vel.angular.z = bounded.w;
   previous_command_ = bounded;
+  const double moving_angular_limit = std::min(
+      max_angular_velocity_,
+      std::max(0.0, max_lateral_acceleration_) / std::max(bounded.v, 0.05));
   ROS_INFO_THROTTLE(0.5,
                     "DoubleNMPC: terminal=%d goal_dist=%.3f path_s=%.3f/%.3f cte=%.3f lookahead=(%.2f,%.2f) "
                     "curvature=%.3f  curve_cap=%.3f  plan_margin=%.3f  plan=(%.3f, %.3f) "
@@ -1143,6 +1170,45 @@ void DoubleNMPCController::updateTrackingMargin(const TrackingPrediction& predic
   std_msgs::Float64 margin_message;
   margin_message.data = tracking_margin_;
   margin_pub_.publish(margin_message);
+}
+
+bool DoubleNMPCController::findSafeReachableCommand(
+    const geometry_msgs::PoseStamped& pose, const Control& rejected,
+    double speed_cap, Control& replacement, int& tested) const {
+  const Control lower = rateLimit({0.0, -max_angular_velocity_});
+  // Avoid accelerating during recovery. If the cap is already below the
+  // reachable range, rateLimit returns the maximum allowed braking command.
+  const Control upper = rateLimit({
+      std::min({speed_cap, rejected.v, previous_command_.v}), max_angular_velocity_});
+  const double v_width = std::max(upper.v - lower.v, 1e-6);
+  const double w_width = std::max(upper.w - lower.w, 1e-6);
+  constexpr int speed_samples = 7;
+  constexpr int turn_samples = 9;
+  double best_cost = std::numeric_limits<double>::infinity();
+  for (int i = 0; i < speed_samples; ++i) {
+    if (i > 0 && upper.v == lower.v) break;
+    const double v = lower.v + (upper.v - lower.v) * i / (speed_samples - 1);
+    const double turn_limit = std::max(0.0, max_lateral_acceleration_) / std::max(v, 0.05);
+    const double w_min = std::max(lower.w, -turn_limit);
+    const double w_max = std::min(upper.w, turn_limit);
+    if (w_min > w_max) continue;
+    for (int j = 0; j < turn_samples; ++j) {
+      if (j > 0 && w_min == w_max) break;
+      const double w = w_min + (w_max - w_min) * j / (turn_samples - 1);
+      const double dv = (rejected.v - v) / v_width;
+      const double dw = (rejected.w - w) / w_width;
+      const double cost = dv * dv + dw * dw;
+      if (cost >= best_cost) continue;
+      const Control candidate{v, w};
+      ++tested;
+      if (rolloutIsSafe(pose.pose.position.x, pose.pose.position.y, tf2::getYaw(pose.pose.orientation),
+                        candidate, tracking_horizon_steps_, control_period_, tracking_margin_)) {
+        replacement = candidate;
+        best_cost = cost;
+      }
+    }
+  }
+  return std::isfinite(best_cost);
 }
 
 DoubleNMPCController::Control DoubleNMPCController::rateLimit(const Control& desired) const {

@@ -123,6 +123,8 @@ private:
   void updateTrackingMargin(const TrackingPrediction& prediction,
                             const Control& correction, double clearance);
   Control rateLimit(const Control& desired) const;
+  bool findSafeReachableCommand(const geometry_msgs::PoseStamped& pose, const Control& rejected,
+                                double speed_cap, Control& replacement, int& tested) const;
   static double normalizeAngle(double angle);
   static double clamp(double value, double low, double high);
 
