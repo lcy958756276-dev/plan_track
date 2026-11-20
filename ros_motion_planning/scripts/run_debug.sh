@@ -372,7 +372,6 @@ if [ "${NMPC_DIAG_BAG:-1}" = "1" ]; then
     rosbag record --duration="$DIAG_DURATION" --buffsize=64 -O "$DIAG_BAG" \
         /scan /scan_fixed /gazebo_scan_pose /tf /tf_static /odom /cmd_vel \
         /move_base/local_costmap/costmap /move_base/local_costmap/costmap_updates \
-        /move_base/global_costmap/costmap /move_base/global_costmap/costmap_updates \
         /move_base/PathPlanner/plan /move_base/status /rosout_agg \
         __name:=nmpc_stop_diagnostics >> "$LOG_DIR/nmpc_diag_record.log" 2>&1 &
     PID_NMPC_DIAG=$!

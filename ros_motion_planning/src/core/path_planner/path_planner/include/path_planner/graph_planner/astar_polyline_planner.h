@@ -9,8 +9,6 @@
 #ifndef RMP_PATH_PLANNER_GRAPH_PLANNER_ASTAR_POLYLINE_H
 #define RMP_PATH_PLANNER_GRAPH_PLANNER_ASTAR_POLYLINE_H
 
-#include <cstddef>
-
 #include "path_planner/graph_planner/astar_prove_planner.h"
 #include "path_planner/path_planner.h"
 
@@ -36,7 +34,7 @@ private:
   bool _worldPointFree(double wx, double wy) const;
   common::geometry::Points3d _polylineShortcut(
       const common::geometry::Points3d& path, const PathClearance& clearance,
-      const FootprintClearance& footprint, std::size_t& footprint_safe_shortcuts) const;
+      const FootprintClearance& footprint) const;
   double _pathLength(const common::geometry::Points3d& path) const;
   void _assignSegmentHeadings(common::geometry::Points3d* path) const;
 

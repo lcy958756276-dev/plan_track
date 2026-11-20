@@ -140,24 +140,6 @@ double maxTurnDegrees(const Points3d& path) {
   }
   return maximum * 180.0 / std::acos(-1.0);
 }
-
-double longestStraightRun(const Points3d& path) {
-  double longest = 0.0, run = 0.0, heading = 0.0;
-  for (size_t i = 1; i < path.size(); ++i) {
-    const double dx = path[i].x() - path[i - 1].x();
-    const double dy = path[i].y() - path[i - 1].y();
-    const double length = std::hypot(dx, dy);
-    if (length < 1e-6) continue;
-    const double yaw = std::atan2(dy, dx);
-    if (run == 0.0 || std::abs(std::remainder(yaw - heading, 2.0 * std::acos(-1.0))) > 1e-4) {
-      run = 0.0;
-      heading = yaw;
-    }
-    run += length;
-    longest = std::max(longest, run);
-  }
-  return longest;
-}
 }  // namespace
 
 AStarPolylinePathPlanner::AStarPolylinePathPlanner(
@@ -212,8 +194,7 @@ bool AStarPolylinePathPlanner::plan(const Point3d& start, const Point3d& goal,
       }
     }
   }
-  size_t footprint_safe_shortcuts = 0;
-  Points3d polyline = _polylineShortcut(shortcut_input, clearance, footprint, footprint_safe_shortcuts);
+  Points3d polyline = _polylineShortcut(shortcut_input, clearance, footprint);
   _assignSegmentHeadings(&polyline);
 
   const double polyline_length = _pathLength(polyline);
@@ -316,16 +297,14 @@ bool AStarPolylinePathPlanner::plan(const Point3d& start, const Point3d& goal,
            "base_min_m=%.3f output_min_m=%.3f base_below_target_m=%.3f output_below_target_m=%.3f "
            "output_nonfree_m=%.3f base_length_m=%.3f output_length_m=%.3f vertices=%zu poses=%zu "
            "corner_trim_m=%.3f rounded=%zu/%zu polyline_max_turn_deg=%.1f rounded_max_turn_deg=%.1f "
-           "curved_length_m=%.3f max_unrounded_turn_deg=%.1f "
-           "longest_straight_m=%.3f footprint_safe_shortcuts=%zu",
+           "curved_length_m=%.3f max_unrounded_turn_deg=%.1f",
            stamp, start.x(), start.y(), goal.x(), goal.y(),
            clearance_target_m_, clearance_weight_, costmap_->getResolution(), expand->size(), elapsed_ms,
            base.min_m, output.min_m, base.below_target_m, output.below_target_m,
            output.nonfree_m, _pathLength(base_path), _pathLength(dense_path), polyline.size(), dense_path.size(),
            smooth_corners ? corner_trim_m_ : 0.0, rounded.rounded_corners, rounded.attempted_corners,
            maxTurnDegrees(polyline), maxTurnDegrees(reference), rounded.curved_length_m,
-           rounded.max_unrounded_turn_rad * 180.0 / std::acos(-1.0),
-           longestStraightRun(dense_path), footprint_safe_shortcuts);
+           rounded.max_unrounded_turn_rad * 180.0 / std::acos(-1.0));
   dense_path.back() = last_pose;
   path->swap(dense_path);
   return true;
@@ -333,8 +312,7 @@ bool AStarPolylinePathPlanner::plan(const Point3d& start, const Point3d& goal,
 
 Points3d AStarPolylinePathPlanner::_polylineShortcut(const Points3d& path,
                                                      const PathClearance& clearance,
-                                                     const FootprintClearance& footprint,
-                                                     size_t& footprint_safe_shortcuts) const {
+                                                     const FootprintClearance& footprint) const {
   if (path.size() < 3) {
     return path;
   }
@@ -342,10 +320,6 @@ Points3d AStarPolylinePathPlanner::_polylineShortcut(const Points3d& path,
   Points3d result;
   size_t i = 0;
   result.push_back(path.front());
-  bool previous_shortcut_relaxed = false;
-  const auto heading = [](const Point3d& a, const Point3d& b) {
-    return std::atan2(b.y() - a.y(), b.x() - a.x());
-  };
 
   std::vector<double> prefix_cost(path.size(), 0.0);
   std::vector<double> segment_min(path.size());
@@ -354,7 +328,6 @@ Points3d AStarPolylinePathPlanner::_polylineShortcut(const Points3d& path,
   std::vector<double> footprint_segment_min(path.size());
   std::vector<double> footprint_span_min(path.size());
   const double cell_m = costmap_->getResolution();
-  const double footprint_target = footprint.targetMargin() - 1e-6;
   if (clearance.enabled()) {
     for (size_t j = 1; j < path.size(); ++j) {
       const auto segment = clearance.measure(path[j - 1], path[j]);
@@ -372,7 +345,6 @@ Points3d AStarPolylinePathPlanner::_polylineShortcut(const Points3d& path,
 
   while (i < path.size() - 1) {
     size_t best = i + 1;
-    bool best_relaxed = false;
     if (clearance.enabled()) {
       span_min[i + 1] = segment_min[i + 1];
       for (size_t j = i + 2; j < path.size(); ++j) {
@@ -387,53 +359,31 @@ Points3d AStarPolylinePathPlanner::_polylineShortcut(const Points3d& path,
     }
 
     for (size_t j = path.size() - 1; j > i + 1; --j) {
-      bool center_preference_met = true;
       if (clearance.enabled()) {
         // Allow sub-cell clearance differences and quadrature noise to favor
         // a straight shortcut. Never lower an already narrow bottleneck.
         const double minimum = std::min(span_min[j],
             std::max(0.5 * cell_m, span_min[j] - 0.25 * cell_m));
-        const auto candidate = clearance.measure(path[i], path[j], footprint.enabled() ? 0.0 : minimum);
-        if (!candidate.free_interior) continue;
-        center_preference_met = candidate.min_m >= minimum &&
-            candidate.cost_m <= prefix_cost[j] - prefix_cost[i] + 0.5 * cell_m;
+        const auto candidate = clearance.measure(path[i], path[j], minimum);
+        if (!candidate.free_interior || candidate.min_m < minimum ||
+            candidate.cost_m > prefix_cost[j] - prefix_cost[i] + 0.5 * cell_m) {
+          continue;
+        }
       } else if (!_lineFreeOfInflation(path[i], path[j])) {
         continue;
       }
       if (footprint.enabled()) {
-        const double yaw = heading(path[i], path[j]);
-        if ((previous_shortcut_relaxed || !center_preference_met) && result.size() > 1 &&
-            footprint.measure(path[i], path[i], heading(result[result.size() - 2], path[i]),
-                              yaw, footprint_target).min_margin_m < footprint_target) {
+        const auto candidate = footprint.measureStraight(path[i], path[j]);
+        if (candidate.min_margin_m + 1e-6 < footprint_span_min[j] ||
+            candidate.penalty_m > footprint_prefix[j] - footprint_prefix[i] + 0.5 * cell_m) {
           continue;
         }
-        if (!center_preference_met) {
-          // The center preference can be relaxed when the complete rectangle
-          // has the requested margin on the straight and through both joins.
-          if (footprint.measureStraight(path[i], path[j], footprint_target).min_margin_m < footprint_target ||
-              (j + 1 < path.size() &&
-               footprint.measure(path[j], path[j], yaw, heading(path[j], path[j + 1]), footprint_target)
-                       .min_margin_m < footprint_target)) {
-            continue;
-          }
-          best_relaxed = true;
-        } else {
-          const auto candidate = footprint.measureStraight(path[i], path[j]);
-          if (candidate.min_margin_m + 1e-6 < footprint_span_min[j] ||
-              candidate.penalty_m > footprint_prefix[j] - footprint_prefix[i] + 0.5 * cell_m) {
-            continue;
-          }
-        }
-      } else if (!center_preference_met) {
-        continue;
       }
       best = j;
       break;
     }
 
     result.push_back(path[best]);
-    if (best_relaxed) ++footprint_safe_shortcuts;
-    previous_shortcut_relaxed = best_relaxed;
     i = best;
   }
 
