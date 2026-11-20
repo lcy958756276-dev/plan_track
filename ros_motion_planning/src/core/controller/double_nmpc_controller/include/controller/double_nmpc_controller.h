@@ -51,9 +51,12 @@ private:
     double steering_error_rad{0.0};
     double speed_heading_error_rad{0.0};
     double sampled_speed_max{0.0};
+    double max_speed_w_min{0.0};
+    double max_speed_w_max{0.0};
     double motion_safe_speed_max{0.0};
     double selected_speed{0.0};
     int motion_safe_count{0};
+    int max_speed_motion_safe_count{0};
     bool selected{false};
   };
 

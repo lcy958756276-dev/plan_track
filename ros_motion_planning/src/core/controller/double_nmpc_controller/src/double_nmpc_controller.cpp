@@ -295,23 +295,27 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
       ROS_INFO_THROTTLE(0.5,
           "[NMPC_SPEED_PROFILE] result=fallback path_s=%.3f cap_mps=%.3f rejected_lookahead_m=%.3f "
           "selected_safe=%d motion_valid=%d brake_valid=%d prediction_s=%.3f "
-          "sample_max_mps=%.3f motion_safe_count=%d motion_safe_max_mps=%.3f selected_mps=%.3f",
+          "sample_max_mps=%.3f motion_safe_count=%d motion_safe_max_mps=%.3f selected_mps=%.3f "
+          "max_speed_w_min_radps=%.3f max_speed_w_max_radps=%.3f max_speed_motion_safe_count=%d",
           path_progress_, path_speed_cap, reference_distance, search.selected,
           cached_long_plan_.motion_valid, cached_long_plan_.brake_valid,
           cached_long_plan_.failure.prediction_s, search.sampled_speed_max,
-          search.motion_safe_count, search.motion_safe_speed_max, search.selected_speed);
+          search.motion_safe_count, search.motion_safe_speed_max, search.selected_speed,
+          search.max_speed_w_min, search.max_speed_w_max, search.max_speed_motion_safe_count);
       cached_long_plan_ = plan_at(planner_lookahead);
     }
     cached_long_plan_.id = next_long_plan_id_++;
     ROS_INFO("[NMPC_LONG_SPEED] id=%llu path_s=%.3f speed_mode=%s heading_source=%s "
              "steering_error_rad=%.3f speed_heading_error_rad=%.3f applied_cap_mps=%.3f "
              "sample_max_mps=%.3f motion_safe_count=%d motion_safe_max_mps=%.3f "
-             "selected_mps=%.3f full_valid=%d",
+             "selected_mps=%.3f full_valid=%d "
+             "max_speed_w_min_radps=%.3f max_speed_w_max_radps=%.3f max_speed_motion_safe_count=%d",
              static_cast<unsigned long long>(cached_long_plan_.id), path_progress_, profile_mode,
              path_projection.has_tangent ? "path_tangent" : "lookahead",
              search.steering_error_rad, search.speed_heading_error_rad, path_speed_cap,
              search.sampled_speed_max, search.motion_safe_count, search.motion_safe_speed_max,
-             search.selected_speed, cached_long_plan_.full_valid);
+             search.selected_speed, cached_long_plan_.full_valid,
+             search.max_speed_w_min, search.max_speed_w_max, search.max_speed_motion_safe_count);
     if (cached_long_plan_.full_valid) {
       planner_command_ = cached_long_plan_.stages.front().control;
       const auto& motion_end = cached_long_plan_.stages[planner_horizon_steps_ - 1].predicted_pose;
@@ -756,15 +760,30 @@ DoubleNMPCController::Control DoubleNMPCController::chooseControl(
     const double candidate_w_limit = std::min(
         max_angular_velocity_,
         std::max(0.0, max_lateral_acceleration_) / std::max(v, 0.05));
+    const double turn_radius = 0.65 * candidate_w_limit;
+    const double turn_center_limit = candidate_w_limit - turn_radius;
+    // Shift the long-layer grid as a whole so its samples remain distinct at
+    // the angular limit. A saturated nominal turn stays at the grid's edge.
+    const double turn_center = planner_layer
+        ? clamp(nominal_w, -turn_center_limit, turn_center_limit)
+        : nominal_w;
+    const bool max_speed_sample = i == speed_samples - 1;
+    if (stats && max_speed_sample) {
+      search.max_speed_w_min = clamp(turn_center - turn_radius,
+                                     -candidate_w_limit, candidate_w_limit);
+      search.max_speed_w_max = clamp(turn_center + turn_radius,
+                                     -candidate_w_limit, candidate_w_limit);
+    }
     for (int j = 0; j < turn_samples; ++j) {
       const double spread = -1.0 + 2.0 * static_cast<double>(j) / (turn_samples - 1);
-      const Control candidate{v, clamp(nominal_w + spread * 0.65 * candidate_w_limit,
+      const Control candidate{v, clamp(turn_center + spread * 0.65 * candidate_w_limit,
                                        -candidate_w_limit, candidate_w_limit)};
       if (!rolloutIsSafe(x, y, yaw, candidate, horizon_steps, step_period, margin)) {
         continue;
       }
       if (stats) {
         ++search.motion_safe_count;
+        search.max_speed_motion_safe_count += max_speed_sample;
         search.motion_safe_speed_max = std::max(search.motion_safe_speed_max, candidate.v);
       }
       double px = x;
