@@ -14,7 +14,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 WORKSPACE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 LOG_DIR="$WORKSPACE_DIR/log"
 # 统一控制全局/局部 costmap 的障碍物膨胀范围（单位：米）
-INFLATION_RADIUS="0.05"#local!!!!!!!!!!!!!!!!!!!!
+INFLATION_RADIUS="0.1"#local!!!!!!!!!!!!!!!!!!!!
 
 source "$WORKSPACE_DIR/devel/setup.bash"
 mkdir -p "$LOG_DIR"
@@ -105,7 +105,7 @@ sleep 1
 
 # map_server（提供背景地图）
 # MAP_FILE="$WORKSPACE_DIR/../gazebo_create/maps/my_four_map.yaml"
-MAP_FILE="$WORKSPACE_DIR/../gazebo_create/maps/map_project.yaml"
+MAP_FILE="$WORKSPACE_DIR/../gazebo_create/maps/map_project3.yaml"
 if [ ! -f "$MAP_FILE" ]; then
     echo "错误: 地图 YAML 不存在: $MAP_FILE"
     exit 1
@@ -128,7 +128,7 @@ sleep 1
 # ── 4. 启动 Gazebo（仓库环境）──
 echo "[4/8] 启动 Gazebo ..."
 echo "[$(date +%H:%M:%S)] [4] starting gzserver" >> "$LOG_DIR/run.log"
-WORLD_FILE="${WORLD_FILE:-$WORKSPACE_DIR/../gazebo_create/worlds/map_project.world}"
+WORLD_FILE="${WORLD_FILE:-$WORKSPACE_DIR/../gazebo_create/worlds/map_project3.world}"
 if [ ! -f "$WORLD_FILE" ]; then
     echo "错误: Gazebo world 文件不存在: $WORLD_FILE"
     exit 1
