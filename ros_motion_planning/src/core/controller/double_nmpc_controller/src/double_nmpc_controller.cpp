@@ -375,6 +375,11 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   const double tracking_speed_cap = std::min(path_speed_cap, planner_command_.v);
   const bool planner_requests_in_place_turn =
       planner_command_.v <= 1e-4 && std::fabs(planner_command_.w) > 1e-3;
+  const double long_plan_age = cached_long_plan_.full_valid
+      ? (now - cached_long_plan_.created_at).toSec() : -1.0;
+  const bool use_tracking_turn_reference = !terminal_approach && !planner_requests_in_place_turn &&
+      long_plan_age >= 0.0 && long_plan_age < planner_period_;
+  const double* tracking_turn_reference = use_tracking_turn_reference ? &planner_command_.w : nullptr;
   // If the long layer has selected a safe in-place turn, preserve that decision.
   // Letting the short layer re-optimize with a zero linear-speed cap produced tiny,
   // alternating angular commands that the wheel deadband turned into endpoint jitter.
@@ -399,9 +404,11 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
         ? Control{0.0, planner_command_.w}
         : chooseControl(robot_pose, current, tracker_reference,
                         tracking_horizon_steps_, control_period_,
-                        tracking_speed_cap, tracking_margin_, false);
+                        tracking_speed_cap, tracking_margin_, false, nullptr, nullptr,
+                        tracking_turn_reference);
   }
   Control bounded = rateLimit(command);
+  const double rate_limited_w = bounded.w;
   const Control correction{bounded.v - planner_command_.v,
                            bounded.w - planner_command_.w};
   TrackingPrediction prediction = evaluateTrackingPrediction(
@@ -444,6 +451,18 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   clearance_message.data = predicted_clearance;
   clearance_pub_.publish(clearance_message);
 
+  if (!terminal_approach && !planner_requests_in_place_turn) {
+    ROS_INFO_THROTTLE(
+        0.5, "[NMPC_SHORT_TURN] long_id=%llu path_s=%.3f reference_used=%d plan_age_s=%.3f "
+        "long_w_radps=%.3f previous_w_radps=%.3f selected_w_radps=%.3f "
+        "rate_limited_w_radps=%.3f checked_w_radps=%.3f checked_minus_long_radps=%.3f "
+        "output_safe=%d fallback=%d",
+        static_cast<unsigned long long>(cached_long_plan_.id), path_progress_,
+        use_tracking_turn_reference, long_plan_age, planner_command_.w, previous_command_.w,
+        command.w, rate_limited_w, bounded.w, bounded.w - planner_command_.w,
+        output_safe, try_reachable_fallback);
+  }
+
   if (!output_safe) {
     ROS_WARN_THROTTLE(0.5,
         "[NMPC_OUTPUT_REJECT] t=%.6f frame=%s long_id=%llu terminal=%d reason=%s prediction_s=%.3f "
@@ -451,7 +470,8 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
         "cell_world=(%.3f,%.3f) cost=%d margin_m=%.3f "
         "odom=(%.3f,%.3f) previous=(%.3f,%.3f) desired=(%.3f,%.3f) bounded=(%.3f,%.3f) "
         "curve_cap=%.3f track_cap=%.3f center_now_raw_m=%.3f "
-        "center_pred_raw_m=%.3f center_pred_filtered_m=%.3f fallback=%s",
+        "center_pred_raw_m=%.3f center_pred_filtered_m=%.3f fallback=%s "
+        "long_turn_reference_used=%d long_w_radps=%.3f",
         ros::Time::now().toSec(), robot_pose.header.frame_id.c_str(),
         static_cast<unsigned long long>(cached_long_plan_.id), terminal_approach,
         failure.reason, failure.prediction_s, failure.x, failure.y, failure.yaw,
@@ -461,7 +481,8 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
         command.v, command.w, bounded.v, bounded.w, curve_speed_limit, tracking_speed_cap,
         measured_clearance, measured_predicted_clearance, predicted_clearance,
         try_reachable_fallback ? "no_safe_candidate" :
-            (terminal_approach ? "terminal" : "current_pose_unsafe"));
+            (terminal_approach ? "terminal" : "current_pose_unsafe"),
+        use_tracking_turn_reference, planner_command_.w);
     ROS_WARN_THROTTLE(
         0.5,
         "[DOUBLE_NMPC_DIAG] SAFETY_STOP: pose=(%.3f,%.3f,%.1fdeg) "
@@ -727,7 +748,7 @@ DoubleNMPCController::Control DoubleNMPCController::chooseControl(
     const geometry_msgs::PoseStamped& pose, const Control& current,
     const geometry_msgs::PoseStamped& reference, int horizon_steps, double step_period,
     double speed_cap, double margin, bool planner_layer, const PathProjection* speed_projection,
-    ControlSearchStats* stats) const {
+    ControlSearchStats* stats, const double* tracking_turn_reference) const {
   const double x = pose.pose.position.x;
   const double y = pose.pose.position.y;
   const double yaw = tf2::getYaw(pose.pose.orientation);
@@ -750,6 +771,11 @@ DoubleNMPCController::Control DoubleNMPCController::chooseControl(
 
   const int speed_samples = planner_layer ? 5 : 7;
   const int turn_samples = planner_layer ? 7 : 9;
+  const int turn_candidate_count = turn_samples + (tracking_turn_reference ? 1 : 0);
+  const double heading_weight = 1.8;
+  // Express the turn-rate disagreement as heading drift over the rollout.
+  // Weight it below the terminal heading error so the tracker can still correct.
+  const double turn_reference_weight = 0.25 * heading_weight * horizon_steps * step_period;
   double best_cost = std::numeric_limits<double>::infinity();
   Control best{0.0, 0.0};
   for (int i = 0; i < speed_samples; ++i) {
@@ -774,10 +800,11 @@ DoubleNMPCController::Control DoubleNMPCController::chooseControl(
       search.max_speed_w_max = clamp(turn_center + turn_radius,
                                      -candidate_w_limit, candidate_w_limit);
     }
-    for (int j = 0; j < turn_samples; ++j) {
+    for (int j = 0; j < turn_candidate_count; ++j) {
       const double spread = -1.0 + 2.0 * static_cast<double>(j) / (turn_samples - 1);
-      const Control candidate{v, clamp(turn_center + spread * 0.65 * candidate_w_limit,
-                                       -candidate_w_limit, candidate_w_limit)};
+      const double desired_w = j == turn_samples
+          ? *tracking_turn_reference : turn_center + spread * 0.65 * candidate_w_limit;
+      const Control candidate{v, clamp(desired_w, -candidate_w_limit, candidate_w_limit)};
       if (!rolloutIsSafe(x, y, yaw, candidate, horizon_steps, step_period, margin)) {
         continue;
       }
@@ -810,11 +837,13 @@ DoubleNMPCController::Control DoubleNMPCController::chooseControl(
                                       std::max(1, horizon_steps);
       const double effort_cost = 0.12 * std::fabs(candidate.v - current.v) +
                                  0.05 * std::fabs(candidate.w - current.w);
+      const double turn_reference_cost = tracking_turn_reference
+          ? turn_reference_weight * std::fabs(candidate.w - *tracking_turn_reference) : 0.0;
       // Endpoint-only tracking lets a vehicle carry lateral error until the last
       // segment. Penalizing the full predicted trajectory makes returning to the
       // global route beneficial as soon as odometry sees a deviation.
       const double cost = 8.0 * position_cost + 4.0 * cross_track_cost +
-                          1.8 * heading_cost + effort_cost;
+                          heading_weight * heading_cost + effort_cost + turn_reference_cost;
       if (cost < best_cost) {
         best_cost = cost;
         best = candidate;

@@ -119,7 +119,8 @@ private:
                         const geometry_msgs::PoseStamped& reference, int horizon_steps,
                         double step_period, double speed_cap, double margin,
                         bool planner_layer, const PathProjection* speed_projection = nullptr,
-                        ControlSearchStats* stats = nullptr) const;
+                        ControlSearchStats* stats = nullptr,
+                        const double* tracking_turn_reference = nullptr) const;
   LongPlan buildLongPlan(const geometry_msgs::PoseStamped& pose,
                          const Control& first_control, double margin,
                          const ros::Time& created_at) const;
