@@ -46,6 +46,14 @@ private:
     double lateral_error{0.0};
   };
 
+  struct PathSpeed {
+    double arc_m;
+    double local_cap_mps;
+    double speed_cap_mps;
+    double limiting_arc_m;
+    const char* source;
+  };
+
   struct ClearanceFilterState {
     bool initialized{false};
     double value{0.0};
@@ -111,7 +119,8 @@ private:
                   SafetyFailure* failure = nullptr) const;
   double obstacleClearance(double x, double y) const;
   double pathCurvatureAhead(const geometry_msgs::PoseStamped& pose) const;
-  bool hasStraightPathAhead(double start_arc, double distance) const;
+  void buildPathSpeedProfile();
+  PathSpeed pathSpeedAt(double arc_m) const;
   TrackingPrediction evaluateTrackingPrediction(
       const geometry_msgs::PoseStamped& pose, const Control& control,
       int steps, double step_period) const;
@@ -136,6 +145,7 @@ private:
   Control planner_command_;
   double path_progress_{0.0};
   double global_plan_length_{0.0};
+  std::vector<PathSpeed> path_speed_profile_;
   std::uint64_t next_long_plan_id_{1};
   LongPlan cached_long_plan_;
 
@@ -171,7 +181,7 @@ private:
   int planner_horizon_steps_{6};
   int planner_brake_stages_{3};
   double max_linear_velocity_{0.40};
-  double straight_cruise_speed_{0.0};
+  double path_cruise_speed_{0.0};
   double max_angular_velocity_{1.5};
   double max_linear_acceleration_{0.25};
   double max_linear_deceleration_{0.65};
