@@ -19,7 +19,7 @@ NAV_SCAN_LOG=gazebo_sync.log
 DIAG_SCAN_TOPICS=(/scan /scan_fixed /gazebo_scan_pose)
 if [[ "${RUN_DEBUG_REAL_LASER:-0}" == 1 ]]; then
     NAV_SCAN_TOPIC=/scan_real
-    NAV_SCAN_FRAME=base_scan
+    NAV_SCAN_FRAME=real_laser
     NAV_SCAN_LOG=lslidar_real.log
     DIAG_SCAN_TOPICS+=(/scan_real)
 fi
