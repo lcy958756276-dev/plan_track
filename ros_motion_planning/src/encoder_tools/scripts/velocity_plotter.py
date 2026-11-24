@@ -265,7 +265,8 @@ class VelocityPlotter:
         linear = [row[1] for row in comparison]
         # Display-only compensation: do not alter /odom, CSV, or control inputs.
         angular = [2.0 * row[2] for row in comparison]
-        linear_smoothed = self._smoothed_series(linear)
+        # Odometry already filters velocity, so use a lighter display filter for linear speed.
+        linear_smoothed = self._smoothed_series(linear, alpha=0.5)
         angular_smoothed = self._smoothed_series(angular)
         command_linear = [row[3] for row in comparison]
         command_angular = [row[4] for row in comparison]
