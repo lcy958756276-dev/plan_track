@@ -234,23 +234,28 @@ class VelocityPlotter:
         axes[1].grid(True, alpha=0.3)
         axes[1].legend(loc="best")
 
-        axes[2].plot(times, tracking_risk, color="#9467bd", linewidth=1.3,
-                     label="tracking risk")
-        axes[2].set_ylim(-0.05, 1.05)
-        axes[2].set_ylabel("risk (0-1)")
+        axes[2].plot(times, predicted_min_clearance, color="#17becf", linewidth=1.3,
+                     label="predicted minimum clearance")
+        axes[2].set_ylabel("clearance (m)")
         axes[2].grid(True, alpha=0.3)
         axes[2].legend(loc="best")
 
-        axes[3].plot(times, tracking_margin, color="#8c564b", linewidth=1.3,
-                     label="dynamic tracking margin")
-        axes[3].set_ylabel("margin (m)")
+        margin_axis = axes[3].twinx()
+        risk_line, = axes[3].plot(times, tracking_risk, color="#9467bd", linewidth=1.3,
+                                  label="tracking risk")
+        margin_line, = margin_axis.plot(times, tracking_margin, color="#8c564b", linewidth=1.3,
+                                         linestyle="--", label="dynamic tracking margin")
+        axes[3].set_ylim(-0.05, 1.05)
+        axes[3].set_ylabel("risk (0-1)", color=risk_line.get_color())
+        margin_axis.set_ylabel("tracking margin (m)", color=margin_line.get_color())
         axes[3].grid(True, alpha=0.3)
-        axes[3].legend(loc="best")
+        axes[3].legend(handles=[risk_line, margin_line], loc="best")
 
-        axes[4].plot(times, predicted_min_clearance, color="#17becf", linewidth=1.3,
-                     label="predicted minimum clearance")
+        # The controller uses the dynamic tracking margin as its clearance threshold.
+        axes[4].plot(times, tracking_margin, color="#8c564b", linewidth=1.3,
+                     linestyle="--", label="safety boundary")
         axes[4].set_xlabel("time (s)")
-        axes[4].set_ylabel("clearance (m)")
+        axes[4].set_ylabel("safety boundary (m)")
         axes[4].grid(True, alpha=0.3)
         axes[4].legend(loc="best")
 
