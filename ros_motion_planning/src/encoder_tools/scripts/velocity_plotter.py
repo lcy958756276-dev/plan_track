@@ -10,6 +10,9 @@ Outputs:
 import csv
 import math
 import os
+from bisect import bisect_left, bisect_right
+from itertools import groupby
+from statistics import median
 
 import rospy
 from geometry_msgs.msg import Twist
@@ -164,6 +167,39 @@ class VelocityPlotter:
             smoothed.append(alpha * value + (1.0 - alpha) * smoothed[-1])
         return smoothed
 
+    @staticmethod
+    def _smoothed_clearance(times, values):
+        """Remove short excursions and round transitions for display."""
+        smoothed = []
+        # Keep gaps where the controller has no valid clearance measurement.
+        for valid, samples in groupby(zip(times, values), key=lambda sample: math.isfinite(sample[1])):
+            segment_times, segment_values = zip(*samples)
+            if not valid:
+                smoothed.extend(segment_values)
+                continue
+
+            median_radius_s = 0.6
+            filtered = []
+            for time_s in segment_times:
+                start = bisect_left(segment_times, time_s - median_radius_s)
+                end = bisect_right(segment_times, time_s + median_radius_s)
+                filtered.append(median(segment_values[start:end]))
+
+            smooth_radius_s = 0.45
+            for time_s in segment_times:
+                start = bisect_left(segment_times, time_s - smooth_radius_s)
+                end = bisect_right(segment_times, time_s + smooth_radius_s)
+                weighted_sum = 0.0
+                total_weight = 0.0
+                for index in range(start, end):
+                    offset = (segment_times[index] - time_s) / smooth_radius_s
+                    # The weight and its first two derivatives vanish at the window edges.
+                    weight = max(0.0, 1.0 - offset * offset) ** 3
+                    weighted_sum += weight * filtered[index]
+                    total_weight += weight
+                smoothed.append(weighted_sum / total_weight)
+        return smoothed
+
     def shutdown(self):
         if not self.rows:
             rospy.logwarn("velocity_plotter: no /odom velocity samples recorded")
@@ -245,8 +281,8 @@ class VelocityPlotter:
         axes[1].grid(True, alpha=0.3)
         axes[1].legend(loc="best")
 
-        axes[2].plot(times, footprint_clearance, color="#17becf", linewidth=1.3,
-                     label="current minimum footprint clearance")
+        axes[2].plot(times, self._smoothed_clearance(times, footprint_clearance),
+                     color="#17becf", linewidth=1.3, label="minimum footprint clearance (smoothed)")
         axes[2].set_ylabel("clearance (m)")
         axes[2].grid(True, alpha=0.3)
         axes[2].legend(loc="best")
