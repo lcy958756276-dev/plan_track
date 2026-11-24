@@ -13,9 +13,10 @@ import os
 from bisect import bisect_left, bisect_right
 from itertools import groupby
 from statistics import median
+from threading import Lock
 
 import rospy
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import PoseStamped, Twist
 from nav_msgs.msg import Odometry
 from std_msgs.msg import Float64
 
@@ -29,6 +30,7 @@ class VelocityPlotter:
         self.csv_path = os.path.join(self.output_dir, "velocity_actual.csv")
         self.png_path = os.path.join(self.output_dir, "velocity_actual.png")
         self.start_time = None
+        self.goal_lock = Lock()
         self.rows = []
         self.command_events = []
         self.risk_events = []
@@ -47,23 +49,35 @@ class VelocityPlotter:
                          self.clearance_cb, queue_size=100)
         rospy.Subscriber("/move_base/DoubleNMPCController/footprint_clearance", Float64,
                          self.footprint_clearance_cb, queue_size=100)
+        rospy.Subscriber("/move_base_simple/goal", PoseStamped, self.goal_cb, queue_size=100)
         rospy.on_shutdown(self.shutdown)
 
-        rospy.loginfo("velocity_plotter: recording velocity and DoubleNMPC safety feedback")
+        rospy.loginfo("velocity_plotter: waiting for the first navigation goal")
         rospy.loginfo("velocity_plotter: csv=%s", self.csv_path)
         rospy.loginfo("velocity_plotter: png=%s", self.png_path)
 
+    def goal_cb(self, msg):
+        with self.goal_lock:
+            if self.start_time is not None:
+                return
+            stamp = msg.header.stamp
+            self.start_time = stamp.to_sec() if stamp and stamp.to_sec() > 0.0 else rospy.Time.now().to_sec()
+        rospy.loginfo("velocity_plotter: recording from first goal at %.6f", self.start_time)
+
     def odom_cb(self, msg):
+        start_time = self.start_time
+        if start_time is None:
+            return
         stamp = msg.header.stamp
         now = stamp.to_sec() if stamp and stamp.to_sec() > 0.0 else rospy.Time.now().to_sec()
-        if self.start_time is None:
-            self.start_time = now
+        if now < start_time:
+            return
 
         vx = msg.twist.twist.linear.x
         vy = msg.twist.twist.linear.y
         linear_speed = math.hypot(vx, vy)
         angular_speed = msg.twist.twist.angular.z
-        self.rows.append((now - self.start_time, linear_speed, angular_speed))
+        self.rows.append((now - start_time, linear_speed, angular_speed))
 
     def command_cb(self, msg):
         now = rospy.Time.now().to_sec()

@@ -175,11 +175,14 @@ echo "  正在生成机器人模型..."
 # 清理旧名称和新名称的残留实体，确保 Gazebo 中只有一辆车
 rosservice call /gz_debug/delete_model "model_name: 'my_robot'" >/dev/null 2>&1 || true
 rosservice call /gz_debug/delete_model "model_name: 'new_robot'" >/dev/null 2>&1 || true
+INITIAL_X=-1.16943
+INITIAL_Y=1.88119
+INITIAL_YAW=-1.57079632679
 rosrun gazebo_ros spawn_model -urdf \
     -param robot_description \
     -model my_robot \
     -gazebo_namespace /gz_debug \
-    -x -0.9 -y 1.45 -z 0.0 -Y 1.5708 \
+    -x "$INITIAL_X" -y "$INITIAL_Y" -z 0.0 -Y "$INITIAL_YAW" \
     >> "$LOG_DIR/run.log" 2>&1
 SPAWN_EXIT=$?
 echo "[$(date +%H:%M:%S)] [4] spawn_model exit=$SPAWN_EXIT" >> "$LOG_DIR/run.log"
@@ -220,7 +223,7 @@ sleep 2
 # ── 6. 启动里程计 ──
 echo "[6/8] 启动 encoder_odom.py (里程计)..."
 rosrun encoder_tools encoder_odom.py \
-    _initial_x:=-0.9 _initial_y:=1.45 _initial_yaw:=1.5708 _wheel_base:=0.8 \
+    _initial_x:="$INITIAL_X" _initial_y:="$INITIAL_Y" _initial_yaw:="$INITIAL_YAW" _wheel_base:=0.8 \
     > "$LOG_DIR/encoder_odom.log" 2>&1 &
 PID_ODOM=$!
 echo "  PID=$PID_ODOM → log/encoder_odom.log"
