@@ -8,6 +8,7 @@
 #include <costmap_2d/cost_values.h>
 #include <pluginlib/class_list_macros.h>
 #include <std_msgs/Float64.h>
+#include <std_msgs/Float64MultiArray.h>
 #include <nav_msgs/Odometry.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2/exceptions.h>
@@ -138,6 +139,7 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
   margin_pub_ = nh.advertise<std_msgs::Float64>("dynamic_safe_margin", 1);
   clearance_pub_ = nh.advertise<std_msgs::Float64>("predicted_min_clearance", 1);
   footprint_clearance_pub_ = nh.advertise<std_msgs::Float64>("footprint_clearance", 1);
+  tracking_errors_pub_ = nh.advertise<std_msgs::Float64MultiArray>("tracking_errors", 1);
   initialized_ = true;
 
   ROS_INFO_STREAM("DoubleNMPCController initialized: prediction=" << control_period_
@@ -469,6 +471,15 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
     footprint_clearance_message.data = footprintClearance(
         robot_pose.pose.position.x, robot_pose.pose.position.y, robot_yaw);
     footprint_clearance_pub_.publish(footprint_clearance_message);
+  }
+
+  if (tracking_errors_pub_.getNumSubscribers() > 0) {
+    const double reference_heading = path_projection.has_tangent
+        ? tf2::getYaw(path_projection.pose.pose.orientation) : target_heading;
+    std_msgs::Float64MultiArray tracking_errors;
+    tracking_errors.data = {path_projection.lateral_error,
+                            std::abs(normalizeAngle(reference_heading - robot_yaw))};
+    tracking_errors_pub_.publish(tracking_errors);
   }
 
   if (!terminal_approach && !planner_requests_in_place_turn) {

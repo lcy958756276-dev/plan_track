@@ -244,6 +244,7 @@ private:
   ros::Publisher margin_pub_;
   ros::Publisher clearance_pub_;
   ros::Publisher footprint_clearance_pub_;
+  ros::Publisher tracking_errors_pub_;
 };
 
 }  // namespace rmp::controller

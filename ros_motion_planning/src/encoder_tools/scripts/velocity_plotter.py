@@ -11,6 +11,7 @@ Outputs:
 import csv
 import math
 import os
+from shutil import copyfile
 from bisect import bisect_left, bisect_right
 from datetime import datetime
 from itertools import count, groupby, zip_longest
@@ -20,7 +21,7 @@ from threading import Lock
 import rospy
 from geometry_msgs.msg import PoseStamped, Twist
 from nav_msgs.msg import Odometry
-from std_msgs.msg import Float64
+from std_msgs.msg import Float64, Float64MultiArray
 
 
 class VelocityPlotter:
@@ -39,6 +40,7 @@ class VelocityPlotter:
         self.boundary_events = []
         self.clearance_events = []
         self.footprint_clearance_events = []
+        self.tracking_error_events = []
 
         os.makedirs(self.output_dir, exist_ok=True)
         self.outcome_dir = self._create_outcome_dir()
@@ -52,6 +54,8 @@ class VelocityPlotter:
                          self.clearance_cb, queue_size=100)
         rospy.Subscriber("/move_base/DoubleNMPCController/footprint_clearance", Float64,
                          self.footprint_clearance_cb, queue_size=100)
+        rospy.Subscriber("/move_base/DoubleNMPCController/tracking_errors", Float64MultiArray,
+                         self.tracking_errors_cb, queue_size=100)
         rospy.Subscriber("/move_base_simple/goal", PoseStamped, self.goal_cb, queue_size=100)
         rospy.on_shutdown(self.shutdown)
 
@@ -112,11 +116,17 @@ class VelocityPlotter:
     def footprint_clearance_cb(self, msg):
         self.footprint_clearance_events.append((rospy.Time.now().to_sec(), msg.data))
 
-    def _held_scalar_samples(self, events):
-        """Align a scalar ROS topic to odometry with zero-order hold."""
+    def tracking_errors_cb(self, msg):
+        if len(msg.data) == 2:
+            lateral_error, heading_error = msg.data
+            self.tracking_error_events.append((rospy.Time.now().to_sec(),
+                                               (lateral_error, math.degrees(heading_error))))
+
+    def _held_samples(self, events, missing=float("nan")):
+        """Align ROS samples to odometry with zero-order hold."""
         events = sorted(events, key=lambda event: event[0])
         event_index = 0
-        value = float("nan")
+        value = missing
         samples = []
         for time_s, _, _ in self.rows:
             absolute_time = self.start_time + time_s
@@ -132,10 +142,12 @@ class VelocityPlotter:
         event_index = 0
         command_linear = 0.0
         command_angular = 0.0
-        risk = self._held_scalar_samples(self.risk_events)
-        boundary = self._held_scalar_samples(self.boundary_events)
-        clearance = self._held_scalar_samples(self.clearance_events)
-        footprint_clearance = self._held_scalar_samples(self.footprint_clearance_events)
+        risk = self._held_samples(self.risk_events)
+        boundary = self._held_samples(self.boundary_events)
+        clearance = self._held_samples(self.clearance_events)
+        footprint_clearance = self._held_samples(self.footprint_clearance_events)
+        missing_errors = (math.nan, math.nan)
+        tracking_errors = self._held_samples(self.tracking_error_events, missing_errors)
         comparison = []
         for row_index, (time_s, actual_linear, actual_angular) in enumerate(self.rows):
             absolute_time = self.start_time + time_s
@@ -146,7 +158,8 @@ class VelocityPlotter:
             comparison.append((time_s, actual_linear, actual_angular,
                                command_linear, command_angular, tracking_risk,
                                boundary[row_index], clearance[row_index],
-                               1.0 - tracking_risk, footprint_clearance[row_index]))
+                               1.0 - tracking_risk, footprint_clearance[row_index],
+                               *tracking_errors[row_index]))
         return comparison
 
     def _command_step_series(self):
@@ -213,10 +226,10 @@ class VelocityPlotter:
         ]
 
     @staticmethod
-    def _smoothed_clearance(times, values):
+    def _smoothed_metric(times, values):
         """Remove short excursions and round transitions for display."""
         smoothed = []
-        # Keep gaps where the controller has no valid clearance measurement.
+        # Keep gaps where the controller has no valid measurement.
         for valid, samples in groupby(zip(times, values), key=lambda sample: math.isfinite(sample[1])):
             segment_times, segment_values = zip(*samples)
             if not valid:
@@ -262,7 +275,7 @@ class VelocityPlotter:
                              "command_linear_abs_mps", "command_angular_abs_radps",
                              "tracking_risk", "dynamic_safe_margin_m",
                              "predicted_min_clearance_m", "tracking_margin",
-                             "footprint_clearance_m"])
+                             "footprint_clearance_m", "tracking_error_m", "heading_error_deg"])
             for row in comparison:
                 writer.writerow(row[:5] + (abs(row[3]), abs(row[4])) + row[5:])
         rospy.loginfo("velocity_plotter: wrote %d samples to %s", len(self.rows), self.csv_path)
@@ -287,7 +300,11 @@ class VelocityPlotter:
         safety_boundary = [row[6] for row in comparison]
         tracking_margin = [row[8] for row in comparison]
         footprint_clearance = [row[9] for row in comparison]
-        clearance_smoothed = self._smoothed_clearance(times, footprint_clearance)
+        clearance_smoothed = self._smoothed_metric(times, footprint_clearance)
+        tracking_error = [row[10] for row in comparison]
+        heading_error = [row[11] for row in comparison]
+        tracking_error_smoothed = self._smoothed_metric(times, tracking_error)
+        heading_error_smoothed = self._smoothed_metric(times, heading_error)
         command_times, command_linear_steps, command_angular_steps = self._command_step_series()
 
         self._write_chart_csv(
@@ -312,6 +329,11 @@ class VelocityPlotter:
         self._write_chart_csv(
             "05_safety_boundary.csv", ("time_s", "dynamic_safe_margin_m"),
             (times, safety_boundary))
+        self._write_chart_csv(
+            "06_tracking_heading_errors.csv",
+            ("time_s", "tracking_error_m", "smoothed_tracking_error_m",
+             "heading_error_deg", "smoothed_heading_error_deg"),
+            (times, tracking_error, tracking_error_smoothed, heading_error, heading_error_smoothed))
 
         try:
             import matplotlib
@@ -322,7 +344,7 @@ class VelocityPlotter:
             rospy.logwarn("velocity_plotter: matplotlib unavailable, skip png: %s", e)
             return
 
-        fig, axes = plt.subplots(5, 1, sharex=True, figsize=(10, 12))
+        fig, axes = plt.subplots(6, 1, sharex=True, figsize=(10, 14.4))
         axes[0].plot(times, linear, color="#1f77b4", linewidth=0.9, alpha=0.15,
                      label="actual /odom raw")
         axes[0].plot(times, linear_smoothed, color="#1f77b4", linewidth=1.6,
@@ -373,15 +395,26 @@ class VelocityPlotter:
 
         axes[4].plot(times, safety_boundary, color="#1f77b4", linewidth=1.3,
                      label="dynamic safety boundary")
-        axes[4].set_xlabel("time (s)")
         axes[4].set_ylabel("safety boundary (m)")
         axes[4].grid(True, alpha=0.3)
         axes[4].legend(loc="best")
+
+        heading_axis = axes[5].twinx()
+        tracking_line, = axes[5].plot(times, tracking_error_smoothed, color="#1f77b4",
+                                       linewidth=1.3, label="tracking error")
+        heading_line, = heading_axis.plot(times, heading_error_smoothed, color="#ff7f0e",
+                                          linewidth=1.3, linestyle="--", label="heading error")
+        axes[5].set_xlabel("time (s)")
+        axes[5].set_ylabel("tracking error (m)", color=tracking_line.get_color())
+        heading_axis.set_ylabel("heading error (deg)", color=heading_line.get_color())
+        axes[5].grid(True, alpha=0.3)
+        axes[5].legend(handles=[tracking_line, heading_line], loc="best")
 
         fig.suptitle("Velocity and DoubleNMPC adaptive safety feedback")
         fig.tight_layout()
         fig.savefig(self.png_path, dpi=150)
         plt.close(fig)
+        copyfile(self.png_path, os.path.join(self.outcome_dir, "velocity_actual.png"))
         rospy.loginfo("velocity_plotter: wrote plot to %s", self.png_path)
 
 
