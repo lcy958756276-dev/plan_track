@@ -135,7 +135,10 @@ core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/src
 core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/src/double_nmpc_controller.cpp.o: /opt/ros/noetic/include/ros/wall_timer_options.h
 core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/src/double_nmpc_controller.cpp.o: /opt/ros/noetic/include/rosconsole/macros_generated.h
 core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/src/double_nmpc_controller.cpp.o: /opt/ros/noetic/include/std_msgs/Float64.h
+core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/src/double_nmpc_controller.cpp.o: /opt/ros/noetic/include/std_msgs/Float64MultiArray.h
 core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/src/double_nmpc_controller.cpp.o: /opt/ros/noetic/include/std_msgs/Header.h
+core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/src/double_nmpc_controller.cpp.o: /opt/ros/noetic/include/std_msgs/MultiArrayDimension.h
+core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/src/double_nmpc_controller.cpp.o: /opt/ros/noetic/include/std_msgs/MultiArrayLayout.h
 core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/src/double_nmpc_controller.cpp.o: /opt/ros/noetic/include/tf2/LinearMath/Matrix3x3.h
 core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/src/double_nmpc_controller.cpp.o: /opt/ros/noetic/include/tf2/LinearMath/MinMax.h
 core/controller/double_nmpc_controller/CMakeFiles/double_nmpc_controller.dir/src/double_nmpc_controller.cpp.o: /opt/ros/noetic/include/tf2/LinearMath/QuadWord.h
