@@ -29,8 +29,9 @@ class VelocityPlotter:
         self.rows = []
         self.command_events = []
         self.risk_events = []
-        self.margin_events = []
+        self.boundary_events = []
         self.clearance_events = []
+        self.tracking_margin_events = []
 
         os.makedirs(self.output_dir, exist_ok=True)
         rospy.Subscriber("/odom", Odometry, self.odom_cb, queue_size=100)
@@ -38,9 +39,11 @@ class VelocityPlotter:
         rospy.Subscriber("/move_base/DoubleNMPCController/tracking_risk", Float64,
                          self.risk_cb, queue_size=100)
         rospy.Subscriber("/move_base/DoubleNMPCController/dynamic_safe_margin", Float64,
-                         self.margin_cb, queue_size=100)
+                         self.boundary_cb, queue_size=100)
         rospy.Subscriber("/move_base/DoubleNMPCController/predicted_min_clearance", Float64,
                          self.clearance_cb, queue_size=100)
+        rospy.Subscriber("/move_base/DoubleNMPCController/tracking_margin", Float64,
+                         self.tracking_margin_cb, queue_size=100)
         rospy.on_shutdown(self.shutdown)
 
         rospy.loginfo("velocity_plotter: recording velocity and DoubleNMPC safety feedback")
@@ -66,11 +69,14 @@ class VelocityPlotter:
     def risk_cb(self, msg):
         self.risk_events.append((rospy.Time.now().to_sec(), msg.data))
 
-    def margin_cb(self, msg):
-        self.margin_events.append((rospy.Time.now().to_sec(), msg.data))
+    def boundary_cb(self, msg):
+        self.boundary_events.append((rospy.Time.now().to_sec(), msg.data))
 
     def clearance_cb(self, msg):
         self.clearance_events.append((rospy.Time.now().to_sec(), msg.data))
+
+    def tracking_margin_cb(self, msg):
+        self.tracking_margin_events.append((rospy.Time.now().to_sec(), msg.data))
 
     def _held_scalar_samples(self, events):
         """Align a scalar ROS topic to odometry with zero-order hold."""
@@ -93,8 +99,9 @@ class VelocityPlotter:
         command_linear = 0.0
         command_angular = 0.0
         risk = self._held_scalar_samples(self.risk_events)
-        margin = self._held_scalar_samples(self.margin_events)
+        boundary = self._held_scalar_samples(self.boundary_events)
         clearance = self._held_scalar_samples(self.clearance_events)
+        tracking_margin = self._held_scalar_samples(self.tracking_margin_events)
         comparison = []
         for row_index, (time_s, actual_linear, actual_angular) in enumerate(self.rows):
             absolute_time = self.start_time + time_s
@@ -103,7 +110,8 @@ class VelocityPlotter:
                 event_index += 1
             comparison.append((time_s, actual_linear, actual_angular,
                                command_linear, command_angular, risk[row_index],
-                               margin[row_index], clearance[row_index]))
+                               boundary[row_index], clearance[row_index],
+                               tracking_margin[row_index]))
         return comparison
 
     def _command_step_series(self):
@@ -171,7 +179,7 @@ class VelocityPlotter:
                              "command_linear_mps", "command_angular_radps",
                              "command_linear_abs_mps", "command_angular_abs_radps",
                              "tracking_risk", "dynamic_safe_margin_m",
-                             "predicted_min_clearance_m"])
+                             "predicted_min_clearance_m", "tracking_margin"])
             for row in comparison:
                 writer.writerow(row[:5] + (abs(row[3]), abs(row[4])) + row[5:])
         rospy.loginfo("velocity_plotter: wrote %d samples to %s", len(self.rows), self.csv_path)
@@ -196,8 +204,9 @@ class VelocityPlotter:
         command_linear = [row[3] for row in comparison]
         command_angular = [row[4] for row in comparison]
         tracking_risk = [row[5] for row in comparison]
-        tracking_margin = [row[6] for row in comparison]
+        safety_boundary = [row[6] for row in comparison]
         predicted_min_clearance = [row[7] for row in comparison]
+        tracking_margin = [row[8] for row in comparison]
         command_times, command_linear_steps, command_angular_steps = self._command_step_series()
 
         fig, axes = plt.subplots(5, 1, sharex=True, figsize=(10, 12))
@@ -240,20 +249,17 @@ class VelocityPlotter:
         axes[2].grid(True, alpha=0.3)
         axes[2].legend(loc="best")
 
-        margin_axis = axes[3].twinx()
-        risk_line, = axes[3].plot(times, tracking_risk, color="#9467bd", linewidth=1.3,
-                                  label="tracking risk")
-        margin_line, = margin_axis.plot(times, tracking_margin, color="#8c564b", linewidth=1.3,
-                                         linestyle="--", label="dynamic tracking margin")
+        axes[3].plot(times, tracking_risk, color="#9467bd", linewidth=1.3,
+                     label="tracking risk")
+        axes[3].plot(times, tracking_margin, color="#d95f02", linewidth=1.3,
+                     linestyle="--", label="tracking margin")
         axes[3].set_ylim(-0.05, 1.05)
-        axes[3].set_ylabel("risk (0-1)", color=risk_line.get_color())
-        margin_axis.set_ylabel("tracking margin (m)", color=margin_line.get_color())
+        axes[3].set_ylabel("normalized value (0-1)")
         axes[3].grid(True, alpha=0.3)
-        axes[3].legend(handles=[risk_line, margin_line], loc="best")
+        axes[3].legend(loc="best")
 
-        # The controller uses the dynamic tracking margin as its clearance threshold.
-        axes[4].plot(times, tracking_margin, color="#8c564b", linewidth=1.3,
-                     linestyle="--", label="safety boundary")
+        axes[4].plot(times, safety_boundary, color="#1f77b4", linewidth=1.3,
+                     label="dynamic safety boundary")
         axes[4].set_xlabel("time (s)")
         axes[4].set_ylabel("safety boundary (m)")
         axes[4].grid(True, alpha=0.3)

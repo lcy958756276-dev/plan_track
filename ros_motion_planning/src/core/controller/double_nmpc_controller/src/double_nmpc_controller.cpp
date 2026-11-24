@@ -123,6 +123,7 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
   tracking_margin_ = nominal_margin_;
   planner_margin_snapshot_ = nominal_margin_;
   risk_pub_ = nh.advertise<std_msgs::Float64>("tracking_risk", 1);
+  tracking_margin_pub_ = nh.advertise<std_msgs::Float64>("tracking_margin", 1);
   margin_pub_ = nh.advertise<std_msgs::Float64>("dynamic_safe_margin", 1);
   clearance_pub_ = nh.advertise<std_msgs::Float64>("predicted_min_clearance", 1);
   initialized_ = true;
@@ -1304,6 +1305,9 @@ void DoubleNMPCController::updateTrackingMargin(const TrackingPrediction& predic
   std_msgs::Float64 risk_message;
   risk_message.data = tracking_risk_;
   risk_pub_.publish(risk_message);
+  std_msgs::Float64 tracking_margin_message;
+  tracking_margin_message.data = 1.0 - body_pressure;
+  tracking_margin_pub_.publish(tracking_margin_message);
   std_msgs::Float64 margin_message;
   margin_message.data = tracking_margin_;
   margin_pub_.publish(margin_message);

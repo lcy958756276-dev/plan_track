@@ -239,6 +239,7 @@ private:
   double margin_fall_per_cycle_{0.0010};
 
   ros::Publisher risk_pub_;
+  ros::Publisher tracking_margin_pub_;
   ros::Publisher margin_pub_;
   ros::Publisher clearance_pub_;
 };
