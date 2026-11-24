@@ -13,6 +13,16 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 WORKSPACE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 LOG_DIR="$WORKSPACE_DIR/log"
+NAV_SCAN_TOPIC=/scan_fixed
+NAV_SCAN_FRAME=gazebo_scan_capture
+NAV_SCAN_LOG=gazebo_sync.log
+DIAG_SCAN_TOPICS=(/scan /scan_fixed /gazebo_scan_pose)
+if [[ "${RUN_DEBUG_REAL_LASER:-0}" == 1 ]]; then
+    NAV_SCAN_TOPIC=/scan_real
+    NAV_SCAN_FRAME=base_scan
+    NAV_SCAN_LOG=lslidar_real.log
+    DIAG_SCAN_TOPICS+=(/scan_real)
+fi
 # 统一控制全局/局部 costmap 的障碍物膨胀范围（单位：米）
 INFLATION_RADIUS="0.2"#local!!!!!!!!!!!!!!!!!!!!
 
@@ -305,8 +315,8 @@ cat > "$MB_LAUNCH" << MBEOF
     <rosparam command="load" file="$SIM_ENV_DIR/config/robots/my_car/global_costmap_params_my_car.yaml" ns="global_costmap"/>
     <!-- 全局 costmap 插件（含 global_costmap: 外层键 → 加载后自动在 /move_base/global_costmap/ 下） -->
     <rosparam command="load" file="$SIM_ENV_DIR/config/costmap/global_costmap_plugins.yaml"/>
-    <param name="global_costmap/obstacle_layer/scan/topic" value="/scan_fixed"/>
-    <param name="global_costmap/obstacle_layer/scan/sensor_frame" value="gazebo_scan_capture"/>
+    <param name="global_costmap/obstacle_layer/scan/topic" value="$NAV_SCAN_TOPIC"/>
+    <param name="global_costmap/obstacle_layer/scan/sensor_frame" value="$NAV_SCAN_FRAME"/>
     <param name="global_costmap/obstacle_layer/scan/expected_update_rate" value="2.5"/>
 
     <!-- 局部 costmap（用 robot-specific 文件） -->
@@ -316,7 +326,8 @@ cat > "$MB_LAUNCH" << MBEOF
         - {name: obstacle_layer, type: 'costmap_2d::ObstacleLayer'}
         - {name: inflation_layer, type: 'costmap_2d::InflationLayer'}
     </rosparam>
-    <param name="local_costmap/obstacle_layer/scan/sensor_frame" value="gazebo_scan_capture"/>
+    <param name="local_costmap/obstacle_layer/scan/topic" value="$NAV_SCAN_TOPIC"/>
+    <param name="local_costmap/obstacle_layer/scan/sensor_frame" value="$NAV_SCAN_FRAME"/>
     <param name="local_costmap/obstacle_layer/scan/expected_update_rate" value="2.5"/>
 
     <!-- 最终显式覆盖，避免参数加载顺序覆盖 YAML 中的值 -->
@@ -358,9 +369,18 @@ echo "$PID_SYNC"     > "$LOG_DIR/.pid_sync"
 echo "$PID_PREROT"   > "$LOG_DIR/.pid_prerot"
 echo "$PID_CLEAR_SCHED" > "$LOG_DIR/.pid_clear_sched"
 
-echo "  等待首帧完成位姿对齐的 Gazebo 激光..."
-if ! timeout 20 rostopic echo -n 1 /scan_fixed/header >> "$LOG_DIR/run.log" 2>&1; then
-    echo "  启动失败：未收到对齐的 Gazebo 激光，请查看 log/gazebo_sync.log" | tee -a "$LOG_DIR/run.log"
+if [[ "${RUN_DEBUG_REAL_LASER:-0}" == 1 ]]; then
+    echo "  启动串口雷达 → $NAV_SCAN_TOPIC ($NAV_SCAN_FRAME)"
+    (
+        source "$WORKSPACE_DIR/../devel/setup.bash" || exit 1
+        exec roslaunch lslidar_driver lslidar_serial.launch
+    ) > "$LOG_DIR/$NAV_SCAN_LOG" 2>&1 &
+    echo "$!" > "$LOG_DIR/.pid_lslidar_real"
+fi
+
+echo "  等待导航雷达首帧：$NAV_SCAN_TOPIC ($NAV_SCAN_FRAME)"
+if ! timeout 20 rostopic echo -n 1 "$NAV_SCAN_TOPIC/header" >> "$LOG_DIR/run.log" 2>&1; then
+    echo "  启动失败：未收到 $NAV_SCAN_TOPIC，请查看 log/$NAV_SCAN_LOG" | tee -a "$LOG_DIR/run.log"
     bash "$SCRIPT_DIR/stop_debug.sh" >> "$LOG_DIR/run.log" 2>&1
     exit 1
 fi
@@ -374,7 +394,7 @@ if [ "${NMPC_DIAG_BAG:-1}" = "1" ]; then
     DIAG_DURATION="${NMPC_DIAG_BAG_DURATION:-300}"
     # Record ROS events in the same bag so it remains usable after run.log is replaced.
     rosbag record --duration="$DIAG_DURATION" --buffsize=64 -O "$DIAG_BAG" \
-        /scan /scan_fixed /gazebo_scan_pose /tf /tf_static /odom /cmd_vel \
+        "${DIAG_SCAN_TOPICS[@]}" /tf /tf_static /odom /cmd_vel \
         /move_base/local_costmap/costmap /move_base/local_costmap/costmap_updates \
         /map /move_base/global_costmap/costmap /move_base/global_costmap/costmap_updates \
         /move_base/PathPlanner/plan /move_base/status /rosout_agg \
