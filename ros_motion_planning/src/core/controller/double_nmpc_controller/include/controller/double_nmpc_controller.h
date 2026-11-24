@@ -143,6 +143,7 @@ private:
   TrackingPrediction evaluateTrackingPrediction(
       const geometry_msgs::PoseStamped& pose, const Control& control,
       int steps, double step_period) const;
+  double footprintClearance(double x, double y, double yaw) const;
   double predictedMinimumClearance(const geometry_msgs::PoseStamped& pose,
                                    const Control& control, int steps,
                                    double step_period) const;
@@ -242,6 +243,7 @@ private:
   ros::Publisher tracking_margin_pub_;
   ros::Publisher margin_pub_;
   ros::Publisher clearance_pub_;
+  ros::Publisher footprint_clearance_pub_;
 };
 
 }  // namespace rmp::controller

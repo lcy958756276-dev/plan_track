@@ -2,6 +2,7 @@
 #include <array>
 #include <cmath>
 #include <limits>
+#include <mutex>
 #include <utility>
 
 #include <costmap_2d/cost_values.h>
@@ -18,6 +19,16 @@
 PLUGINLIB_EXPORT_CLASS(rmp::controller::DoubleNMPCController, nav_core::BaseLocalPlanner)
 
 namespace rmp::controller {
+
+namespace {
+constexpr double kBodyHalfLength = 0.30;
+constexpr double kBodyHalfWidth = 0.15;
+
+double pointToBox(double x, double y, double half_length, double half_width) {
+  return std::hypot(std::max(std::abs(x) - half_length, 0.0),
+                    std::max(std::abs(y) - half_width, 0.0));
+}
+}  // namespace
 
 DoubleNMPCController::DoubleNMPCController() = default;
 
@@ -126,6 +137,7 @@ void DoubleNMPCController::initialize(std::string name, tf2_ros::Buffer* tf,
   tracking_margin_pub_ = nh.advertise<std_msgs::Float64>("tracking_margin", 1);
   margin_pub_ = nh.advertise<std_msgs::Float64>("dynamic_safe_margin", 1);
   clearance_pub_ = nh.advertise<std_msgs::Float64>("predicted_min_clearance", 1);
+  footprint_clearance_pub_ = nh.advertise<std_msgs::Float64>("footprint_clearance", 1);
   initialized_ = true;
 
   ROS_INFO_STREAM("DoubleNMPCController initialized: prediction=" << control_period_
@@ -451,6 +463,13 @@ bool DoubleNMPCController::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
   std_msgs::Float64 clearance_message;
   clearance_message.data = predicted_clearance;
   clearance_pub_.publish(clearance_message);
+
+  if (footprint_clearance_pub_.getNumSubscribers() > 0) {
+    std_msgs::Float64 footprint_clearance_message;
+    footprint_clearance_message.data = footprintClearance(
+        robot_pose.pose.position.x, robot_pose.pose.position.y, robot_yaw);
+    footprint_clearance_pub_.publish(footprint_clearance_message);
+  }
 
   if (!terminal_approach && !planner_requests_in_place_turn) {
     ROS_INFO_THROTTLE(
@@ -994,8 +1013,8 @@ bool DoubleNMPCController::poseIsSafe(double x, double y, double yaw, double mar
   // body in its current heading instead of using a conservative circular
   // envelope (robot_radius_ + margin).  Sampling at half-cell spacing keeps
   // this check aligned with the costmap resolution while remaining small.
-  const double half_length = 0.30 + margin;
-  const double half_width = 0.15 + margin;
+  const double half_length = kBodyHalfLength + margin;
+  const double half_width = kBodyHalfWidth + margin;
   const double resolution = std::max(costmap->getResolution(), 1e-3);
   const double sample_step = 0.5 * resolution;
   const double cos_yaw = std::cos(yaw);
@@ -1118,6 +1137,61 @@ double DoubleNMPCController::obstacleClearance(double x, double y) const {
     }
   }
   return minimum_clearance;
+}
+
+double DoubleNMPCController::footprintClearance(double x, double y, double yaw) const {
+  auto* costmap = costmap_ros_->getCostmap();
+  if (!costmap) {
+    return std::numeric_limits<double>::quiet_NaN();
+  }
+  const std::lock_guard<costmap_2d::Costmap2D::mutex_t> lock(*costmap->getMutex());
+  if (costmap->getResolution() <= 0.0) {
+    return std::numeric_limits<double>::quiet_NaN();
+  }
+
+  const double c = std::cos(yaw);
+  const double s = std::sin(yaw);
+  const double extent_x = std::abs(c) * kBodyHalfLength + std::abs(s) * kBodyHalfWidth;
+  const double extent_y = std::abs(s) * kBodyHalfLength + std::abs(c) * kBodyHalfWidth;
+  const double cell = 0.5 * costmap->getResolution();
+  const double cell_extent = cell * (std::abs(c) + std::abs(s));
+  double clearance = std::numeric_limits<double>::infinity();
+  for (unsigned int my = 0; my < costmap->getSizeInCellsY(); ++my) {
+    for (unsigned int mx = 0; mx < costmap->getSizeInCellsX(); ++mx) {
+      if (costmap->getCost(mx, my) != costmap_2d::LETHAL_OBSTACLE) {
+        continue;
+      }
+      double cell_x, cell_y;
+      costmap->mapToWorld(mx, my, cell_x, cell_y);
+      const double dx = cell_x - x;
+      const double dy = cell_y - y;
+      if (pointToBox(dx, dy, extent_x + cell, extent_y + cell) >= clearance) {
+        continue;
+      }
+      const double local_x = c * dx + s * dy;
+      const double local_y = -s * dx + c * dy;
+      // Test overlap on the two world axes and the two footprint axes.
+      if (std::abs(dx) <= extent_x + cell && std::abs(dy) <= extent_y + cell &&
+          std::abs(local_x) <= kBodyHalfLength + cell_extent &&
+          std::abs(local_y) <= kBodyHalfWidth + cell_extent) {
+        return 0.0;
+      }
+      // For disjoint rectangles a closest pair includes a vertex of one box.
+      for (double sign_x : {-1.0, 1.0}) {
+        for (double sign_y : {-1.0, 1.0}) {
+          const double bx = sign_x * kBodyHalfLength;
+          const double by = sign_y * kBodyHalfWidth;
+          clearance = std::min(clearance, pointToBox(dx - c * bx + s * by,
+                                                     dy - s * bx - c * by, cell, cell));
+          const double cx = dx + sign_x * cell;
+          const double cy = dy + sign_y * cell;
+          clearance = std::min(clearance, pointToBox(c * cx + s * cy, -s * cx + c * cy,
+                                                     kBodyHalfLength, kBodyHalfWidth));
+        }
+      }
+    }
+  }
+  return std::isfinite(clearance) ? clearance : std::numeric_limits<double>::quiet_NaN();
 }
 
 DoubleNMPCController::TrackingPrediction DoubleNMPCController::evaluateTrackingPrediction(

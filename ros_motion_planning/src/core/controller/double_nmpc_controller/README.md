@@ -17,6 +17,9 @@ costmap rollout. The plugin publishes `~/tracking_risk`, `~/tracking_margin`,
 The dynamic safety boundary is the applied footprint padding in meters and is
 published on `~/dynamic_safe_margin`. The `~/predicted_min_clearance` topic reports
 the minimum obstacle clearance along the current short-layer predicted rollout.
+The `~/footprint_clearance` topic reports the minimum Euclidean gap from the
+unpadded robot footprint at its current pose to occupied cells in the local
+costmap. It reports zero on contact and NaN when no occupied cell is available.
 
 To test it, change the local planner in a dedicated launch file—not the existing debug
 entrypoint—and load the supplied parameters:

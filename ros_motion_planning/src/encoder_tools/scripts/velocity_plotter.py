@@ -31,6 +31,7 @@ class VelocityPlotter:
         self.risk_events = []
         self.boundary_events = []
         self.clearance_events = []
+        self.footprint_clearance_events = []
 
         os.makedirs(self.output_dir, exist_ok=True)
         rospy.Subscriber("/odom", Odometry, self.odom_cb, queue_size=100)
@@ -41,6 +42,8 @@ class VelocityPlotter:
                          self.boundary_cb, queue_size=100)
         rospy.Subscriber("/move_base/DoubleNMPCController/predicted_min_clearance", Float64,
                          self.clearance_cb, queue_size=100)
+        rospy.Subscriber("/move_base/DoubleNMPCController/footprint_clearance", Float64,
+                         self.footprint_clearance_cb, queue_size=100)
         rospy.on_shutdown(self.shutdown)
 
         rospy.loginfo("velocity_plotter: recording velocity and DoubleNMPC safety feedback")
@@ -72,6 +75,9 @@ class VelocityPlotter:
     def clearance_cb(self, msg):
         self.clearance_events.append((rospy.Time.now().to_sec(), msg.data))
 
+    def footprint_clearance_cb(self, msg):
+        self.footprint_clearance_events.append((rospy.Time.now().to_sec(), msg.data))
+
     def _held_scalar_samples(self, events):
         """Align a scalar ROS topic to odometry with zero-order hold."""
         events = sorted(events, key=lambda event: event[0])
@@ -95,6 +101,7 @@ class VelocityPlotter:
         risk = self._held_scalar_samples(self.risk_events)
         boundary = self._held_scalar_samples(self.boundary_events)
         clearance = self._held_scalar_samples(self.clearance_events)
+        footprint_clearance = self._held_scalar_samples(self.footprint_clearance_events)
         comparison = []
         for row_index, (time_s, actual_linear, actual_angular) in enumerate(self.rows):
             absolute_time = self.start_time + time_s
@@ -105,7 +112,7 @@ class VelocityPlotter:
             comparison.append((time_s, actual_linear, actual_angular,
                                command_linear, command_angular, tracking_risk,
                                boundary[row_index], clearance[row_index],
-                               1.0 - tracking_risk))
+                               1.0 - tracking_risk, footprint_clearance[row_index]))
         return comparison
 
     def _command_step_series(self):
@@ -173,7 +180,8 @@ class VelocityPlotter:
                              "command_linear_mps", "command_angular_radps",
                              "command_linear_abs_mps", "command_angular_abs_radps",
                              "tracking_risk", "dynamic_safe_margin_m",
-                             "predicted_min_clearance_m", "tracking_margin"])
+                             "predicted_min_clearance_m", "tracking_margin",
+                             "footprint_clearance_m"])
             for row in comparison:
                 writer.writerow(row[:5] + (abs(row[3]), abs(row[4])) + row[5:])
         rospy.loginfo("velocity_plotter: wrote %d samples to %s", len(self.rows), self.csv_path)
@@ -199,8 +207,8 @@ class VelocityPlotter:
         command_angular = [row[4] for row in comparison]
         tracking_risk = [row[5] for row in comparison]
         safety_boundary = [row[6] for row in comparison]
-        predicted_min_clearance = [row[7] for row in comparison]
         tracking_margin = [row[8] for row in comparison]
+        footprint_clearance = [row[9] for row in comparison]
         command_times, command_linear_steps, command_angular_steps = self._command_step_series()
 
         fig, axes = plt.subplots(5, 1, sharex=True, figsize=(10, 12))
@@ -237,8 +245,8 @@ class VelocityPlotter:
         axes[1].grid(True, alpha=0.3)
         axes[1].legend(loc="best")
 
-        axes[2].plot(times, predicted_min_clearance, color="#17becf", linewidth=1.3,
-                     label="predicted minimum clearance")
+        axes[2].plot(times, footprint_clearance, color="#17becf", linewidth=1.3,
+                     label="current minimum footprint clearance")
         axes[2].set_ylabel("clearance (m)")
         axes[2].grid(True, alpha=0.3)
         axes[2].legend(loc="best")
