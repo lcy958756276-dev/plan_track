@@ -31,7 +31,6 @@ class VelocityPlotter:
         self.risk_events = []
         self.boundary_events = []
         self.clearance_events = []
-        self.tracking_margin_events = []
 
         os.makedirs(self.output_dir, exist_ok=True)
         rospy.Subscriber("/odom", Odometry, self.odom_cb, queue_size=100)
@@ -42,8 +41,6 @@ class VelocityPlotter:
                          self.boundary_cb, queue_size=100)
         rospy.Subscriber("/move_base/DoubleNMPCController/predicted_min_clearance", Float64,
                          self.clearance_cb, queue_size=100)
-        rospy.Subscriber("/move_base/DoubleNMPCController/tracking_margin", Float64,
-                         self.tracking_margin_cb, queue_size=100)
         rospy.on_shutdown(self.shutdown)
 
         rospy.loginfo("velocity_plotter: recording velocity and DoubleNMPC safety feedback")
@@ -75,9 +72,6 @@ class VelocityPlotter:
     def clearance_cb(self, msg):
         self.clearance_events.append((rospy.Time.now().to_sec(), msg.data))
 
-    def tracking_margin_cb(self, msg):
-        self.tracking_margin_events.append((rospy.Time.now().to_sec(), msg.data))
-
     def _held_scalar_samples(self, events):
         """Align a scalar ROS topic to odometry with zero-order hold."""
         events = sorted(events, key=lambda event: event[0])
@@ -101,17 +95,17 @@ class VelocityPlotter:
         risk = self._held_scalar_samples(self.risk_events)
         boundary = self._held_scalar_samples(self.boundary_events)
         clearance = self._held_scalar_samples(self.clearance_events)
-        tracking_margin = self._held_scalar_samples(self.tracking_margin_events)
         comparison = []
         for row_index, (time_s, actual_linear, actual_angular) in enumerate(self.rows):
             absolute_time = self.start_time + time_s
             while event_index < len(events) and events[event_index][0] <= absolute_time:
                 _, command_linear, command_angular = events[event_index]
                 event_index += 1
+            tracking_risk = risk[row_index]
             comparison.append((time_s, actual_linear, actual_angular,
-                               command_linear, command_angular, risk[row_index],
+                               command_linear, command_angular, tracking_risk,
                                boundary[row_index], clearance[row_index],
-                               tracking_margin[row_index]))
+                               1.0 - tracking_risk))
         return comparison
 
     def _command_step_series(self):

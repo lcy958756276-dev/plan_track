@@ -12,9 +12,8 @@ Tracking position error, heading error, and tracking-layer correction form an EW
 The risk changes only the obstacle-clearance margin. The margin is allowed to relax to
 `0.05 m`; it may tighten to `0.10 m` only when an obstacle is relevant to the current
 costmap rollout. The plugin publishes `~/tracking_risk`, `~/tracking_margin`,
-`~/dynamic_safe_margin`, and `~/predicted_min_clearance`. Tracking margin is the
-unused fraction of the equivalent body-error reference, computed as one minus the
-clamped ratio of equivalent body error to `equivalent_body_error_reference`.
+`~/dynamic_safe_margin`, and `~/predicted_min_clearance`. Tracking margin is
+`1 - tracking_risk`, using the final rate-limited and clamped risk in [0, 1].
 The dynamic safety boundary is the applied footprint padding in meters and is
 published on `~/dynamic_safe_margin`. The `~/predicted_min_clearance` topic reports
 the minimum obstacle clearance along the current short-layer predicted rollout.

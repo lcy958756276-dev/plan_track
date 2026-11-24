@@ -1306,7 +1306,7 @@ void DoubleNMPCController::updateTrackingMargin(const TrackingPrediction& predic
   risk_message.data = tracking_risk_;
   risk_pub_.publish(risk_message);
   std_msgs::Float64 tracking_margin_message;
-  tracking_margin_message.data = 1.0 - body_pressure;
+  tracking_margin_message.data = 1.0 - tracking_risk_;
   tracking_margin_pub_.publish(tracking_margin_message);
   std_msgs::Float64 margin_message;
   margin_message.data = tracking_margin_;
