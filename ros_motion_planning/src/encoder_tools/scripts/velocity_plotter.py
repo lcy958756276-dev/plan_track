@@ -5,13 +5,15 @@ Record commanded and actual robot velocity and generate a comparison plot on shu
 Outputs:
   - log/velocity_actual.csv
   - log/velocity_actual.png
+  - log/outcome/<run time>/ (one CSV per plot)
 """
 
 import csv
 import math
 import os
 from bisect import bisect_left, bisect_right
-from itertools import groupby
+from datetime import datetime
+from itertools import count, groupby, zip_longest
 from statistics import median
 from threading import Lock
 
@@ -39,6 +41,7 @@ class VelocityPlotter:
         self.footprint_clearance_events = []
 
         os.makedirs(self.output_dir, exist_ok=True)
+        self.outcome_dir = self._create_outcome_dir()
         rospy.Subscriber("/odom", Odometry, self.odom_cb, queue_size=100)
         rospy.Subscriber("/cmd_vel", Twist, self.command_cb, queue_size=100)
         rospy.Subscriber("/move_base/DoubleNMPCController/tracking_risk", Float64,
@@ -55,6 +58,20 @@ class VelocityPlotter:
         rospy.loginfo("velocity_plotter: waiting for the first navigation goal")
         rospy.loginfo("velocity_plotter: csv=%s", self.csv_path)
         rospy.loginfo("velocity_plotter: png=%s", self.png_path)
+        rospy.loginfo("velocity_plotter: outcome=%s", self.outcome_dir)
+
+    def _create_outcome_dir(self):
+        root = os.path.join(self.output_dir, "outcome")
+        os.makedirs(root, exist_ok=True)
+        timestamp = datetime.now().strftime("%m月%d日_%H时%M分")
+        for index in count(1):
+            name = timestamp if index == 1 else f"{timestamp}_{index:02d}"
+            path = os.path.join(root, name)
+            try:
+                os.mkdir(path)
+            except FileExistsError:
+                continue
+            return path
 
     def goal_cb(self, msg):
         with self.goal_lock:
@@ -236,16 +253,13 @@ class VelocityPlotter:
                 writer.writerow(row[:5] + (abs(row[3]), abs(row[4])) + row[5:])
         rospy.loginfo("velocity_plotter: wrote %d samples to %s", len(self.rows), self.csv_path)
 
+    def _write_chart_csv(self, filename, headers, columns):
+        with open(os.path.join(self.outcome_dir, filename), "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(headers)
+            writer.writerows(zip_longest(*columns, fillvalue=""))
+
     def _write_plot(self):
-        try:
-            import matplotlib
-
-            matplotlib.use("Agg")
-            import matplotlib.pyplot as plt
-        except Exception as e:
-            rospy.logwarn("velocity_plotter: matplotlib unavailable, skip png: %s", e)
-            return
-
         comparison = self._comparison_rows()
         times = [row[0] for row in comparison]
         linear = [row[1] for row in comparison]
@@ -259,7 +273,40 @@ class VelocityPlotter:
         safety_boundary = [row[6] for row in comparison]
         tracking_margin = [row[8] for row in comparison]
         footprint_clearance = [row[9] for row in comparison]
+        clearance_smoothed = self._smoothed_clearance(times, footprint_clearance)
         command_times, command_linear_steps, command_angular_steps = self._command_step_series()
+
+        self._write_chart_csv(
+            "01_linear_velocity.csv",
+            ("odom_time_s", "actual_linear_mps", "actual_linear_ewma_mps",
+             "command_time_s", "command_linear_mps"),
+            (times, linear, linear_smoothed, command_times or times,
+             command_linear_steps if command_times else command_linear))
+        self._write_chart_csv(
+            "02_angular_velocity.csv",
+            ("odom_time_s", "actual_angular_display_x2_radps", "actual_angular_ewma_display_x2_radps",
+             "command_time_s", "command_angular_radps"),
+            (times, angular, angular_smoothed, command_times or times,
+             command_angular_steps if command_times else command_angular))
+        self._write_chart_csv(
+            "03_clearance.csv",
+            ("time_s", "footprint_clearance_m", "smoothed_footprint_clearance_m"),
+            (times, footprint_clearance, clearance_smoothed))
+        self._write_chart_csv(
+            "04_risk_tracking_margin.csv", ("time_s", "tracking_risk", "tracking_margin"),
+            (times, tracking_risk, tracking_margin))
+        self._write_chart_csv(
+            "05_safety_boundary.csv", ("time_s", "dynamic_safe_margin_m"),
+            (times, safety_boundary))
+
+        try:
+            import matplotlib
+
+            matplotlib.use("Agg")
+            import matplotlib.pyplot as plt
+        except Exception as e:
+            rospy.logwarn("velocity_plotter: matplotlib unavailable, skip png: %s", e)
+            return
 
         fig, axes = plt.subplots(5, 1, sharex=True, figsize=(10, 12))
         axes[0].plot(times, linear, color="#1f77b4", linewidth=0.9, alpha=0.30,
@@ -295,7 +342,7 @@ class VelocityPlotter:
         axes[1].grid(True, alpha=0.3)
         axes[1].legend(loc="best")
 
-        axes[2].plot(times, self._smoothed_clearance(times, footprint_clearance),
+        axes[2].plot(times, clearance_smoothed,
                      color="#17becf", linewidth=1.3, label="minimum footprint clearance (smoothed)")
         axes[2].set_ylabel("clearance (m)")
         axes[2].grid(True, alpha=0.3)
