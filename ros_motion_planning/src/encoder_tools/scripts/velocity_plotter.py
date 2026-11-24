@@ -271,10 +271,11 @@ class VelocityPlotter:
         ]
         linear_ewma = self._smoothed_series(linear_despiked, alpha=0.5)
         # Round the remaining short ripples with a centered pass.
+        last_index = len(linear_ewma) - 1
         linear_smoothed = [
-            0.25 * linear_ewma[max(0, index - 1)] + 0.5 * value
-            + 0.25 * linear_ewma[min(len(linear_ewma) - 1, index + 1)]
-            for index, value in enumerate(linear_ewma)
+            sum(weight * linear_ewma[min(last_index, max(0, index + offset))]
+                for offset, weight in enumerate((1, 2, 3, 2, 1), start=-2)) / 9
+            for index in range(len(linear_ewma))
         ]
         angular_smoothed = self._smoothed_series(angular)
         command_linear = [row[3] for row in comparison]

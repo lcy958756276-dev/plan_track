@@ -30,6 +30,14 @@ from std_msgs.msg import Bool
 from geometry_msgs.msg import Twist, PoseStamped
 
 
+STOP_PACKETS = (
+    b"l:0.000,r:0.000\r\n",
+    b"l:0,r:0\r\n",
+    b"r:0.000,l:0.000\r\n",
+    b"V 0.000 0.000\r\n",
+)
+
+
 class SerialBridge:
     def __init__(self):
         port = rospy.get_param("~port", "/dev/ttyTHS0")
@@ -244,7 +252,7 @@ class SerialBridge:
 
         # 零速可能来自安全检查、重规划或短暂旋转切换，不代表到达终点。
         # 终点锁存只能由显式 terminal_brake 流程触发，不再根据单次零速推断。
-        cmd_str = self._write_wheel_command(v_left, v_right, brake_right=False)
+        cmd_str = self._write_wheel_command(v_left, v_right, repeat_stop=not self.last_sent_zero)
         self.last_sent_zero = is_zero_cmd
         if self.last_sent_zero:
             self.last_zero_send_time = self.last_cmd_time
@@ -417,44 +425,58 @@ class SerialBridge:
             )
             return
 
-        if (now - self.last_cmd_time).to_sec() <= self.cmd_timeout:
+        last_cmd_time = self.last_cmd_time
+        if (now - last_cmd_time).to_sec() <= self.cmd_timeout:
             return
         if self.last_sent_zero and (now - self.last_zero_send_time).to_sec() < self.zero_repeat_period:
             return
 
-        cmd_str = self._write_wheel_command(0.0, 0.0)
+        if not self._send_timeout_stop(last_cmd_time) or self.last_cmd_time != last_cmd_time:
+            return
         self.last_sent_zero = True
         self.last_zero_send_time = now
         rospy.loginfo_throttle(
             1.0,
-            f"[bridge] cmd_vel 超时 {self.cmd_timeout:.2f}s，主动发送零速度  [串口发送] {cmd_str.strip()}",
+            f"[bridge] cmd_vel 超时 {self.cmd_timeout:.2f}s，主动发送零速度",
         )
 
+    def _send_timeout_stop(self, last_cmd_time):
+        try:
+            for burst_index in range(max(1, self.stop_burst_count)):
+                if burst_index:
+                    time.sleep(self.stop_burst_gap)
+                for packet in STOP_PACKETS:
+                    with self.write_lock:
+                        if self.last_cmd_time != last_cmd_time:
+                            rospy.loginfo("[LINEAR_TX] canceled timeout stop after fresh cmd_vel")
+                            return False
+                        if not (self.ser and self.ser.is_open):
+                            return False
+                        self._write_serial_bytes(packet)
+        except (serial.SerialException, OSError) as e:
+            rospy.logerr_throttle(3.0, f"[bridge] 串口超时停车写入失败: {e}")
+            return False
+        return True
+
     def _write_wheel_command(self, v_left, v_right, brake_right=False,
-                             brake_reason="停车前右轮反向刹车"):
+                             brake_reason="停车前右轮反向刹车", repeat_stop=True):
         cmd_str = f"l:{v_left:.3f},r:{v_right:.3f}\r\n"
         cmd_bytes = cmd_str.encode("utf-8")
         try:
             with self.write_lock:
                 if self.ser and self.ser.is_open:
-                    if abs(v_left) < 1e-4 and abs(v_right) < 1e-4:
+                    if repeat_stop and abs(v_left) < 1e-4 and abs(v_right) < 1e-4:
                         if self.stop_brake_enabled and brake_right:
                             self._send_right_brake(brake_reason)
 
-                        stop_packets = [
-                            b"l:0.000,r:0.000\r\n",
-                            b"l:0,r:0\r\n",
-                            b"r:0.000,l:0.000\r\n",
-                            b"V 0.000 0.000\r\n",
-                        ]
                         for _ in range(max(1, self.stop_burst_count)):
-                            for packet in stop_packets:
+                            for packet in STOP_PACKETS:
                                 self._write_serial_bytes(packet)
                             time.sleep(self.stop_burst_gap)
                         rospy.loginfo_throttle(
                             1.0,
                             "[bridge] 零速度兼容发送字节: "
-                            + ", ".join(repr(packet) for packet in stop_packets)
+                            + ", ".join(repr(packet) for packet in STOP_PACKETS)
                         )
                     else:
                         self._write_serial_bytes(cmd_bytes)
