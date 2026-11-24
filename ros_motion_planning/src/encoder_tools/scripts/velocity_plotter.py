@@ -265,8 +265,11 @@ class VelocityPlotter:
         linear = [row[1] for row in comparison]
         # Display-only compensation: do not alter /odom, CSV, or control inputs.
         angular = [2.0 * row[2] for row in comparison]
-        # Odometry already filters velocity, so use a lighter display filter for linear speed.
-        linear_smoothed = self._smoothed_series(linear, alpha=0.5)
+        # A centered median rejects isolated spikes before the light display EWMA.
+        linear_despiked = [
+            median(linear[max(0, index - 2):index + 3]) for index in range(len(linear))
+        ]
+        linear_smoothed = self._smoothed_series(linear_despiked, alpha=0.5)
         angular_smoothed = self._smoothed_series(angular)
         command_linear = [row[3] for row in comparison]
         command_angular = [row[4] for row in comparison]
@@ -310,10 +313,10 @@ class VelocityPlotter:
             return
 
         fig, axes = plt.subplots(5, 1, sharex=True, figsize=(10, 12))
-        axes[0].plot(times, linear, color="#1f77b4", linewidth=0.9, alpha=0.30,
+        axes[0].plot(times, linear, color="#1f77b4", linewidth=0.9, alpha=0.15,
                      label="actual /odom raw")
         axes[0].plot(times, linear_smoothed, color="#1f77b4", linewidth=1.6,
-                     label="actual /odom EWMA")
+                     label="actual /odom smoothed")
         if command_times:
             axes[0].step(command_times, command_linear_steps, where="post", color="#ff7f0e",
                          linewidth=1.4, linestyle="--", label="NMPC command /cmd_vel")
