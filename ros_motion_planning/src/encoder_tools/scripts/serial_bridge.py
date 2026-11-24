@@ -39,6 +39,7 @@ class SerialBridge:
         self.wheel_radius = rospy.get_param("~wheel_radius", 0.1065)
         self.wheel_base   = rospy.get_param("~wheel_base", 0.45)
         self.cmd_timeout = rospy.get_param("~cmd_timeout", 0.3)
+        self.linear_diagnostics = rospy.get_param("~linear_diagnostics", False)
         self.zero_repeat_period = rospy.get_param("~zero_repeat_period", 0.2)
         self.stop_burst_count = rospy.get_param("~stop_burst_count", 3)
         self.stop_burst_gap = rospy.get_param("~stop_burst_gap", 0.02)
@@ -465,8 +466,15 @@ class SerialBridge:
 
     def _write_serial_bytes(self, data):
         fd = self.ser.fileno()
-        os.write(fd, data)
+        started = rospy.Time.now() if self.linear_diagnostics else None
+        written = os.write(fd, data)
         termios.tcdrain(fd)
+        if started is not None:
+            drained = rospy.Time.now()
+            rospy.loginfo(
+                "[LINEAR_TX] stamp=%.6f drained=%.6f bytes=%d/%d packet=%r",
+                started.to_sec(), drained.to_sec(), written, len(data), data,
+            )
 
     def _send_right_brake(self, reason):
         if not (self.ser and self.ser.is_open):
@@ -586,7 +594,11 @@ class SerialBridge:
         # 发布
         msg = Int64MultiArray()
         msg.data = [ltick, rtick]
+        received = rospy.Time.now() if self.linear_diagnostics else None
         self.tick_pub.publish(msg)
+        if received is not None:
+            rospy.loginfo("[LINEAR_TICK] stamp=%.6f ltick=%d rtick=%d",
+                          received.to_sec(), ltick, rtick)
         rospy.loginfo_throttle(1.0, f"[bridge] tick #{self.tick_count}: ltick={ltick}, rtick={rtick}")
 
         if self.last_sent_zero:

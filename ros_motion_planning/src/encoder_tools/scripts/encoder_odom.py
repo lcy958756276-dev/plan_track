@@ -27,6 +27,7 @@ class EncoderOdometry:
         self.max_wheel_speed = rospy.get_param("~max_wheel_speed", 0.70)
         self.max_angular_speed = rospy.get_param("~max_angular_speed", 1.50)
         self.velocity_filter_alpha = rospy.get_param("~velocity_filter_alpha", 0.35)
+        self.linear_diagnostics = rospy.get_param("~linear_diagnostics", False)
 
         # 初始位置偏移（让机器人初始位置落在 my_map_two 空闲区）
         initial_x = rospy.get_param("~initial_x", 0.0)
@@ -182,6 +183,13 @@ class EncoderOdometry:
 
         # 发布 TF
         self._pub_tf(now)
+
+        if self.linear_diagnostics:
+            rospy.loginfo(
+                "[LINEAR_ODOM] stamp=%.6f ltick=%d rtick=%d dt=%.6f "
+                "left_mps=%.6f right_mps=%.6f raw_mps=%.6f filtered_mps=%.6f",
+                now.to_sec(), ltick, rtick, dt, v_left, v_right, raw_v, v,
+            )
 
     def timer_cb(self, event):
         """10Hz 定时回调：重新发布最新的 /odom + TF，使 RViz 显示平滑"""
