@@ -198,6 +198,20 @@ class VelocityPlotter:
             smoothed.append(alpha * value + (1.0 - alpha) * smoothed[-1])
         return smoothed
 
+    def _smoothed_velocity(self, values):
+        # A centered median rejects isolated spikes before the light display EWMA.
+        despiked = [
+            median(values[max(0, index - 2):index + 3]) for index in range(len(values))
+        ]
+        ewma = self._smoothed_series(despiked, alpha=0.5)
+        # Round the remaining short ripples with a centered pass.
+        last_index = len(ewma) - 1
+        return [
+            sum(weight * ewma[min(last_index, max(0, index + offset))]
+                for offset, weight in enumerate((1, 2, 3, 2, 1), start=-2)) / 9
+            for index in range(len(ewma))
+        ]
+
     @staticmethod
     def _smoothed_clearance(times, values):
         """Remove short excursions and round transitions for display."""
@@ -265,19 +279,8 @@ class VelocityPlotter:
         linear = [row[1] for row in comparison]
         # Display-only compensation: do not alter /odom, CSV, or control inputs.
         angular = [2.0 * row[2] for row in comparison]
-        # A centered median rejects isolated spikes before the light display EWMA.
-        linear_despiked = [
-            median(linear[max(0, index - 2):index + 3]) for index in range(len(linear))
-        ]
-        linear_ewma = self._smoothed_series(linear_despiked, alpha=0.5)
-        # Round the remaining short ripples with a centered pass.
-        last_index = len(linear_ewma) - 1
-        linear_smoothed = [
-            sum(weight * linear_ewma[min(last_index, max(0, index + offset))]
-                for offset, weight in enumerate((1, 2, 3, 2, 1), start=-2)) / 9
-            for index in range(len(linear_ewma))
-        ]
-        angular_smoothed = self._smoothed_series(angular)
+        linear_smoothed = self._smoothed_velocity(linear)
+        angular_smoothed = self._smoothed_velocity(angular)
         command_linear = [row[3] for row in comparison]
         command_angular = [row[4] for row in comparison]
         tracking_risk = [row[5] for row in comparison]
@@ -336,10 +339,10 @@ class VelocityPlotter:
         axes[0].grid(True, alpha=0.3)
         axes[0].legend(loc="best")
 
-        axes[1].plot(times, angular, color="#d62728", linewidth=0.9, alpha=0.30,
+        axes[1].plot(times, angular, color="#d62728", linewidth=0.9, alpha=0.15,
                      label="actual /odom raw x2 (display only)")
         axes[1].plot(times, angular_smoothed, color="#d62728", linewidth=1.6,
-                     label="actual /odom EWMA x2 (display only)")
+                     label="actual /odom smoothed x2 (display only)")
         if command_times:
             axes[1].step(command_times, command_angular_steps, where="post", color="#2ca02c",
                          linewidth=1.4, linestyle="--", label="NMPC command /cmd_vel")
