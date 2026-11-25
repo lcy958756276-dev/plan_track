@@ -233,7 +233,7 @@ sleep 2
 # ── 6. 启动里程计 ──
 echo "[6/8] 启动 encoder_odom.py (里程计)..."
 rosrun encoder_tools encoder_odom.py \
-    _initial_x:="$INITIAL_X" _initial_y:="$INITIAL_Y" _initial_yaw:="$INITIAL_YAW" _wheel_base:=0.8 \
+    _initial_x:="$INITIAL_X" _initial_y:="$INITIAL_Y" _initial_yaw:="$INITIAL_YAW" _wheel_base:=0.795 \
     _linear_diagnostics:=true \
     > "$LOG_DIR/encoder_odom.log" 2>&1 &
 PID_ODOM=$!
