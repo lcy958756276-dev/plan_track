@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 # run_debug.sh
+# 固定目标点测试：启动完成后，在另一个已加载 ROS 环境的终端复制以下命令（去掉行首 #）。
+# 去程（沿启动时车头方向 -Y 前进 0.25 m，map 坐标）：
+# rostopic pub -1 /move_base_simple/goal geometry_msgs/PoseStamped '{header: {stamp: now, frame_id: map}, pose: {position: {x: -1.16943, y: 1.63119}, orientation: {z: -0.70710678, w: 0.70710678}}}'
+# 去程结束后再发回程（沿 +Y 返回启动位置）：
+# rostopic pub -1 /move_base_simple/goal geometry_msgs/PoseStamped '{header: {stamp: now, frame_id: map}, pose: {position: {x: -1.16943, y: 1.88119}, orientation: {z: 0.70710678, w: 0.70710678}}}'
+#
 # 启动所有的节点（含 Gazebo，但是 Gazebo 不发布 odom TF，由 encoder_odom.py 接管）
 # 输出写入 log/ 目录
 #
