@@ -1,20 +1,20 @@
-=== 启动时间: 2026年 11月 26日 星期四 16:36:39 CST ===
-[16:36:39] [1] main_generate.py start
-[16:36:39] [1] main_generate.py done
-[16:36:39] [2] use_encoder_odom flag set
-[16:36:39] [3] loading robot_description
-[16:36:40] [3] robot_description loaded
-[16:36:43] [4] starting gzserver
-[16:36:49] [4] spawn_model start
-[31m[ERROR] [1795682210.358234659]: DeleteModel: model [my_robot] does not exist[0m
-[31m[ERROR] [1795682211.701339311]: DeleteModel: model [new_robot] does not exist[0m
-[INFO] [1795682213.496546]: Loading model XML from ros parameter robot_description
-[INFO] [1795682213.502728]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1795682213.507299]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1795682214.136513]: Spawn status: SpawnModel: Successfully spawned entity
-[16:36:54] [4] spawn_model exit=0
-[16:37:07] [8] generating move_base launch file
-[16:37:07] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 11月 26日 星期四 17:01:03 CST ===
+[17:01:03] [1] main_generate.py start
+[17:01:03] [1] main_generate.py done
+[17:01:03] [2] use_encoder_odom flag set
+[17:01:03] [3] loading robot_description
+[17:01:03] [3] robot_description loaded
+[17:01:07] [4] starting gzserver
+[17:01:13] [4] spawn_model start
+[31m[ERROR] [1795683674.214097911]: DeleteModel: model [my_robot] does not exist[0m
+[31m[ERROR] [1795683675.623475020]: DeleteModel: model [new_robot] does not exist[0m
+[INFO] [1795683677.503108]: Loading model XML from ros parameter robot_description
+[INFO] [1795683677.511981]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1795683677.517533]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1795683678.123147]: Spawn status: SpawnModel: Successfully spawned entity
+[17:01:18] [4] spawn_model exit=0
+[17:01:31] [8] generating move_base launch file
+[17:01:31] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
 path_planner/PathPlanner
 double_nmpc_controller/DoubleNMPCController
@@ -46,29 +46,29 @@ global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 rpp_controller /home/lcy/robot_graduation/ros_motion_planning/../ros_motion_planning/src/core/controller/rpp_controller/rpp_controller_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-seq: 5
+seq: 6
 stamp: 
-  secs: 1795682229
-  nsecs: 234639644
+  secs: 1795683693
+  nsecs: 788266181
 frame_id: "gazebo_scan_capture"
 ---
-seq: 140
+seq: 154
 stamp: 
-  secs: 1795682231
-  nsecs: 345269441
+  secs: 1795683695
+  nsecs: 976525068
 frame_id: "odom"
 ---
-  NMPC diagnostic bag: /home/lcy/robot_graduation/ros_motion_planning/log/nmpc_diag_20261126_163712.bag
-[33m[WARN] [1795682234.605855240]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
-[33m[WARN] [1795682234.608787120]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
-[16:37:15] [8] move_base 启动后状态:
+  NMPC diagnostic bag: /home/lcy/robot_graduation/ros_motion_planning/log/nmpc_diag_20261126_170136.bag
+[33m[WARN] [1795683699.381922232]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1795683699.385327612]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[17:01:39] [8] move_base 启动后状态:
   [诊断] 检查 move_base 是否存活:
   [诊断] move_base 进程存活
   [诊断] rostopic list | grep move_base:
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I20261126 16:37:15.216431  8880 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
-I20261126 16:37:15.235363  8880 path_planner_factory.cpp:146] Using path planner: astar_polyline
-[33m[WARN] [1795682235.271610965]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+I20261126 17:01:40.058749 15123 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
+I20261126 17:01:40.084079 15123 path_planner_factory.cpp:146] Using path planner: astar_polyline
+[33m[WARN] [1795683700.110456216]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
 /move_base/DoubleNMPCController/dynamic_safe_margin
 /move_base/DoubleNMPCController/footprint_clearance
 /move_base/DoubleNMPCController/predicted_min_clearance
@@ -156,39 +156,86 @@ inflation_radius: 0.3
 Type: nav_msgs/OccupancyGrid
 
 Publishers: 
- * /move_base (http://ubuntu:42939/)
+ * /move_base (http://ubuntu:33421/)
 
 Subscribers: 
- * /nmpc_stop_diagnostics (http://ubuntu:38021/)
+ * /nmpc_stop_diagnostics (http://ubuntu:39165/)
 
 
   [诊断] global costmap 参数结束
-I20261126 16:37:50.325773  8880 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.16943, 1.88119) goal=(-1.16408, 2.06853)
-I20261126 16:37:50.344074  8880 astar_polyline_planner.cpp:250] AStarPolyline: base poses=5, polyline vertices=2, dense poses=5, path_cost(max/mean)=0/0, inflated_poses=0/5
-I20261126 16:37:50.347551  8880 path_planner_node.cpp:302] PathPlanner make_plan response: poses=5 end=(-1.16408, 2.06853) end_goal_dist=0
-[33m[WARN] [1795682281.582087135]: The /scan_fixed observation buffer has not been updated for 2.55 seconds, and it should be updated every 2.50 seconds.[0m
-[33m[WARN] [1795682281.615774689]: The /scan_fixed observation buffer has not been updated for 2.58 seconds, and it should be updated every 2.50 seconds.[0m
-[33m[WARN] [1795682282.082084425]: The /scan_fixed observation buffer has not been updated for 3.05 seconds, and it should be updated every 2.50 seconds.[0m
-[33m[WARN] [1795682282.115763303]: The /scan_fixed observation buffer has not been updated for 3.08 seconds, and it should be updated every 2.50 seconds.[0m
-[33m[WARN] [1795682282.582087576]: The /scan_fixed observation buffer has not been updated for 3.55 seconds, and it should be updated every 2.50 seconds.[0m
-[33m[WARN] [1795682282.615769237]: The /scan_fixed observation buffer has not been updated for 3.58 seconds, and it should be updated every 2.50 seconds.[0m
-[33m[WARN] [1795682283.082090587]: The /scan_fixed observation buffer has not been updated for 4.05 seconds, and it should be updated every 2.50 seconds.[0m
-[33m[WARN] [1795682283.115793011]: The /scan_fixed observation buffer has not been updated for 4.08 seconds, and it should be updated every 2.50 seconds.[0m
-[33m[WARN] [1795682283.582081636]: The /scan_fixed observation buffer has not been updated for 4.55 seconds, and it should be updated every 2.50 seconds.[0m
-[33m[WARN] [1795682283.615764477]: The /scan_fixed observation buffer has not been updated for 4.58 seconds, and it should be updated every 2.50 seconds.[0m
-[33m[WARN] [1795682284.083134680]: The /scan_fixed observation buffer has not been updated for 5.05 seconds, and it should be updated every 2.50 seconds.[0m
-[33m[WARN] [1795682284.115769654]: The /scan_fixed observation buffer has not been updated for 5.08 seconds, and it should be updated every 2.50 seconds.[0m
-[33m[WARN] [1795682284.582104710]: The /scan_fixed observation buffer has not been updated for 5.55 seconds, and it should be updated every 2.50 seconds.[0m
-[33m[WARN] [1795682284.615768411]: The /scan_fixed observation buffer has not been updated for 5.58 seconds, and it should be updated every 2.50 seconds.[0m
-[33m[WARN] [1795682285.082081953]: The /scan_fixed observation buffer has not been updated for 6.05 seconds, and it should be updated every 2.50 seconds.[0m
-[33m[WARN] [1795682285.115767633]: The /scan_fixed observation buffer has not been updated for 6.08 seconds, and it should be updated every 2.50 seconds.[0m
+I20261126 17:02:35.731637 15123 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.16943, 1.88119) goal=(-1.16943, 1.63119)
+I20261126 17:02:35.759779 15123 astar_polyline_planner.cpp:250] AStarPolyline: base poses=6, polyline vertices=2, dense poses=6, path_cost(max/mean)=0/0, inflated_poses=0/6
+I20261126 17:02:35.774227 15123 path_planner_node.cpp:302] PathPlanner make_plan response: poses=6 end=(-1.16943, 1.63119) end_goal_dist=0
+I20261126 17:02:35.846216 15137 astar_polyline_planner.cpp:250] AStarPolyline: base poses=6, polyline vertices=2, dense poses=6, path_cost(max/mean)=0/0, inflated_poses=0/6
+[0m[INFO] [1795683699.388087936]: global_costmap: Using plugin "static_map"[0m
+[0m[INFO] [1795683699.411359004]: Requesting the map...[0m
+[0m[INFO] [1795683699.741184210]: Resizing costmap to 384 X 384 at 0.050000 m/pix[0m
+[0m[INFO] [1795683699.840983692]: Received a 384 X 384 map at 0.050000 m/pix[0m
+[0m[INFO] [1795683699.847476020]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1795683699.855265374]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1795683699.908614335]: global_costmap: Using plugin "voronoi_layer"[0m
+[0m[INFO] [1795683699.923206449]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1795683700.113163419]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1795683700.127440781]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1795683700.193472798]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1795683700.334672172]: Created local_planner double_nmpc_controller/DoubleNMPCController[0m
+[0m[INFO] [1795683700.485576581]: DoubleNMPCController initialized: prediction=0.16s x 3, command=0.05s, planner=0.48s x 6 (2.88s motion + 1.44s brake certification, updated every 0.1s), max_angular_velocity=1.5rad/s, margin=[0.02, 0.06] m. Set ~DoubleNMPCController/max_linear_velocity explicitly before high-speed operation.[0m
+[0m[INFO] [1795683700.485711397]: [NMPC_LONG_MODEL] integration=continuous_substeps stage_s=0.480 substeps=6 substep_s=0.080 motion_stages=6 brake_stages=3[0m
+[0m[INFO] [1795683700.485749253]: [NMPC_SPEED_PROFILE] configured_target_mps=0.420 max_linear_mps=0.450 profile_decel_mps2=0.325[0m
+[0m[INFO] [1795683700.829978861]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1795683700.847294850]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1795683700.945088219]: odom received![0m
+[0m[INFO] [1795683755.760761731]: [ASTAR_FOOTPRINT] t=1795683755.751 target_margin_m=0.090 weight=6.00 min_margin_m=0.090 below_target_m=0.000 tight_pose=(-1.169,1.881,-1.571rad) rejected_curve_attempts=0[0m
+[0m[INFO] [1795683755.761057252]: [ASTAR_CLEARANCE] t=1795683755.751 result=ok start=(-1.169,1.881) goal=(-1.169,1.631) target_m=0.150 weight=4.00 cell_m=0.050 expanded=6 elapsed_ms=28.9 base_min_m=0.150 output_min_m=0.150 base_below_target_m=0.000 output_below_target_m=0.000 output_nonfree_m=0.000 base_length_m=0.250 output_length_m=0.250 vertices=2 poses=6 corner_trim_m=0.200 rounded=0/0 polyline_max_turn_deg=0.0 rounded_max_turn_deg=0.0 curved_length_m=0.000 max_unrounded_turn_deg=0.0[0m
+[0m[INFO] [1795683755.849132756]: [ASTAR_FOOTPRINT] t=1795683755.846 target_margin_m=0.090 weight=6.00 min_margin_m=0.090 below_target_m=0.000 tight_pose=(-1.169,1.881,-1.571rad) rejected_curve_attempts=0[0m
+[0m[INFO] [1795683755.849245364]: [ASTAR_CLEARANCE] t=1795683755.846 result=ok start=(-1.169,1.881) goal=(-1.169,1.631) target_m=0.150 weight=4.00 cell_m=0.050 expanded=6 elapsed_ms=33.0 base_min_m=0.150 output_min_m=0.150 base_below_target_m=0.000 output_below_target_m=0.000 output_nonfree_m=0.000 base_length_m=0.250 output_length_m=0.250 vertices=2 poses=6 corner_trim_m=0.200 rounded=0/0 polyline_max_turn_deg=0.0 rounded_max_turn_deg=0.0 curved_length_m=0.000 max_unrounded_turn_deg=0.0[0m
+[0m[INFO] [1795683755.866742634]: [NMPC_SPEED_PROFILE] result=built length_m=0.250 terminal_s=0.000 stations=1 initial_cap_mps=0.120 peak_cap_mps=0.120 terminal_cap_mps=0.120[0m
+[0m[INFO] [1795683755.867923692]: DoubleNMPC footprint safety check enabled: body=0.600x0.300m margin=runtime sample_step=0.050m robot_radius_param=0.300m[0m
+[0m[INFO] [1795683755.869310381]: DoubleNMPC: terminal=1 goal_dist=0.250 path_s=0.000/0.250 cte=0.000 lookahead=(0.95,0.45) curvature=0.000  curve_cap=0.450  plan_margin=0.020  plan=(0.110, -0.001) track_cap=0.000  cmd=(0.013, -0.001)  moving_w_cap=1.500  heading=-0.001  speed_scale=1.00 pred_err=(0.006, 0.001)  turn=0.00  risk=0.03  margin=0.020  min_clearance=0.519[0m
+[0m[INFO] [1795683756.416956357]: DoubleNMPC: terminal=1 goal_dist=0.223 path_s=0.027/0.250 cte=0.000 lookahead=(0.95,0.45) curvatuI20261126 17:02:49.255101 15123 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.1694, 1.70734) goal=(-1.16943, 1.88119)
+I20261126 17:02:49.283336 15123 astar_polyline_planner.cpp:250] AStarPolyline: base poses=4, polyline vertices=2, dense poses=5, path_cost(max/mean)=0/0, inflated_poses=0/4
+I20261126 17:02:49.285531 15123 path_planner_node.cpp:302] PathPlanner make_plan response: poses=5 end=(-1.16943, 1.88119) end_goal_dist=0
+I20261126 17:02:57.228488 15137 astar_polyline_planner.cpp:250] AStarPolyline: base poses=4, polyline vertices=2, dense poses=5, path_cost(max/mean)=0/0, inflated_poses=0/4
+re=0.000  curve_cap=0.450  plan_margin=0.020  plan=(0.093, -0.000) track_cap=0.096  cmd=(0.093, -0.000)  moving_w_cap=1.500  heading=-0.000  speed_scale=1.00 pred_err=(0.023, 0.000)  turn=0.00  risk=0.02  margin=0.020  min_clearance=0.531[0m
+[0m[INFO] [1795683756.916843361]: DoubleNMPC timing: calls=22 window=1.05s rate=21.0Hz cycle_ms(avg/max)=0.48/2.34 budget=50.0 over_budget=0 planner_calls=0 planner_ms(avg/max)=0.00/0.00[0m
+[0m[INFO] [1795683756.966736320]: DoubleNMPC: terminal=1 goal_dist=0.177 path_s=0.073/0.250 cte=0.000 lookahead=(0.95,0.45) curvature=0.000  curve_cap=0.450  plan_margin=0.020  plan=(0.063, -0.001) track_cap=0.065  cmd=(0.063, -0.001)  moving_w_cap=1.500  heading=-0.000  speed_scale=1.00 pred_err=(0.023, 0.000)  turn=0.00  risk=0.02  margin=0.020  min_clearance=0.531[0m
+[0m[INFO] [1795683757.467616125]: DoubleNMPC: terminal=1 goal_dist=0.149 path_s=0.101/0.250 cte=0.000 lookahead=(0.95,0.45) curvature=0.000  curve_cap=0.450  plan_margin=0.020  plan=(0.045, -0.001) track_cap=0.047  cmd=(0.045, -0.001)  moving_w_cap=1.500  heading=-0.001  speed_scale=1.00 pred_err=(0.022, 0.000)  turn=0.00  risk=0.01  margin=0.020  min_clearance=0.531[0m
+[0m[INFO] [1795683757.917779737]: DoubleNMPC timing: calls=20 window=1.00s rate=20.0Hz cycle_ms(avg/max)=0.60/1.37 budget=50.0 over_budget=0 planner_calls=0 planner_ms(avg/max)=0.00/0.00[0m
+[0m[INFO] [1795683758.016756311]: DoubleNMPC: terminal=1 goal_dist=0.127 path_s=0.123/0.250 cte=0.000 lookahead=(0.95,0.45) curvature=0.000  curve_cap=0.450  plan_margin=0.020  plan=(0.035, -0.001) track_cap=0.035  cmd=(0.035, -0.001)  moving_w_cap=1.500  heading=-0.001  speed_scale=1.00 pred_err=(0.023, 0.000)  turn=0.00  risk=0.03  margin=0.020  min_clearance=0.531[0m
+[0m[INFO] [1795683758.516866227]: DoubleNMPC: terminal=1 goal_dist=0.109 path_s=0.141/0.250 cte=0.000 lookahead=(0.95,0.45) curvature=0.000  curve_cap=0.450  plan_margin=0.020  plan=(0.035, -0.001) track_cap=0.035  cmd=(0.035, -0.001)  moving_w_cap=1.500  heading=-0.001  speed_scale=1.00 pred_err=(0.009, 0.000)  turn=0.00  risk=0.00  margin=0.020  min_clearance=0.531[0m
+[0m[INFO] [1795683758.966694575]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.47/1.16 budget=50.0 over_budget=0 planner_calls=0 planner_ms(avg/max)=0.00/0.00[0m
+[0m[INFO] [1795683759.016889103]: DoubleNMPC: terminal=1 goal_dist=0.091 path_s=0.159/0.250 cte=0.000 lookahead=(0.95,0.45) curvature=0.000  curve_cap=0.450  plan_margin=0.020  plan=(0.035, -0.000) track_cap=0.035  cmd=(0.035, -0.000)  moving_w_cap=1.500  heading=-0.000  speed_scale=1.00 pred_err=(0.024, 0.000)  turn=0.00  risk=0.02  margin=0.020  min_clearance=0.531[0m
+[0m[INFO] [1795683769.283692361]: [ASTAR_FOOTPRINT] t=1795683769.283 target_margin_m=0.090 weight=6.00 min_margin_m=0.090 below_target_m=0.000 tight_pose=(-1.169,1.707,1.571rad) rejected_curve_attempts=0[0m
+[0m[INFO] [1795683769.283860841]: [ASTAR_CLEARANCE] t=1795683769.283 result=ok start=(-1.169,1.707) goal=(-1.169,1.881) target_m=0.150 weight=4.00 cell_m=0.050 expanded=4 elapsed_ms=28.5 base_min_m=0.150 output_min_m=0.150 base_below_target_m=0.000 output_below_target_m=0.000 output_nonfree_m=0.000 base_length_m=0.150 output_length_m=0.174 vertices=2 poses=5 corner_trim_m=0.200 rounded=0/0 polyline_max_turn_deg=0.0 rounded_max_turn_deg=0.0 curved_length_m=0.000 max_unrounded_turn_deg=0.0[0m
+[0m[INFO] [1795683777.228795407]: [ASTAR_FOOTPRINT] t=1795683777.228 target_margin_m=0.090 weight=6.00 min_margin_m=0.090 below_target_m=0.000 tight_pose=(-1.169,1.715,1.574rad) rejected_curve_attempts=0[0m
+[0m[INFO] [1795683777.228887439]: [ASTAR_CLEARANCE] t=1795683777.228 result=ok start=(-1.169,1.715) goal=(-1.169,1.881) target_m=0.150 weight=4.00 cell_m=0.050 expanded=4 elapsed_ms=35.6 base_min_m=0.150 output_min_m=0.150 base_below_target_m=0.000 output_below_target_m=0.000 output_nonfree_m=0.000 base_length_m=0.150 output_length_m=0.166 vertices=2 poses=5 corner_trim_m=0.200 rounded=0/0 polyline_max_turn_deg=0.0 rounded_max_turn_deg=0.0 curved_length_m=0.000 max_unrounded_turn_I20261126 17:03:33.505098 15123 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.1701, 1.79986) goal=(-1.16943, 1.63119)
+I20261126 17:03:33.526772 15123 astar_polyline_planner.cpp:250] AStarPolyline: base poses=4, polyline vertices=2, dense poses=5, path_cost(max/mean)=0/0, inflated_poses=0/4
+I20261126 17:03:33.539695 15123 path_planner_node.cpp:302] PathPlanner make_plan response: poses=5 end=(-1.16943, 1.63119) end_goal_dist=0
+I20261126 17:03:41.060708 15137 astar_polyline_planner.cpp:250] AStarPolyline: base poses=4, polyline vertices=2, dense poses=5, path_cost(max/mean)=0/0, inflated_poses=0/4
+deg=0.0[0m
+[0m[INFO] [1795683777.242870113]: [NMPC_SPEED_PROFILE] result=built length_m=0.166 terminal_s=0.000 stations=1 initial_cap_mps=0.120 peak_cap_mps=0.120 terminal_cap_mps=0.120[0m
+[0m[INFO] [1795683777.243280354]: DoubleNMPC: terminal=1 goal_dist=0.166 path_s=0.000/0.166 cte=0.000 lookahead=(0.95,0.45) curvature=0.000  curve_cap=0.450  plan_margin=0.020  plan=(0.056, -0.034) track_cap=0.000  cmd=(0.013, -0.034)  moving_w_cap=1.500  heading=-0.019  speed_scale=0.98 pred_err=(0.006, 0.019)  turn=0.05  risk=0.01  margin=0.020  min_clearance=0.531[0m
+[0m[INFO] [1795683777.793083617]: DoubleNMPC: terminal=1 goal_dist=0.162 path_s=0.004/0.166 cte=0.000 lookahead=(0.95,0.45) curvature=0.000  curve_cap=0.450  plan_margin=0.020  plan=(0.053, -0.034) track_cap=0.055  cmd=(0.053, -0.034)  moving_w_cap=1.500  heading=-0.019  speed_scale=0.98 pred_err=(0.021, 0.019)  turn=0.05  risk=0.13  margin=0.020  min_clearance=0.531[0m
+[0m[INFO] [1795683778.243117921]: DoubleNMPC timing: calls=21 window=1.00s rate=21.0Hz cycle_ms(avg/max)=0.39/0.75 budget=50.0 over_budget=0 planner_calls=0 planner_ms(avg/max)=0.00/0.00[0m
+[0m[INFO] [1795683778.293145345]: DoubleNMPC: terminal=1 goal_dist=0.131 path_s=0.035/0.166 cte=0.001 lookahead=(0.95,0.45) curvature=0.000  curve_cap=0.450  plan_margin=0.020  plan=(0.035, -0.039) track_cap=0.035  cmd=(0.035, -0.039)  moving_w_cap=1.500  heading=-0.022  speed_scale=0.98 pred_err=(0.010, 0.017)  turn=0.05  risk=0.12  margin=0.020  min_clearance=0.489[0m
+[0m[INFO] [1795683778.793678785]: DoubleNMPC: terminal=1 goal_dist=0.114 path_s=0.052/0.166 cte=0.001 lookahead=(0.95,0.45) curvature=0.000  curve_cap=0.450  plan_margin=0.020  plan=(0.035, -0.031) track_cap=0.035  cmd=(0.035, -0.031)  moving_w_cap=1.500  heading=-0.017  speed_scale=0.99 pred_err=(0.020, 0.010)  turn=0.04  risk=0.08  margin=0.020  min_clearance=0.481[0m
+[0m[INFO] [1795683779.293078592]: DoubleNMPC timing: calls=21 window=1.05s rate=20.0Hz cycle_ms(avg/max)=0.39/1.02 budget=50.0 over_budget=0 planner_calls=0 planner_ms(avg/max)=0.00/0.00[0m
+[0m[INFO] [1795683779.343114368]: DoubleNMPC: terminal=1 goal_dist=0.095 path_s=0.071/0.166 cte=0.001 lookahead=(0.95,0.45) curvature=0.000  curve_cap=0.450  plan_margin=0.020  plan=(0.035, -0.019) track_cap=0.035  cmd=(0.035, -0.019)  moving_w_cap=1.500  heading=-0.011  speed_scale=0.99 pred_err=(0.012, 0.009)  turn=0.03  risk=0.04  margin=0.020  min_clearance=0.430[0m
+[0m[INFO] [1795683813.527182298]: [ASTAR_FOOTPRINT] t=1795683813.526 target_margin_m=0.090 weight=6.00 min_margin_m=0.090 below_target_m=0.000 tight_pose=(-1.170,1.800,-1.567rad) rejected_curve_attempts=0[0m
+[0m[INFO] [1795683813.527343322]: [ASTAR_CLEARANCE] t=1795683813.526 result=ok start=(-1.170,1.800) goal=(-1.169,1.631) target_m=0.150 weight=4.00 cell_m=0.050 expanded=4 elapsed_ms=22.0 base_min_m=0.150 output_min_m=0.150 base_below_target_m=0.000 output_below_target_m=0.000 output_nonfree_m=0.000 base_length_m=0.150 output_length_m=0.169 vertices=2 poses=5 corner_trim_m=0.200 rounded=0/0 polyline_max_turn_deg=0.0 rounded_max_turn_deg=0.0 curved_length_m=0.000 max_unrounded_turn_deg=0.0[0m
+[0m[INFO] [1795683821.060981126]: [ASTAR_FOOTPRINT] t=1795683821.060 target_margin_m=0.090 weight=6.00 min_margin_m=0.090 below_target_m=0.000 tight_pose=(-1.171,1.795,-1.559rad) rejected_curve_attempts=0[0m
+[0m[INFO] [1795683821.061343815]: [ASTAR_CLEARANCE] t=1795683821.060 result=ok start=(-1.171,1.795) goal=(-1.169,1.631) target_m=0.150 weight=4.00 cell_m=0.050 expanded=4 elapsed_ms=17.7 base_min_m=0.150 output_min_m=0.150 base_below_target_m=0.000 output_below_target_m=0.000 output_nonfree_m=0.000 base_length_m=0.150 output_length_m=0.164 vertices=2 poses=5 corner_trim_m=0.200 rounded=0/0 polyline_max_turn_deg=0.0 rounded_max_turn_deg=0.0 curved_length_m=0.000 max_unrounded_turn_deg=0.0[0m
+[0m[INFO] [1795683821.093828881]: [NMPC_SPEED_PROFILE] result=built length_m=0.164 terminal_s=0.000 stations=1 initial_cap_mps=0.120 peak_cap_mps=0.120 terminal_cap_mps=0.120[0m
+[0m[INFO] [1795683821.094444177]: DoubleNMPC: teI20261126 17:03:52.274964 15123 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.17066, 1.70655) goal=(-1.16943, 1.88119)
+I20261126 17:03:52.291574 15123 astar_polyline_planner.cpp:250] AStarPolyline: base poses=4, polyline vertices=2, dense poses=5, path_cost(max/mean)=0/0, inflated_poses=0/4
+I20261126 17:03:52.297484 15123 path_planner_node.cpp:302] PathPlanner make_plan response: poses=5 end=(-1.16943, 1.88119) end_goal_dist=0
 [31mWARNING: disk usage in log directory [/home/lcy/.ros/log] is over 1GB.
 It's recommended that you use the 'rosclean' command.[0m
-... logging to /home/lcy/.ros/log/58cd8846-e974-11f1-97a1-189341889b90/roslaunch-ubuntu-8781.log
+... logging to /home/lcy/.ros/log/e594a474-e976-11f1-bc87-189341889b90/roslaunch-ubuntu-14988.log
 Checking log directory for disk usage. This may take a while.
 Press Ctrl-C to interrupt
 ]2;/tmp/move_base_debug.launch
-[1mstarted roslaunch server http://ubuntu:38505/[0m
+[1mstarted roslaunch server http://ubuntu:39559/[0m
 
 SUMMARY
 ========
@@ -325,7 +372,7 @@ NODES
 
 [1mROS_MASTER_URI=http://localhost:11311[0m
 ]2;/tmp/move_base_debug.launch http://localhost:11311
-[1mprocess[move_base-1]: started with pid [8880][0m
+[1mprocess[move_base-1]: started with pid [15123][0m
 [move_base-1] killing on exit
 shutting down processing monitor...
 ... shutting down processing monitor complete
