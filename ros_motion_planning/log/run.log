@@ -1,24 +1,32 @@
-=== 启动时间: 2026年 11月 26日 星期四 15:31:40 CST ===
-[15:31:40] [1] main_generate.py start
-[15:31:41] [1] main_generate.py done
-[15:31:41] [2] use_encoder_odom flag set
-[15:31:41] [3] loading robot_description
-[15:31:41] [3] robot_description loaded
-[15:31:44] [4] starting gzserver
-[15:31:51] [4] spawn_model start
-[31m[ERROR] [1795678311.869414820]: DeleteModel: model [my_robot] does not exist[0m
-[31m[ERROR] [1795678313.298896409]: DeleteModel: model [new_robot] does not exist[0m
-[INFO] [1795678315.119788, 0.000000]: Loading model XML from ros parameter robot_description
-[INFO] [1795678315.127232, 0.000000]: Waiting for service /gz_debug/spawn_urdf_model
-[INFO] [1795678315.132356, 0.000000]: Calling service /gz_debug/spawn_urdf_model
-[INFO] [1795678315.732429, 7.520000]: Spawn status: SpawnModel: Successfully spawned entity
-[15:31:56] [4] spawn_model exit=0
-[15:32:08] [8] generating move_base launch file
-[15:32:08] [8] starting move_base via roslaunch
+=== 启动时间: 2026年 11月 26日 星期四 16:36:39 CST ===
+[16:36:39] [1] main_generate.py start
+[16:36:39] [1] main_generate.py done
+[16:36:39] [2] use_encoder_odom flag set
+[16:36:39] [3] loading robot_description
+[16:36:40] [3] robot_description loaded
+[16:36:43] [4] starting gzserver
+[16:36:49] [4] spawn_model start
+[31m[ERROR] [1795682210.358234659]: DeleteModel: model [my_robot] does not exist[0m
+[31m[ERROR] [1795682211.701339311]: DeleteModel: model [new_robot] does not exist[0m
+[INFO] [1795682213.496546]: Loading model XML from ros parameter robot_description
+[INFO] [1795682213.502728]: Waiting for service /gz_debug/spawn_urdf_model
+[INFO] [1795682213.507299]: Calling service /gz_debug/spawn_urdf_model
+[INFO] [1795682214.136513]: Spawn status: SpawnModel: Successfully spawned entity
+[16:36:54] [4] spawn_model exit=0
+[16:37:07] [8] generating move_base launch file
+[16:37:07] [8] starting move_base via roslaunch
   启动 move_base 前检查参数状态:
-  [诊断] base_global_planner 参数未设置
-  [诊断] base_local_planner 参数未设置
-  [诊断] global_costmap/plugins 参数未设置
+path_planner/PathPlanner
+double_nmpc_controller/DoubleNMPCController
+- name: static_map
+  type: costmap_2d::StaticLayer
+- name: obstacle_layer
+  type: costmap_2d::ObstacleLayer
+- name: voronoi_layer
+  type: costmap_2d::VoronoiLayer
+- name: inflation_layer
+  type: costmap_2d::InflationLayer
+
   [诊断] rospack plugins nav_core:
 path_planner /home/lcy/robot_graduation/ros_motion_planning/../ros_motion_planning/src/core/path_planner/path_planner/path_planner_plugin.xml
 lqr_controller /home/lcy/robot_graduation/ros_motion_planning/../ros_motion_planning/src/core/controller/lqr_controller/lqr_controller_plugin.xml
@@ -38,20 +46,287 @@ global_planner /opt/ros/noetic/share/global_planner/bgp_plugin.xml
 rotate_recovery /opt/ros/noetic/share/rotate_recovery/rotate_plugin.xml
 rpp_controller /home/lcy/robot_graduation/ros_motion_planning/../ros_motion_planning/src/core/controller/rpp_controller/rpp_controller_plugin.xml
 clear_costmap_recovery /opt/ros/noetic/share/clear_costmap_recovery/ccr_plugin.xml
-  启动失败：未收到 /scan_fixed，请查看 log/gazebo_sync.log
-正在停止所有进程...
-  已停止 clear_sched (PID=16699)
-  已停止 gzclient (PID=16142)
-  已停止 gzserver (PID=15981)
-  已停止 jsp (PID=15854)
-  已停止 map (PID=15903)
-  已停止 odom (PID=16507)
-  已停止 prerot (PID=16643)
-  已停止 read (PID=16442)
-  已停止 rsp (PID=15853)
-  已停止 rviz (PID=16401)
-  已停止 sync (PID=16595)
-  已停止 tf (PID=15963)
-  已停止 velocity_plotter (PID=16559)
-  已清理 /tmp/.use_encoder_odom 标志位
-清理完成
+seq: 5
+stamp: 
+  secs: 1795682229
+  nsecs: 234639644
+frame_id: "gazebo_scan_capture"
+---
+seq: 140
+stamp: 
+  secs: 1795682231
+  nsecs: 345269441
+frame_id: "odom"
+---
+  NMPC diagnostic bag: /home/lcy/robot_graduation/ros_motion_planning/log/nmpc_diag_20261126_163712.bag
+[33m[WARN] [1795682234.605855240]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1795682234.608787120]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[16:37:15] [8] move_base 启动后状态:
+  [诊断] 检查 move_base 是否存活:
+  [诊断] move_base 进程存活
+  [诊断] rostopic list | grep move_base:
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+I20261126 16:37:15.216431  8880 path_planner_node.cpp:72] PathPlannerNode pre_rotate-compatible build: accept large heading changes
+I20261126 16:37:15.235363  8880 path_planner_factory.cpp:146] Using path planner: astar_polyline
+[33m[WARN] [1795682235.271610965]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+/move_base/DoubleNMPCController/dynamic_safe_margin
+/move_base/DoubleNMPCController/footprint_clearance
+/move_base/DoubleNMPCController/predicted_min_clearance
+/move_base/DoubleNMPCController/tracking_errors
+/move_base/DoubleNMPCController/tracking_margin
+/move_base/DoubleNMPCController/tracking_risk
+/move_base/PathPlanner/expand
+/move_base/PathPlanner/expand_updates
+/move_base/PathPlanner/key_points
+/move_base/PathPlanner/particles
+/move_base/PathPlanner/particles_array
+/move_base/PathPlanner/plan
+/move_base/PathPlanner/random_tree
+/move_base/PathPlanner/random_tree_array
+/move_base/PathPlanner/safety_corridor
+/move_base/cancel
+/move_base/current_goal
+/move_base/feedback
+/move_base/global_costmap/costmap
+/move_base/global_costmap/costmap_updates
+/move_base/global_costmap/footprint
+/move_base/global_costmap/inflation_layer/parameter_descriptions
+/move_base/global_costmap/inflation_layer/parameter_updates
+/move_base/global_costmap/obstacle_layer/parameter_descriptions
+/move_base/global_costmap/obstacle_layer/parameter_updates
+/move_base/global_costmap/parameter_descriptions
+/move_base/global_costmap/parameter_updates
+/move_base/global_costmap/static_map/parameter_descriptions
+/move_base/global_costmap/static_map/parameter_updates
+/move_base/global_costmap/voronoi_layer/parameter_descriptions
+/move_base/global_costmap/voronoi_layer/parameter_updates
+/move_base/global_costmap/voronoi_layer/voronoi_grid
+/move_base/goal
+/move_base/local_costmap/costmap
+/move_base/local_costmap/costmap_updates
+/move_base/local_costmap/footprint
+/move_base/local_costmap/inflation_layer/parameter_descriptions
+/move_base/local_costmap/inflation_layer/parameter_updates
+/move_base/local_costmap/obstacle_layer/parameter_descriptions
+/move_base/local_costmap/obstacle_layer/parameter_updates
+/move_base/local_costmap/parameter_descriptions
+/move_base/local_costmap/parameter_updates
+/move_base/parameter_descriptions
+/move_base/parameter_updates
+/move_base/recovery_status
+/move_base/result
+/move_base/status
+/move_base_simple/goal
+  [诊断] rosservice list | grep move_base:
+/move_base/PathPlanner/make_plan
+/move_base/clear_costmaps
+/move_base/get_loggers
+/move_base/global_costmap/inflation_layer/set_parameters
+/move_base/global_costmap/obstacle_layer/set_parameters
+/move_base/global_costmap/set_parameters
+/move_base/global_costmap/static_map/set_parameters
+/move_base/global_costmap/voronoi_layer/set_parameters
+/move_base/local_costmap/inflation_layer/set_parameters
+/move_base/local_costmap/obstacle_layer/set_parameters
+/move_base/local_costmap/set_parameters
+/move_base/make_plan
+/move_base/set_logger_level
+/move_base/set_parameters
+  [诊断] global inflation_radius:
+0.3
+  [诊断] local inflation_radius:
+0.1
+  [诊断] global inflation_layer 参数:
+cost_scaling_factor: 2.0
+enabled: true
+inflate_unknown: false
+inflation_radius: 0.3
+
+  [诊断] global costmap plugins:
+- name: static_map
+  type: costmap_2d::StaticLayer
+- name: obstacle_layer
+  type: costmap_2d::ObstacleLayer
+- name: voronoi_layer
+  type: costmap_2d::VoronoiLayer
+- name: inflation_layer
+  type: costmap_2d::InflationLayer
+
+  [诊断] global costmap 话题信息:
+Type: nav_msgs/OccupancyGrid
+
+Publishers: 
+ * /move_base (http://ubuntu:42939/)
+
+Subscribers: 
+ * /nmpc_stop_diagnostics (http://ubuntu:38021/)
+
+
+  [诊断] global costmap 参数结束
+I20261126 16:37:50.325773  8880 path_planner_node.cpp:290] PathPlanner make_plan request: start=(-1.16943, 1.88119) goal=(-1.16408, 2.06853)
+I20261126 16:37:50.344074  8880 astar_polyline_planner.cpp:250] AStarPolyline: base poses=5, polyline vertices=2, dense poses=5, path_cost(max/mean)=0/0, inflated_poses=0/5
+I20261126 16:37:50.347551  8880 path_planner_node.cpp:302] PathPlanner make_plan response: poses=5 end=(-1.16408, 2.06853) end_goal_dist=0
+[33m[WARN] [1795682281.582087135]: The /scan_fixed observation buffer has not been updated for 2.55 seconds, and it should be updated every 2.50 seconds.[0m
+[33m[WARN] [1795682281.615774689]: The /scan_fixed observation buffer has not been updated for 2.58 seconds, and it should be updated every 2.50 seconds.[0m
+[33m[WARN] [1795682282.082084425]: The /scan_fixed observation buffer has not been updated for 3.05 seconds, and it should be updated every 2.50 seconds.[0m
+[33m[WARN] [1795682282.115763303]: The /scan_fixed observation buffer has not been updated for 3.08 seconds, and it should be updated every 2.50 seconds.[0m
+[33m[WARN] [1795682282.582087576]: The /scan_fixed observation buffer has not been updated for 3.55 seconds, and it should be updated every 2.50 seconds.[0m
+[33m[WARN] [1795682282.615769237]: The /scan_fixed observation buffer has not been updated for 3.58 seconds, and it should be updated every 2.50 seconds.[0m
+[33m[WARN] [1795682283.082090587]: The /scan_fixed observation buffer has not been updated for 4.05 seconds, and it should be updated every 2.50 seconds.[0m
+[33m[WARN] [1795682283.115793011]: The /scan_fixed observation buffer has not been updated for 4.08 seconds, and it should be updated every 2.50 seconds.[0m
+[33m[WARN] [1795682283.582081636]: The /scan_fixed observation buffer has not been updated for 4.55 seconds, and it should be updated every 2.50 seconds.[0m
+[33m[WARN] [1795682283.615764477]: The /scan_fixed observation buffer has not been updated for 4.58 seconds, and it should be updated every 2.50 seconds.[0m
+[33m[WARN] [1795682284.083134680]: The /scan_fixed observation buffer has not been updated for 5.05 seconds, and it should be updated every 2.50 seconds.[0m
+[33m[WARN] [1795682284.115769654]: The /scan_fixed observation buffer has not been updated for 5.08 seconds, and it should be updated every 2.50 seconds.[0m
+[33m[WARN] [1795682284.582104710]: The /scan_fixed observation buffer has not been updated for 5.55 seconds, and it should be updated every 2.50 seconds.[0m
+[33m[WARN] [1795682284.615768411]: The /scan_fixed observation buffer has not been updated for 5.58 seconds, and it should be updated every 2.50 seconds.[0m
+[33m[WARN] [1795682285.082081953]: The /scan_fixed observation buffer has not been updated for 6.05 seconds, and it should be updated every 2.50 seconds.[0m
+[33m[WARN] [1795682285.115767633]: The /scan_fixed observation buffer has not been updated for 6.08 seconds, and it should be updated every 2.50 seconds.[0m
+[31mWARNING: disk usage in log directory [/home/lcy/.ros/log] is over 1GB.
+It's recommended that you use the 'rosclean' command.[0m
+... logging to /home/lcy/.ros/log/58cd8846-e974-11f1-97a1-189341889b90/roslaunch-ubuntu-8781.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+]2;/tmp/move_base_debug.launch
+[1mstarted roslaunch server http://ubuntu:38505/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /move_base/DoubleNMPCController/clearance_jump_confirm_cycles: 5
+ * /move_base/DoubleNMPCController/clearance_jump_threshold: 0.15
+ * /move_base/DoubleNMPCController/command_period: 0.05
+ * /move_base/DoubleNMPCController/control_period: 0.16
+ * /move_base/DoubleNMPCController/equivalent_body_error_reference: 0.05
+ * /move_base/DoubleNMPCController/goal_tolerance: 0.08
+ * /move_base/DoubleNMPCController/heading_risk_deadzone: 0.0035
+ * /move_base/DoubleNMPCController/heading_risk_reference: 0.044
+ * /move_base/DoubleNMPCController/input_risk_deadzone: 0.12
+ * /move_base/DoubleNMPCController/margin_fall_per_cycle: 0.001
+ * /move_base/DoubleNMPCController/margin_relax_risk: 0.1
+ * /move_base/DoubleNMPCController/margin_rise_per_cycle: 0.0015
+ * /move_base/DoubleNMPCController/margin_tighten_risk: 0.2
+ * /move_base/DoubleNMPCController/max_angular_velocity: 1.5
+ * /move_base/DoubleNMPCController/max_lateral_acceleration: 0.35
+ * /move_base/DoubleNMPCController/max_linear_acceleration: 0.25
+ * /move_base/DoubleNMPCController/max_linear_deceleration: 0.65
+ * /move_base/DoubleNMPCController/max_linear_velocity: 0.45
+ * /move_base/DoubleNMPCController/max_margin: 0.06
+ * /move_base/DoubleNMPCController/min_curve_speed: 0.08
+ * /move_base/DoubleNMPCController/min_margin: 0.02
+ * /move_base/DoubleNMPCController/nominal_margin: 0.02
+ * /move_base/DoubleNMPCController/obstacle_relevance_distance: 1.0
+ * /move_base/DoubleNMPCController/path_cruise_speed: 0.42
+ * /move_base/DoubleNMPCController/planner_brake_stages: 3
+ * /move_base/DoubleNMPCController/planner_horizon_steps: 6
+ * /move_base/DoubleNMPCController/planner_period: 0.48
+ * /move_base/DoubleNMPCController/planner_update_period: 0.1
+ * /move_base/DoubleNMPCController/position_risk_deadzone: 0.015
+ * /move_base/DoubleNMPCController/position_risk_reference: 0.05
+ * /move_base/DoubleNMPCController/pressure_floor: 0.4
+ * /move_base/DoubleNMPCController/risk_ewma_alpha: 0.22
+ * /move_base/DoubleNMPCController/risk_fall_per_cycle: 0.05
+ * /move_base/DoubleNMPCController/risk_rise_per_cycle: 0.1
+ * /move_base/DoubleNMPCController/robot_radius: 0.3
+ * /move_base/DoubleNMPCController/safety_check_period: 0.08
+ * /move_base/DoubleNMPCController/terminal_approach_distance: 0.35
+ * /move_base/DoubleNMPCController/terminal_heading_threshold: 0.25
+ * /move_base/DoubleNMPCController/terminal_max_linear_velocity: 0.12
+ * /move_base/DoubleNMPCController/tracking_horizon_steps: 3
+ * /move_base/DoubleNMPCController/turn_relax_floor: 0.2
+ * /move_base/DoubleNMPCController/turn_risk_ewma_alpha: 0.25
+ * /move_base/PathPlanner/clearance_target_m: 0.15
+ * /move_base/PathPlanner/clearance_weight: 4.0
+ * /move_base/PathPlanner/corner_trim_m: 0.2
+ * /move_base/PathPlanner/footprint_margin_m: 0.09
+ * /move_base/PathPlanner/footprint_weight: 6.0
+ * /move_base/PathPlanner/planner_name: astar_polyline
+ * /move_base/base_global_planner: path_planner/Path...
+ * /move_base/base_local_planner: double_nmpc_contr...
+ * /move_base/conservative_reset_dist: 3.0
+ * /move_base/controller_frequency: 20.0
+ * /move_base/controller_patience: 15.0
+ * /move_base/global_costmap/cost_scaling_factor: 2.0
+ * /move_base/global_costmap/footprint: [[-0.3, -0.15], [...
+ * /move_base/global_costmap/footprint_padding: 0.0
+ * /move_base/global_costmap/global_frame: map
+ * /move_base/global_costmap/inflation_layer/cost_scaling_factor: 2.0
+ * /move_base/global_costmap/inflation_layer/enabled: True
+ * /move_base/global_costmap/inflation_layer/inflation_radius: 0.25
+ * /move_base/global_costmap/inflation_radius: 0.3
+ * /move_base/global_costmap/map_type: costmap
+ * /move_base/global_costmap/meter_scoring: True
+ * /move_base/global_costmap/obstacle_layer/observation_sources: scan
+ * /move_base/global_costmap/obstacle_layer/scan/clearing: True
+ * /move_base/global_costmap/obstacle_layer/scan/data_type: LaserScan
+ * /move_base/global_costmap/obstacle_layer/scan/expected_update_rate: 2.5
+ * /move_base/global_costmap/obstacle_layer/scan/inf_is_valid: True
+ * /move_base/global_costmap/obstacle_layer/scan/marking: True
+ * /move_base/global_costmap/obstacle_layer/scan/max_obstacle_height: 0.8
+ * /move_base/global_costmap/obstacle_layer/scan/min_obstacle_height: 0.0
+ * /move_base/global_costmap/obstacle_layer/scan/observation_persistence: 0.0
+ * /move_base/global_costmap/obstacle_layer/scan/obstacle_range: 2.0
+ * /move_base/global_costmap/obstacle_layer/scan/raytrace_range: 12.0
+ * /move_base/global_costmap/obstacle_layer/scan/sensor_frame: gazebo_scan_capture
+ * /move_base/global_costmap/obstacle_layer/scan/topic: /scan_fixed
+ * /move_base/global_costmap/origin_z: 0.0
+ * /move_base/global_costmap/plugins: [{'name': 'static...
+ * /move_base/global_costmap/publish_frequency: 1.0
+ * /move_base/global_costmap/publish_voxel_map: False
+ * /move_base/global_costmap/robot_base_frame: base_footprint
+ * /move_base/global_costmap/static_map/clear_time: 20
+ * /move_base/global_costmap/static_map/enabled: True
+ * /move_base/global_costmap/static_map/publish_static_map: True
+ * /move_base/global_costmap/transform_tolerance: 0.5
+ * /move_base/global_costmap/update_frequency: 2.0
+ * /move_base/global_costmap/z_resolution: 1
+ * /move_base/global_costmap/z_voxels: 2
+ * /move_base/local_costmap/footprint: [[-0.3, -0.15], [...
+ * /move_base/local_costmap/global_frame: odom
+ * /move_base/local_costmap/height: 5
+ * /move_base/local_costmap/inflation_layer/cost_scaling_factor: 10.0
+ * /move_base/local_costmap/inflation_layer/enabled: True
+ * /move_base/local_costmap/inflation_layer/inflation_radius: 0.1
+ * /move_base/local_costmap/obstacle_layer/observation_sources: scan
+ * /move_base/local_costmap/obstacle_layer/scan/clearing: True
+ * /move_base/local_costmap/obstacle_layer/scan/data_type: LaserScan
+ * /move_base/local_costmap/obstacle_layer/scan/expected_update_rate: 2.5
+ * /move_base/local_costmap/obstacle_layer/scan/inf_is_valid: True
+ * /move_base/local_costmap/obstacle_layer/scan/marking: True
+ * /move_base/local_costmap/obstacle_layer/scan/max_obstacle_height: 0.8
+ * /move_base/local_costmap/obstacle_layer/scan/min_obstacle_height: 0.0
+ * /move_base/local_costmap/obstacle_layer/scan/observation_persistence: 0.0
+ * /move_base/local_costmap/obstacle_layer/scan/obstacle_range: 2.0
+ * /move_base/local_costmap/obstacle_layer/scan/raytrace_range: 3.0
+ * /move_base/local_costmap/obstacle_layer/scan/sensor_frame: gazebo_scan_capture
+ * /move_base/local_costmap/obstacle_layer/scan/topic: /scan_fixed
+ * /move_base/local_costmap/plugins: [{'name': 'obstac...
+ * /move_base/local_costmap/publish_frequency: 1.0
+ * /move_base/local_costmap/resolution: 0.1
+ * /move_base/local_costmap/robot_base_frame: base_footprint
+ * /move_base/local_costmap/rolling_window: True
+ * /move_base/local_costmap/static_map: False
+ * /move_base/local_costmap/transform_tolerance: 0.5
+ * /move_base/local_costmap/update_frequency: 2.0
+ * /move_base/local_costmap/width: 5
+ * /move_base/oscillation_distance: 0.2
+ * /move_base/oscillation_timeout: 10.0
+ * /move_base/planner_frequency: 0.0
+ * /move_base/planner_patience: 5.0
+ * /move_base/recovery_behavior_enabled: False
+ * /move_base/shutdown_costmaps: False
+ * /rosdistro: noetic
+ * /rosversion: 1.17.0
+
+NODES
+  /
+    move_base (move_base/move_base)
+
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/tmp/move_base_debug.launch http://localhost:11311
+[1mprocess[move_base-1]: started with pid [8880][0m
+[move_base-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m

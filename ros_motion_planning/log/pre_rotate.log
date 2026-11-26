@@ -1,2 +1,24 @@
-[INFO] [1795678328.830745]: pre_rotate: debug build, make_plan_service=/move_base/PathPlanner/make_plan plan_goal_tolerance=0.300m
-[INFO] [1795678328.833669]: pre_rotate: clear_scheduler pause=False (startup)
+[WARN] [1795682270.348694]: pre_rotate: plan attempt=1 accepted=True poses=5 start=(-1.169, 1.881) end=(-1.164, 2.069) goal=(-1.164, 2.069) end_goal_dist=0.000m tol=0.300m
+Exception in thread Thread-5:
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/threading.py", line 932, in _bootstrap_inner
+    self.run()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/timer.py", line 237, in run
+    self._callback(TimerEvent(last_expected, last_real, current_expected, current_real, last_duration))
+  File "/home/lcy/robot_graduation/ros_motion_planning/../ros_motion_planning/src/encoder_tools/scripts/pre_rotate.py", line 62, in _timer_cb
+    self._check_rotation()
+  File "/home/lcy/robot_graduation/ros_motion_planning/../ros_motion_planning/src/encoder_tools/scripts/pre_rotate.py", line 121, in _check_rotation
+    self.cmd_pub.publish(twist)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 882, in publish
+    self.impl.publish(data)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 1041, in publish
+    raise ROSException("publish() to a closed topic")
+rospy.exceptions.ROSException: publish() to a closed topic
+[INFO] [1795682227.305960]: pre_rotate: debug build, make_plan_service=/move_base/PathPlanner/make_plan plan_goal_tolerance=0.300m
+[INFO] [1795682227.309094]: pre_rotate: clear_scheduler pause=False (startup)
+[INFO] [1795682269.289203]: pre_rotate: new goal frame=map goal=(-1.164, 2.069) odom=(-1.169, 1.881, -90.0deg)
+[INFO] [1795682269.292511]: pre_rotate: clear_scheduler pause=True (new goal, wait for one-shot plan)
+[INFO] [1795682269.302423]: pre_rotate: canceled current move_base goal
+[INFO] [1795682270.311993]: pre_rotate: connected make_plan service /move_base/PathPlanner/make_plan
+[INFO] [1795682270.354955]: pre_rotate: use global path heading 88.4deg
+[INFO] [1795682270.360107]: pre_rotate: path heading err=178.4deg, start rotation
