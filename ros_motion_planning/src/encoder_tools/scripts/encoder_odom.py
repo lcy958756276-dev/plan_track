@@ -12,6 +12,9 @@ encoder_odom.py
 
 import rospy
 import math
+import os
+import threading
+import time
 from std_msgs.msg import Int64MultiArray, Float64, Float64MultiArray
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import TransformStamped
@@ -33,6 +36,12 @@ class EncoderOdometry:
         initial_x = rospy.get_param("~initial_x", 0.0)
         initial_y = rospy.get_param("~initial_y", 0.0)
         initial_yaw = rospy.get_param("~initial_yaw", 0.0)
+        # 由启动脚本传入，避免 ROS master 保留上次运行的航向模式。
+        self.imu_topic = os.environ.get("ENCODER_ODOM_IMU_TOPIC", "")
+        self.initial_yaw = initial_yaw
+        self.imu_base_yaw = None
+        self.imu_sample = None
+        self.state_lock = threading.Lock()
 
         # 编码器参数 → 每脉冲对应距离
         pluse = 1.04190106 * 360.0 / (500.0 * 4 * 91)
@@ -74,16 +83,72 @@ class EncoderOdometry:
         # TF
         self.tf_br = tf2_ros.TransformBroadcaster()
 
+        if self.imu_topic:
+            from sensor_msgs.msg import Imu
+
+            self.imu_timeout = rospy.get_param("~imu_timeout", 0.5)
+            rospy.Subscriber(self.imu_topic, Imu, self.imu_cb, queue_size=1)
+            rospy.loginfo("等待 %s 的首帧姿态作为航向基准", self.imu_topic)
+
         # 订阅
         rospy.Subscriber("/wheel_ticks", Int64MultiArray, self.tick_cb, queue_size=100)
 
-        # 10Hz 定时器——即使编码器数据只到 0.5Hz，也让 TF 以 10Hz 刷新
-        rospy.Timer(rospy.Duration(0.1), self.timer_cb)
+        # IMU 回调跟随传感器频率，里程计和 TF 在 IMU 模式下统一按 20 Hz 发布。
+        rospy.Timer(rospy.Duration(0.05 if self.imu_topic else 0.1), self.timer_cb)
 
         rospy.loginfo("encoder_odom 已启动，等待 /wheel_ticks ...")
         rospy.loginfo("提示: 确保 read_uart.py 也在运行，否则收不到编码器数据")
 
+    @staticmethod
+    def wrap_angle(angle):
+        return math.atan2(math.sin(angle), math.cos(angle))
+
+    def imu_cb(self, msg):
+        q = msg.orientation
+        quaternion = (q.x, q.y, q.z, q.w)
+        norm_squared = sum(value * value for value in quaternion)
+        if msg.orientation_covariance[0] == -1 or not 0.9 <= norm_squared <= 1.1:
+            rospy.logwarn_throttle(3.0, "忽略无效的 IMU 姿态四元数")
+            return
+
+        yaw = tf_trans.euler_from_quaternion(quaternion)[2]
+        received_at = time.monotonic()
+        stamp = msg.header.stamp.to_sec()
+        with self.state_lock:
+            omega = 0.0
+            if self.imu_sample is not None:
+                previous_yaw, previous_stamp, previous_received_at, previous_omega = self.imu_sample
+                receive_dt = received_at - previous_received_at
+                dt = stamp - previous_stamp if stamp > 0 and previous_stamp > 0 else receive_dt
+                if dt <= 0:
+                    return
+                if receive_dt <= self.imu_timeout and dt <= self.imu_timeout:
+                    rate = self.wrap_angle(yaw - previous_yaw) / dt
+                    # 0.1 s 的时间常数让平滑程度不随 IMU 输出频率变化。
+                    alpha = -math.expm1(-dt / 0.1)
+                    omega = previous_omega + alpha * (rate - previous_omega)
+            if self.imu_base_yaw is None:
+                self.imu_base_yaw = yaw
+                rospy.loginfo("IMU 航向基准 %.2f°，里程计初始航向 %.2f°",
+                              math.degrees(yaw), math.degrees(self.initial_yaw))
+            self.imu_sample = (yaw, stamp, received_at, omega)
+
+    def update_imu_heading(self):
+        if self.imu_sample is None or time.monotonic() - self.imu_sample[2] > self.imu_timeout:
+            rospy.logwarn_throttle(3.0, "等待有效的 IMU 航向：%s", self.imu_topic)
+            return False
+        yaw, _, _, self.latest_omega = self.imu_sample
+        self.theta = self.wrap_angle(self.initial_yaw + self.wrap_angle(yaw - self.imu_base_yaw))
+        return True
+
     def tick_cb(self, msg):
+        if self.imu_topic:
+            with self.state_lock:
+                self.update_ticks(msg)
+        else:
+            self.update_ticks(msg)
+
+    def update_ticks(self, msg):
         self.msg_count += 1
 
         if len(msg.data) < 2:
@@ -92,6 +157,12 @@ class EncoderOdometry:
 
         ltick = msg.data[0]
         rtick = msg.data[1]
+
+        if self.imu_topic and not self.update_imu_heading():
+            # 缺少航向时不积分位移，恢复后重新建立编码器差分基准。
+            self.last_ltick = None
+            self.filtered_v = self.latest_v = 0.0
+            return
 
         # 第一次收到数据
         if self.last_ltick is None:
@@ -125,7 +196,7 @@ class EncoderOdometry:
         v_right = d_right / dt
 
         raw_v = (v_left + v_right) / 2.0
-        raw_omega = (v_right - v_left) / self.wheel_base
+        raw_omega = 0.0 if self.imu_topic else (v_right - v_left) / self.wheel_base
         if (abs(v_left) > self.max_wheel_speed or
                 abs(v_right) > self.max_wheel_speed or
                 abs(raw_omega) > self.max_angular_speed):
@@ -140,18 +211,18 @@ class EncoderOdometry:
         self.last_time = now
 
         d_center = (d_left + d_right) / 2.0
-        d_theta  = (d_right - d_left) / self.wheel_base
-
-        self.theta += d_theta
-        self.theta = math.atan2(math.sin(self.theta), math.cos(self.theta))
+        if not self.imu_topic:
+            d_theta = (d_right - d_left) / self.wheel_base
+            self.theta = self.wrap_angle(self.theta + d_theta)
         self.x += d_center * math.cos(self.theta)
         self.y += d_center * math.sin(self.theta)
 
         alpha = min(1.0, max(0.0, self.velocity_filter_alpha))
         self.filtered_v = alpha * raw_v + (1.0 - alpha) * self.filtered_v
-        self.filtered_omega = alpha * raw_omega + (1.0 - alpha) * self.filtered_omega
+        if not self.imu_topic:
+            self.filtered_omega = alpha * raw_omega + (1.0 - alpha) * self.filtered_omega
         v = self.filtered_v
-        omega = self.filtered_omega
+        omega = self.latest_omega if self.imu_topic else self.filtered_omega
 
         # 保存最新速度供 timer 发布
         self.latest_v = v
@@ -178,11 +249,9 @@ class EncoderOdometry:
         vel.data = [v_left, v_right, v, omega]
         self.vel_pub.publish(vel)
 
-        # 发布 odom
-        self._pub_odom(now, v, omega)
-
-        # 发布 TF
-        self._pub_tf(now)
+        if not self.imu_topic:
+            self._pub_odom(now, v, omega)
+            self._pub_tf(now)
 
         if self.linear_diagnostics:
             rospy.loginfo(
@@ -192,7 +261,18 @@ class EncoderOdometry:
             )
 
     def timer_cb(self, event):
-        """10Hz 定时回调：重新发布最新的 /odom + TF，使 RViz 显示平滑"""
+        """定时发布最新的 /odom 和 TF。"""
+        if self.imu_topic:
+            with self.state_lock:
+                if self.update_imu_heading():
+                    now = rospy.Time.now()
+                    self._pub_odom(now, self.latest_v, self.latest_omega)
+                    self._pub_tf(now)
+                else:
+                    self.last_ltick = None
+                    self.filtered_v = self.latest_v = 0.0
+            return
+
         now = rospy.Time.now()
         if not self.have_pose:
             # 即使没有编码器数据，也发布零位姿 TF，让 TF 树完整

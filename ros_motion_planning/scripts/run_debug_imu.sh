@@ -1,0 +1,483 @@
+#!/usr/bin/env bash
+# run_debug_imu.sh
+# 先启动厂家 ROS1 驱动，确保同一个 ROS master 能收到 /imu。
+# 固定目标点测试：启动完成后，在另一个已加载 ROS 环境的终端复制以下命令（去掉行首 #）。
+# 去程（沿启动时车头方向 -Y 前进 0.25 m，map 坐标）：
+# rostopic pub -1 /move_base_simple/goal geometry_msgs/PoseStamped '{header: {stamp: now, frame_id: map}, pose: {position: {x: -1.16943, y: 1.63119}, orientation: {z: -0.70710678, w: 0.70710678}}}'
+# 去程结束后再发回程（沿 +Y 返回启动位置）：
+# rostopic pub -1 /move_base_simple/goal geometry_msgs/PoseStamped '{header: {stamp: now, frame_id: map}, pose: {position: {x: -1.16943, y: 1.88119}, orientation: {z: 0.70710678, w: 0.70710678}}}'
+#
+# 启动所有的节点（含 Gazebo，但是 Gazebo 不发布 odom TF，由 encoder_odom.py 接管）
+# 输出写入 log/ 目录
+#
+# 与 main.sh 的关系:
+#   - main.sh: 原版 roslaunch（Gazebo 正常发布 odom TF，用于纯仿真）
+#   - run_debug_imu.sh: 设置 /tmp/.use_encoder_odom 标志位，Gazebo 跳过 odom TF
+#   - stop_debug.sh: 清理此标志位
+
+#我的启动文件是run_debug.sh，但是现在有点问题是当我将system_config.pb文件内的max_linear_velocity: 0.05    # m / s的速度改为0.1之后，他就容易不跟随路线的约束，之前分析可能是第一个是apf这个controller预测头较长，第二个是可能线速限制度上去了但是角速度限制还没上去
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+WORKSPACE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+LOG_DIR="$WORKSPACE_DIR/log"
+IMU_TOPIC="${IMU_TOPIC:-/imu}"
+NAV_SCAN_TOPIC=/scan_fixed
+NAV_SCAN_FRAME=gazebo_scan_capture
+NAV_SCAN_LOG=gazebo_sync.log
+DIAG_SCAN_TOPICS=(/scan /scan_fixed /gazebo_scan_pose)
+if [[ "${RUN_DEBUG_REAL_LASER:-0}" == 1 ]]; then
+    NAV_SCAN_TOPIC=/scan_real
+    NAV_SCAN_FRAME=real_laser
+    NAV_SCAN_LOG=lslidar_real.log
+    DIAG_SCAN_TOPICS+=(/scan_real)
+fi
+# 统一控制全局/局部 costmap 的障碍物膨胀范围（单位：米）
+INFLATION_RADIUS="0.2"#local!!!!!!!!!!!!!!!!!!!!
+
+source "$WORKSPACE_DIR/devel/setup.bash"
+mkdir -p "$LOG_DIR"
+
+# 强制清理残留的 Gazebo、map_server 进程
+killall -9 gzserver gzclient 2>/dev/null
+killall map_server 2>/dev/null
+killall move_base 2>/dev/null
+rosnode kill /move_base 2>/dev/null || true
+rosnode kill /nmpc_stop_diagnostics >/dev/null 2>&1 || true
+sleep 1
+
+# 确保 ROS master 在运行
+if ! rostopic list > /dev/null 2>&1; then
+    echo "  roscore 未运行，正在启动..."
+    roscore \
+        >> "$LOG_DIR/run.log" 2>&1 &
+    sleep 3
+fi
+
+# 清理 ROS master 上的僵尸节点（避免新旧 gzserver 名字冲突）
+echo y | rosnode cleanup 2>/dev/null || true
+sleep 1
+
+# 清理旧日志
+rm -f "$LOG_DIR"/*.log
+# 新 URDF 已内置 base_footprint 关节，移除旧版静态 TF 的 PID 记录
+rm -f "$LOG_DIR/.pid_footprint"
+
+# 记录启动时间
+echo "=== 启动时间: $(date) ===" > "$LOG_DIR/run.log"
+
+# Rebuild a navigation plugin when the existing library predates its sources.
+for PACKAGE_PATH in path_planner/path_planner controller/double_nmpc_controller; do
+    PACKAGE_NAME="${PACKAGE_PATH##*/}"
+    PACKAGE_DIR="$WORKSPACE_DIR/src/core/$PACKAGE_PATH"
+    PACKAGE_LIBRARY="$WORKSPACE_DIR/devel/lib/lib$PACKAGE_NAME.so"
+    if [[ ! -f "$PACKAGE_LIBRARY" ||
+          -n "$(find "$PACKAGE_DIR/src" "$PACKAGE_DIR/include" -type f -newer "$PACKAGE_LIBRARY" -print -quit)" ||
+          "$PACKAGE_DIR/CMakeLists.txt" -nt "$PACKAGE_LIBRARY" ]]; then
+        echo "  检测到 $PACKAGE_NAME 源码更新，正在编译..."
+        if ! (cd "$WORKSPACE_DIR" && catkin_make --pkg "$PACKAGE_NAME") >> "$LOG_DIR/run.log" 2>&1; then
+            echo "  $PACKAGE_NAME 编译失败，导航未启动。详见 log/run.log" | tee -a "$LOG_DIR/run.log"
+            exit 1
+        fi
+    fi
+done
+
+# ── 1. 生成动态启动文件 ──
+echo "[1/8] 生成动态启动文件..."
+echo "[$(date +%H:%M:%S)] [1] main_generate.py start" >> "$LOG_DIR/run.log"
+python "$WORKSPACE_DIR/src/plugins/dynamic_xml_config/main_generate.py" user_config.yaml \
+    >> "$LOG_DIR/run.log" 2>&1
+echo "[$(date +%H:%M:%S)] [1] main_generate.py done" >> "$LOG_DIR/run.log"
+
+# ── 标志位：告诉 Gazebo 不发布 odom TF（物理车模式）──
+# main.sh 没有此文件 → Gazebo 正常行为
+echo "[2/8] 设置 use_encoder_odom 标志位..."
+echo "[$(date +%H:%M:%S)] [2] use_encoder_odom flag set" >> "$LOG_DIR/run.log"
+touch /tmp/.use_encoder_odom
+echo "  /tmp/.use_encoder_odom → Gazebo diff_drive 将跳过 odom TF"
+
+# ── 3. 加载机器人模型 ──
+echo "[3/8] 加载 robot_description + 启动核心节点 ..."
+echo "[$(date +%H:%M:%S)] [3] loading robot_description" >> "$LOG_DIR/run.log"
+
+# 加载 SolidWorks 导出的最新自定义车模型 URDF
+NEW_ROBOT_DIR="$WORKSPACE_DIR/../new_robot"
+export ROS_PACKAGE_PATH="$WORKSPACE_DIR/..:${ROS_PACKAGE_PATH:-}"
+ROBOT_URDF="$NEW_ROBOT_DIR/urdf/new_robot.urdf"
+rosparam set robot_description -t "$ROBOT_URDF"
+echo "[$(date +%H:%M:%S)] [3] robot_description loaded" >> "$LOG_DIR/run.log"
+echo "  robot_description 已加载（自定义车模型）"
+
+# robot_state_publisher（发布 URDF 中固定关节的 TF：base_footprint → base_link → base_scan）
+rosrun robot_state_publisher robot_state_publisher \
+    >> "$LOG_DIR/run.log" 2>&1 &
+PID_RSP=$!
+echo "  robot_state_publisher PID=$PID_RSP"
+
+# joint_state_publisher（发布轮子关节状态，让机器人模型显示轮子）
+rosrun joint_state_publisher joint_state_publisher \
+    >> "$LOG_DIR/run.log" 2>&1 &
+PID_JSP=$!
+echo "  joint_state_publisher PID=$PID_JSP"
+
+sleep 1
+
+# map_server（提供背景地图）
+# MAP_FILE="$WORKSPACE_DIR/../gazebo_create/maps/my_four_map.yaml"
+MAP_FILE="$WORKSPACE_DIR/../gazebo_create/maps/map_project3.yaml"
+if [ ! -f "$MAP_FILE" ]; then
+    echo "错误: 地图 YAML 不存在: $MAP_FILE"
+    exit 1
+fi
+rosrun map_server map_server "$MAP_FILE" \
+    >> "$LOG_DIR/run.log" 2>&1 &
+PID_MAP=$!
+echo "  map_server PID=$PID_MAP"
+
+sleep 1
+
+# 静态 map → odom TF（让 RViz 在 map 固定帧下能看到小车移动）
+rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 map odom \
+    >> "$LOG_DIR/run.log" 2>&1 &
+PID_TF=$!
+echo "  static_transform_publisher (map→odom) PID=$PID_TF"
+
+sleep 1
+
+# ── 4. 启动 Gazebo（仓库环境）──
+echo "[4/8] 启动 Gazebo ..."
+echo "[$(date +%H:%M:%S)] [4] starting gzserver" >> "$LOG_DIR/run.log"
+WORLD_FILE="${WORLD_FILE:-$WORKSPACE_DIR/../gazebo_create/worlds/map_project3.world}"
+if [ ! -f "$WORLD_FILE" ]; then
+    echo "错误: Gazebo world 文件不存在: $WORLD_FILE"
+    exit 1
+fi
+echo "  Gazebo world: $WORLD_FILE"
+
+# 禁用所有模型数据库下载（防 libcurl SSL 超时阻塞 ROS 插件初始化）
+# GAZEBO_MODEL_DATABASE_URI 管 Gazebo Fuel，IGN_FUEL_URI 管 Ignition Fuel
+export GAZEBO_MODEL_DATABASE_URI="http://127.0.0.1:1/"
+export IGN_FUEL_URI="http://127.0.0.1:1/"
+
+# 用自定义节点名避免与残留 /gazebo 节点冲突（服务路径仍为 /gazebo/*）
+GZ_NAME="__name:=gz_debug"
+rosrun gazebo_ros gzserver "$WORLD_FILE" "$GZ_NAME" \
+    >> "$LOG_DIR/run.log" 2>&1 &
+PID_GZSERVER=$!
+echo "  gazebo server PID=$PID_GZSERVER (节点名: gz_debug)"
+
+# 等待 Gazebo 的 ROS 服务就绪（超时 15 秒）
+echo "  等待 Gazebo ROS 服务就绪..."
+for i in $(seq 1 15); do
+    if rosservice list 2>/dev/null | grep -q "/gz_debug/set_model_state"; then
+        echo "  ✅ Gazebo ROS 服务已就绪（第 ${i} 秒）"
+        break
+    fi
+    sleep 1
+done
+if ! rosservice list 2>/dev/null | grep -q "/gz_debug/set_model_state"; then
+    echo "  ⚠ 警告：15 秒后 /gz_debug/set_model_state 仍未就绪"
+    echo "  检查 run.log 中是否有 libcurl 超时阻塞"
+fi
+
+# Gazebo GUI
+rosrun gazebo_ros gzclient \
+    >> "$LOG_DIR/run.log" 2>&1 &
+PID_GZCLIENT=$!
+echo "  gazebo client PID=$PID_GZCLIENT"
+
+sleep 2
+
+# 在 Gazebo 中生成机器人模型（使用已加载的 robot_description）
+echo "[$(date +%H:%M:%S)] [4] spawn_model start" >> "$LOG_DIR/run.log"
+echo "  正在生成机器人模型..."
+# 清理旧名称和新名称的残留实体，确保 Gazebo 中只有一辆车
+rosservice call /gz_debug/delete_model "model_name: 'my_robot'" >/dev/null 2>&1 || true
+rosservice call /gz_debug/delete_model "model_name: 'new_robot'" >/dev/null 2>&1 || true
+INITIAL_X=-1.16943
+INITIAL_Y=1.88119
+INITIAL_YAW=-1.57079632679
+rosrun gazebo_ros spawn_model -urdf \
+    -param robot_description \
+    -model my_robot \
+    -gazebo_namespace /gz_debug \
+    -x "$INITIAL_X" -y "$INITIAL_Y" -z 0.0 -Y "$INITIAL_YAW" \
+    >> "$LOG_DIR/run.log" 2>&1
+SPAWN_EXIT=$?
+echo "[$(date +%H:%M:%S)] [4] spawn_model exit=$SPAWN_EXIT" >> "$LOG_DIR/run.log"
+if [ $SPAWN_EXIT -eq 0 ]; then
+    echo "  ✅ 机器人已在 Gazebo 中生成"
+else
+    echo "  ⚠ spawn_model 失败 (exit=$SPAWN_EXIT)"
+fi
+
+sleep 2
+
+# ├── RViz ──
+RVIZ_FILE="$WORKSPACE_DIR/src/sim_env/rviz/sim_env.rviz"
+rosrun rviz rviz -d "$RVIZ_FILE" \
+    >> "$LOG_DIR/run.log" 2>&1 &
+PID_RVIZ=$!
+echo "  rviz PID=$PID_RVIZ"
+
+sleep 2
+
+# ── 恢复 ROS 时间为真实时间 ──
+# Gazebo 的 gzserver 内部会设 /use_sim_time=true，导致
+# rospy.Time.now() 返回仿真时间（卡在 0），encoder_odom 无法计算 dt。
+# 这里显式改回 false，让 read_uart / encoder_odom 用真实时钟。
+rosparam set /use_sim_time false
+echo "  /use_sim_time → false（编码器/里程计使用真实时钟）"
+
+# ── 5. 启动串口桥接（合并读 tick + 写速度到同一串口） ──
+echo "[5/8] 启动 serial_bridge.py (串口桥接：读编码器 + 写 cmd_vel)..."
+rosrun encoder_tools serial_bridge.py \
+    _wheel_base:=0.45 _linear_diagnostics:=true \
+    > "$LOG_DIR/serial_bridge.log" 2>&1 &
+PID_READ=$!
+echo "  PID=$PID_READ → log/serial_bridge.log"
+
+sleep 2
+
+# ── 6. 启动里程计 ──
+echo "[6/8] 启动 encoder_odom.py (里程计)..."
+ENCODER_ODOM_IMU_TOPIC="$IMU_TOPIC" rosrun encoder_tools encoder_odom.py \
+    _initial_x:="$INITIAL_X" _initial_y:="$INITIAL_Y" _initial_yaw:="$INITIAL_YAW" \
+    _imu_timeout:="${IMU_TIMEOUT:-0.5}" \
+    _linear_diagnostics:=true \
+    > "$LOG_DIR/encoder_odom.log" 2>&1 &
+PID_ODOM=$!
+echo "  PID=$PID_ODOM → log/encoder_odom.log"
+
+sleep 1
+
+# ── 6.5 启动实际速度记录器 ──
+echo "[6.5/8] 启动 velocity_plotter.py (记录 /odom 实际线速度/角速度)..."
+rosrun encoder_tools velocity_plotter.py \
+    _output_dir:="$LOG_DIR" \
+    > "$LOG_DIR/velocity_plotter.log" 2>&1 &
+PID_VEL_PLOT=$!
+echo "  PID=$PID_VEL_PLOT → log/velocity_plotter.log"
+
+sleep 1
+
+# ── 7. 启动 Gazebo 同步桥接 ──
+echo "[7/8] 启动 gazebo_sync.py (里程计→Gazebo 同步 + 激光采样位姿对齐)..."
+rosrun encoder_tools gazebo_sync.py \
+    > "$LOG_DIR/gazebo_sync.log" 2>&1 &
+PID_SYNC=$!
+echo "  PID=$PID_SYNC → log/gazebo_sync.log"
+
+sleep 2
+
+# ── 7.5 启动 pre_rotate ──
+echo "[7.5/8] 启动 pre_rotate.py (新 goal 大角度时原地旋转)..."
+rosrun encoder_tools pre_rotate.py \
+    > "$LOG_DIR/pre_rotate.log" 2>&1 &
+PID_PREROT=$!
+echo "  PID=$PID_PREROT"
+
+sleep 1
+
+# ── 7.6 启动 clear_scheduler ──
+echo "[7.6/8] 启动 clear_scheduler.py (地图 1s 刷新，和路径重规划解绑)..."
+rosrun encoder_tools clear_scheduler.py \
+    > "$LOG_DIR/clear_scheduler.log" 2>&1 &
+PID_CLEAR_SCHED=$!
+echo "  PID=$PID_CLEAR_SCHED"
+
+sleep 1
+
+# ── 8. 启动 move_base（全局规划器）──
+echo "[8/8] 启动 move_base（A* 全局规划器，仅规划不跟踪）..."
+echo "[$(date +%H:%M:%S)] [8] generating move_base launch file" >> "$LOG_DIR/run.log"
+
+SIM_ENV_DIR="$WORKSPACE_DIR/src/sim_env"
+MB_LAUNCH="/tmp/move_base_debug.launch"
+cat > "$MB_LAUNCH" << MBEOF
+<launch>
+  <node pkg="move_base" type="move_base" name="move_base" output="screen">
+
+    <!-- 全局规划器 -->
+    <param name="base_global_planner" value="path_planner/PathPlanner"/>
+    <param name="PathPlanner/planner_name" value="astar_polyline"/>
+    <param name="PathPlanner/clearance_target_m" type="double" value="${ASTAR_CLEARANCE_TARGET_M:-0.15}"/>
+    <param name="PathPlanner/clearance_weight" type="double" value="${ASTAR_CLEARANCE_WEIGHT:-4.0}"/>
+    <param name="PathPlanner/corner_trim_m" type="double" value="${ASTAR_CORNER_TRIM_M:-0.20}"/>
+    <param name="PathPlanner/footprint_margin_m" type="double" value="${ASTAR_FOOTPRINT_MARGIN_M:-0.09}"/>
+    <param name="PathPlanner/footprint_weight" type="double" value="${ASTAR_FOOTPRINT_WEIGHT:-6.0}"/>
+
+    <!-- 局部规划器：双层 NMPC -->
+    <param name="base_local_planner" value="double_nmpc_controller/DoubleNMPCController"/>
+    <rosparam command="load"
+      file="$WORKSPACE_DIR/src/core/controller/double_nmpc_controller/config/double_nmpc_high_speed.yaml"
+      ns="DoubleNMPCController"/>
+    <!-- 控制器安全半径；车体完整 footprint 由 costmap 单独处理 -->
+    <param name="DoubleNMPCController/robot_radius" value="0.30"/>
+
+    <!-- 禁用恢复行为（实物车速度低，不会大幅偏离路径） -->
+    <param name="recovery_behavior_enabled" value="false"/>
+
+    <!-- move_base 通用参数 -->
+    <rosparam command="load" file="$SIM_ENV_DIR/config/move_base_params.yaml"/>
+
+    <!-- 全局 costmap（用 robot-specific 文件，不含 global_costmap: 外层键） -->
+    <rosparam command="load" file="$SIM_ENV_DIR/config/robots/my_car/global_costmap_params_my_car.yaml" ns="global_costmap"/>
+    <!-- 全局 costmap 插件（含 global_costmap: 外层键 → 加载后自动在 /move_base/global_costmap/ 下） -->
+    <rosparam command="load" file="$SIM_ENV_DIR/config/costmap/global_costmap_plugins.yaml"/>
+    <param name="global_costmap/obstacle_layer/scan/topic" value="$NAV_SCAN_TOPIC"/>
+    <param name="global_costmap/obstacle_layer/scan/sensor_frame" value="$NAV_SCAN_FRAME"/>
+    <param name="global_costmap/obstacle_layer/scan/expected_update_rate" value="2.5"/>
+
+    <!-- 局部 costmap（用 robot-specific 文件） -->
+    <rosparam command="load" file="$SIM_ENV_DIR/config/robots/my_car/local_costmap_params_my_car.yaml" ns="local_costmap"/>
+    <rosparam ns="local_costmap" command="load">
+      plugins:
+        - {name: obstacle_layer, type: 'costmap_2d::ObstacleLayer'}
+        - {name: inflation_layer, type: 'costmap_2d::InflationLayer'}
+    </rosparam>
+    <param name="local_costmap/obstacle_layer/scan/topic" value="$NAV_SCAN_TOPIC"/>
+    <param name="local_costmap/obstacle_layer/scan/sensor_frame" value="$NAV_SCAN_FRAME"/>
+    <param name="local_costmap/obstacle_layer/scan/expected_update_rate" value="2.5"/>
+
+    <!-- 最终显式覆盖，避免参数加载顺序覆盖 YAML 中的值 -->
+    <param name="global_costmap/inflation_layer/inflation_radius" value="0.25"/>
+    <param name="local_costmap/inflation_layer/inflation_radius" value="0.1"/>
+
+    <!-- 真实车体尺寸：长度 0.60 m，宽度 0.30 m；base_footprint 位于车体中心 -->
+    <rosparam ns="global_costmap" param="footprint">[[-0.30, -0.15], [-0.30, 0.15], [0.30, 0.15], [0.30, -0.15]]</rosparam>
+    <rosparam ns="local_costmap" param="footprint">[[-0.30, -0.15], [-0.30, 0.15], [0.30, 0.15], [0.30, -0.15]]</rosparam>
+
+    <!-- map 重映射 -->
+    <remap from="map" to="/map"/>
+    <!-- goal 重映射（pre_rotate 转发后的话题） -->
+    <remap from="move_base_simple/goal" to="/goal_rotated"/>
+  </node>
+</launch>
+MBEOF
+
+echo "[$(date +%H:%M:%S)] [8] starting move_base via roslaunch" >> "$LOG_DIR/run.log"
+echo "  启动 move_base 前检查参数状态:" >> "$LOG_DIR/run.log"
+rosparam get /move_base/base_global_planner 2>&1 >> "$LOG_DIR/run.log" || echo "  [诊断] base_global_planner 参数未设置" >> "$LOG_DIR/run.log"
+rosparam get /move_base/base_local_planner 2>&1 >> "$LOG_DIR/run.log" || echo "  [诊断] base_local_planner 参数未设置" >> "$LOG_DIR/run.log"
+rosparam get /move_base/global_costmap/plugins 2>&1 >> "$LOG_DIR/run.log" || echo "  [诊断] global_costmap/plugins 参数未设置" >> "$LOG_DIR/run.log"
+echo "  [诊断] rospack plugins nav_core:" >> "$LOG_DIR/run.log"
+rospack plugins --attrib=plugin nav_core 2>&1 >> "$LOG_DIR/run.log"
+
+# Register the processes before waiting so they can be cleaned up on failure.
+echo "$PID_MAP"      > "$LOG_DIR/.pid_map"
+echo "$PID_RSP"      > "$LOG_DIR/.pid_rsp"
+echo "$PID_JSP"      > "$LOG_DIR/.pid_jsp"
+echo "$PID_TF"       > "$LOG_DIR/.pid_tf"
+echo "$PID_GZSERVER" > "$LOG_DIR/.pid_gzserver"
+echo "$PID_GZCLIENT" > "$LOG_DIR/.pid_gzclient"
+echo "$PID_RVIZ"     > "$LOG_DIR/.pid_rviz"
+echo "$PID_READ"     > "$LOG_DIR/.pid_read"
+echo "$PID_ODOM"     > "$LOG_DIR/.pid_odom"
+echo "$PID_VEL_PLOT" > "$LOG_DIR/.pid_velocity_plotter"
+echo "$PID_SYNC"     > "$LOG_DIR/.pid_sync"
+echo "$PID_PREROT"   > "$LOG_DIR/.pid_prerot"
+echo "$PID_CLEAR_SCHED" > "$LOG_DIR/.pid_clear_sched"
+
+if [[ "${RUN_DEBUG_REAL_LASER:-0}" == 1 ]]; then
+    echo "  启动串口雷达 → $NAV_SCAN_TOPIC ($NAV_SCAN_FRAME)"
+    (
+        source "$WORKSPACE_DIR/../devel/setup.bash" || exit 1
+        exec roslaunch lslidar_driver lslidar_serial.launch
+    ) > "$LOG_DIR/$NAV_SCAN_LOG" 2>&1 &
+    echo "$!" > "$LOG_DIR/.pid_lslidar_real"
+fi
+
+echo "  等待导航雷达首帧：$NAV_SCAN_TOPIC ($NAV_SCAN_FRAME)"
+if ! timeout 20 rostopic echo -n 1 "$NAV_SCAN_TOPIC/header" >> "$LOG_DIR/run.log" 2>&1; then
+    echo "  启动失败：未收到 $NAV_SCAN_TOPIC，请查看 log/$NAV_SCAN_LOG" | tee -a "$LOG_DIR/run.log"
+    bash "$SCRIPT_DIR/stop_debug.sh" >> "$LOG_DIR/run.log" 2>&1
+    exit 1
+fi
+
+echo "  等待 $IMU_TOPIC 航向初始化..."
+if ! kill -0 "$PID_ODOM" 2>/dev/null ||
+   ! timeout 10 rostopic echo -n 1 /odom/header >> "$LOG_DIR/run.log" 2>&1; then
+    echo "  启动失败：未收到 IMU 里程计，请检查 $IMU_TOPIC 和 log/encoder_odom.log" | tee -a "$LOG_DIR/run.log"
+    bash "$SCRIPT_DIR/stop_debug.sh" >> "$LOG_DIR/run.log" 2>&1
+    exit 1
+fi
+
+roslaunch "$MB_LAUNCH" \
+    >> "$LOG_DIR/run.log" 2>&1 &
+PID_MB=$!
+echo "$PID_MB" > "$LOG_DIR/.pid_move_base"
+if [ "${NMPC_DIAG_BAG:-1}" = "1" ]; then
+    DIAG_BAG="$LOG_DIR/nmpc_diag_$(date +%Y%m%d_%H%M%S).bag"
+    DIAG_DURATION="${NMPC_DIAG_BAG_DURATION:-300}"
+    # Record ROS events in the same bag so it remains usable after run.log is replaced.
+    rosbag record --duration="$DIAG_DURATION" --buffsize=64 -O "$DIAG_BAG" \
+        "${DIAG_SCAN_TOPICS[@]}" /tf /tf_static /odom /cmd_vel \
+        /move_base/local_costmap/costmap /move_base/local_costmap/costmap_updates \
+        /map /move_base/global_costmap/costmap /move_base/global_costmap/costmap_updates \
+        /move_base/PathPlanner/plan /move_base/status /rosout_agg \
+        __name:=nmpc_stop_diagnostics >> "$LOG_DIR/nmpc_diag_record.log" 2>&1 &
+    PID_NMPC_DIAG=$!
+    # Keep the stop and settling data, then finalize the bag without operator input.
+    (
+        if timeout "$DIAG_DURATION" rostopic echo -n 1 \
+            --filter 'any(status.status == 3 for status in m.status_list)' /move_base/status >/dev/null; then
+            sleep 3
+            if kill -0 "$PID_NMPC_DIAG" 2>/dev/null; then
+                rosnode kill /nmpc_stop_diagnostics
+            fi
+        fi
+    ) >> "$LOG_DIR/nmpc_diag_record.log" 2>&1 &
+    echo "  NMPC 诊断录包: $DIAG_BAG"
+    echo "  NMPC diagnostic bag: $DIAG_BAG" >> "$LOG_DIR/run.log"
+fi
+echo "  move_base PID=$PID_MB (roslaunch)"
+echo "  全局规划器: A* Polyline (折线化后补密)"
+echo "  局部规划器: Double NMPC"
+echo "  RViz 中点击 2D Nav Goal → 全局路径将显示在地图上"
+
+sleep 3
+echo "[$(date +%H:%M:%S)] [8] move_base 启动后状态:" >> "$LOG_DIR/run.log"
+echo "  [诊断] 检查 move_base 是否存活:" >> "$LOG_DIR/run.log"
+kill -0 "$PID_MB" 2>&1 && echo "  [诊断] move_base 进程存活" >> "$LOG_DIR/run.log" || echo "  [诊断] move_base 进程已死亡" >> "$LOG_DIR/run.log"
+echo "  [诊断] rostopic list | grep move_base:" >> "$LOG_DIR/run.log"
+rostopic list 2>/dev/null | grep -i move 2>&1 >> "$LOG_DIR/run.log" || echo "  [诊断] 无 move_base 话题" >> "$LOG_DIR/run.log"
+echo "  [诊断] rosservice list | grep move_base:" >> "$LOG_DIR/run.log"
+rosservice list 2>/dev/null | grep -i move 2>&1 >> "$LOG_DIR/run.log" || echo "  [诊断] 无 move_base 服务" >> "$LOG_DIR/run.log"
+echo "  [诊断] global inflation_radius:" >> "$LOG_DIR/run.log"
+rosparam get /move_base/global_costmap/inflation_layer/inflation_radius 2>&1 | tee -a "$LOG_DIR/run.log" || true
+echo "  [诊断] local inflation_radius:" >> "$LOG_DIR/run.log"
+rosparam get /move_base/local_costmap/inflation_layer/inflation_radius 2>&1 | tee -a "$LOG_DIR/run.log" || true
+echo "  [诊断] global inflation_layer 参数:" >> "$LOG_DIR/run.log"
+rosparam get /move_base/global_costmap/inflation_layer 2>&1 | tee -a "$LOG_DIR/run.log" || true
+echo "  [诊断] global costmap plugins:" >> "$LOG_DIR/run.log"
+rosparam get /move_base/global_costmap/plugins 2>&1 | tee -a "$LOG_DIR/run.log" || true
+echo "  [诊断] global costmap 话题信息:" >> "$LOG_DIR/run.log"
+rostopic info /move_base/global_costmap/costmap 2>&1 | tee -a "$LOG_DIR/run.log" || true
+echo "  [诊断] global costmap 参数结束" >> "$LOG_DIR/run.log"
+
+
+sleep 1
+
+echo ""
+echo "========================================"
+echo "  全部已启动，日志文件在 log/ 目录下"
+echo ""
+echo "  ✅ Gazebo + RViz + 实物编码器同步运行"
+echo "  ✅ 2D Nav Goal → A* 全局规划 → MPC 路径跟踪"
+echo "  ✅ serial_bridge 合并了串口读写（读tick + 写cmd_vel）"
+echo "========================================"
+echo ""
+echo "  查看里程计日志:  tail -f $LOG_DIR/encoder_odom.log"
+echo "  查看编码器日志:  tail -f $LOG_DIR/read_uart.log"
+echo ""
+echo "  在 RViz 中:"
+echo "    1. 点击上方工具栏的 \"2D Nav Goal\""
+echo "    2. 在地图上点击目标位置（保持按住，拖动设定朝向）"
+echo "    3. 松开 → A* 规划路径并显示在 RViz 中"
+echo ""
+echo "  发送指令请另开终端运行:"
+echo "    cd $WORKSPACE_DIR && source devel/setup.bash"
+echo "    rosrun encoder_tools send_uart.py"
+echo ""
+echo "  停止所有进程:   bash $SCRIPT_DIR/stop_debug.sh"
+echo "========================================"
