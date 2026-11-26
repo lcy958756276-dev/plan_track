@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # run_debug_imu.sh
-# 先启动厂家 ROS1 驱动，确保同一个 ROS master 能收到 /imu。
+# 自动启动厂家 ROS1 驱动，从 /imu 读取航向。
 # 固定目标点测试：启动完成后，在另一个已加载 ROS 环境的终端复制以下命令（去掉行首 #）。
 # 去程（沿启动时车头方向 -Y 前进 0.25 m，map 坐标）：
 # rostopic pub -1 /move_base_simple/goal geometry_msgs/PoseStamped '{header: {stamp: now, frame_id: map}, pose: {position: {x: -1.16943, y: 1.63119}, orientation: {z: -0.70710678, w: 0.70710678}}}'
@@ -20,7 +20,7 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 WORKSPACE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 LOG_DIR="$WORKSPACE_DIR/log"
-IMU_TOPIC="${IMU_TOPIC:-/imu}"
+IMU_TOPIC=/imu
 NAV_SCAN_TOPIC=/scan_fixed
 NAV_SCAN_FRAME=gazebo_scan_capture
 NAV_SCAN_LOG=gazebo_sync.log
@@ -34,7 +34,11 @@ fi
 # 统一控制全局/局部 costmap 的障碍物膨胀范围（单位：米）
 INFLATION_RADIUS="0.2"#local!!!!!!!!!!!!!!!!!!!!
 
-source "$WORKSPACE_DIR/devel/setup.bash"
+source "$WORKSPACE_DIR/devel/setup.bash" || exit 1
+if ! rospack find yesense_imu >/dev/null 2>&1; then
+    echo "启动失败：当前工作空间找不到 yesense_imu 驱动包" >&2
+    exit 1
+fi
 mkdir -p "$LOG_DIR"
 
 # 强制清理残留的 Gazebo、map_server 进程
@@ -228,6 +232,12 @@ sleep 2
 rosparam set /use_sim_time false
 echo "  /use_sim_time → false（编码器/里程计使用真实时钟）"
 
+# 厂家 launch 默认读取 /dev/wheeltec_IMU，并发布 /imu。
+echo "  启动 H30 IMU 驱动 → $IMU_TOPIC"
+roslaunch yesense_imu yesense_ahrs.launch > "$LOG_DIR/yesense_imu.log" 2>&1 &
+PID_IMU=$!
+echo "$PID_IMU" > "$LOG_DIR/.pid_yesense_imu"
+
 # ── 5. 启动串口桥接（合并读 tick + 写速度到同一串口） ──
 echo "[5/8] 启动 serial_bridge.py (串口桥接：读编码器 + 写 cmd_vel)..."
 rosrun encoder_tools serial_bridge.py \
@@ -395,9 +405,11 @@ if ! timeout 20 rostopic echo -n 1 "$NAV_SCAN_TOPIC/header" >> "$LOG_DIR/run.log
 fi
 
 echo "  等待 $IMU_TOPIC 航向初始化..."
-if ! kill -0 "$PID_ODOM" 2>/dev/null ||
-   ! timeout 10 rostopic echo -n 1 /odom/header >> "$LOG_DIR/run.log" 2>&1; then
-    echo "  启动失败：未收到 IMU 里程计，请检查 $IMU_TOPIC 和 log/encoder_odom.log" | tee -a "$LOG_DIR/run.log"
+if ! kill -0 "$PID_IMU" 2>/dev/null ||
+   ! kill -0 "$PID_ODOM" 2>/dev/null ||
+   ! timeout 10 rostopic echo -n 1 /odom/header >> "$LOG_DIR/run.log" 2>&1 ||
+   ! kill -0 "$PID_IMU" 2>/dev/null; then
+    echo "  启动失败：未收到 IMU 里程计，请检查 log/yesense_imu.log 和 log/encoder_odom.log" | tee -a "$LOG_DIR/run.log"
     bash "$SCRIPT_DIR/stop_debug.sh" >> "$LOG_DIR/run.log" 2>&1
     exit 1
 fi
@@ -468,6 +480,7 @@ echo "  ✅ serial_bridge 合并了串口读写（读tick + 写cmd_vel）"
 echo "========================================"
 echo ""
 echo "  查看里程计日志:  tail -f $LOG_DIR/encoder_odom.log"
+echo "  查看 IMU 驱动日志: tail -f $LOG_DIR/yesense_imu.log"
 echo "  查看编码器日志:  tail -f $LOG_DIR/read_uart.log"
 echo ""
 echo "  在 RViz 中:"
